@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Labtab</string>
+    <string name="title_activity_video_play">VideoPlayActivity</string>
+
+    <string-array name="labtab_managers">
+        <item>com.treasureboxmedia.pixafame.database.DAOManager</item>
+    </string-array>
+
+    <string-array name="labtabtables">
+
+    </string-array>
+</resources>
