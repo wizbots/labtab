@@ -20,48 +20,17 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp60"
-                android:background="@color/purple"
-                android:padding="@dimen/dp5">
+                android:background="@color/purple">
 
                 <ImageView
                     android:id="@+id/iv_menu"
                     android:layout_width="@dimen/dp50"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="@dimen/dp35"
+                    android:layout_marginLeft="@dimen/dp50"
                     android:contentDescription="@string/menu_image"
                     android:src="@drawable/menu" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp40">
-
-                    <ImageView
-                        android:id="@+id/iv_twitter"
-                        android:layout_width="@dimen/dp50"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp5"
-                        android:contentDescription="@string/twitter_image"
-                        app:srcCompat="@drawable/twitter" />
-
-                    <ImageView
-                        android:id="@+id/iv_facebook"
-                        android:layout_width="@dimen/dp50"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp5"
-                        android:contentDescription="@string/facebook_image"
-                        app:srcCompat="@drawable/fb" />
-
-                    <ImageView
-                        android:id="@+id/iv_yelp"
-                        android:layout_width="@dimen/dp50"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp5"
-                        android:contentDescription="@string/yelp_image"
-                        app:srcCompat="@drawable/yelp" />
-                </LinearLayout>
             </RelativeLayout>
 
             <LinearLayout
@@ -71,7 +40,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
+                <org.wizbots.labtab.util.TextViewCustom
                     android:id="@+id/tv_lab_tab"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -80,7 +49,8 @@
                     android:text="@string/app_name"
                     android:textColor="#FF1C6089"
                     android:textSize="@dimen/sp40"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:font="@string/font_pt_sans_narrow_regular" />
             </LinearLayout>
 
             <RelativeLayout
@@ -90,33 +60,25 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
+                <org.wizbots.labtab.util.TextViewCustom
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dp50"
                     android:gravity="center"
-                    android:text="@string/welcome"
+                    android:text="@string/welcome_mentor_name"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp22" />
+                    android:textSize="@dimen/sp22"
+                    app:font="@string/font_pt_sans_narrow_regular" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp45"
-                    android:gravity="center"
-                    android:text="@string/mentor_name"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp22" />
 
             </RelativeLayout>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_lab_tab"
-            android:layout_width="@dimen/dp250"
-            android:layout_height="@dimen/dp150"
-            android:layout_gravity="center"
+            android:layout_width="@dimen/dp220"
+            android:layout_height="@dimen/dp160"
+            android:layout_gravity="right"
             android:contentDescription="@string/labtab_image"
             android:padding="@dimen/dp5"
             android:src="@drawable/app_logo" />
@@ -136,6 +98,7 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.CardView
+                android:id="@+id/cv_go_to"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -164,18 +127,20 @@
                             android:src="@drawable/home_button_go_to_web" />
                     </LinearLayout>
 
-                    <TextView
+                    <org.wizbots.labtab.util.TextViewCustom
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="center"
                         android:text="@string/go_to_www_wizbots_com"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp22" />
+                        android:textSize="@dimen/sp22"
+                        app:font="@string/font_pt_sans_narrow_regular" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/cv_lab_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -204,14 +169,15 @@
                             android:src="@drawable/home_button_lab_list" />
                     </LinearLayout>
 
-                    <TextView
+                    <org.wizbots.labtab.util.TextViewCustom
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="center"
                         android:text="@string/lab_list"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp22" />
+                        android:textSize="@dimen/sp22"
+                        app:font="@string/font_pt_sans_narrow_regular" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -224,6 +190,7 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.CardView
+                android:id="@+id/cv_video_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -252,18 +219,20 @@
                             android:src="@drawable/home_button_video_list" />
                     </LinearLayout>
 
-                    <TextView
+                    <org.wizbots.labtab.util.TextViewCustom
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="center"
                         android:text="@string/video_list"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp22" />
+                        android:textSize="@dimen/sp22"
+                        app:font="@string/font_pt_sans_narrow_regular" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/cv_my_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/dp5"
@@ -293,14 +262,15 @@
                             android:src="@drawable/home_button_my_profile" />
                     </LinearLayout>
 
-                    <TextView
+                    <org.wizbots.labtab.util.TextViewCustom
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="center"
                         android:text="@string/my_profile"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp22" />
+                        android:textSize="@dimen/sp22"
+                        app:font="@string/font_pt_sans_narrow_regular" />
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>

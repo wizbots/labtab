@@ -22,4 +22,9 @@
     <dimen name="dp35">35dp</dimen>
     <dimen name="dp30">30dp</dimen>
     <dimen name="dp25">25dp</dimen>
+    <dimen name="dp20">20dp</dimen>
+    <dimen name="dp220">220dp</dimen>
+    <dimen name="dp160">160dp</dimen>
+    <dimen name="sp28">28sp</dimen>
+    <dimen name="dp2">2dp</dimen>
 </resources>

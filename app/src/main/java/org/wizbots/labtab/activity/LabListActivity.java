@@ -7,14 +7,13 @@ import android.view.View;
 
 import org.wizbots.labtab.R;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class LabListActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_lab_list);
         findViewById(R.id.iv_menu).setOnClickListener(this);
-        findViewById(R.id.cv_lab_list).setOnClickListener(this);
     }
 
     @Override
@@ -25,12 +24,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 loginIntent.setClass(this, LoginActivity.class);
                 startActivity(loginIntent);
                 break;
-            case R.id.cv_lab_list:
-                Intent labListIntent = new Intent();
-                labListIntent.setClass(this, LabListActivity.class);
-                startActivity(labListIntent);
-                break;
-
         }
     }
 

@@ -30,6 +30,19 @@
     <string name="lab_list">lab list</string>
     <string name="video_list">video list</string>
     <string name="my_profile">my profile</string>
+    <string name="filter_lab_certified_image">Filter Lab Certified Image</string>
+    <string name="filter_explorer_image">Filter Explorer Image</string>
+    <string name="filter_apprentice_image">Filter Apprentice Image</string>
+    <string name="filter_maker_image">Filter Maker Image</string>
+    <string name="filter_imagineer_image">Filter Imagineer Image</string>
+    <string name="filter_wizard_image">Filter Wizard Image</string>
+    <string name="filter_master_image">Filter Master Image</string>
+    <string name="filter_upload_image">Filter Upload Image</string>
+    <string name="please_enter_your_name_and_password">Please enter your name and password</string>
+    <string name="please_enter_your_email">Please enter your email</string>
+    <string name="welcome_mentor_name">Welcome, Mentor Name</string>
+    <string name="font_pt_sans_narrow_regular">PT_Sans_Narrow_Regular.ttf</string>
+    <string name="font_pt_sans_narrow_bold">PT_Sans_Narrow_Bold.ttf</string>
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>

@@ -19,50 +19,19 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/purple"
-                android:padding="@dimen/dp5">
+                android:layout_height="@dimen/dp60"
+                android:background="@color/purple">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="40dp">
-
-                    <ImageView
-                        android:id="@+id/iv_twitter"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp5"
-                        android:contentDescription="@string/twitter_image"
-                        app:srcCompat="@drawable/twitter" />
-
-                    <ImageView
-                        android:id="@+id/iv_facebook"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp5"
-                        android:contentDescription="@string/facebook_image"
-                        app:srcCompat="@drawable/fb" />
-
-                    <ImageView
-                        android:id="@+id/iv_yelp"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp5"
-                        android:contentDescription="@string/yelp_image"
-                        app:srcCompat="@drawable/yelp" />
-                </LinearLayout>
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="@dimen/dp60"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
+                <org.wizbots.labtab.util.TextViewCustom
                     android:id="@+id/tv_lab_tab"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -71,46 +40,38 @@
                     android:text="@string/app_name"
                     android:textColor="#FF1C6089"
                     android:textSize="@dimen/sp40"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:font="@string/font_pt_sans_narrow_regular" />
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/dp50"
                 android:background="@color/purple"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
+                <org.wizbots.labtab.util.TextViewCustom
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dp50"
                     android:gravity="center"
-                    android:text="@string/please_enter_your"
+                    android:text="@string/please_enter_your_name_and_password"
                     android:textColor="@color/white"
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="45dp"
-                    android:gravity="center"
-                    android:text="@string/email_and_password"
-                    android:textColor="@color/white"
-                    android:textSize="22sp" />
+                    android:textSize="@dimen/sp22"
+                    app:font="@string/font_pt_sans_narrow_regular" />
 
             </RelativeLayout>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_lab_tab"
-            android:layout_width="250dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:src="@drawable/app_logo"
-            android:contentDescription="@string/labtab_image" />
+            android:layout_width="@dimen/dp220"
+            android:layout_height="@dimen/dp160"
+            android:layout_gravity="right"
+            android:contentDescription="@string/labtab_image"
+            android:padding="@dimen/dp5"
+            android:src="@drawable/app_logo" />
 
     </FrameLayout>
 
@@ -131,15 +92,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/dp10"
                 android:orientation="horizontal">
 
-                <TextView
+                <org.wizbots.labtab.util.TextViewCustom
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/login"
                     android:textColor="@color/purple"
-                    android:textSize="28sp" />
+                    android:textSize="@dimen/sp28"
+                    app:font="@string/font_pt_sans_narrow_regular" />
             </LinearLayout>
 
             <LinearLayout
@@ -150,17 +112,18 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/dp10">
 
-                <TextView
+                <org.wizbots.labtab.util.TextViewCustom
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/dp5"
                     android:layout_weight="2"
                     android:gravity="center|end"
                     android:text="@string/email"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp24" />
+                    android:textSize="@dimen/sp24"
+                    app:font="@string/font_pt_sans_narrow_regular" />
 
-                <EditText
+                <org.wizbots.labtab.util.EditTextCustom
                     android:id="@+id/edt_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -171,7 +134,8 @@
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
                     android:text="@string/conors_wizbots_com"
-                    android:textSize="@dimen/sp24" />
+                    android:textSize="@dimen/sp24"
+                    app:font="@string/font_pt_sans_narrow_regular" />
 
             </LinearLayout>
 
@@ -183,17 +147,18 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/dp10">
 
-                <TextView
+                <org.wizbots.labtab.util.TextViewCustom
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/dp5"
                     android:layout_weight="2"
                     android:gravity="center|end"
                     android:text="@string/password"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp24" />
+                    android:textSize="@dimen/sp24"
+                    app:font="@string/font_pt_sans_narrow_regular" />
 
-                <EditText
+                <org.wizbots.labtab.util.EditTextCustom
                     android:id="@+id/edt_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -204,7 +169,8 @@
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
                     android:text="@string/conors_wizbots_com"
-                    android:textSize="@dimen/sp24" />
+                    android:textSize="@dimen/sp24"
+                    app:font="@string/font_pt_sans_narrow_regular" />
 
             </LinearLayout>
 
@@ -214,13 +180,14 @@
                 android:layout_margin="@dimen/dp10"
                 android:orientation="horizontal">
 
-                <TextView
+                <org.wizbots.labtab.util.TextViewCustom
+                    android:id="@+id/tv_forgot_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/forgot_password"
                     android:textColor="@color/light_blue"
                     android:textSize="@dimen/sp20"
-                    android:id="@+id/tv_forgot_password" />
+                    app:font="@string/font_pt_sans_narrow_regular" />
 
             </LinearLayout>
 
