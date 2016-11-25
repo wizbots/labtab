@@ -43,6 +43,12 @@
     <string name="welcome_mentor_name">Welcome, Mentor Name</string>
     <string name="font_pt_sans_narrow_regular">PT_Sans_Narrow_Regular.ttf</string>
     <string name="font_pt_sans_narrow_bold">PT_Sans_Narrow_Bold.ttf</string>
+    <string name="lab_name">Lab Name</string>
+    <string name="lab_level_image">Lab Level Image</string>
+    <string name="action_image">Action Image</string>
+    <string name="level">Level</string>
+    <string name="name">Name</string>
+    <string name="actions">Actions</string>
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>

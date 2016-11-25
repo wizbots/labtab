@@ -27,4 +27,9 @@
     <dimen name="dp160">160dp</dimen>
     <dimen name="sp28">28sp</dimen>
     <dimen name="dp2">2dp</dimen>
+    <dimen name="sp26">26sp</dimen>
+    <dimen name="sp30">30sp</dimen>
+    <dimen name="dp1">1dp</dimen>
+    <dimen name="dp4">4dp</dimen>
+    <dimen name="dp8">8dp</dimen>
 </resources>
