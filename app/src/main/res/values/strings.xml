@@ -11,7 +11,7 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="password_reminder">Password Reminder</string>
-    <string name="submit">Submit</string>
+    <string name="submit">SUBMIT</string>
     <string name="please_enter_the_email_address_you_used_to_register_with_wizbots">Please enter the email address you used to register with Wizbots:</string>
     <string name="splash_image">Splash Image</string>
     <string name="twitter_image">Twitter Image</string>
@@ -26,7 +26,7 @@
     <string name="lab_list_image">Lab List Image</string>
     <string name="video_list_image">Video List Image</string>
     <string name="my_profile_image">My Profile Image</string>
-    <string name="go_to_www_wizbots_com">go to www.wizbots.com</string>
+    <string name="go_to_www_wizbots_com">go to\nwww.wizbots.com</string>
     <string name="lab_list">lab list</string>
     <string name="video_list">video list</string>
     <string name="my_profile">my profile</string>
@@ -49,6 +49,7 @@
     <string name="level">Level</string>
     <string name="name">Name</string>
     <string name="actions">Actions</string>
+    <string name="empty_string" />
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>

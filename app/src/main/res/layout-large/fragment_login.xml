@@ -1,0 +1,139 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/login_container"
+        android:layout_width="@dimen/dp500"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_layout_blue_from_edges"
+        android:orientation="vertical"
+        android:padding="@dimen/dp15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp10"
+            android:orientation="horizontal">
+
+            <org.wizbots.labtab.customview.TextViewCustom
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login"
+                android:textColor="@color/purple"
+                android:textSize="@dimen/sp28"
+                app:font="@string/font_pt_sans_narrow_regular" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp10"
+            android:background="@drawable/rounded_layout_blue"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp10">
+
+            <org.wizbots.labtab.customview.TextViewCustom
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp5"
+                android:layout_weight="2"
+                android:gravity="center|end"
+                android:text="@string/email"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp24"
+                app:font="@string/font_pt_sans_narrow_regular" />
+
+            <org.wizbots.labtab.customview.EditTextCustom
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_layout_white"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingRight="@dimen/dp5"
+                android:text="@string/conors_wizbots_com"
+                android:textSize="@dimen/sp24"
+                app:font="@string/font_pt_sans_narrow_regular" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp10"
+            android:background="@drawable/rounded_layout_blue"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp10">
+
+            <org.wizbots.labtab.customview.TextViewCustom
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp5"
+                android:layout_weight="2"
+                android:gravity="center|end"
+                android:text="@string/password"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp24"
+                app:font="@string/font_pt_sans_narrow_regular" />
+
+            <org.wizbots.labtab.customview.EditTextCustom
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_layout_white"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingRight="@dimen/dp5"
+                android:text="@string/conors_wizbots_com"
+                android:textSize="@dimen/sp24"
+                app:font="@string/font_pt_sans_narrow_regular" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <org.wizbots.labtab.customview.TextViewCustom
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp10"
+                android:text="@string/forgot_password"
+                android:textColor="@color/light_blue"
+                android:textSize="@dimen/sp20"
+                app:font="@string/font_pt_sans_narrow_regular" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp10">
+
+            <org.wizbots.labtab.customview.ButtonCustom
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/rounded_layout_blue"
+                android:paddingBottom="@dimen/dp10"
+                android:paddingLeft="@dimen/dp25"
+                android:paddingRight="@dimen/dp25"
+                android:paddingTop="@dimen/dp10"
+                android:text="@string/log_in"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp20"
+                app:font="@string/font_pt_sans_narrow_bold" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

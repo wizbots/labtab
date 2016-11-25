@@ -13,4 +13,11 @@
         <attr name="font" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="LabTabHeaderLayout">
+        <attr name="menuIconVisibility" format="boolean" />
+        <attr name="menuIconSrc" format="reference" />
+        <attr name="labTitleSrc" format="reference" />
+        <attr name="dynamicText" format="string" />
+    </declare-styleable>
+
 </resources>

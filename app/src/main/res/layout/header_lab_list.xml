@@ -4,8 +4,8 @@
     android:id="@+id/lab_list_root_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp60"
-    android:baselineAligned="false"
     android:background="@color/light_gray"
+    android:baselineAligned="false"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.util.TextViewCustom
+        <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_level"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,7 +40,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.util.TextViewCustom
+        <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -50,7 +50,7 @@
             android:textSize="@dimen/sp28"
             app:font="@string/font_pt_sans_narrow_regular" />
 
-        <org.wizbots.labtab.util.TextViewCustom
+        <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_lab_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -68,7 +68,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.util.TextViewCustom
+        <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_action"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

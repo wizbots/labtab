@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 // Run next activity
                 Intent intent = new Intent();
-                intent.setClass(splashActivity, LoginActivity.class);
+                intent.setClass(splashActivity, BaseActivity.class);
                 startActivity(intent);
 
             }

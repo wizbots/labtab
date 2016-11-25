@@ -1,4 +1,4 @@
-package org.wizbots.labtab.util;
+package org.wizbots.labtab.customview;
 
 import android.annotation.TargetApi;
 import android.content.Context;

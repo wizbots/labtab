@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
+import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.model.LabList;
 import org.wizbots.labtab.model.LabListHeader;
-import org.wizbots.labtab.util.TextViewCustom;
 
 import java.util.ArrayList;
 

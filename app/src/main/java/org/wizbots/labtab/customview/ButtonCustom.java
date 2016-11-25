@@ -1,4 +1,4 @@
-package org.wizbots.labtab.util;
+package org.wizbots.labtab.customview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -6,31 +6,31 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.Button;
 
 import org.wizbots.labtab.R;
 
 
-public class TextViewCustom extends TextView {
+public class ButtonCustom extends Button {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TextViewCustom(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ButtonCustom(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
     }
 
-    public TextViewCustom(Context context, AttributeSet attrs, int defStyle) {
+    public ButtonCustom(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs);
     }
 
-    public TextViewCustom(Context context, AttributeSet attrs) {
+    public ButtonCustom(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
 
     }
 
-    public TextViewCustom(Context context) {
+    public ButtonCustom(Context context) {
         super(context);
         init(null);
     }
