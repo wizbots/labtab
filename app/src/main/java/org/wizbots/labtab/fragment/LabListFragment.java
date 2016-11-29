@@ -1,17 +1,17 @@
 package org.wizbots.labtab.fragment;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.wizbots.labtab.R;
+import org.wizbots.labtab.activity.BaseActivity;
 import org.wizbots.labtab.adapter.LabListAdapter;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.model.LabLevel;
@@ -19,12 +19,15 @@ import org.wizbots.labtab.model.LabList;
 
 import java.util.ArrayList;
 
-public class LabListFragment extends Fragment {
+public class LabListFragment extends ParentFragment {
 
-    LabTabHeaderLayout labTabHeaderLayout;
-    LabListAdapter labListAdapter;
-    RecyclerView recyclerViewLabList;
-    ArrayList<Object> objectArrayList = new ArrayList<>();
+    private LabTabHeaderLayout labTabHeaderLayout;
+    private Toolbar toolbar;
+    private View rootView;
+    private LabListAdapter labListAdapter;
+    private RecyclerView recyclerViewLabList;
+    private ArrayList<Object> objectArrayList = new ArrayList<>();
+    private BaseActivity baseActivityContext;
 
     public LabListFragment() {
 
@@ -38,15 +41,23 @@ public class LabListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_lab_list, container, false);
-        labTabHeaderLayout = (LabTabHeaderLayout) getActivity().findViewById(R.id.lab_tab_header_layout);
+        rootView = inflater.inflate(R.layout.fragment_lab_list, container, false);
+        baseActivityContext = (BaseActivity)context;
+        initView();
+        prepareDummyList();
+        return rootView;
+    }
+
+    public void initView() {
+        toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
+        labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab List");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
         labTabHeaderLayout.getMenuImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                baseActivityContext.replaceFragment(BaseActivity.FRAGMENT_HOME);
             }
         });
 
@@ -58,9 +69,6 @@ public class LabListFragment extends Fragment {
         recyclerViewLabList.setLayoutManager(mLayoutManager);
         recyclerViewLabList.setItemAnimator(new DefaultItemAnimator());
         recyclerViewLabList.setAdapter(labListAdapter);
-        prepareDummyList();
-
-        return rootView;
     }
 
     public void prepareDummyList() {

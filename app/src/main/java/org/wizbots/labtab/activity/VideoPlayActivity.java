@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -12,12 +11,11 @@ import org.wizbots.labtab.R;
 
 import java.io.File;
 
-
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class VideoPlayActivity extends AppCompatActivity {
+public class VideoPlayActivity extends ParentActivity {
 
     private VideoView videoView;
     private String videoPath;

@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import org.wizbots.labtab.R;
 
-
 public class TextViewCustom extends TextView {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -27,7 +26,6 @@ public class TextViewCustom extends TextView {
     public TextViewCustom(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
-
     }
 
     public TextViewCustom(Context context) {

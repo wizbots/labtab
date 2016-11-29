@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import org.wizbots.labtab.R;
 
-
 public class ButtonCustom extends Button {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -27,7 +26,6 @@ public class ButtonCustom extends Button {
     public ButtonCustom(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
-
     }
 
     public ButtonCustom(Context context) {

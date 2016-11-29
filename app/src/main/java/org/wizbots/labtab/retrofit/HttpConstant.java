@@ -8,5 +8,4 @@ public class HttpConstant {
     public static final int SC_UNAUTHORIZED = 401;
     public static final int SC_NOTFOUND = 404;
     public static final int SC_ALLREADY_ACTIVATED_OR_INVALID = 400;
-
 }

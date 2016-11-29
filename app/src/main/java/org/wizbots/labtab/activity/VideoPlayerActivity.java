@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -12,8 +11,7 @@ import org.wizbots.labtab.R;
 
 import java.io.File;
 
-
-public class VideoPlayerActivity extends AppCompatActivity {
+public class VideoPlayerActivity extends ParentActivity {
 
     private VideoView videoView;
     private String videoPath;

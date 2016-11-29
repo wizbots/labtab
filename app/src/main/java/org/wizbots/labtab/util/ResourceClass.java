@@ -1,4 +1,4 @@
-package org.wizbots.labtab.activity;
+package org.wizbots.labtab.util;
 
 import android.os.Environment;
 

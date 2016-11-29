@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lab_list_root_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp60"
+    android:layout_height="@dimen/lab_list_header_height"
+    android:background="@color/light_gray"
     android:baselineAligned="false"
     android:orientation="horizontal">
 
@@ -21,14 +22,14 @@
             android:gravity="center"
             android:text="@string/level"
             android:textColor="@color/purple"
-            android:textSize="@dimen/sp28"
+            android:textSize="@dimen/text_size_extra_large"
             android:visibility="gone"
             app:font="@string/font_pt_sans_narrow_regular" />
 
         <ImageView
             android:id="@+id/iv_lab_level"
-            android:layout_width="@dimen/dp50"
-            android:layout_height="@dimen/dp50"
+            android:layout_width="@dimen/lab_list_image_width"
+            android:layout_height="@dimen/lab_list_image_height"
             android:contentDescription="@string/lab_level_image"
             android:src="@drawable/level_master"
             android:visibility="gone" />
@@ -47,7 +48,7 @@
             android:gravity="center"
             android:text="@string/name"
             android:textColor="@color/purple"
-            android:textSize="@dimen/sp28"
+            android:textSize="@dimen/text_size_extra_large"
             android:visibility="gone"
             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -57,7 +58,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/lab_name"
-            android:textSize="@dimen/sp28"
+            android:textSize="@dimen/text_size_extra_large"
             android:visibility="gone"
             app:font="@string/font_pt_sans_narrow_regular" />
     </LinearLayout>
@@ -76,17 +77,17 @@
             android:gravity="center"
             android:text="@string/actions"
             android:textColor="@color/purple"
-            android:textSize="@dimen/sp28"
+            android:textSize="@dimen/text_size_extra_large"
             android:visibility="gone"
             app:font="@string/font_pt_sans_narrow_regular" />
 
         <ImageView
             android:id="@+id/iv_action"
-            android:layout_width="@dimen/dp50"
-            android:layout_height="@dimen/dp50"
+            android:layout_width="@dimen/lab_list_image_width"
+            android:layout_height="@dimen/lab_list_image_height"
             android:background="@drawable/circle_blue"
             android:contentDescription="@string/action_image"
-            android:padding="@dimen/dp5"
+            android:padding="@dimen/extra_extra_small_padding"
             android:src="@drawable/action_view"
             android:visibility="gone" />
     </LinearLayout>

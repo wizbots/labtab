@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,13 +11,13 @@ import com.craterzone.videomergelib.VideoMergeCallbackListener;
 import com.craterzone.videomergelib.VideoMerger;
 
 import org.wizbots.labtab.R;
+import org.wizbots.labtab.util.ResourceClass;
 
 import life.knowledge4.videotrimmer.K4LVideoTrimmer;
 import life.knowledge4.videotrimmer.interfaces.OnK4LVideoListener;
 import life.knowledge4.videotrimmer.interfaces.OnTrimVideoListener;
 
-public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoListener, OnK4LVideoListener, VideoMergeCallbackListener {
-
+public class TrimmerActivity extends ParentActivity implements OnTrimVideoListener, OnK4LVideoListener, VideoMergeCallbackListener {
 
     private K4LVideoTrimmer mVideoTrimmer;
     private ProgressDialog mProgressDialog;

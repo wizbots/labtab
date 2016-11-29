@@ -10,7 +10,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
-
 public class ConnectionUtils {
 
     private static String TAG = ConnectionUtils.class.getName();

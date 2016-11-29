@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tool_bar_lab_tab"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/zero_dimension"
+    android:minHeight="?attr/actionBarSize"
+    android:padding="@dimen/zero_dimension"
+    app:contentInsetLeft="@dimen/zero_dimension"
+    app:contentInsetRight="@dimen/zero_dimension"
+    app:contentInsetStart="@dimen/zero_dimension">
+
+    <org.wizbots.labtab.customview.LabTabHeaderLayout
+        android:id="@+id/lab_tab_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dynamicText="@string/please_enter_your_name_and_password"
+        app:labTitleSrc="@drawable/title" />
+
+</android.support.v7.widget.Toolbar>

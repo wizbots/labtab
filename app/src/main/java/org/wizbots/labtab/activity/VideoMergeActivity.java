@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
-public class VideoMergeActivity extends AppCompatActivity implements VideoMergeCallbackListener {
+public class VideoMergeActivity extends ParentActivity implements VideoMergeCallbackListener {
 
     private static final int REQUEST_TAKE_GALLERY_VIDEO = 100;
     private String filemanagerstring;

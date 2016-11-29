@@ -2,17 +2,15 @@ package org.wizbots.labtab.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
 import android.view.MotionEvent;
 
 import org.wizbots.labtab.R;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends ParentActivity {
 
-    /**
-     * The thread to process splash screen events
-     */
-    private Thread mSplashThread;
+    public static final int DELAY_MILLIS = 2000;
+    Handler splashHandler;
 
     /**
      * Called when the activity is first created.
@@ -20,35 +18,9 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Splash screen view
         setContentView(R.layout.activity_splash);
-
-        final SplashActivity splashActivity = this;
-
-        // The thread to wait for splash screen events
-        mSplashThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    synchronized (this) {
-                        // Wait given period of time or exit on touch
-                        wait(2000);
-                    }
-                } catch (InterruptedException ignored) {
-                }
-
-                finish();
-
-                // Run next activity
-                Intent intent = new Intent();
-                intent.setClass(splashActivity, BaseActivity.class);
-                startActivity(intent);
-
-            }
-        };
-
-        mSplashThread.start();
+        splashHandler = new Handler();
+        splashHandler.postDelayed(splashRunnable, DELAY_MILLIS);
     }
 
     /**
@@ -57,10 +29,23 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent evt) {
         if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-            synchronized (mSplashThread) {
-                mSplashThread.notifyAll();
-            }
+            splashHandler.removeCallbacks(splashRunnable);
+            launchNextActivity();
         }
         return true;
+    }
+
+    private Runnable splashRunnable = new Runnable() {
+        @Override
+        public void run() {
+            launchNextActivity();
+        }
+    };
+
+    private void launchNextActivity() {
+        finish();
+        Intent intent = new Intent();
+        intent.setClass(SplashActivity.this, BaseActivity.class);
+        startActivity(intent);
     }
 }

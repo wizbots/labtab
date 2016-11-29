@@ -2,5 +2,5 @@
     android:id="@+id/rowTextView"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:textSize="16sp" />
+    android:padding="@dimen/extra_small_padding"
+    android:textSize="@dimen/text_size_extra_extra_small" />

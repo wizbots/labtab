@@ -10,21 +10,21 @@
         android:id="@+id/btn_add_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="add Video File" />
+        android:text="@string/add_video_file" />
 
     <Button
         android:id="@+id/btn_merge_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="Merge video" />
+        android:text="@string/merge_video" />
 
     <ListView
         android:id="@+id/video_file_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_add_video"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="@dimen/extra_small_margin" />
 
     <Button
         android:id="@+id/btn_play_video"
@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="play video"
+        android:text="@string/play_video"
         android:visibility="gone" />
 </RelativeLayout>

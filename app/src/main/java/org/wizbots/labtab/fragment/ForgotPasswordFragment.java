@@ -1,19 +1,22 @@
 package org.wizbots.labtab.fragment;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.wizbots.labtab.R;
+import org.wizbots.labtab.activity.BaseActivity;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 
-public class ForgotPasswordFragment extends Fragment {
+public class ForgotPasswordFragment extends ParentFragment implements View.OnClickListener {
 
-    LabTabHeaderLayout labTabHeaderLayout;
+    private LabTabHeaderLayout labTabHeaderLayout;
+    private Toolbar toolbar;
+    private View rootView;
+    private BaseActivity baseActivityContext;
 
     public ForgotPasswordFragment() {
 
@@ -27,18 +30,31 @@ public class ForgotPasswordFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_forgot_password, container, false);
+        rootView = inflater.inflate(R.layout.fragment_forgot_password, container, false);
+        baseActivityContext = (BaseActivity) context;
+        initView();
+        initListeners();
+        return rootView;
+    }
+
+    public void initView() {
+        toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
+        labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout = (LabTabHeaderLayout) getActivity().findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(getActivity().getResources().getString(R.string.please_enter_your_email));
         labTabHeaderLayout.getMenuImageView().setVisibility(View.GONE);
+    }
 
-        rootView.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
-            }
-        });
+    public void initListeners() {
+        rootView.findViewById(R.id.btn_submit).setOnClickListener(this);
+    }
 
-        return rootView;
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_submit:
+                baseActivityContext.replaceFragment(BaseActivity.FRAGMENT_LOGIN);
+                break;
+        }
     }
 }

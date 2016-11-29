@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import org.wizbots.labtab.R;
 
-
 public class EditTextCustom extends EditText {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -27,7 +26,6 @@ public class EditTextCustom extends EditText {
     public EditTextCustom(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
-
     }
 
     public EditTextCustom(Context context) {

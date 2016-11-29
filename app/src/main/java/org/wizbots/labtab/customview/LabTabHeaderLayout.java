@@ -1,6 +1,5 @@
 package org.wizbots.labtab.customview;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;

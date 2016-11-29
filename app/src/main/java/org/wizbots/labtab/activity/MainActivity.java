@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -23,7 +22,7 @@ import java.io.File;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ParentActivity {
 
     public static final int MEDIA_TYPE_VIDEO = 2;
     public static final String EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH";

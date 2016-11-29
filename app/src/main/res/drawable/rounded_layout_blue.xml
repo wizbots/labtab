@@ -2,13 +2,13 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/material_light_blue_800" />
     <corners
-        android:bottomLeftRadius="@dimen/dp10"
-        android:bottomRightRadius="@dimen/dp10"
-        android:topLeftRadius="@dimen/dp10"
-        android:topRightRadius="@dimen/dp10" />
+        android:bottomLeftRadius="@dimen/radius_large"
+        android:bottomRightRadius="@dimen/radius_large"
+        android:topLeftRadius="@dimen/radius_large"
+        android:topRightRadius="@dimen/radius_large" />
     <padding
-        android:bottom="0dip"
-        android:left="0dip"
-        android:right="0dip"
-        android:top="0dip" />
+        android:bottom="@dimen/zero_dimension"
+        android:left="@dimen/zero_dimension"
+        android:right="@dimen/zero_dimension"
+        android:top="@dimen/zero_dimension" />
 </shape>

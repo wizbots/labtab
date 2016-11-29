@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_container"
     android:layout_width="match_parent"
@@ -7,12 +6,10 @@
     android:orientation="vertical"
     tools:context="org.wizbots.labtab.activity.BaseActivity">
 
-    <org.wizbots.labtab.customview.LabTabHeaderLayout
-        android:id="@+id/lab_tab_header_layout"
+    <include
+        layout="@layout/tool_bar_lab_tab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:dynamicText="@string/please_enter_your_name_and_password"
-        app:labTitleSrc="@drawable/title" />
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:id="@+id/fragment_container"

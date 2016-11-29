@@ -50,6 +50,12 @@
     <string name="name">Name</string>
     <string name="actions">Actions</string>
     <string name="empty_string" />
+    <string name="lab_tab_title_image">Lab Tab Title Image</string>
+    <string name="record_video">Record Video</string>
+    <string name="merge_video">Merge Video</string>
+    <string name="send_diagnostic">Send Diagnostic</string>
+    <string name="add_video_file">Add Video File</string>
+    <string name="play_video">Play Video</string>
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>

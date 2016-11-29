@@ -13,7 +13,7 @@
         android:id="@+id/btn_record_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RecordVideo" />
+        android:text="@string/record_video" />
 
 
     <Button
@@ -21,13 +21,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_record_video"
-        android:text="MergeVideo" />
+        android:text="@string/merge_video" />
 
     <Button
         android:id="@+id/btn_send_diagnostic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_merge_video"
-        android:text="Send Diagnostic" />
+        android:text="@string/send_diagnostic" />
 
 </RelativeLayout>
