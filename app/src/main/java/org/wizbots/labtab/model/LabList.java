@@ -2,9 +2,9 @@ package org.wizbots.labtab.model;
 
 
 public class LabList {
-    int level;
-    String labName;
-    int action;
+    private int level;
+    private String labName;
+    private int action;
 
     public LabList() {
     }

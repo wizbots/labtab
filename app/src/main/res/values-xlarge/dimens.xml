@@ -86,5 +86,13 @@
     <dimen name="stroke_extra_small">4dp</dimen>
     <dimen name="stroke_extra_extra_small">2dp</dimen>
 
+    <!--Lab Detail Screen Dimensions-->
+    <dimen name="lab_detail_header_height">60dp</dimen>
+    <dimen name="lab_detail_image_height">40dp</dimen>
+    <dimen name="lab_detail_image_width">40dp</dimen>
+    <dimen name="lab_detail_check_box_height">45dp</dimen>
+    <dimen name="lab_detail_check_box_width">45dp</dimen>
+    <dimen name="lab_detail_student_name_container_width">125dp</dimen>
+    <dimen name="lab_detail_action_container_width">150dp</dimen>
 
 </resources>

@@ -56,6 +56,11 @@
     <string name="send_diagnostic">Send Diagnostic</string>
     <string name="add_video_file">Add Video File</string>
     <string name="play_video">Play Video</string>
+    <string name="check">Check</string>
+    <string name="projects">Projects</string>
+    <string name="lab_time">Lab Time</string>
+    <string name="student_name">Student Name</string>
+    <string name="_100">100</string>
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>

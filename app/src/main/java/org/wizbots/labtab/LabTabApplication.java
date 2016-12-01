@@ -7,8 +7,9 @@ import android.util.Log;
 import com.craterzone.logginglib.manager.LoggerManager;
 
 import org.wizbots.labtab.interfaces.BaseManagerInterface;
+import org.wizbots.labtab.interfaces.BaseUIListener;
 import org.wizbots.labtab.interfaces.OnLoadListener;
-import org.wizbots.labtab.retrofit.WebService;
+import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,16 +24,19 @@ public class LabTabApplication extends Application {
 
     private static String TAG = LabTabApplication.class.getName();
     private static LabTabApplication _instance;
-    public WebService webService;
+    private LabTabApiInterface labTabApiInterface;
     private boolean closed;
     private ArrayList registeredManagers;
     private Map<Class<? extends BaseManagerInterface>, Collection<? extends BaseManagerInterface>> managerInterfaces;
+    private Map<Class<? extends BaseUIListener>, Collection<? extends BaseUIListener>> uiListeners;
+
 
     public LabTabApplication() {
         _instance = this;
         closed = false;
         registeredManagers = new ArrayList<>();
         managerInterfaces = new HashMap<>();
+        uiListeners = new HashMap<>();
     }
 
     public static LabTabApplication getInstance() {
@@ -49,7 +53,7 @@ public class LabTabApplication extends Application {
         //initManagers();
         //initDB();
         //loadManagers();
-        //initRetrofit();
+        initRetrofit();
         LoggerManager.getInstance(getApplicationContext()).init();
     }
 
@@ -108,13 +112,41 @@ public class LabTabApplication extends Application {
 
     public void initRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(WebService.BASE_URL)
+                .baseUrl(LabTabApiInterface.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        webService = retrofit.create(WebService.class);
+        labTabApiInterface = retrofit.create(LabTabApiInterface.class);
     }
 
-    public WebService getWebService() {
-        return webService;
+    public LabTabApiInterface getLabTabApiInterface() {
+        return labTabApiInterface;
     }
+
+    @SuppressWarnings("unchecked")
+    private <T extends BaseUIListener> Collection<T> getOrCreateUIListeners(
+            Class<T> cls) {
+        Collection<T> collection = (Collection<T>) uiListeners.get(cls);
+        if (collection == null) {
+            collection = new ArrayList<T>();
+            uiListeners.put(cls, collection);
+        }
+        return collection;
+    }
+
+    public <T extends BaseUIListener> Collection<T> getUIListeners(Class<T> cls) {
+        if (closed)
+            return Collections.emptyList();
+        return Collections.unmodifiableCollection(getOrCreateUIListeners(cls));
+    }
+
+    public <T extends BaseUIListener> void addUIListener(Class<T> cls,
+                                                         T listener) {
+        getOrCreateUIListeners(cls).add(listener);
+    }
+
+    public <T extends BaseUIListener> void removeUIListener(Class<T> cls,
+                                                            T listener) {
+        getOrCreateUIListeners(cls).remove(listener);
+    }
+
 }

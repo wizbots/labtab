@@ -14,12 +14,13 @@ import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.BaseActivity;
 import org.wizbots.labtab.adapter.LabListAdapter;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
 import org.wizbots.labtab.model.LabLevel;
 import org.wizbots.labtab.model.LabList;
 
 import java.util.ArrayList;
 
-public class LabListFragment extends ParentFragment {
+public class LabListFragment extends ParentFragment implements LabListAdapterClickListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -42,7 +43,7 @@ public class LabListFragment extends ParentFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_lab_list, container, false);
-        baseActivityContext = (BaseActivity)context;
+        baseActivityContext = (BaseActivity) context;
         initView();
         prepareDummyList();
         return rootView;
@@ -61,10 +62,10 @@ public class LabListFragment extends ParentFragment {
             }
         });
 
-        recyclerViewLabList = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        recyclerViewLabList = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_list);
         objectArrayList = new ArrayList<>();
 
-        labListAdapter = new LabListAdapter(objectArrayList);
+        labListAdapter = new LabListAdapter(objectArrayList, baseActivityContext, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewLabList.setLayoutManager(mLayoutManager);
         recyclerViewLabList.setItemAnimator(new DefaultItemAnimator());
@@ -72,7 +73,6 @@ public class LabListFragment extends ParentFragment {
     }
 
     public void prepareDummyList() {
-//        objectArrayList.add(new LabListHeader("Level", "Name", "Actions"));
         objectArrayList.add(new LabList(LabLevel.APPRENTICE.getValue(), "Lab Name", R.drawable.action_view));
         objectArrayList.add(new LabList(LabLevel.EXPLORER.getValue(), "Lab Name", R.drawable.action_view));
         objectArrayList.add(new LabList(LabLevel.IMAGINEER.getValue(), "Lab Name", R.drawable.action_view));
@@ -97,4 +97,8 @@ public class LabListFragment extends ParentFragment {
         labListAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onActionViewClick(LabList labList) {
+        baseActivityContext.replaceFragment(BaseActivity.FRAGMENT_LAB_DETAILS_LIST);
+    }
 }

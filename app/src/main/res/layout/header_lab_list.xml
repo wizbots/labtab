@@ -22,7 +22,7 @@
             android:gravity="center"
             android:text="@string/level"
             android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_extra_large"
+            android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
         <ImageView
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:text="@string/name"
             android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_extra_large"
+            android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
         <org.wizbots.labtab.customview.TextViewCustom
@@ -56,7 +56,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/lab_name"
-            android:textSize="@dimen/text_size_extra_large"
+            android:textSize="@dimen/text_size_small"
             android:visibility="gone"
             app:font="@string/font_pt_sans_narrow_regular" />
     </LinearLayout>
@@ -75,7 +75,7 @@
             android:gravity="center"
             android:text="@string/actions"
             android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_extra_large"
+            android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
         <ImageView

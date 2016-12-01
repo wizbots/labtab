@@ -1,5 +1,6 @@
 package org.wizbots.labtab.adapter;
 
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
+import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
 import org.wizbots.labtab.model.LabList;
 import org.wizbots.labtab.model.LabListHeader;
 
@@ -22,39 +24,62 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final int VIEW_ITEM_DATA = 1;
     private final int VIEW_ITEM_FOOTER = 2;
     private ArrayList<Object> objectArrayList;
+    private Context context;
+    private LabListAdapterClickListener labListAdapterClickListener;
 
-    class LabListViewHolder extends RecyclerView.ViewHolder {
+    private class LabListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         LinearLayout labListLinearLayout;
         ImageView labLevelImageView;
         TextViewCustom labNameTextViewCustom;
         ImageView actionImageView;
+        LabListAdapterClickListener labListAdapterClickListener;
 
-        LabListViewHolder(View view) {
+        LabListViewHolder(View view, LabListAdapterClickListener labListAdapterClickListener) {
             super(view);
+            this.labListAdapterClickListener = labListAdapterClickListener;
             labListLinearLayout = (LinearLayout) view.findViewById(R.id.lab_list_root_layout);
             labLevelImageView = (ImageView) view.findViewById(R.id.iv_lab_level);
             labNameTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_lab_name);
             actionImageView = (ImageView) view.findViewById(R.id.iv_action);
+            actionImageView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            LabList labList = (LabList) objectArrayList.get(getAdapterPosition());
+            switch (view.getId()) {
+                case R.id.iv_action:
+                    labListAdapterClickListener.onActionViewClick(labList);
+            }
         }
     }
 
-    class LabListHeaderHolder extends RecyclerView.ViewHolder {
+    private class LabListHeaderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         LinearLayout labListLinearLayout;
         TextViewCustom levelTextViewCustom;
         TextViewCustom nameTextViewCustom;
         TextViewCustom actionTextViewCustom;
+        LabListAdapterClickListener labListAdapterClickListener;
 
-        LabListHeaderHolder(View view) {
+        LabListHeaderHolder(View view, LabListAdapterClickListener labListAdapterClickListener) {
             super(view);
+            this.labListAdapterClickListener = labListAdapterClickListener;
             labListLinearLayout = (LinearLayout) view.findViewById(R.id.lab_list_root_layout);
             levelTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_level);
             nameTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_name);
             actionTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_action);
         }
+
+        @Override
+        public void onClick(View view) {
+
+        }
     }
 
-    public LabListAdapter(ArrayList<Object> objectArrayList) {
+    public LabListAdapter(ArrayList<Object> objectArrayList, Context context, LabListAdapterClickListener labListAdapterClickListener) {
         this.objectArrayList = objectArrayList;
+        this.context = context;
+        this.labListAdapterClickListener = labListAdapterClickListener;
     }
 
     @Override
@@ -65,15 +90,15 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (viewType) {
             case VIEW_ITEM_HEADER:
                 View headerView = inflater.inflate(R.layout.item_lab_list, viewGroup, false);
-                viewHolder = new LabListHeaderHolder(headerView);
+                viewHolder = new LabListHeaderHolder(headerView, labListAdapterClickListener);
                 break;
             case VIEW_ITEM_DATA:
                 View dataView = inflater.inflate(R.layout.item_lab_list, viewGroup, false);
-                viewHolder = new LabListViewHolder(dataView);
+                viewHolder = new LabListViewHolder(dataView, labListAdapterClickListener);
                 break;
             default:
                 View defaultView = inflater.inflate(R.layout.item_lab_list, viewGroup, false);
-                viewHolder = new LabListHeaderHolder(defaultView);
+                viewHolder = new LabListHeaderHolder(defaultView, labListAdapterClickListener);
                 break;
         }
         return viewHolder;

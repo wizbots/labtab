@@ -9,6 +9,7 @@ import android.view.View;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.fragment.ForgotPasswordFragment;
 import org.wizbots.labtab.fragment.HomeFragment;
+import org.wizbots.labtab.fragment.LabDetailsFragment;
 import org.wizbots.labtab.fragment.LabListFragment;
 import org.wizbots.labtab.fragment.LoginFragment;
 
@@ -22,6 +23,7 @@ public class BaseActivity extends ParentActivity implements View.OnClickListener
     public static final int FRAGMENT_FORGOT_PASSWORD = 1;
     public static final int FRAGMENT_HOME = 2;
     public static final int FRAGMENT_LAB_LIST = 3;
+    public static final int FRAGMENT_LAB_DETAILS_LIST = 4;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,10 @@ public class BaseActivity extends ParentActivity implements View.OnClickListener
             case FRAGMENT_LAB_LIST:
                 fragment = new LabListFragment();
                 break;
+            case FRAGMENT_LAB_DETAILS_LIST:
+                fragment = new LabDetailsFragment();
+                break;
+
         }
         fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
