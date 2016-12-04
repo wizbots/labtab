@@ -73,7 +73,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     public void prepareDummyList() {
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getValue(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getValue(), "100", "100", "100", "100", "100", true));
         objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getValue(), "8", "3", "2", "0", "1", true));
         objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.MASTER.getValue(), "8", "3", "2", "0", "1", false));
         objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getValue(), "8", "3", "2", "0", "1", false));

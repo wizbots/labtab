@@ -199,7 +199,6 @@ public class DiagnosticsManager implements SendFileListener {
 
         /*
         writing notification settings.
-        TODO
         */
 
         /*

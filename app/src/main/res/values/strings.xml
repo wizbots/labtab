@@ -67,6 +67,9 @@
     </string-array>
 
     <string-array name="labtabtables">
-
+        <item>org.wizbots.labtab.database.MentorsTable</item>
+        <item>org.wizbots.labtab.database.ProgramsOrLabsTable</item>
+        <item>org.wizbots.labtab.database.ProgramStudentsTable</item>
+        <item>org.wizbots.labtab.database.StudentsTable</item>
     </string-array>
 </resources>
