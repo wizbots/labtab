@@ -20,6 +20,13 @@ public class Mentor {
     public Mentor() {
     }
 
+    public Mentor(String id, String member_id, String token, String date) {
+        this.id = id;
+        this.member_id = member_id;
+        this.token = token;
+        this.date = date;
+    }
+
     public Mentor(String id, String member_id, String token, String date, String first_name, String last_name, String email, String username, String gender, String state, String street_address, String city, String zipCode, String phone1, String phone2) {
         this.id = id;
         this.member_id = member_id;

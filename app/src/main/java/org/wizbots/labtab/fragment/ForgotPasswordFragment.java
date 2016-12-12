@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.wizbots.labtab.R;
-import org.wizbots.labtab.activity.BaseActivity;
+import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 
 public class ForgotPasswordFragment extends ParentFragment implements View.OnClickListener {
@@ -16,7 +16,7 @@ public class ForgotPasswordFragment extends ParentFragment implements View.OnCli
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
-    private BaseActivity baseActivityContext;
+    private HomeActivity homeActivityContext;
 
     public ForgotPasswordFragment() {
 
@@ -31,10 +31,15 @@ public class ForgotPasswordFragment extends ParentFragment implements View.OnCli
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_forgot_password, container, false);
-        baseActivityContext = (BaseActivity) context;
+        homeActivityContext = (HomeActivity) context;
         initView();
         initListeners();
         return rootView;
+    }
+
+    @Override
+    public String getFragmentName() {
+        return ForgotPasswordFragment.class.getSimpleName();
     }
 
     public void initView() {
@@ -53,7 +58,7 @@ public class ForgotPasswordFragment extends ParentFragment implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_submit:
-                baseActivityContext.replaceFragment(BaseActivity.FRAGMENT_LOGIN);
+                homeActivityContext.replaceFragment(FRAGMENT_LOGIN);
                 break;
         }
     }

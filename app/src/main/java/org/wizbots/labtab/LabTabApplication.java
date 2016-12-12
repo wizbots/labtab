@@ -16,7 +16,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -50,9 +52,9 @@ public class LabTabApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Application onCreate()");
-        //initManagers();
-        //initDB();
-        //loadManagers();
+        initManagers();
+        initDB();
+        loadManagers();
         initRetrofit();
         LoggerManager.getInstance(getApplicationContext()).init();
     }
@@ -111,9 +113,16 @@ public class LabTabApplication extends Application {
     }
 
     public void initRetrofit() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(5, TimeUnit.MINUTES)
+                .writeTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES);
+        OkHttpClient client = builder.build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(LabTabApiInterface.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
         labTabApiInterface = retrofit.create(LabTabApiInterface.class);
     }

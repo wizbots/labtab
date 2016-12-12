@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 
-public class SplashActivity extends ParentActivity {
+public class SplashActivity extends ParentActivity implements LabTabConstants{
 
-    public static final int DELAY_MILLIS = 2000;
     Handler splashHandler;
 
     /**
@@ -45,7 +45,7 @@ public class SplashActivity extends ParentActivity {
     private void launchNextActivity() {
         finish();
         Intent intent = new Intent();
-        intent.setClass(SplashActivity.this, BaseActivity.class);
+        intent.setClass(SplashActivity.this, HomeActivity.class);
         startActivity(intent);
     }
 }

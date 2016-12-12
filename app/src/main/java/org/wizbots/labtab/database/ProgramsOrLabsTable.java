@@ -25,6 +25,7 @@ public class ProgramsOrLabsTable extends AbstractTable {
     private static final String COLUMN_STREET = "street";
     private static final String COLUMN_ENROLLMENT_COUNT = "enrollment_count";
     private static final String COLUMN_ADDRESS = "address";
+    private static final String COLUMN_LAB_LEVEL = "lab_level";
 
 
     private DAOManager daoManager = null;
@@ -47,15 +48,16 @@ public class ProgramsOrLabsTable extends AbstractTable {
     public void create(SQLiteDatabase db) {
         daoManager.execSQL(db, "CREATE TABLE IF NOT EXISTS "
                 + NAME + "("
-                + COLUMN_ID + "text PRIMARY KEY,"
-                + COLUMN_SKU + "integer,"
-                + COLUMN_ENDS + "text,"
-                + COLUMN_TITLE + "text,"
-                + COLUMN_STARTS + "text,"
-                + COLUMN_STATE + "text,"
-                + COLUMN_STREET + "text,"
-                + COLUMN_ENROLLMENT_COUNT + "integer,"
-                + COLUMN_ADDRESS + "text);");
+                + COLUMN_ID + " text PRIMARY KEY,"
+                + COLUMN_SKU + " integer,"
+                + COLUMN_ENDS + " text,"
+                + COLUMN_TITLE + " text,"
+                + COLUMN_STARTS + " text,"
+                + COLUMN_STATE + " text,"
+                + COLUMN_STREET + " text,"
+                + COLUMN_ENROLLMENT_COUNT + " integer,"
+                + COLUMN_ADDRESS + " text,"
+                + COLUMN_LAB_LEVEL + " text);");
     }
 
     public synchronized void insert(Collection<ProgramOrLab> programOrLabs) {
@@ -90,6 +92,7 @@ public class ProgramsOrLabsTable extends AbstractTable {
         values.put(COLUMN_STREET, programOrLab.getStreet());
         values.put(COLUMN_ENROLLMENT_COUNT, programOrLab.getEnrollment_count());
         values.put(COLUMN_ADDRESS, programOrLab.getAddress());
+        values.put(COLUMN_LAB_LEVEL, programOrLab.getLabLevel());
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
@@ -109,7 +112,8 @@ public class ProgramsOrLabsTable extends AbstractTable {
                         cursor.getString(cursor.getColumnIndex(COLUMN_STREET)),
                         cursor.getInt(cursor.getColumnIndex(COLUMN_ENROLLMENT_COUNT)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_ID))
+                        cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL))
                 );
             }
         } catch (Exception e) {
@@ -122,7 +126,7 @@ public class ProgramsOrLabsTable extends AbstractTable {
         return programOrLab;
     }
 
-    private ArrayList<ProgramOrLab> getProgramsList() {
+    public ArrayList<ProgramOrLab> getProgramsList() {
         ArrayList<ProgramOrLab> programOrLabs = new ArrayList<>();
         Cursor cursor = null;
         try {
@@ -139,7 +143,8 @@ public class ProgramsOrLabsTable extends AbstractTable {
                                     cursor.getString(cursor.getColumnIndex(COLUMN_STREET)),
                                     cursor.getInt(cursor.getColumnIndex(COLUMN_ENROLLMENT_COUNT)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)),
-                                    cursor.getString(cursor.getColumnIndex(COLUMN_ID))
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL))
                             ));
                 } while (cursor.moveToNext());
             }

@@ -43,11 +43,11 @@ public class StudentsTable extends AbstractTable {
     public void create(SQLiteDatabase db) {
         daoManager.execSQL(db, "CREATE TABLE IF NOT EXISTS "
                 + NAME + "("
-                + COLUMN_ID + "text PRIMARY KEY,"
-                + COLUMN_FIRST_NAME + "text,"
-                + COLUMN_LAST_NAME + "text,"
-                + COLUMN_LEVEL + "text,"
-                + COLUMN_PROJECTS_HISTORY + "text);");
+                + COLUMN_ID + " text PRIMARY KEY,"
+                + COLUMN_FIRST_NAME + " text,"
+                + COLUMN_LAST_NAME + " text,"
+                + COLUMN_LEVEL + " text,"
+                + COLUMN_PROJECTS_HISTORY + " text);");
     }
 
     public synchronized void insert(Collection<Student> students) {

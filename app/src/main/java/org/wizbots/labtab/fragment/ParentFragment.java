@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ParentFragment extends Fragment {
+import org.wizbots.labtab.LabTabConstants;
+
+public abstract class ParentFragment extends Fragment implements LabTabConstants {
 
     protected Context context;
 
@@ -63,5 +65,7 @@ public class ParentFragment extends Fragment {
     public void onStart() {
         super.onStart();
     }
+
+    public abstract String getFragmentName();
 
 }

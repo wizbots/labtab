@@ -10,19 +10,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
-import org.wizbots.labtab.model.LabList;
 import org.wizbots.labtab.model.LabListHeader;
+import org.wizbots.labtab.model.ProgramOrLab;
+import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 
-public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
 
     private final int VIEW_ITEM_HEADER = 0;
     private final int VIEW_ITEM_DATA = 1;
-    private final int VIEW_ITEM_FOOTER = 2;
     private ArrayList<Object> objectArrayList;
     private Context context;
     private LabListAdapterClickListener labListAdapterClickListener;
@@ -46,10 +47,11 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Override
         public void onClick(View view) {
-            LabList labList = (LabList) objectArrayList.get(getAdapterPosition());
+            ProgramOrLab labList = (ProgramOrLab) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.iv_action:
                     labListAdapterClickListener.onActionViewClick(labList);
+                    break;
             }
         }
     }
@@ -106,7 +108,7 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        if (objectArrayList.get(position) instanceof LabList) {
+        if (objectArrayList.get(position) instanceof ProgramOrLab) {
             return VIEW_ITEM_DATA;
         } else if (objectArrayList.get(position) instanceof LabListHeader) {
             return VIEW_ITEM_HEADER;
@@ -133,7 +135,7 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private void configureLabListViewHolder(LabListViewHolder labListViewHolder, int position) {
-        LabList labList = (LabList) objectArrayList.get(position);
+        ProgramOrLab labList = (ProgramOrLab) objectArrayList.get(position);
         int labListLinearLayoutColor;
         if (position % 2 == 0) {
             labListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.white);
@@ -144,9 +146,9 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         labListViewHolder.labLevelImageView.setVisibility(View.VISIBLE);
         labListViewHolder.labNameTextViewCustom.setVisibility(View.VISIBLE);
         labListViewHolder.actionImageView.setVisibility(View.VISIBLE);
-        labListViewHolder.labLevelImageView.setImageResource(labList.getLevel());
-        labListViewHolder.labNameTextViewCustom.setText(labList.getLabName());
-        labListViewHolder.actionImageView.setImageResource(labList.getAction());
+        LabTabUtil.setLabLevelImageResource(labList.getLabLevel(), labListViewHolder.labLevelImageView);
+        labListViewHolder.labNameTextViewCustom.setText(labList.getTitle());
+        labListViewHolder.actionImageView.setImageResource(R.drawable.action_view);
     }
 
     private void configureLabListHeaderHolder(LabListHeaderHolder labListHeaderHolder, int position) {

@@ -24,7 +24,6 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private final int VIEW_ITEM_HEADER = 0;
     private final int VIEW_ITEM_DATA = 1;
-    private final int VIEW_ITEM_FOOTER = 2;
     private ArrayList<Object> objectArrayList;
     private Context context;
     private LabDetailsAdapterClickListener labDetailsAdapterClickListener;

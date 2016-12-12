@@ -54,10 +54,10 @@
                 android:layout_marginLeft="@dimen/extra_extra_small_margin"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_layout_white"
+                android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:paddingLeft="@dimen/extra_extra_small_padding"
                 android:paddingRight="@dimen/extra_extra_small_padding"
-                android:text="@string/conors_wizbots_com"
                 android:textSize="@dimen/text_size_normal"
                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -89,10 +89,10 @@
                 android:layout_marginLeft="@dimen/extra_extra_small_margin"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_layout_white"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:paddingLeft="@dimen/extra_extra_small_padding"
                 android:paddingRight="@dimen/extra_extra_small_padding"
-                android:text="@string/conors_wizbots_com"
                 android:textSize="@dimen/text_size_normal"
                 app:font="@string/font_pt_sans_narrow_regular" />
 

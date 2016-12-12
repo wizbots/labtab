@@ -7,9 +7,11 @@ import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import org.wizbots.labtab.LabTabConstants;
+
 import java.util.Vector;
 
-public class ParentActivity extends AppCompatActivity {
+public class ParentActivity extends AppCompatActivity implements LabTabConstants{
 
     private PauseHandler pauseHandler = new PauseHandler();
     public final int SHOW_TOAST = 0;

@@ -10,11 +10,12 @@ public class ProgramOrLab {
     private int enrollment_count;
     private String address;
     private String id;
+    private String labLevel;
 
     public ProgramOrLab() {
     }
 
-    public ProgramOrLab(int sku, String ends, String title, String starts, String state, String street, int enrollment_count, String address, String id) {
+    public ProgramOrLab(int sku, String ends, String title, String starts, String state, String street, int enrollment_count, String address, String id, String labLevel) {
         this.sku = sku;
         this.ends = ends;
         this.title = title;
@@ -24,6 +25,7 @@ public class ProgramOrLab {
         this.enrollment_count = enrollment_count;
         this.address = address;
         this.id = id;
+        this.labLevel = labLevel;
     }
 
     public int getSku() {
@@ -97,4 +99,13 @@ public class ProgramOrLab {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getLabLevel() {
+        return labLevel;
+    }
+
+    public void setLabLevel(String labLevel) {
+        this.labLevel = labLevel;
+    }
+
 }

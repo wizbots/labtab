@@ -61,6 +61,33 @@
     <string name="lab_time">Lab Time</string>
     <string name="student_name">Student Name</string>
     <string name="_100">100</string>
+    <string name="mentor_s_photo">MENTOR\'S PHOTO</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="username">Username</string>
+    <string name="gender">Gender</string>
+    <string name="state">State</string>
+    <string name="street_address">Street Address</string>
+    <string name="city">City</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="phone_1">Phone 1</string>
+    <string name="phone_2">Phone 2</string>
+    <string name="dummy_text">Dummy Text</string>
+    <string name="avatar">avatar</string>
+    <string name="email_parent_s">Email (parent\'s)</string>
+    <string name="grade">Grade</string>
+    <string name="date_of_birth_age">Date of birth / age</string>
+    <string name="parent_s_phones">Parent\'s phones</string>
+    <string name="after_care_phone_name">After care / phone / name</string>
+    <string name="enrollments_count">Enrollments Count</string>
+    <string name="abscences_count">Abscences Count</string>
+    <string name="wizchips">Wizchips</string>
+    <string name="allergies_special_needs">Allergies / Special Needs</string>
+    <string name="statistics">Statistics</string>
+    <string name="done">Done</string>
+    <string name="skipped">Skipped</string>
+    <string name="pending">Pending</string>
+    <string name="project_name">Project Name</string>
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>

@@ -16,22 +16,10 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/check"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            android:visibility="gone"
-            app:font="@string/font_pt_sans_narrow_regular" />
-
         <CheckBox
             android:id="@+id/cb_lab_detail"
             android:layout_width="@dimen/lab_detail_check_box_width"
-            android:layout_height="@dimen/lab_detail_check_box_height"
-            android:visibility="visible" />
+            android:layout_height="@dimen/lab_detail_check_box_height" />
     </LinearLayout>
 
     <LinearLayout
@@ -42,17 +30,6 @@
         android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/name"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            android:visibility="gone"
-            app:font="@string/font_pt_sans_narrow_regular" />
-
-        <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_student_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +37,6 @@
             android:maxLines="1"
             android:text="@string/student_name"
             android:textSize="@dimen/text_size_small"
-            android:visibility="visible"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -73,25 +49,13 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/level"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            android:visibility="gone"
-            app:font="@string/font_pt_sans_narrow_regular" />
-
         <ImageView
             android:id="@+id/iv_lab_level"
             android:layout_width="@dimen/lab_detail_image_width"
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/level_master"
-            android:visibility="visible" />
+            android:src="@drawable/level_master" />
 
     </LinearLayout>
 
@@ -104,24 +68,12 @@
         android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_projects"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/projects"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            android:visibility="gone"
-            app:font="@string/font_pt_sans_narrow_regular" />
-
-        <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_no_of_projects"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_small"
-            android:visibility="visible"
             app:font="@string/font_pt_sans_narrow_regular" />
 
 
@@ -136,24 +88,12 @@
         android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_lab_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/lab_time"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            android:visibility="gone"
-            app:font="@string/font_pt_sans_narrow_regular" />
-
-        <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_no_of_lab_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_small"
-            android:visibility="visible"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -165,15 +105,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_done"
-            android:layout_width="@dimen/lab_detail_image_width"
-            android:layout_height="@dimen/lab_detail_image_height"
-            android:contentDescription="@string/action_image"
-            android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/marks_done"
-            android:visibility="gone" />
-
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_no_of_done"
@@ -182,7 +113,6 @@
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_small"
-            android:visibility="visible"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -194,14 +124,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_skipped"
-            android:layout_width="@dimen/lab_detail_image_width"
-            android:layout_height="@dimen/lab_detail_image_height"
-            android:contentDescription="@string/action_image"
-            android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/marks_skipped"
-            android:visibility="gone" />
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_no_of_skipped"
@@ -210,7 +132,6 @@
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_small"
-            android:visibility="visible"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -222,14 +143,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_pending"
-            android:layout_width="@dimen/lab_detail_image_width"
-            android:layout_height="@dimen/lab_detail_image_height"
-            android:contentDescription="@string/action_image"
-            android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/marks_pending"
-            android:visibility="gone" />
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_no_of_pending"
@@ -238,7 +151,6 @@
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_small"
-            android:visibility="visible"
             app:font="@string/font_pt_sans_narrow_regular" />
 
 
@@ -251,24 +163,13 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left|center"
-            android:text="@string/actions"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            android:visibility="gone"
-            app:font="@string/font_pt_sans_narrow_regular" />
 
         <LinearLayout
             android:id="@+id/action_container"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="visible">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_action_view"
@@ -278,8 +179,7 @@
                 android:background="@drawable/circle_blue"
                 android:contentDescription="@string/action_image"
                 android:padding="@dimen/extra_extra_small_padding"
-                android:src="@drawable/action_view"
-                android:visibility="visible" />
+                android:src="@drawable/action_view" />
 
             <ImageView
                 android:id="@+id/iv_action_edit"
@@ -289,8 +189,7 @@
                 android:background="@drawable/circle_blue"
                 android:contentDescription="@string/action_image"
                 android:padding="@dimen/extra_small_padding"
-                android:src="@drawable/action_edit"
-                android:visibility="visible" />
+                android:src="@drawable/action_edit" />
 
             <ImageView
                 android:id="@+id/iv_action_close_to_next_level"
@@ -299,8 +198,7 @@
                 android:layout_margin="@dimen/extra_extra_small_margin"
                 android:contentDescription="@string/action_image"
                 android:padding="@dimen/extra_extra_small_padding"
-                android:src="@drawable/marks_close_to_next_level"
-                android:visibility="visible" />
+                android:src="@drawable/marks_close_to_next_level" />
 
         </LinearLayout>
 

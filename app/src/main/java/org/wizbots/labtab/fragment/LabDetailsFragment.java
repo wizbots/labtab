@@ -12,12 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.wizbots.labtab.R;
-import org.wizbots.labtab.activity.BaseActivity;
+import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.LabDetailsAdapter;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.enums.LabLevel;
 import org.wizbots.labtab.interfaces.LabDetailsAdapterClickListener;
 import org.wizbots.labtab.model.LabDetails;
-import org.wizbots.labtab.model.LabLevel;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     private LabDetailsAdapter labDetailsAdapter;
     private RecyclerView recyclerViewLabDetails;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
-    private BaseActivity baseActivityContext;
+    private HomeActivity homeActivityContext;
 
     public LabDetailsFragment() {
 
@@ -43,10 +43,15 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_lab_details, container, false);
-        baseActivityContext = (BaseActivity) context;
+        homeActivityContext = (HomeActivity) context;
         initView();
         prepareDummyList();
         return rootView;
+    }
+
+    @Override
+    public String getFragmentName() {
+        return LabDetailsFragment.class.getSimpleName();
     }
 
     public void initView() {
@@ -58,14 +63,14 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         labTabHeaderLayout.getMenuImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                baseActivityContext.replaceFragment(BaseActivity.FRAGMENT_LAB_LIST);
+                homeActivityContext.onBackPressed();
             }
         });
 
         recyclerViewLabDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_details);
         objectArrayList = new ArrayList<>();
 
-        labDetailsAdapter = new LabDetailsAdapter(objectArrayList, baseActivityContext, this);
+        labDetailsAdapter = new LabDetailsAdapter(objectArrayList, homeActivityContext, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewLabDetails.setLayoutManager(mLayoutManager);
         recyclerViewLabDetails.setItemAnimator(new DefaultItemAnimator());
@@ -73,47 +78,47 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     public void prepareDummyList() {
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getValue(), "100", "100", "100", "100", "100", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.MASTER.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.LAB_CERTIFIED.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.IMAGINEER.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.MASTER.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.LAB_CERTIFIED.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.IMAGINEER.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.MASTER.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.LAB_CERTIFIED.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.IMAGINEER.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getValue(), "8", "3", "2", "0", "1", true));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.MASTER.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.LAB_CERTIFIED.getValue(), "8", "3", "2", "0", "1", false));
-        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.IMAGINEER.getValue(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getLabLevel(), "100", "100", "100", "100", "100", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(false, "Student Name", LabLevel.MASTER.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.LAB_CERTIFIED.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(false, "Student Name", LabLevel.IMAGINEER.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(false, "Student Name", LabLevel.MASTER.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.LAB_CERTIFIED.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(false, "Student Name", LabLevel.IMAGINEER.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(false, "Student Name", LabLevel.MASTER.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.LAB_CERTIFIED.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(false, "Student Name", LabLevel.IMAGINEER.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.APPRENTICE.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.EXPLORER.getLabLevel(), "8", "3", "2", "0", "1", true));
+        objectArrayList.add(new LabDetails(false, "Student Name", LabLevel.MASTER.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.WIZARD.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.LAB_CERTIFIED.getLabLevel(), "8", "3", "2", "0", "1", false));
+        objectArrayList.add(new LabDetails(true, "Student Name", LabLevel.IMAGINEER.getLabLevel(), "8", "3", "2", "0", "1", true));
         labDetailsAdapter.notifyDataSetChanged();
     }
 
 
     @Override
     public void onActionViewClick(LabDetails labList) {
-        baseActivityContext.sendMessageToHandler(baseActivityContext.SHOW_TOAST, -1, -1, "On Action View");
+        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_LAB_DETAILS);
     }
 
     @Override
     public void onActionEditClick(LabDetails labList) {
-        baseActivityContext.sendMessageToHandler(baseActivityContext.SHOW_TOAST, -1, -1, "On Action Edit");
+        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_PROFILE);
     }
 
     @Override
     public void onActionCloseToNextLevelClick(LabDetails labList) {
-        baseActivityContext.sendMessageToHandler(baseActivityContext.SHOW_TOAST, -1, -1, "On Action Close To Next Level");
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "On Action Close To Next Level");
     }
 
     @Override

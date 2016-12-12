@@ -53,21 +53,21 @@ public class MentorsTable extends AbstractTable {
     public void create(SQLiteDatabase db) {
         daoManager.execSQL(db, "CREATE TABLE IF NOT EXISTS "
                 + NAME + "("
-                + COLUMN_ID + "text PRIMARY KEY,"
-                + COLUMN_MEMBER_ID + "text,"
-                + COLUMN_TOKEN + "text,"
-                + COLUMN_DATE + "text,"
-                + COLUMN_FIRST_NAME + "text,"
-                + COLUMN_LAST_NAME + "text,"
-                + COLUMN_EMAIL + "text,"
-                + COLUMN_USER_NAME + "text,"
-                + COLUMN_GENDER + "text,"
-                + COLUMN_STATE + "text,"
-                + COLUMN_STREET_ADDRESS + "text,"
-                + COLUMN_CITY + "text,"
-                + COLUMN_ZIP_CODE + "text,"
-                + COLUMN_PHONE1 + "text,"
-                + COLUMN_PHONE2 + "text);");
+                + COLUMN_ID + " text PRIMARY KEY,"
+                + COLUMN_MEMBER_ID + " text,"
+                + COLUMN_TOKEN + " text,"
+                + COLUMN_DATE + " text,"
+                + COLUMN_FIRST_NAME + " text,"
+                + COLUMN_LAST_NAME + " text,"
+                + COLUMN_EMAIL + " text,"
+                + COLUMN_USER_NAME + " text,"
+                + COLUMN_GENDER + " text,"
+                + COLUMN_STATE + " text,"
+                + COLUMN_STREET_ADDRESS + " text,"
+                + COLUMN_CITY + " text,"
+                + COLUMN_ZIP_CODE + " text,"
+                + COLUMN_PHONE1 + " text,"
+                + COLUMN_PHONE2 + " text);");
     }
 
     public synchronized void insert(Collection<Mentor> mentors) {
@@ -112,7 +112,7 @@ public class MentorsTable extends AbstractTable {
     }
 
     public Mentor getMentorById(String id) {
-        final String query = "Select * from " + NAME + " where " + COLUMN_ID + " = " + id;
+        final String query = "Select * from " + NAME + " where " + COLUMN_ID + " = '" + id+"'";
         Mentor mentor = null;
         Cursor cursor = null;
         try {
@@ -147,7 +147,7 @@ public class MentorsTable extends AbstractTable {
     }
 
     public Mentor getMentorByMemberId(String memberId) {
-        final String query = "Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = " + memberId;
+        final String query = "Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId+"'";
         Mentor mentor = null;
         Cursor cursor = null;
         try {
@@ -182,7 +182,7 @@ public class MentorsTable extends AbstractTable {
     }
 
     public Mentor getMentorByToken(String token) {
-        final String query = "Select * from " + NAME + " where " + COLUMN_TOKEN + " = " + token;
+        final String query = "Select * from " + NAME + " where " + COLUMN_TOKEN + " = '" + token+"'";
         Mentor mentor = null;
         Cursor cursor = null;
         try {

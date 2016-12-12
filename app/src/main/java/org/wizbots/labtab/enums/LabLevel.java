@@ -1,4 +1,4 @@
-package org.wizbots.labtab.model;
+package org.wizbots.labtab.enums;
 
 import org.wizbots.labtab.R;
 
@@ -18,7 +18,7 @@ public enum LabLevel {
         this.value = value;
     }
 
-    public int getValue() {
+    public int getLabLevel() {
         return value;
     }
 

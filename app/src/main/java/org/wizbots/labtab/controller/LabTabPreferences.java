@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
+import org.wizbots.labtab.model.CreateTokenResponse;
+import org.wizbots.labtab.util.LabTabUtil;
+
 public class LabTabPreferences {
 
     public static final String TAG = LabTabPreferences.class.getName();
@@ -16,7 +19,10 @@ public class LabTabPreferences {
     public static final String SHARED_PREF_NAME = "lab_tab_preferences";
 
     public enum Keys {
-        LAB_TAB("lab_tab");
+        USER_LOGGED_IN("user_logged_in"),
+        CREATE_TOKEN_RESPONSE("create_token_response"),
+        EMAIL_ID("email_id");
+
         private String label;
 
         Keys(String label) {
@@ -112,13 +118,28 @@ public class LabTabPreferences {
         }
     }
 
-
-    public String getLabTab() {
-        return getString(Keys.LAB_TAB.getLabel(), "");
+    public boolean isUserLoggedIn() {
+        return getBoolean(Keys.USER_LOGGED_IN.getLabel(), false);
     }
 
-    public void setLabTab(String labTab) {
-        putString(Keys.LAB_TAB.getLabel(), labTab);
+    public void setUserLoggedIn(boolean userLoggedIn) {
+        putBoolean(Keys.USER_LOGGED_IN.getLabel(), userLoggedIn);
     }
 
+    public String getEmailId() {
+        return getString(Keys.EMAIL_ID.getLabel(), "");
+    }
+
+    public void setEmailId(String emailId) {
+        putString(Keys.EMAIL_ID.getLabel(), emailId);
+    }
+
+    public CreateTokenResponse getCreateTokenResponse() {
+        String json = getString(Keys.CREATE_TOKEN_RESPONSE.getLabel(), "");
+        return (CreateTokenResponse) LabTabUtil.fromJson(json, CreateTokenResponse.class);
+    }
+
+    public void setCreateTokenResponse(CreateTokenResponse createTokenResponse) {
+        putString(Keys.CREATE_TOKEN_RESPONSE.getLabel(), LabTabUtil.toJson(createTokenResponse));
+    }
 }

@@ -15,4 +15,21 @@ public class LabTabHTTPOperationController {
         return ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser(loginRequest.getPassword(), loginRequest.getEmail()));
     }
 
+    public static LabTabResponse getProgramsOrLabs() {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.returnPrograms(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken()));
+    }
+
+    public static LabTabResponse getProgramsOrLabsUsingFromAndTo(String from, String to) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.returnPrograms
+                (
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getMember_id(),
+                        from,
+                        to
+                )
+        );
+    }
+
 }
