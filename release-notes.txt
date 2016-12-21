@@ -1,0 +1,21 @@
+---------------------------------------------------------------------
+Release 0.0
+---------------------------------------------------------------------
+NEW FEATURES:
+* Lorem Ipsum
+
+
+NOTES:
+* Lorem Ipsum
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - Lorem Ipsum
+
+
+BUG FIXES:
+* ticket-20	Lorem Ipsum
+
+KNOWN ISSUES:
+* Lorem Ipsum
+* Lorem Ipsum
