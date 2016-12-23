@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 
-public class SplashActivity extends ParentActivity implements LabTabConstants{
+public class SplashActivity extends ParentActivity implements LabTabConstants {
 
     Handler splashHandler;
 

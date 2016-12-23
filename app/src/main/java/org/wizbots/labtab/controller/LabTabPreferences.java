@@ -6,6 +6,7 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 import org.wizbots.labtab.model.CreateTokenResponse;
+import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.util.LabTabUtil;
 
 public class LabTabPreferences {
@@ -21,7 +22,8 @@ public class LabTabPreferences {
     public enum Keys {
         USER_LOGGED_IN("user_logged_in"),
         CREATE_TOKEN_RESPONSE("create_token_response"),
-        EMAIL_ID("email_id");
+        EMAIL_ID("email_id"),
+        MENTOR("mentor");
 
         private String label;
 
@@ -142,4 +144,15 @@ public class LabTabPreferences {
     public void setCreateTokenResponse(CreateTokenResponse createTokenResponse) {
         putString(Keys.CREATE_TOKEN_RESPONSE.getLabel(), LabTabUtil.toJson(createTokenResponse));
     }
+
+    public Mentor getMentor() {
+        String json = getString(Keys.MENTOR.getLabel(), "");
+        return (Mentor) LabTabUtil.fromJson(json, Mentor.class);
+    }
+
+    public void setMentor(Mentor mentor) {
+        putString(Keys.MENTOR.getLabel(), LabTabUtil.toJson(mentor));
+    }
+
+
 }

@@ -3,9 +3,14 @@
     android:layout_height="match_parent"
     android:padding="@dimen/extra_large_padding">
 
+    <include
+        android:id="@+id/search_view"
+        layout="@layout/lab_list_search_view" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/search_view"
         android:layout_marginTop="@dimen/extra_small_margin"
         android:background="@drawable/rounded_layout_blue_from_edges"
         android:orientation="vertical"

@@ -11,11 +11,11 @@ public class Mentor {
     private String username;
     private String gender;
     private String state;
-    private String street_address;
+    private String street;
     private String city;
-    private String zipCode;
-    private String phone1;
-    private String phone2;
+    private String zip_code;
+    private String phone_1;
+    private String phone_2;
 
     public Mentor() {
     }
@@ -27,7 +27,7 @@ public class Mentor {
         this.date = date;
     }
 
-    public Mentor(String id, String member_id, String token, String date, String first_name, String last_name, String email, String username, String gender, String state, String street_address, String city, String zipCode, String phone1, String phone2) {
+    public Mentor(String id, String member_id, String token, String date, String first_name, String last_name, String email, String username, String gender, String state, String street, String city, String zip_code, String phone_1, String phone_2) {
         this.id = id;
         this.member_id = member_id;
         this.token = token;
@@ -38,11 +38,11 @@ public class Mentor {
         this.username = username;
         this.gender = gender;
         this.state = state;
-        this.street_address = street_address;
+        this.street = street;
         this.city = city;
-        this.zipCode = zipCode;
-        this.phone1 = phone1;
-        this.phone2 = phone2;
+        this.zip_code = zip_code;
+        this.phone_1 = phone_1;
+        this.phone_2 = phone_2;
     }
 
     public String getId() {
@@ -126,11 +126,11 @@ public class Mentor {
     }
 
     public String getStreet_address() {
-        return street_address;
+        return street;
     }
 
     public void setStreet_address(String street_address) {
-        this.street_address = street_address;
+        this.street = street_address;
     }
 
     public String getCity() {
@@ -142,26 +142,30 @@ public class Mentor {
     }
 
     public String getZipCode() {
-        return zipCode;
+        return zip_code;
     }
 
     public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+        this.zip_code = zipCode;
     }
 
     public String getPhone1() {
-        return phone1;
+        return phone_1;
     }
 
     public void setPhone1(String phone1) {
-        this.phone1 = phone1;
+        this.phone_1 = phone1;
     }
 
     public String getPhone2() {
-        return phone2;
+        return phone_2;
     }
 
     public void setPhone2(String phone2) {
-        this.phone2 = phone2;
+        this.phone_2 = phone2;
+    }
+
+    public String getFullName() {
+        return this.first_name + " " + last_name;
     }
 }

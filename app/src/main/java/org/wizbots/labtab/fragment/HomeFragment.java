@@ -49,15 +49,11 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
     public void initView() {
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("Welcome, " + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getEmailId());
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(
+                String.format(homeActivityContext.getString(R.string.welcome_dynamic_mentor_name),
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
-        labTabHeaderLayout.getMenuImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                baseActivityContext.replaceFragment(BaseActivity.FRAGMENT_LOGIN);
-            }
-        });
     }
 
     public void initListeners() {
@@ -80,7 +76,7 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
                 }
                 break;
             case R.id.cv_video_list:
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, FEATURE_NOT_AVAILABLE_RIGHT_NOW);
+                homeActivityContext.replaceFragment(FRAGMENT_VIDEO_LIST);
                 break;
             case R.id.cv_my_profile:
                 homeActivityContext.replaceFragment(FRAGMENT_MENTOR_PROFILE);

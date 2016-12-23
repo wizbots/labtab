@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/purple"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/drawer_image"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="4"
+        android:padding="@dimen/small_padding"
+        android:src="@drawable/home_button_go_to_web" />
+
+    <org.wizbots.labtab.customview.TextViewCustom
+        android:id="@+id/drawer_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:text="@string/lab_list"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_extra_large"
+        app:font="@string/font_pt_sans_narrow_regular" />
+
+</LinearLayout>

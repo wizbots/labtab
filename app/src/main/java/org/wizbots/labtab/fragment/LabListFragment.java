@@ -10,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -25,6 +28,7 @@ import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LabListFragment extends ParentFragment implements LabListAdapterClickListener, GetProgramOrLabListener {
 
@@ -37,6 +41,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private HomeActivity homeActivityContext;
     private ProgressDialog progressDialog;
     private ProgramOrLabRequester programOrLabRequester;
+    private Spinner spinnerLocation, spinnerYear, spinnerSeason;
+    private ImageView imageViewSearch, imageViewCancel;
 
     public LabListFragment() {
 
@@ -59,16 +65,32 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
     public void initView() {
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
+        spinnerLocation = (Spinner) rootView.findViewById(R.id.spinner_location);
+        spinnerYear = (Spinner) rootView.findViewById(R.id.spinner_year);
+        spinnerSeason = (Spinner) rootView.findViewById(R.id.spinner_season);
+        spinnerSeason.setAdapter(new ArrayAdapter(homeActivityContext,
+                android.R.layout.simple_spinner_dropdown_item,
+                Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season))));
+        spinnerYear.setAdapter(new ArrayAdapter(homeActivityContext,
+                android.R.layout.simple_spinner_dropdown_item,
+                Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year))));
+        spinnerLocation.setAdapter(new ArrayAdapter(homeActivityContext,
+                android.R.layout.simple_spinner_dropdown_item,
+                Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_location))));
+        imageViewSearch = (ImageView) rootView.findViewById(R.id.iv_search);
+        imageViewCancel = (ImageView) rootView.findViewById(R.id.iv_cancel);
+        imageViewCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerLocation.setSelection(0);
+                spinnerYear.setSelection(0);
+                spinnerSeason.setSelection(0);
+            }
+        });
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab List");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
-        labTabHeaderLayout.getMenuImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeActivityContext.onBackPressed();
-            }
-        });
 
         recyclerViewLabList = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_list);
         objectArrayList = new ArrayList<>();

@@ -1,6 +1,7 @@
 package org.wizbots.labtab.retrofit;
 
 import org.wizbots.labtab.model.CreateTokenResponse;
+import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.model.ProgramOrLab;
 
 import java.util.ArrayList;
@@ -44,5 +45,10 @@ public interface LabTabApiInterface {
     @GET("programs/")
     Call<ArrayList<ProgramOrLab>> returnPrograms(@Header("Auth-Token") String authToken, @Query("mentor_id") String mentor_id,
                                                  @Query("from") String from, @Query("to") String to);
+
+    //    4. Returns a mentor
+    @GET("mentors/")
+    Call<Mentor> returnMentor(@Header("Auth-Token") String authToken);
+
 
 }

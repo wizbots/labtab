@@ -14,7 +14,6 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.StudentLabDetailsAdapterClickListener;
-import org.wizbots.labtab.model.LabListHeader;
 import org.wizbots.labtab.model.StudentLabDetailsType1;
 import org.wizbots.labtab.model.StudentLabDetailsType2;
 import org.wizbots.labtab.util.LabTabUtil;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 
 public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
 
-    private final int VIEW_ITEM_HEADER = 0;
     private final int VIEW_ITEM_DATA_TYPE_1 = 1;
     private final int VIEW_ITEM_DATA_TYPE_2 = 2;
     private ArrayList<Object> objectArrayList;
@@ -54,15 +52,15 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             noOfDoneTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_done);
             noOfSkippedTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_skipped);
             noOfPendingTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_pending);
-            studentLabDetailsType1LinearLayout.setOnClickListener(this);
             actionImageView = (ImageView) view.findViewById(R.id.iv_action_view);
+            actionImageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             StudentLabDetailsType1 studentLabDetailsType1 = (StudentLabDetailsType1) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
-                case R.id.student_lab_details_root_layout_type_1:
+                case R.id.iv_action_view:
                     studentLabDetailsAdapterClickListener.onViewTypeClick1();
                     break;
             }
@@ -93,34 +91,18 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             noOfDoneTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_done);
             noOfSkippedTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_skipped);
             noOfPendingTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_pending);
-            studentLabDetailsType2LinearLayout.setOnClickListener(this);
             actionImageView = (ImageView) view.findViewById(R.id.iv_action_view);
+            actionImageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             StudentLabDetailsType2 studentLabDetailsType2 = (StudentLabDetailsType2) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
-                case R.id.student_lab_details_root_layout_type_2:
+                case R.id.iv_action_view:
                     studentLabDetailsAdapterClickListener.onViewTypeClick2();
                     break;
             }
-        }
-    }
-
-    private class StudentLabDetailsHeaderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        LinearLayout studentStatsDetailsHeaderLinearLayout;
-
-        StudentLabDetailsAdapterClickListener studentLabDetailsAdapterClickListener;
-
-        StudentLabDetailsHeaderHolder(View view, StudentLabDetailsAdapterClickListener studentLabDetailsAdapterClickListener) {
-            super(view);
-            this.studentLabDetailsAdapterClickListener = studentLabDetailsAdapterClickListener;
-            studentStatsDetailsHeaderLinearLayout = (LinearLayout) view.findViewById(R.id.student_stats_details_root_layout);
-        }
-
-        @Override
-        public void onClick(View view) {
         }
     }
 
@@ -136,10 +118,6 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 
         switch (viewType) {
-            case VIEW_ITEM_HEADER:
-                View headerView = inflater.inflate(R.layout.header_student_lab_details, viewGroup, false);
-                viewHolder = new StudentLabDetailsHeaderHolder(headerView, studentLabDetailsAdapterClickListener);
-                break;
             case VIEW_ITEM_DATA_TYPE_1:
                 View dataView1 = inflater.inflate(R.layout.item_student_lab_details_type_1, viewGroup, false);
                 viewHolder = new StudentLabDetailsType1ViewHolder(dataView1, studentLabDetailsAdapterClickListener);
@@ -149,8 +127,8 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                 viewHolder = new StudentLabDetailsType2ViewHolder(dataView2, studentLabDetailsAdapterClickListener);
                 break;
             default:
-                View defaultView = inflater.inflate(R.layout.header_student_lab_details, viewGroup, false);
-                viewHolder = new StudentLabDetailsHeaderHolder(defaultView, studentLabDetailsAdapterClickListener);
+                View defaultView = inflater.inflate(R.layout.item_student_lab_details_type_1, viewGroup, false);
+                viewHolder = new StudentLabDetailsType1ViewHolder(defaultView, studentLabDetailsAdapterClickListener);
                 break;
         }
         return viewHolder;
@@ -162,8 +140,6 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             return VIEW_ITEM_DATA_TYPE_1;
         } else if (objectArrayList.get(position) instanceof StudentLabDetailsType2) {
             return VIEW_ITEM_DATA_TYPE_2;
-        } else if (objectArrayList.get(position) instanceof StudentLabDetailsHeaderHolder) {
-            return VIEW_ITEM_HEADER;
         }
         return -1;
     }
@@ -171,10 +147,6 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
-            case VIEW_ITEM_HEADER:
-                StudentLabDetailsHeaderHolder studentLabDetailsHeaderHolder = (StudentLabDetailsHeaderHolder) viewHolder;
-                configureStudentLabDetailsHeaderHolder(studentLabDetailsHeaderHolder, position);
-                break;
             case VIEW_ITEM_DATA_TYPE_1:
                 StudentLabDetailsType1ViewHolder studentLabDetailsType1ViewHolder = (StudentLabDetailsType1ViewHolder) viewHolder;
                 configureStudentLabDetailListType1ViewHolder(studentLabDetailsType1ViewHolder, position);
@@ -184,8 +156,8 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                 configureStudentStatsDetailListType2ViewHolder(studentLabDetailsType2ViewHolder, position);
                 break;
             default:
-                StudentLabDetailsHeaderHolder defaultHeaderHolder = (StudentLabDetailsHeaderHolder) viewHolder;
-                configureStudentLabDetailsHeaderHolder(defaultHeaderHolder, position);
+                StudentLabDetailsType1ViewHolder defaultViewHolder = (StudentLabDetailsType1ViewHolder) viewHolder;
+                configureStudentLabDetailListType1ViewHolder(defaultViewHolder, position);
                 break;
         }
     }
@@ -228,11 +200,6 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         studentLabDetailsType2ViewHolder.noOfSkippedTextViewCustom.setTextColor(labDetailTextColor);
         studentLabDetailsType2ViewHolder.noOfPendingTextViewCustom.setTextColor(labDetailTextColor);
         studentLabDetailsType2ViewHolder.actionImageView.setImageResource(R.drawable.action_view);
-    }
-
-    private void configureStudentLabDetailsHeaderHolder(StudentLabDetailsHeaderHolder studentLabDetailsHeaderHolder, int position) {
-        LabListHeader labListHeader = (LabListHeader) objectArrayList.get(position);
-        int labListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
     }
 
     @Override

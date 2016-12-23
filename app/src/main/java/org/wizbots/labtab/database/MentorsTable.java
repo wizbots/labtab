@@ -79,10 +79,29 @@ public class MentorsTable extends AbstractTable {
                 try {
                     insert(db, mentor);
                 } catch (Exception e) {
-                    Log.e(TAG, "Error while add mentor", e);
+                    Log.e(TAG, "Error while add mentors", e);
                 }
 
             }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error while insert mentors in Batch", e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public synchronized void insert(Mentor mentor) {
+        SQLiteDatabase db = null;
+        try {
+            db = daoManager.getWritableDatabase();
+            db.beginTransaction();
+            try {
+                insert(db, mentor);
+            } catch (Exception e) {
+                Log.e(TAG, "Error while add mentor", e);
+            }
+
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.e(TAG, "Error while insert mentor in Batch", e);
@@ -112,7 +131,7 @@ public class MentorsTable extends AbstractTable {
     }
 
     public Mentor getMentorById(String id) {
-        final String query = "Select * from " + NAME + " where " + COLUMN_ID + " = '" + id+"'";
+        final String query = "Select * from " + NAME + " where " + COLUMN_ID + " = '" + id + "'";
         Mentor mentor = null;
         Cursor cursor = null;
         try {
@@ -147,7 +166,7 @@ public class MentorsTable extends AbstractTable {
     }
 
     public Mentor getMentorByMemberId(String memberId) {
-        final String query = "Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId+"'";
+        final String query = "Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "'";
         Mentor mentor = null;
         Cursor cursor = null;
         try {
@@ -182,7 +201,7 @@ public class MentorsTable extends AbstractTable {
     }
 
     public Mentor getMentorByToken(String token) {
-        final String query = "Select * from " + NAME + " where " + COLUMN_TOKEN + " = '" + token+"'";
+        final String query = "Select * from " + NAME + " where " + COLUMN_TOKEN + " = '" + token + "'";
         Mentor mentor = null;
         Cursor cursor = null;
         try {

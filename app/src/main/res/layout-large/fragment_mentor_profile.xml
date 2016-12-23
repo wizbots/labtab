@@ -64,6 +64,7 @@
                         android:padding="@dimen/extra_small_padding">
 
                         <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/textViewCustom2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/extra_extra_small_margin"
@@ -82,11 +83,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -119,11 +120,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -149,20 +150,20 @@
                             app:font="@string/font_pt_sans_narrow_regular" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/extra_extra_small_margin"
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular"
-                            android:id="@+id/tv_email" />
+                            app:font="@string/font_pt_sans_narrow_regular" />
 
                     </LinearLayout>
 
@@ -193,11 +194,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -237,11 +238,11 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/extra_extra_small_padding"
-                        android:paddingRight="@dimen/extra_extra_small_padding"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="@dimen/extra_small_padding"
+                        android:paddingRight="@dimen/extra_small_padding"
                         android:text="@string/dummy_text"
-                        android:textColor="@android:color/black"
+
                         android:textSize="@dimen/text_size_small"
                         app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -274,11 +275,11 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/extra_extra_small_padding"
-                        android:paddingRight="@dimen/extra_extra_small_padding"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="@dimen/extra_small_padding"
+                        android:paddingRight="@dimen/extra_small_padding"
                         android:text="@string/dummy_text"
-                        android:textColor="@android:color/black"
+
                         android:textSize="@dimen/text_size_small"
                         app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -304,20 +305,20 @@
                         app:font="@string/font_pt_sans_narrow_regular" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
+                        android:id="@+id/tv_state_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/extra_extra_small_margin"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/extra_extra_small_padding"
-                        android:paddingRight="@dimen/extra_extra_small_padding"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="@dimen/extra_small_padding"
+                        android:paddingRight="@dimen/extra_small_padding"
                         android:text="@string/dummy_text"
-                        android:textColor="@android:color/black"
+
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular"
-                        android:id="@+id/tv_state_address" />
+                        app:font="@string/font_pt_sans_narrow_regular" />
 
                 </LinearLayout>
 
@@ -348,11 +349,11 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/extra_extra_small_padding"
-                        android:paddingRight="@dimen/extra_extra_small_padding"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="@dimen/extra_small_padding"
+                        android:paddingRight="@dimen/extra_small_padding"
                         android:text="@string/dummy_text"
-                        android:textColor="@android:color/black"
+
                         android:textSize="@dimen/text_size_small"
                         app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -385,11 +386,11 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/extra_extra_small_padding"
-                        android:paddingRight="@dimen/extra_extra_small_padding"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="@dimen/extra_small_padding"
+                        android:paddingRight="@dimen/extra_small_padding"
                         android:text="@string/dummy_text"
-                        android:textColor="@android:color/black"
+
                         android:textSize="@dimen/text_size_small"
                         app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -422,11 +423,11 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/extra_extra_small_padding"
-                        android:paddingRight="@dimen/extra_extra_small_padding"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="@dimen/extra_small_padding"
+                        android:paddingRight="@dimen/extra_small_padding"
                         android:text="@string/dummy_text"
-                        android:textColor="@android:color/black"
+
                         android:textSize="@dimen/text_size_small"
                         app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -459,11 +460,11 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/extra_extra_small_padding"
-                        android:paddingRight="@dimen/extra_extra_small_padding"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="@dimen/extra_small_padding"
+                        android:paddingRight="@dimen/extra_small_padding"
                         android:text="@string/dummy_text"
-                        android:textColor="@android:color/black"
+
                         android:textSize="@dimen/text_size_small"
                         app:font="@string/font_pt_sans_narrow_regular" />
 

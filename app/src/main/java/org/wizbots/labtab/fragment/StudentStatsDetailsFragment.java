@@ -58,15 +58,9 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
     public void initView() {
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("Student Stats Details");
+        labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab Details");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
-        labTabHeaderLayout.getMenuImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeActivityContext.onBackPressed();
-            }
-        });
 
         recyclerViewStudentStatsDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_student_stats_details);
         objectArrayList = new ArrayList<>();
@@ -76,6 +70,18 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         recyclerViewStudentStatsDetails.setLayoutManager(mLayoutManager);
         recyclerViewStudentStatsDetails.setItemAnimator(new DefaultItemAnimator());
         recyclerViewStudentStatsDetails.setAdapter(studentStatsDetailsAdapter);
+        rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS);
+            }
+        });
+        rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION);
+            }
+        });
     }
 
     public void prepareDummyList() {

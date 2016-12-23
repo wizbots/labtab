@@ -60,12 +60,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab Details");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
-        labTabHeaderLayout.getMenuImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeActivityContext.onBackPressed();
-            }
-        });
 
         recyclerViewLabDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_details);
         objectArrayList = new ArrayList<>();
@@ -75,6 +69,18 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         recyclerViewLabDetails.setLayoutManager(mLayoutManager);
         recyclerViewLabDetails.setItemAnimator(new DefaultItemAnimator());
         recyclerViewLabDetails.setAdapter(labDetailsAdapter);
+        rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS);
+            }
+        });
+        rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION);
+            }
+        });
     }
 
     public void prepareDummyList() {

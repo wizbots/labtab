@@ -32,4 +32,9 @@ public class LabTabHTTPOperationController {
         );
     }
 
+    public static LabTabResponse getMentorProfile() {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.returnMentor(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken()));
+    }
+
 }

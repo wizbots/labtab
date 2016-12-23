@@ -68,6 +68,11 @@ public interface LabTabConstants {
     int FRAGMENT_STUDENT_PROFILE = 6;
     int FRAGMENT_STUDENT_STATS_DETAILS = 7;
     int FRAGMENT_STUDENT_LAB_DETAILS = 8;
+    int FRAGMENT_VIDEO_LIST = 9;
+    int FRAGMENT_EDIT_VIDEO = 10;
+    int FRAGMENT_ADD_VIDEO = 11;
+    int FRAGMENT_LIST_OF_SKIPS = 12;
+    int FRAGMENT_ADDITIONAL_INFORMATION = 13;
 
 
     //Lab Levels
@@ -113,4 +118,6 @@ public interface LabTabConstants {
     String FEATURE_NOT_AVAILABLE_RIGHT_NOW = "Feature Not Available Right Now";
     String NO_LAB_FOUND = "No Lab Found";
     String STUDENT_STATISTICS = "Student Statistics";
+    String MENTOR_NOT_FOUND = "Mentor Not Found";
+    String FINISH = "finish";
 }

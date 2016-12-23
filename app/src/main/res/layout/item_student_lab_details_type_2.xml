@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/student_lab_details_root_layout_type_2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/student_lab_details_header_height"
     android:background="@color/light_gray"
     android:baselineAligned="false"
     android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/student_name_container"
-        android:layout_width="150dp"
-        android:layout_height="@dimen/lab_detail_header_height"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -29,7 +29,7 @@
     <LinearLayout
         android:id="@+id/lab_level_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lab_detail_header_height"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -47,7 +47,7 @@
     <LinearLayout
         android:id="@+id/projects_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lab_detail_header_height"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -58,8 +58,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_100"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_extra_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -67,7 +66,7 @@
     <LinearLayout
         android:id="@+id/lab_time_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lab_detail_header_height"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -78,8 +77,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_100"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_extra_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -87,7 +85,7 @@
     <LinearLayout
         android:id="@+id/done_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lab_detail_header_height"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -98,8 +96,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_100"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_extra_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -107,7 +104,7 @@
     <LinearLayout
         android:id="@+id/skipped_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lab_detail_header_height"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -118,8 +115,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_100"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_extra_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -127,7 +123,7 @@
     <LinearLayout
         android:id="@+id/pending_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lab_detail_header_height"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -138,8 +134,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_100"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_extra_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
@@ -147,7 +142,7 @@
     <LinearLayout
         android:id="@+id/action_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lab_detail_header_height"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal">

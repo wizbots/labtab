@@ -5,6 +5,7 @@
     <color name="colorAccent">#3C4497</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="transparent">#00000000</color>
 
     <color name="light_blue">#1D7EA8</color>
     <color name="dark_blue">#3C4497</color>
@@ -15,4 +16,5 @@
     <color name="light_gray">#D9D9D9</color>
     <color name="white">#FFFFFF</color>
     <color name="material_light_blue_800">#FF1F7FA8</color>
+    <color name="material_blue_200">#FF90CAF9</color>
 </resources>

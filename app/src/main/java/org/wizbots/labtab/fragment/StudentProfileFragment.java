@@ -60,12 +60,6 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Kid Name Account");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
-        labTabHeaderLayout.getMenuImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeActivityContext.onBackPressed();
-            }
-        });
 
         recyclerViewStudentStats = (RecyclerView) rootView.findViewById(R.id.recycler_view_student_stats_list);
         objectArrayList = new ArrayList<>();

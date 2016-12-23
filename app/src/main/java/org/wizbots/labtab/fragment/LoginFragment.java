@@ -23,15 +23,15 @@ import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.MentorsTable;
 import org.wizbots.labtab.interfaces.CreateTokenListener;
+import org.wizbots.labtab.interfaces.GetMentorProfileListener;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.requesters.LoginRequester;
+import org.wizbots.labtab.requesters.MentorProfileRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
-import java.util.ArrayList;
-
-public class LoginFragment extends ParentFragment implements View.OnClickListener, CreateTokenListener {
+public class LoginFragment extends ParentFragment implements View.OnClickListener, CreateTokenListener, GetMentorProfileListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -76,6 +76,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
 
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(CreateTokenListener.class, this);
+        LabTabApplication.getInstance().addUIListener(GetMentorProfileListener.class, this);
         rootView.findViewById(R.id.btn_login).setOnClickListener(this);
         rootView.findViewById(R.id.tv_forgot_password).setOnClickListener(this);
         editTextCustomEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -138,15 +139,8 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
 
     @Override
     public void tokenCreatedSuccessfully(CreateTokenResponse createTokenResponse) {
-        progressDialog.dismiss();
-        homeActivityContext.getSupportFragmentManager().popBackStack();
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setCreateTokenResponse(createTokenResponse);
-        LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(true);
-        ArrayList<Mentor> mentors = new ArrayList<>();
-        mentors.add(new Mentor(createTokenResponse.getId(), createTokenResponse.getMember_id(), createTokenResponse.getToken(), createTokenResponse.getDate()));
-        MentorsTable.getInstance().insert(mentors);
-        homeActivityContext.replaceFragment(FRAGMENT_HOME);
-        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LabTabConstants.LOGIN_SUCCESSFULL);
+        BackgroundExecutor.getInstance().execute(new MentorProfileRequester(createTokenResponse));
     }
 
     @Override
@@ -154,17 +148,18 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         progressDialog.dismiss();
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
         if (responseCode == SC_FORBIDDEN) {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LabTabConstants.PROVIDED_PASSWORD_OR_USERNAME_ARE_INVALID);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, PROVIDED_PASSWORD_OR_USERNAME_ARE_INVALID);
         } else if (responseCode == SC_NOT_FOUND) {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LabTabConstants.NOT_USER_WITH_PROVIDED_CREDENTIALS);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, NOT_USER_WITH_PROVIDED_CREDENTIALS);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LabTabConstants.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, NO_INTERNET_CONNECTION);
         }
     }
 
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(CreateTokenListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(GetMentorProfileListener.class, this);
         super.onDestroy();
     }
 
@@ -174,4 +169,41 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     }
 
 
+    @Override
+    public void mentorProfileFetchedSuccessfully(Mentor mentor, CreateTokenResponse createTokenResponse) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        });
+
+        homeActivityContext.getSupportFragmentManager().popBackStack();
+
+        LabTabPreferences.getInstance(LabTabApplication.getInstance()).setMentor(mentor);
+        LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(true);
+
+//        ArrayList<Mentor> mentors = new ArrayList<>();
+//        mentors.add(new Mentor(mentor.getId(), mentor.getMember_id(), mentor.getToken(), createTokenResponse.getDate(), mentor.getFirst_name(),
+//                mentor.getLast_name(), mentor.getEmail(), mentor.getUsername(), mentor.getGender(), mentor.getState(),
+//                mentor.getStreet_address(), mentor.getCity(), mentor.getZipCode(), mentor.getPhone1(), mentor.getPhone2()
+//        ));
+
+        MentorsTable.getInstance().insert(mentor);
+
+        homeActivityContext.replaceFragment(FRAGMENT_HOME);
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LOGIN_SUCCESSFULL);
+
+    }
+
+    @Override
+    public void unableToFetchMentor(int responseCode) {
+        progressDialog.dismiss();
+        LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
+        if (responseCode == SC_NOT_FOUND) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, MENTOR_NOT_FOUND);
+        } else {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, NO_INTERNET_CONNECTION);
+        }
+    }
 }

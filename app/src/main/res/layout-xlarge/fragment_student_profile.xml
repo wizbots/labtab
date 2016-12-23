@@ -36,22 +36,29 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <FrameLayout
                             android:layout_width="200dp"
                             android:layout_height="200dp"
-                            android:background="@drawable/rounded_layout_blue_for_profile"
-                            android:gravity="center">
+                            android:background="@drawable/rounded_layout_blue_for_profile">
 
                             <org.wizbots.labtab.customview.TextViewCustom
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_marginRight="@dimen/extra_extra_small_margin"
-                                android:gravity="center"
                                 android:text="@string/avatar"
                                 android:textColor="@color/light_blue"
                                 android:textSize="@dimen/text_size_extra_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
-                        </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/iv_student_lab_level"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@drawable/filter_apprentice"
+                                android:contentDescription="@string/student_lab_level" />
+
+                        </FrameLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -88,10 +95,10 @@
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
-                                android:paddingLeft="@dimen/extra_extra_small_padding"
-                                android:paddingRight="@dimen/extra_extra_small_padding"
+                                android:paddingLeft="@dimen/small_padding"
+                                android:paddingRight="@dimen/small_padding"
                                 android:text="@string/dummy_text"
-                                android:textColor="@android:color/black"
+
                                 android:textSize="@dimen/text_size_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -125,10 +132,10 @@
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
-                                android:paddingLeft="@dimen/extra_extra_small_padding"
-                                android:paddingRight="@dimen/extra_extra_small_padding"
+                                android:paddingLeft="@dimen/small_padding"
+                                android:paddingRight="@dimen/small_padding"
                                 android:text="@string/dummy_text"
-                                android:textColor="@android:color/black"
+
                                 android:textSize="@dimen/text_size_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -162,10 +169,10 @@
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
-                                android:paddingLeft="@dimen/extra_extra_small_padding"
-                                android:paddingRight="@dimen/extra_extra_small_padding"
+                                android:paddingLeft="@dimen/small_padding"
+                                android:paddingRight="@dimen/small_padding"
                                 android:text="@string/dummy_text"
-                                android:textColor="@android:color/black"
+
                                 android:textSize="@dimen/text_size_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -199,10 +206,10 @@
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
-                                android:paddingLeft="@dimen/extra_extra_small_padding"
-                                android:paddingRight="@dimen/extra_extra_small_padding"
+                                android:paddingLeft="@dimen/small_padding"
+                                android:paddingRight="@dimen/small_padding"
                                 android:text="@string/dummy_text"
-                                android:textColor="@android:color/black"
+
                                 android:textSize="@dimen/text_size_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -243,10 +250,10 @@
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:paddingLeft="@dimen/small_padding"
+                            android:paddingRight="@dimen/small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -280,10 +287,10 @@
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:paddingLeft="@dimen/small_padding"
+                            android:paddingRight="@dimen/small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -317,10 +324,10 @@
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:paddingLeft="@dimen/small_padding"
+                            android:paddingRight="@dimen/small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -354,10 +361,10 @@
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:paddingLeft="@dimen/small_padding"
+                            android:paddingRight="@dimen/small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -391,10 +398,10 @@
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:paddingLeft="@dimen/small_padding"
+                            android:paddingRight="@dimen/small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -428,10 +435,10 @@
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:paddingLeft="@dimen/small_padding"
+                            android:paddingRight="@dimen/small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -465,10 +472,10 @@
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:paddingLeft="@dimen/small_padding"
+                            android:paddingRight="@dimen/small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 

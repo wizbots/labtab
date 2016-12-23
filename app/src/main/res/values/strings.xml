@@ -88,6 +88,48 @@
     <string name="skipped">Skipped</string>
     <string name="pending">Pending</string>
     <string name="project_name">Project Name</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="status">Status</string>
+    <string name="video_name">Video Name</string>
+    <string name="no_preview_available">No Preview available</string>
+    <string name="project_editor">Project Editor</string>
+    <string name="title">Title</string>
+    <string name="category">Category</string>
+    <string name="knowledge_nuggets">Knowledge Nuggets</string>
+    <string name="description">Description</string>
+    <string name="project_creators">Project Creators</string>
+    <string name="cancel">CANCEL</string>
+    <string name="save">SAVE</string>
+    <string name="upload">UPLOAD</string>
+    <string name="delete_creator">Delete Creator</string>
+    <string name="create">CREATE</string>
+    <string name="student_lab_level">Student Lab Level</string>
+    <string name="welcome_dynamic_mentor_name">Welcome, %1$s</string>
+    <string name="notes_to_the_family">Notes to the family</string>
+    <string name="location">Location</string>
+    <string name="year">Year</string>
+    <string name="season">Season</string>
+    <string name="today">TODAY</string>
+    <string name="tomorrow">TOMORROW</string>
+    <string name="hours">Hours</string>
+    <string name="general">General</string>
+    <string name="notes">Notes</string>
+    <string name="lab_tab_video">Lab Tab Video</string>
+    <string name="self_ncheckout">Self\ncheckout</string>
+    <string name="pickup_ninstructions">Pickup\nInstructions</string>
+    <string name="in_out_ntimes">In-out\ntimes</string>
+    <string name="additional">Additional</string>
+    <string name="absences">Absences</string>
+
+    <string-array name="fruit_array">
+        <item>Apple</item>
+        <item>Banana</item>
+        <item>Orange</item>
+        <item>Mango</item>
+        <item>Pineapple</item>
+        <item>Strawberry</item>
+        <item>Cranberry</item>
+    </string-array>
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>
@@ -99,4 +141,42 @@
         <item>org.wizbots.labtab.database.ProgramStudentsTable</item>
         <item>org.wizbots.labtab.database.StudentsTable</item>
     </string-array>
+
+
+    <string-array name="array_category">
+        <item>Select Category…</item>
+        <item>Category 1</item>
+        <item>Category 1</item>
+        <item>Category 1</item>
+        <item>Category 1</item>
+    </string-array>
+
+    <string-array name="array_location">
+        <item>All Locations…</item>
+        <item>Addison Elementary</item>
+        <item>Almond Elementary</item>
+        <item>Bubb Elementary</item>
+        <item>Roy Cloud</item>
+        <item>South School</item>
+    </string-array>
+
+    <string-array name="array_year">
+        <item>All Years…</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+        <item>2016</item>
+    </string-array>
+
+
+    <string-array name="array_season">
+        <item>All Seasons…</item>
+        <item>Fall</item>
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Winter</item>
+    </string-array>
+
 </resources>
