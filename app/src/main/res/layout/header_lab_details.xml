@@ -16,15 +16,12 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/check"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_layout_blue"
+            android:padding="@dimen/extra_small_padding"
+            android:src="@drawable/upload_video" />
 
     </LinearLayout>
 

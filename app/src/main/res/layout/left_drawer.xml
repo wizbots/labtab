@@ -30,7 +30,8 @@
         android:background="@color/purple"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/zero_dimension" />
+        android:dividerHeight="@dimen/zero_dimension"
+        android:paddingTop="@dimen/small_padding" />
 
 
 </android.support.v4.widget.DrawerLayout>

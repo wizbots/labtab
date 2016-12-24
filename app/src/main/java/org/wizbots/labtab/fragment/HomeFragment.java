@@ -52,6 +52,7 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
         labTabHeaderLayout.getDynamicTextViewCustom().setText(
                 String.format(homeActivityContext.getString(R.string.welcome_dynamic_mentor_name),
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
     }

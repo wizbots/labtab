@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.wizbots.labtab.R;
@@ -36,7 +37,10 @@ public class LeftDrawerAdapter extends ArrayAdapter<LeftDrawerItem> {
 
         ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.drawer_image);
         TextView textViewName = (TextView) listItem.findViewById(R.id.drawer_text);
-
+        LinearLayout linearLayout = (LinearLayout) listItem.findViewById(R.id.border);
+        if (position == data.length - 1) {
+            linearLayout.setVisibility(View.INVISIBLE);
+        }
         LeftDrawerItem folder = data[position];
 
 

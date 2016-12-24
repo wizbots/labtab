@@ -1,6 +1,7 @@
 package org.wizbots.labtab.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -8,7 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -17,6 +20,7 @@ import org.wizbots.labtab.R;
 import org.wizbots.labtab.adapter.LeftDrawerAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.fragment.AddVideoFragment;
 import org.wizbots.labtab.fragment.AdditionalInformationFragment;
 import org.wizbots.labtab.fragment.EditVideoFragment;
@@ -44,6 +48,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     private ListView mDrawerList;
     private LabTabHeaderLayout labTabHeaderLayout;
     private Handler drawerHandler = new Handler();
+    private ViewGroup myHeader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,19 +72,22 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             @Override
             public void run() {
                 switch (position) {
-                    case 0:
-                        replaceFragment(FRAGMENT_LAB_LIST);
-                        break;
                     case 1:
-                        replaceFragment(FRAGMENT_VIDEO_LIST);
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GO_TO_WIZBOTS_COM));
+                        if (browserIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(browserIntent);
+                        }
                         break;
                     case 2:
-                        replaceFragment(FRAGMENT_MENTOR_PROFILE);
+                        replaceFragment(FRAGMENT_LAB_LIST);
                         break;
                     case 3:
-                        replaceFragment(FRAGMENT_ADD_VIDEO);
+                        replaceFragment(FRAGMENT_VIDEO_LIST);
                         break;
                     case 4:
+                        replaceFragment(FRAGMENT_ADD_VIDEO);
+                        break;
+                    case 5:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
                         ActivityCompat.finishAffinity(HomeActivity.this);
                         Intent intent = new Intent(HomeActivity.this, SplashActivity.class);
@@ -105,14 +113,29 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[5];
-        leftDrawerItem[0] = new LeftDrawerItem(R.drawable.home_button_lab_list, "Lab List");
-        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.home_button_video_list, "Video List");
-        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.home_button_my_profile, "My Profile");
+        leftDrawerItem[0] = new LeftDrawerItem(R.drawable.home_button_go_to_web, "Go to www.wizbots.com");
+        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.home_button_lab_list, "Lab List");
+        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.home_button_video_list, "Video List");
         leftDrawerItem[3] = new LeftDrawerItem(R.drawable.upload_video, "Add Video");
         leftDrawerItem[4] = new LeftDrawerItem(R.drawable.icon_video_play, "Logout");
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        LayoutInflater myinflater = getLayoutInflater();
+        myHeader = (ViewGroup) myinflater.inflate(R.layout.header_left_drawer, mDrawerList, false);
+        mDrawerList.addHeaderView(myHeader, null, false);
+        myHeader.findViewById(R.id.header_left_drawer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawer(mDrawerList);
+                drawerHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        replaceFragment(FRAGMENT_MENTOR_PROFILE);
+                    }
+                }, 400);
+            }
+        });
 
         LeftDrawerAdapter adapter = new LeftDrawerAdapter(this, R.layout.item_left_drawer, leftDrawerItem);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -236,5 +259,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         while (fragmentManager.getBackStackEntryCount() > 1) {
             fragmentManager.popBackStackImmediate();
         }
+    }
+
+    public void setNameOfTheLoggedInUser(String loggedInUserName) {
+        ((TextViewCustom) myHeader.findViewById(R.id.profile_name)).setText(loggedInUserName);
     }
 }

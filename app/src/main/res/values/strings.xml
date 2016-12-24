@@ -120,6 +120,8 @@
     <string name="in_out_ntimes">In-out\ntimes</string>
     <string name="additional">Additional</string>
     <string name="absences">Absences</string>
+    <string name="creato_lab_level">Creato Lab level</string>
+    <string name="upload_video">Upload Video</string>
 
     <string-array name="fruit_array">
         <item>Apple</item>
@@ -144,7 +146,7 @@
 
 
     <string-array name="array_category">
-        <item>Select Category…</item>
+        <item>Select Category</item>
         <item>Category 1</item>
         <item>Category 1</item>
         <item>Category 1</item>
@@ -152,7 +154,7 @@
     </string-array>
 
     <string-array name="array_location">
-        <item>All Locations…</item>
+        <item>All Locations</item>
         <item>Addison Elementary</item>
         <item>Almond Elementary</item>
         <item>Bubb Elementary</item>
@@ -161,7 +163,7 @@
     </string-array>
 
     <string-array name="array_year">
-        <item>All Years…</item>
+        <item>All Years</item>
         <item>2011</item>
         <item>2012</item>
         <item>2013</item>
@@ -172,7 +174,7 @@
 
 
     <string-array name="array_season">
-        <item>All Seasons…</item>
+        <item>All Seasons</item>
         <item>Fall</item>
         <item>Spring</item>
         <item>Summer</item>

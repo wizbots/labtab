@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="1dp"
+    android:paddingTop="1dp">
+
+    <org.wizbots.labtab.customview.TextViewCustom
+        android:id="@+id/tv_spinner"
+        style="?android:attr/spinnerItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/upload_video"
+        android:textColor="#6c6c6c"
+        android:textSize="@dimen/text_size_extra_small"
+        app:font="@string/font_pt_sans_narrow_regular" />
+
+</RelativeLayout>

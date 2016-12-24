@@ -95,7 +95,7 @@
     <dimen name="lab_detail_student_name_container_width">125dp</dimen>
     <dimen name="lab_detail_action_container_width">150dp</dimen>
 
-    <dimen name="left_drawer_width">240dp</dimen>
+    <dimen name="left_drawer_width">360dp</dimen>
     <dimen name="list_of_skips_header_height">60dp</dimen>
     <dimen name="left_drawer_item_height">60dp</dimen>
     <dimen name="list_of_skips_check_box_width">45dp</dimen>

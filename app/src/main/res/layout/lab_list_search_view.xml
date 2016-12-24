@@ -25,14 +25,17 @@
             android:textSize="@dimen/text_size_extra_extra_small" />
 
         <FrameLayout
+            android:id="@+id/spinner_location_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/extra_extra_small_margin">
+            android:layout_marginTop="@dimen/extra_extra_small_margin"
+            android:background="@color/white">
 
             <Spinner
                 android:id="@+id/spinner_location"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_marginRight="15dp"
                 android:background="@color/white"
                 android:textSize="@dimen/text_size_extra_extra_small" />
 
@@ -61,14 +64,17 @@
             android:textSize="@dimen/text_size_extra_extra_small" />
 
         <FrameLayout
+            android:id="@+id/spinner_year_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/extra_extra_small_margin">
+            android:layout_marginTop="@dimen/extra_extra_small_margin"
+            android:background="@color/white">
 
             <Spinner
                 android:id="@+id/spinner_year"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_marginRight="15dp"
                 android:background="@color/white"
                 android:textSize="@dimen/text_size_extra_extra_small" />
 
@@ -99,14 +105,17 @@
             android:textSize="@dimen/text_size_extra_extra_small" />
 
         <FrameLayout
+            android:id="@+id/spinner_season_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/extra_extra_small_margin">
+            android:layout_marginTop="@dimen/extra_extra_small_margin"
+            android:background="@color/white">
 
             <Spinner
                 android:id="@+id/spinner_season"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_marginRight="15dp"
                 android:background="@color/white"
                 android:textSize="@dimen/text_size_extra_extra_small" />
 

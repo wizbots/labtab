@@ -19,7 +19,8 @@
         <CheckBox
             android:id="@+id/cb_lab_detail"
             android:layout_width="@dimen/lab_detail_check_box_width"
-            android:layout_height="@dimen/lab_detail_check_box_height" />
+            android:layout_height="@dimen/lab_detail_check_box_height"
+            android:layout_marginRight="-8dp" />
     </LinearLayout>
 
     <LinearLayout

@@ -26,7 +26,7 @@
                 android:gravity="left"
                 android:text="Sku:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -36,7 +36,7 @@
                 android:gravity="left"
                 android:text="3052"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -52,7 +52,7 @@
                 android:gravity="left"
                 android:text="Availability:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -62,7 +62,7 @@
                 android:gravity="left"
                 android:text="YES"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,7 +78,7 @@
                 android:gravity="left"
                 android:text="Name:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -104,7 +104,7 @@
                 android:gravity="left"
                 android:text="Location:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -114,7 +114,7 @@
                 android:gravity="left"
                 android:text="Palo Verde ELementary"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -138,7 +138,7 @@
                 android:gravity="left"
                 android:text="Category:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -148,7 +148,7 @@
                 android:gravity="left"
                 android:text="Summer Camps"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -164,7 +164,7 @@
                 android:gravity="left"
                 android:text="Room:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -174,7 +174,7 @@
                 android:gravity="left"
                 android:text="YTBD"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -190,7 +190,7 @@
                 android:gravity="left"
                 android:text="Grades:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -200,7 +200,7 @@
                 android:gravity="left"
                 android:text="2,3,4,5,6,7,8"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -216,7 +216,7 @@
                 android:gravity="left"
                 android:text="Price:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -226,7 +226,7 @@
                 android:gravity="left"
                 android:text="308.0"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -256,7 +256,7 @@
                     android:gravity="left"
                     android:text="From: "
                     android:textColor="@color/purple"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:font="@string/font_pt_sans_narrow_bold" />
 
                 <org.wizbots.labtab.customview.TextViewCustom
@@ -265,7 +265,7 @@
                     android:gravity="left"
                     android:text="09/25/16"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -281,7 +281,7 @@
                     android:gravity="left"
                     android:text="To: "
                     android:textColor="@color/purple"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:font="@string/font_pt_sans_narrow_bold" />
 
                 <org.wizbots.labtab.customview.TextViewCustom
@@ -290,14 +290,14 @@
                     android:gravity="left"
                     android:text="10/05/16"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
+            android:gravity="center|left"
             android:orientation="horizontal">
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -307,17 +307,18 @@
                 android:gravity="left"
                 android:text="Time Slot: "
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:gravity="left"
+                android:gravity="center"
                 android:text="Sun-Wed:10:00am-01:00pm"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp"
+                android:id="@+id/textViewCustom8" />
         </LinearLayout>
 
         <LinearLayout
@@ -333,7 +334,7 @@
                 android:gravity="left"
                 android:text="Day:"
                 android:textColor="@color/purple"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
@@ -343,7 +344,7 @@
                 android:gravity="left"
                 android:text="18/12/2016"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <RelativeLayout
@@ -358,9 +359,11 @@
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/rounded_layout_blue"
+                android:paddingLeft="@dimen/extra_small_padding"
+                android:paddingRight="@dimen/extra_small_padding"
                 android:text="Absences"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:font="@string/font_pt_sans_narrow_regular" />
 
         </RelativeLayout>
