@@ -1,5 +1,7 @@
 package org.wizbots.labtab;
 
+import java.util.regex.Pattern;
+
 public interface LabTabConstants {
 
     //Web Services Status Codes
@@ -120,4 +122,19 @@ public interface LabTabConstants {
     String STUDENT_STATISTICS = "Student Statistics";
     String MENTOR_NOT_FOUND = "Mentor Not Found";
     String FINISH = "finish";
+
+
+    /**
+     * Email validation pattern.
+     */
+    public static final Pattern EMAIL_PATTERN = Pattern.compile(
+            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                    "\\@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                    "(" +
+                    "\\." +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                    ")+"
+    );
+
 }

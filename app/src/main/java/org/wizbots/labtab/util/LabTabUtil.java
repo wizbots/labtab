@@ -14,11 +14,17 @@ import org.wizbots.labtab.enums.LabLevel;
 import org.wizbots.labtab.enums.LabSteps;
 import org.wizbots.labtab.enums.ProjectStatus;
 import org.wizbots.labtab.model.Project;
+import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.lang.reflect.Type;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LabTabUtil implements LabTabConstants {
 
@@ -133,6 +139,9 @@ public class LabTabUtil implements LabTabConstants {
             case LAB_LEVEL_WIZARD:
                 imageView.setImageResource(LabLevel.WIZARD.getLabLevel());
                 break;
+            default:
+                imageView.setImageResource(LabLevel.APPRENTICE.getLabLevel());
+                break;
         }
     }
 
@@ -164,6 +173,9 @@ public class LabTabUtil implements LabTabConstants {
             case MARKS_CLOSE_TO_NEXT_LEVEl:
                 imageView.setImageResource(ProjectStatus.CLOSE_NEXT_LEVEL.getProjectStatus());
                 break;
+            default:
+                imageView.setImageResource(ProjectStatus.DONE.getProjectStatus());
+                break;
 
         }
     }
@@ -182,7 +194,30 @@ public class LabTabUtil implements LabTabConstants {
             case LAB_STEP_4:
                 imageView.setImageResource(LabSteps.LAB_STEP4.getLabStep());
                 break;
+            default:
+                imageView.setImageResource(LabSteps.LAB_STEP1.getLabStep());
+                break;
         }
+    }
+
+    public static boolean isValidEmail(CharSequence email) {
+        return email != null && EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    public static LabTabApiInterface getApiInterface() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(5, TimeUnit.MINUTES)
+                .writeTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES);
+        OkHttpClient client = builder.build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(LabTabApiInterface.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        return retrofit.create(LabTabApiInterface.class);
     }
 
 }
