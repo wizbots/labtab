@@ -1,10 +1,11 @@
 package org.wizbots.labtab.interfaces;
 
-import org.wizbots.labtab.model.VideoList;
+import org.wizbots.labtab.model.Video;
 
 public interface VideoListAdapterClickListener {
-    void onVideoListItemActionView(VideoList videoList);
+    void onVideoListItemActionView(Video video);
 
-    void onVideoListItemActionEdit(VideoList videoList);
+    void onVideoListItemActionEdit(Video video);
 
+    void playVideo(Video video);
 }

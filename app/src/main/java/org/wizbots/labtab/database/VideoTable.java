@@ -1,0 +1,230 @@
+package org.wizbots.labtab.database;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import org.wizbots.labtab.model.Video;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class VideoTable extends AbstractTable {
+
+    private static final String TAG = VideoTable.class.getName();
+
+    private static final String NAME = "video";
+
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_PATH = "path";
+    private static final String COLUMN_TITLE = "title";
+    private static final String COLUMN_CATEGORY = "category";
+    private static final String COLUMN_MENTOR_NAME = "mentor_name";
+    private static final String COLUMN_LAB_SKU = "lab_sku";
+    private static final String COLUMN_LAB_LEVEL = "lab_level";
+    private static final String COLUMN_KNOWLEDGE_NUGGETS = "knowledge_nuggets";
+    private static final String COLUMN_DESCRIPTION = "description";
+    private static final String COLUMN_PROJECT_CREATORS = "project_creators";
+    private static final String COLUMN_NOTES_TO_THE_FAMILY = "notes_to_the_family";
+
+
+    private DAOManager daoManager = null;
+    private final static VideoTable instance;
+
+    static {
+        instance = new VideoTable(DAOManager.getInstance());
+        DAOManager.getInstance().addTable(instance);
+    }
+
+    public static VideoTable getInstance() {
+        return instance;
+    }
+
+    private VideoTable(DAOManager daoManager) {
+        this.daoManager = daoManager;
+    }
+
+    @Override
+    public void create(SQLiteDatabase db) {
+        daoManager.execSQL(db, "CREATE TABLE IF NOT EXISTS "
+                + NAME + "("
+                + COLUMN_ID + " text PRIMARY KEY,"
+                + COLUMN_PATH + " text,"
+                + COLUMN_TITLE + " text,"
+                + COLUMN_CATEGORY + " text,"
+                + COLUMN_MENTOR_NAME + " text,"
+                + COLUMN_LAB_SKU + " text,"
+                + COLUMN_LAB_LEVEL + " text,"
+                + COLUMN_KNOWLEDGE_NUGGETS + " text,"
+                + COLUMN_DESCRIPTION + " text,"
+                + COLUMN_PROJECT_CREATORS + " text,"
+                + COLUMN_NOTES_TO_THE_FAMILY + " text);");
+    }
+
+    public synchronized void insert(Collection<Video> videos) {
+        SQLiteDatabase db = null;
+        try {
+            db = daoManager.getWritableDatabase();
+            db.beginTransaction();
+            for (Video video : videos) {
+                try {
+                    insert(db, video);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error while add video", e);
+                }
+
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error while insert video in Batch", e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public synchronized void insert(Video video) {
+        SQLiteDatabase db = null;
+        try {
+            db = daoManager.getWritableDatabase();
+            db.beginTransaction();
+            try {
+                insert(db, video);
+            } catch (Exception e) {
+                Log.e(TAG, "Error while add video", e);
+            }
+
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error while insert video in Batch", e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    private void insert(SQLiteDatabase db, Video video) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, video.getId());
+        values.put(COLUMN_PATH, video.getPath());
+        values.put(COLUMN_TITLE, video.getTitle());
+        values.put(COLUMN_CATEGORY, video.getCategory());
+        values.put(COLUMN_MENTOR_NAME, video.getMentor_name());
+        values.put(COLUMN_LAB_SKU, video.getLab_sku());
+        values.put(COLUMN_LAB_LEVEL, video.getLab_level());
+        values.put(COLUMN_KNOWLEDGE_NUGGETS, video.getKnowledge_nuggets());
+        values.put(COLUMN_DESCRIPTION, video.getDescription());
+        values.put(COLUMN_PROJECT_CREATORS, video.getProject_creators());
+        values.put(COLUMN_NOTES_TO_THE_FAMILY, video.getNotes_to_the_family());
+        db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    public Video getVideoById(String id) {
+        final String query = "Select * from " + NAME + " where " + COLUMN_ID + " = '" + id + "'";
+        Video video = null;
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                video = new Video(
+                        cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_NAME)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_LAB_SKU)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_KNOWLEDGE_NUGGETS)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY))
+                );
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get video", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return video;
+    }
+
+
+    public ArrayList<Video> getVideoList() {
+        ArrayList<Video> mentorArrayList = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    mentorArrayList.add(
+                            new Video(
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_NAME)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_SKU)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_KNOWLEDGE_NUGGETS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY))
+                            )
+                    );
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get video", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return mentorArrayList;
+    }
+
+    @Override
+    protected String getTableName() {
+        return NAME;
+    }
+
+    @Override
+    protected String[] getProjection() {
+        return null;
+    }
+
+    public void updateVideo(Video video) {
+
+        SQLiteDatabase db = null;
+        try {
+            db = daoManager.getWritableDatabase();
+            db.beginTransaction();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_PATH, video.getPath());
+                values.put(COLUMN_TITLE, video.getTitle());
+                values.put(COLUMN_CATEGORY, video.getCategory());
+                values.put(COLUMN_MENTOR_NAME, video.getMentor_name());
+                values.put(COLUMN_LAB_SKU, video.getLab_sku());
+                values.put(COLUMN_LAB_LEVEL, video.getLab_level());
+                values.put(COLUMN_KNOWLEDGE_NUGGETS, video.getKnowledge_nuggets());
+                values.put(COLUMN_DESCRIPTION, video.getDescription());
+                values.put(COLUMN_PROJECT_CREATORS, video.getProject_creators());
+                values.put(COLUMN_NOTES_TO_THE_FAMILY, video.getNotes_to_the_family());
+
+                db.update(NAME, values, COLUMN_ID + " = ?",
+                        new String[]{String.valueOf(video.getId())});
+
+            } catch (Exception e) {
+                Log.e(TAG, "Error while add video", e);
+            }
+
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error while insert video in Batch", e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+}

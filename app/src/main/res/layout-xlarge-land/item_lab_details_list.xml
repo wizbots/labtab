@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lab_details_root_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/lab_detail_header_height"
+    android:layout_height="wrap_content"
     android:background="@color/light_gray"
     android:baselineAligned="false"
     android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/lab_details_checkbox_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
@@ -20,12 +20,13 @@
             android:id="@+id/cb_lab_detail"
             android:layout_width="@dimen/lab_detail_check_box_width"
             android:layout_height="@dimen/lab_detail_check_box_height"
-            android:layout_marginRight="-8dp" />
+            android:layout_marginRight="-8dp"
+            android:button="@drawable/check_box_selector" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/student_name_container"
-        android:layout_width="@dimen/lab_detail_student_name_container_width"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
@@ -35,7 +36,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:maxLines="1"
             android:text="@string/student_name"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
@@ -44,7 +44,7 @@
 
     <LinearLayout
         android:id="@+id/lab_level_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
@@ -56,13 +56,13 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/level_master" />
+            android:src="@drawable/ic_level_master" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/projects_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
@@ -81,8 +81,27 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/chips_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_no_of_chips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/_100"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/lab_time_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
@@ -101,8 +120,9 @@
 
     <LinearLayout
         android:id="@+id/done_container"
-        android:layout_width="@dimen/lab_detail_image_width"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -120,8 +140,9 @@
 
     <LinearLayout
         android:id="@+id/skipped_container"
-        android:layout_width="@dimen/lab_detail_image_width"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -139,8 +160,9 @@
 
     <LinearLayout
         android:id="@+id/pending_container"
-        android:layout_width="@dimen/lab_detail_image_width"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -174,32 +196,31 @@
 
             <ImageView
                 android:id="@+id/iv_action_view"
-                android:layout_width="@dimen/lab_detail_image_width"
-                android:layout_height="@dimen/lab_detail_image_height"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_margin="@dimen/extra_extra_small_margin"
                 android:background="@drawable/circle_blue"
                 android:contentDescription="@string/action_image"
                 android:padding="@dimen/extra_extra_small_padding"
-                android:src="@drawable/action_view" />
+                android:src="@drawable/ic_action_view" />
 
             <ImageView
                 android:id="@+id/iv_action_edit"
-                android:layout_width="@dimen/lab_detail_image_width"
-                android:layout_height="@dimen/lab_detail_image_height"
-                android:layout_margin="@dimen/extra_extra_small_margin"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:background="@drawable/circle_blue"
                 android:contentDescription="@string/action_image"
                 android:padding="@dimen/extra_small_padding"
-                android:src="@drawable/action_edit" />
+                android:src="@drawable/ic_action_edit" />
 
             <ImageView
                 android:id="@+id/iv_action_close_to_next_level"
-                android:layout_width="@dimen/lab_detail_image_width"
-                android:layout_height="@dimen/lab_detail_image_height"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_margin="@dimen/extra_extra_small_margin"
                 android:contentDescription="@string/action_image"
                 android:padding="@dimen/extra_extra_small_padding"
-                android:src="@drawable/marks_close_to_next_level" />
+                android:src="@drawable/ic_marks_close_to_next_level" />
 
         </LinearLayout>
 

@@ -53,7 +53,8 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Additional Information");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
 
         recyclerViewAdditionalInformation = (RecyclerView) rootView.findViewById(R.id.recycler_view_additional_information);
         objectArrayList = new ArrayList<>();
@@ -66,7 +67,7 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
         rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS);
+                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
             }
         });
     }

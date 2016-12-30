@@ -60,7 +60,8 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab Details");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
 
         recyclerViewStudentStatsDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_student_stats_details);
         objectArrayList = new ArrayList<>();
@@ -73,13 +74,13 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS);
+                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
             }
         });
         rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION);
+                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
             }
         });
     }
@@ -113,6 +114,6 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
 
     @Override
     public void onViewTypeClick2() {
-        homeActivityContext.replaceFragment(LabTabConstants.FRAGMENT_LAB_DETAILS_LIST);
+        homeActivityContext.replaceFragment(LabTabConstants.FRAGMENT_LAB_DETAILS_LIST, new Bundle());
     }
 }

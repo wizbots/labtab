@@ -43,7 +43,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/lab_step_2" />
+            android:src="@drawable/ic_lab_step_2" />
 
     </LinearLayout>
 

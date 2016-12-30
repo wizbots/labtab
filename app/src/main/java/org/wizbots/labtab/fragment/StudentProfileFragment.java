@@ -59,7 +59,8 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Kid Name Account");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
 
         recyclerViewStudentStats = (RecyclerView) rootView.findViewById(R.id.recycler_view_student_stats_list);
         objectArrayList = new ArrayList<>();
@@ -89,6 +90,6 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 
     @Override
     public void onActionViewClick() {
-        homeActivityContext.replaceFragment(LabTabConstants.FRAGMENT_STUDENT_STATS_DETAILS);
+        homeActivityContext.replaceFragment(LabTabConstants.FRAGMENT_STUDENT_STATS_DETAILS, new Bundle());
     }
 }

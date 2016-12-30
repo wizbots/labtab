@@ -16,6 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dynamicText="@string/please_enter_your_name_and_password"
-        app:labTitleSrc="@drawable/title" />
+        app:labTitleSrc="@drawable/ic_title" />
 
 </android.support.v7.widget.Toolbar>

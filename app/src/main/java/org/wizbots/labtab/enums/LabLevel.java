@@ -4,13 +4,13 @@ import org.wizbots.labtab.R;
 
 public enum LabLevel {
 
-    APPRENTICE(R.drawable.level_apprentice),
-    EXPLORER(R.drawable.level_explorer),
-    IMAGINEER(R.drawable.level_imagineer),
-    LAB_CERTIFIED(R.drawable.level_lab_certified),
-    MAKER(R.drawable.level_maker),
-    MASTER(R.drawable.level_master),
-    WIZARD(R.drawable.level_wizard);
+    APPRENTICE(R.drawable.ic_level_apprentice),
+    EXPLORER(R.drawable.ic_level_explorer),
+    IMAGINEER(R.drawable.ic_level_imagineer),
+    LAB_CERTIFIED(R.drawable.ic_level_lab_certified),
+    MAKER(R.drawable.ic_level_maker),
+    MASTER(R.drawable.ic_level_master),
+    WIZARD(R.drawable.ic_level_wizard);
 
     private int value;
 

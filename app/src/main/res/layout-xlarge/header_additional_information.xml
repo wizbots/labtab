@@ -17,9 +17,7 @@
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:background="@drawable/rounded_layout_blue"
-            android:padding="@dimen/extra_small_padding"
-            android:src="@drawable/upload_video" />
+            android:src="@drawable/ic_add_video" />
     </LinearLayout>
 
     <LinearLayout

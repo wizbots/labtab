@@ -1,4 +1,4 @@
-package org.wizbots.labtab.tests;
+package org.wizbots.labtab.tests.fragment;
 
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -12,13 +12,13 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class LoginTest extends ActivityInstrumentationTestCase2<HomeActivity> {
+public class LoginFragmentTest extends ActivityInstrumentationTestCase2<HomeActivity> {
 
     public static final String USER_NAME = "judy@wizbots.com";
     public static final String RIGHT_PASSWORD = "robotics";
     public static final String WRONG_PASSWORD = "robot";
 
-    public LoginTest() {
+    public LoginFragmentTest() {
         super(HomeActivity.class);
     }
 

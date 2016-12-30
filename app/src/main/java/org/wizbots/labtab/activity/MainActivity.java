@@ -1,11 +1,9 @@
 package org.wizbots.labtab.activity;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -41,7 +39,6 @@ public class MainActivity extends ParentActivity {
     /**
      * Create a File for saving an image or video
      */
-    @TargetApi(Build.VERSION_CODES.N)
     private static File getOutputMediaFile(int type) {
 
         if (Environment.getExternalStorageState() == null) {

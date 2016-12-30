@@ -1,5 +1,7 @@
 package org.wizbots.labtab.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,13 +16,15 @@ import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.VideoListAdapter;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
-import org.wizbots.labtab.model.VideoList;
+import org.wizbots.labtab.model.Video;
 
 import java.util.ArrayList;
 
 public class VideoListFragment extends ParentFragment implements VideoListAdapterClickListener {
 
+    public static final String VIDEO = "VIDEO";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
@@ -53,7 +57,8 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Video List");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
 
         recyclerViewVideoList = (RecyclerView) rootView.findViewById(R.id.recycler_view_video_list);
         objectArrayList = new ArrayList<>();
@@ -71,37 +76,33 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     }
 
     @Override
-    public void onVideoListItemActionView(VideoList videoList) {
-        homeActivityContext.replaceFragment(FRAGMENT_ADD_VIDEO);
+    public void onVideoListItemActionView(Video video) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(VIDEO, video);
+        homeActivityContext.replaceFragment(FRAGMENT_VIEW_VIDEO, bundle);
     }
 
     @Override
-    public void onVideoListItemActionEdit(VideoList videoList) {
-        homeActivityContext.replaceFragment(FRAGMENT_EDIT_VIDEO);
+    public void onVideoListItemActionEdit(Video video) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(VIDEO, video);
+        homeActivityContext.replaceFragment(FRAGMENT_EDIT_VIDEO, bundle);
+    }
+
+    @Override
+    public void playVideo(Video video) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video.getPath()));
+        intent.setDataAndType(Uri.parse(video.getPath()), "video/*");
+        startActivity(intent);
     }
 
     public void prepareDummyList() {
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_APPRENTICE, "Video Name", 100));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_EXPLORER, "Video Name", 70));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_IMAGINEER, "Video Name", 0));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_LAB_CERTIFIED, "Video Name", 30));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_MASTER, "Video Name", 100));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_MAKER, "Video Name", 0));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_WIZARD, "Video Name", 70));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_APPRENTICE, "Video Name", 100));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_EXPLORER, "Video Name", 70));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_IMAGINEER, "Video Name", 0));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_LAB_CERTIFIED, "Video Name", 30));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_MASTER, "Video Name", 100));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_MAKER, "Video Name", 0));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_WIZARD, "Video Name", 70));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_APPRENTICE, "Video Name", 100));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_EXPLORER, "Video Name", 70));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_IMAGINEER, "Video Name", 0));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_LAB_CERTIFIED, "Video Name", 30));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_MASTER, "Video Name", 100));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/", LAB_LEVEL_MAKER, "Video Name", 0));
-        objectArrayList.add(new VideoList("http://cdn.shopify.com/s/files/1/0151/7261/t/7/assets/page_home_img.png?8350576394726272064", LAB_LEVEL_WIZARD, "Video Name", 70));
-        videoListAdapter.notifyDataSetChanged();
+        ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideoList();
+        if (!videoArrayList.isEmpty()) {
+            objectArrayList.addAll(videoArrayList);
+            videoListAdapter.notifyDataSetChanged();
+        } else {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No Video Available");
+        }
     }
 }

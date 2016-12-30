@@ -13,6 +13,7 @@
         <attr name="menuIconVisibility" format="boolean" />
         <attr name="menuIconSrc" format="reference" />
         <attr name="labTitleSrc" format="reference" />
+        <attr name="syncSrc" format="reference" />
         <attr name="dynamicText" format="string" />
     </declare-styleable>
 

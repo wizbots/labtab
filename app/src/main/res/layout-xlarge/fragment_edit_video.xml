@@ -40,7 +40,7 @@
                     android:layout_width="@dimen/password_reminder_close_image_width"
                     android:layout_height="@dimen/password_reminder_close_image_height"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/close" />
+                    android:src="@drawable/ic_close" />
             </RelativeLayout>
 
             <LinearLayout
@@ -56,10 +56,30 @@
                     android:layout_weight="1"
                     android:gravity="center|left">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="300dp"
                         android:layout_height="220dp"
-                        android:background="@drawable/rounded_layout_for_edit_video" />
+                        android:background="@drawable/rounded_layout_for_edit_video"
+                        android:padding="24dp">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_thumbnail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/no_preview_available"
+                            android:textColor="@color/light_blue"
+                            android:textSize="@dimen/text_size_extra_large"
+                            android:visibility="visible"
+                            app:font="@string/font_pt_sans_narrow_regular" />
+
+                        <ImageView
+                            android:id="@+id/iv_video_thumbnail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY" />
+
+                    </FrameLayout>
                 </LinearLayout>
 
                 <LinearLayout

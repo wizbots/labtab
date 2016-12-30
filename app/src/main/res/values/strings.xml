@@ -122,6 +122,7 @@
     <string name="absences">Absences</string>
     <string name="creato_lab_level">Creato Lab level</string>
     <string name="upload_video">Upload Video</string>
+    <string name="syncing_image">Syncing Image</string>
 
     <string-array name="fruit_array">
         <item>Apple</item>
@@ -142,6 +143,7 @@
         <item>org.wizbots.labtab.database.ProgramsOrLabsTable</item>
         <item>org.wizbots.labtab.database.ProgramStudentsTable</item>
         <item>org.wizbots.labtab.database.StudentsTable</item>
+        <item>org.wizbots.labtab.database.VideoTable</item>
     </string-array>
 
 

@@ -53,7 +53,8 @@ public class MentorProfileFragment extends ParentFragment implements View.OnClic
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("My Account");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
         ((TextViewCustom) rootView.findViewById(R.id.tv_first_name)).setText(mentorProfile.getFirst_name());
         ((TextViewCustom) rootView.findViewById(R.id.tv_last_name)).setText(mentorProfile.getLast_name());
         ((TextViewCustom) rootView.findViewById(R.id.tv_email)).setText(mentorProfile.getEmail());

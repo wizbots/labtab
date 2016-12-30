@@ -12,6 +12,6 @@
         android:layout_gravity="center"
         android:contentDescription="@string/splash_image"
         android:scaleType="fitXY"
-        android:src="@drawable/splash" />
+        android:src="@drawable/ic_splash" />
 
 </FrameLayout>

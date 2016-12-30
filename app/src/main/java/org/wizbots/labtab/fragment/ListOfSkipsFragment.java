@@ -53,7 +53,8 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("List Of Skips");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
 
         recyclerViewListOfSkips = (RecyclerView) rootView.findViewById(R.id.recycler_view_list_of_skips);
         objectArrayList = new ArrayList<>();
@@ -66,7 +67,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION);
+                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
             }
         });
     }

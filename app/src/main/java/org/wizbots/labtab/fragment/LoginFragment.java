@@ -66,6 +66,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(getActivity().getResources().getString(R.string.please_enter_your_name_and_password));
         labTabHeaderLayout.getMenuImageView().setVisibility(View.GONE);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
         editTextCustomEmail = (EditTextCustom) rootView.findViewById(R.id.edt_email);
         editTextCustomPassword = (EditTextCustom) rootView.findViewById(R.id.edt_password);
         textViewCustomForgotPassword = (TextViewCustom) rootView.findViewById(R.id.tv_forgot_password);
@@ -191,7 +192,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
 
         MentorsTable.getInstance().insert(mentor);
 
-        homeActivityContext.replaceFragment(FRAGMENT_HOME);
+        homeActivityContext.replaceFragment(FRAGMENT_HOME, new Bundle());
         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LOGIN_SUCCESSFULL);
 
     }

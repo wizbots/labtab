@@ -1,6 +1,11 @@
 package org.wizbots.labtab.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,29 +14,45 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
+import org.wizbots.labtab.activity.TrimmerActivity;
 import org.wizbots.labtab.adapter.HorizontalProjectCreatorAdapter;
 import org.wizbots.labtab.adapter.ProjectCreatorAdapter;
+import org.wizbots.labtab.customview.ButtonCustom;
 import org.wizbots.labtab.customview.EditTextCustom;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
-import org.wizbots.labtab.interfaces.StudentStatsAdapterClickListener;
+import org.wizbots.labtab.model.Video;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 
-public class EditVideoFragment extends ParentFragment implements View.OnClickListener, StudentStatsAdapterClickListener, LabTabConstants, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener {
+import life.knowledge4.videotrimmer.utils.FileUtils;
 
+public class EditVideoFragment extends ParentFragment implements View.OnClickListener, LabTabConstants, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener {
+
+    public static final int REQUEST_CODE_TRIM_VIDEO = 300;
+    public static final String URI = "URI";
+    public static final String PROJECT_CREATORS = "PROJECT_CREATORS";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
@@ -46,11 +67,20 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private ArrayList<Object> objectArrayListCreatorsSelected = new ArrayList<>();
 
     private HomeActivity homeActivityContext;
-    private EditTextCustom projectCreatorEditTextCustom;
     private LinearLayout recyclerViewContainer;
     private NestedScrollView nestedScrollView;
     private ArrayList<String> stringArrayList;
     private Spinner categorySpinner;
+    private ImageView videoThumbnailImageView, closeImageView;
+    private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
+    private ButtonCustom saveButtonCustom, cancelButtonCustom;
+
+    public static final int MEDIA_TYPE_VIDEO = 2;
+    public static final String EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH";
+    private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
+    private Uri fileUri;
+    private Uri savedVideoUri;
+    private Video video;
 
     public EditVideoFragment() {
 
@@ -66,11 +96,19 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_edit_video, container, false);
         homeActivityContext = (HomeActivity) context;
-        initView();
+        initView(savedInstanceState);
         prepareDummyList();
         ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, stringArrayList);
         categorySpinner.setAdapter(spinnerArrayAdapter);
         addProjectCreatorEditTextListeners();
+        if (savedInstanceState == null) {
+            video = getArguments().getParcelable(VideoListFragment.VIDEO);
+            savedVideoUri = Uri.parse(video.getPath());
+            fetchDataFromBundle();
+        } else {
+            video = savedInstanceState.getParcelable(VideoListFragment.VIDEO);
+            savedVideoUri = Uri.parse(video.getPath());
+        }
         return rootView;
     }
 
@@ -79,7 +117,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         return LabDetailsFragment.class.getSimpleName();
     }
 
-    public void initView() {
+    public void initView(Bundle bundle) {
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         projectCreatorEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_project_creators);
         recyclerViewContainer = (LinearLayout) rootView.findViewById(R.id.recycler_view_container);
@@ -90,7 +128,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Edit Video");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
 
         recyclerViewProjectCreator = (RecyclerView) rootView.findViewById(R.id.recycler_view_project_creators);
         horizontalRecyclerViewProjectCreator = (RecyclerView) rootView.findViewById(R.id.recycler_view_horizontal_project_creators);
@@ -112,6 +151,35 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
         recyclerViewProjectCreator.setVisibility(View.GONE);
         recyclerViewContainer.setVisibility(View.GONE);
+
+        videoThumbnailImageView = (ImageView) rootView.findViewById(R.id.iv_video_thumbnail);
+        closeImageView = (ImageView) rootView.findViewById(R.id.iv_close);
+        titleEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_title);
+        knowledgeNuggetsEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
+        descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
+        notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
+        saveButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_save);
+        cancelButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_cancel);
+
+        videoThumbnailImageView.setOnClickListener(this);
+        saveButtonCustom.setOnClickListener(this);
+        cancelButtonCustom.setOnClickListener(this);
+        closeImageView.setOnClickListener(this);
+
+        if (bundle != null) {
+            savedVideoUri = bundle.getParcelable(URI);
+            if (savedVideoUri != null) {
+                Glide
+                        .with(homeActivityContext)
+                        .load(Uri.fromFile(new File(savedVideoUri.getPath())))
+                        .into(videoThumbnailImageView);
+            }
+            ArrayList<Object> objects = (ArrayList<Object>) bundle.getSerializable(PROJECT_CREATORS);
+            if (!objects.isEmpty()) {
+                objectArrayListCreatorsSelected.addAll(objects);
+                horizontalProjectCreatorAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     public void prepareDummyList() {
@@ -144,6 +212,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         objectArrayListCreatorsAvailable.add("Iceland");
 
 
+        stringArrayList.add("Select Category");
         stringArrayList.add("Category 1");
         stringArrayList.add("Category 2");
         stringArrayList.add("Category 3");
@@ -156,12 +225,78 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_video_thumbnail:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video.getPath()));
+                intent.setDataAndType(Uri.parse(video.getPath()), "video/*");
+                startActivity(intent);
+                break;
+            case R.id.btn_save:
+                if (savedVideoUri == null) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Capture A Video First");
+                    break;
+                }
 
-    }
 
-    @Override
-    public void onActionViewClick() {
-        homeActivityContext.replaceFragment(LabTabConstants.FRAGMENT_STUDENT_STATS_DETAILS);
+                if (titleEditTextCustom.getText().toString().length() < 5) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 words");
+                    break;
+                }
+
+                if (categorySpinner.getSelectedItemPosition() == 0) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select Category");
+                    break;
+                }
+
+                if (titleEditTextCustom.getText().toString().length() == 0) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
+                    break;
+                }
+
+                if (knowledgeNuggetsEditTextCustom.getText().toString().length() < 5) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Knowledge Nuggets must consist 5 words");
+                    break;
+                }
+
+                if (descriptionEditTextCustom.getText().toString().length() < 5) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 words");
+                    break;
+                }
+
+                if (objectArrayListCreatorsSelected.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
+                    break;
+                }
+
+                if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
+                    break;
+                }
+
+                Video video = new Video();
+                video.setId(this.video.getId());
+                video.setTitle(titleEditTextCustom.getText().toString());
+                video.setPath(savedVideoUri.getPath());
+                video.setCategory((String) (categorySpinner.getSelectedItem()));
+                video.setMentor_name("Conor Mcgaan");
+                video.setLab_sku("5998");
+                video.setLab_level(LAB_LEVEL_APPRENTICE);
+                video.setKnowledge_nuggets(knowledgeNuggetsEditTextCustom.getText().toString());
+                video.setDescription(descriptionEditTextCustom.getText().toString());
+                video.setProject_creators(LabTabUtil.toJson(objectArrayListCreatorsSelected));
+                video.setNotes_to_the_family(notesToTheFamilyEditTextCustom.getText().toString());
+                VideoTable.getInstance().updateVideo(video);
+                homeActivityContext.clearAllTheFragmentFromStack();
+                homeActivityContext.replaceFragment(FRAGMENT_HOME, new Bundle());
+                break;
+            case R.id.btn_cancel:
+                homeActivityContext.onBackPressed();
+                break;
+            case R.id.iv_close:
+                homeActivityContext.onBackPressed();
+                break;
+
+        }
     }
 
     @Override
@@ -233,6 +368,135 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    /**
+     * Create a file Uri for saving an image or video
+     */
+    private Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    /**
+     * Create a File for saving an image or video
+     */
+    private File getOutputMediaFile(int type) {
+
+        if (Environment.getExternalStorageState() == null) {
+            return null;
+        }
+        // Check that the SDCard is mounted
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "MyCameraVideo");
+
+
+        // Create the storage directory(MyCameraVideo) if it does not exist
+        if (!mediaStorageDir.exists()) {
+
+            if (!mediaStorageDir.mkdirs()) {
+
+                //output.setText("Failed to create directory MyCameraVideo.");
+
+                Toast.makeText(homeActivityContext, "Failed to create directory MyCameraVideo.",
+                        Toast.LENGTH_LONG).show();
+
+                Log.d("MyCameraVideo", "Failed to create directory MyCameraVideo.");
+                return null;
+            }
+        }
+
+
+        // Create a media file name
+
+        // For unique file name appending current timeStamp with file name
+    /*    java.util.Date date= new java.util.Date();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date.getTime());*/
+
+        File mediaFile;
+
+        if (type == MEDIA_TYPE_VIDEO) {
+
+            // For unique video file name appending current timeStamp with file name
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "VID_" + System.currentTimeMillis() + ".mp4");
+
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (fileUri != null) {
+                    final Uri selectedUri = fileUri;
+                    if (selectedUri != null) {
+                        startTrimActivity(selectedUri);
+                    } else {
+                        Toast.makeText(homeActivityContext, "Video saved to: " + data.getData(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(homeActivityContext, "User cancelled the video capture.",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(homeActivityContext, "Video capture failed.",
+                        Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == REQUEST_CODE_TRIM_VIDEO) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getParcelableExtra("URI");
+                savedVideoUri = uri;
+                Glide
+                        .with(homeActivityContext)
+                        .load(Uri.fromFile(new File(savedVideoUri.getPath())))
+                        .into(videoThumbnailImageView);
+                Log.d("Trimming Activity", uri.getPath());
+            } else {
+                Log.d("Trimming Activity", "Result for trimming video canceled");
+            }
+        }
+    }
+
+    private void startTrimActivity(@NonNull Uri uri) {
+        Intent intent = new Intent(homeActivityContext, TrimmerActivity.class);
+        intent.putExtra(EXTRA_VIDEO_PATH, FileUtils.getPath(homeActivityContext, uri));
+        startActivityForResult(intent, REQUEST_CODE_TRIM_VIDEO);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(URI, savedVideoUri);
+        outState.putSerializable(PROJECT_CREATORS, objectArrayListCreatorsSelected);
+        outState.putParcelable(VideoListFragment.VIDEO, video);
+        super.onSaveInstanceState(outState);
+    }
+
+    public void fetchDataFromBundle() {
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, stringArrayList);
+        categorySpinner.setAdapter(spinnerArrayAdapter);
+
+        for (String s : stringArrayList) {
+            if (s.equals(video.getCategory())) {
+                categorySpinner.setSelection(stringArrayList.indexOf(s));
+                break;
+            }
+        }
+
+        titleEditTextCustom.setText(video.getTitle());
+        knowledgeNuggetsEditTextCustom.setText(video.getKnowledge_nuggets());
+        descriptionEditTextCustom.setText(video.getDescription());
+        notesToTheFamilyEditTextCustom.setText(video.getNotes_to_the_family());
+
+        ArrayList<Object> objectArrayList = new Gson().fromJson(video.getProject_creators(), new TypeToken<ArrayList<Object>>() {
+        }.getType());
+        objectArrayListCreatorsSelected.addAll(objectArrayList);
+        horizontalProjectCreatorAdapter.notifyDataSetChanged();
+        Glide.with(context)
+                .load(Uri.fromFile(new File(video.getPath())))
+                .into(videoThumbnailImageView);
     }
 
 }

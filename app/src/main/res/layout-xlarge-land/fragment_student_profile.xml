@@ -55,7 +55,7 @@
                                 android:id="@+id/iv_student_lab_level"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:background="@drawable/filter_apprentice"
+                                android:background="@drawable/ic_filter_apprentice"
                                 android:contentDescription="@string/student_lab_level" />
                         </FrameLayout>
                     </LinearLayout>

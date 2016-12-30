@@ -17,9 +17,7 @@
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:background="@drawable/rounded_layout_blue"
-            android:padding="@dimen/extra_small_padding"
-            android:src="@drawable/upload_video" />
+            android:src="@drawable/ic_add_video" />
     </LinearLayout>
 
     <LinearLayout
@@ -30,14 +28,14 @@
         android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/textViewCustom6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/name"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular"
-            android:id="@+id/textViewCustom6" />
+            app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 

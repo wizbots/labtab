@@ -72,10 +72,14 @@ public class TrimmerActivity extends ParentActivity implements OnTrimVideoListen
             public void run() {
                 //mergeVideo();
                 Log.d("TrimmerActivity", uri.getPath());
-                Toast.makeText(TrimmerActivity.this, "video saved at :" + uri.getPath(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(TrimmerActivity.this, "Video Captured", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(TrimmerActivity.this, "video saved at :" + uri.getPath(), Toast.LENGTH_SHORT).show();
             }
         });
 
+        Intent intent = new Intent();
+        intent.putExtra("URI", uri);
+        setResult(RESULT_OK, intent);
        /* Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.setDataAndType(uri, "video/mp4");
         startActivity(intent);*/
@@ -86,6 +90,7 @@ public class TrimmerActivity extends ParentActivity implements OnTrimVideoListen
     public void cancelAction() {
         mProgressDialog.cancel();
         mVideoTrimmer.destroy();
+        setResult(RESULT_CANCELED);
         finish();
     }
 
@@ -106,7 +111,7 @@ public class TrimmerActivity extends ParentActivity implements OnTrimVideoListen
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(TrimmerActivity.this, "onVideoPrepared", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(TrimmerActivity.this, "onVideoPrepared", Toast.LENGTH_SHORT).show();
             }
         });
     }

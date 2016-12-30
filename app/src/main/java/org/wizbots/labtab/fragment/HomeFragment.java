@@ -54,7 +54,8 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
     }
 
     public void initListeners() {
@@ -68,7 +69,7 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cv_lab_list:
-                homeActivityContext.replaceFragment(FRAGMENT_LAB_LIST);
+                homeActivityContext.replaceFragment(FRAGMENT_LAB_LIST, new Bundle());
                 break;
             case R.id.cv_go_to:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GO_TO_WIZBOTS_COM));
@@ -77,10 +78,10 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
                 }
                 break;
             case R.id.cv_video_list:
-                homeActivityContext.replaceFragment(FRAGMENT_VIDEO_LIST);
+                homeActivityContext.replaceFragment(FRAGMENT_VIDEO_LIST, new Bundle());
                 break;
             case R.id.cv_my_profile:
-                homeActivityContext.replaceFragment(FRAGMENT_MENTOR_PROFILE);
+                homeActivityContext.replaceFragment(FRAGMENT_MENTOR_PROFILE, new Bundle());
                 break;
         }
     }

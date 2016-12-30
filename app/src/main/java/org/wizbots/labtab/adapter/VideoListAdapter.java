@@ -1,6 +1,7 @@
 package org.wizbots.labtab.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,16 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
-import org.wizbots.labtab.model.VideoList;
+import org.wizbots.labtab.model.Video;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
@@ -52,17 +57,21 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             actionEditImageView = (ImageView) view.findViewById(R.id.iv_action_edit);
             actionEditImageView.setOnClickListener(this);
             actionViewImageView.setOnClickListener(this);
+            videoThumbnailImageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            VideoList videoList = (VideoList) objectArrayList.get(getAdapterPosition());
+            Video video = (Video) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.iv_action_view:
-                    videoListAdapterClickListener.onVideoListItemActionView(videoList);
+                    videoListAdapterClickListener.onVideoListItemActionView(video);
                     break;
                 case R.id.iv_action_edit:
-                    videoListAdapterClickListener.onVideoListItemActionEdit(videoList);
+                    videoListAdapterClickListener.onVideoListItemActionEdit(video);
+                    break;
+                case R.id.iv_thumbnail:
+                    videoListAdapterClickListener.playVideo(video);
                     break;
             }
         }
@@ -94,7 +103,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if (objectArrayList.get(position) instanceof VideoList) {
+        if (objectArrayList.get(position) instanceof Video) {
             return VIEW_ITEM_DATA;
         }
         return -1;
@@ -115,7 +124,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void configureLabListViewHolder(final VideoListViewHolder videoListViewHolder, int position) {
-        VideoList videoList = (VideoList) objectArrayList.get(position);
+        Video video = (Video) objectArrayList.get(position);
         int videoListLinearLayoutColor;
         if (position % 2 == 0) {
             videoListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.white);
@@ -123,37 +132,34 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             videoListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
         }
         videoListViewHolder.videoListLinearLayout.setBackgroundColor(videoListLinearLayoutColor);
-        LabTabUtil.setLabLevelImageResource(videoList.getLabLevel(), videoListViewHolder.labLevelImageView);
+        LabTabUtil.setLabLevelImageResource(video.getLab_level(), videoListViewHolder.labLevelImageView);
         videoListViewHolder.thumbnailTextViewCustom.setVisibility(View.VISIBLE);
         videoListViewHolder.videoThumbnailImageView.setVisibility(View.GONE);
 
-        Picasso.with(context)
-                .load(videoList.getThumbnailLinkOrPath())
-                .into(videoListViewHolder.videoThumbnailImageView, new com.squareup.picasso.Callback() {
+        Glide
+                .with(context)
+                .load(Uri.fromFile(new File(video.getPath())))
+                .into(new SimpleTarget<GlideDrawable>() {
                     @Override
-                    public void onSuccess() {
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                         videoListViewHolder.thumbnailTextViewCustom.setVisibility(View.GONE);
+                        videoListViewHolder.videoThumbnailImageView.setImageDrawable(resource);
                         videoListViewHolder.videoThumbnailImageView.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onError() {
-
                     }
                 });
 
         int statusTextColor;
-        if (videoList.getVideoStatus() == 100) {
-            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
-        } else if (videoList.getVideoStatus() == 0) {
-            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.red);
-        } else {
-            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.orange);
-        }
+//        if (videoList.getVideoStatus() == 100) {
+//            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
+//        } else if (videoList.getVideoStatus() == 0) {
+//            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.red);
+//        } else {
+//            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.orange);
+//        }
 
-        videoListViewHolder.videoStatusTextViewCustom.setText(videoList.getVideoStatus() + "%");
-        videoListViewHolder.videoStatusTextViewCustom.setTextColor(statusTextColor);
-        videoListViewHolder.videoNameTextViewCustom.setText(videoList.getVideoName());
+//        videoListViewHolder.videoStatusTextViewCustom.setText(videoList.getVideoStatus() + "%");
+//        videoListViewHolder.videoStatusTextViewCustom.setTextColor(statusTextColor);
+        videoListViewHolder.videoNameTextViewCustom.setText(video.getTitle());
 
     }
 

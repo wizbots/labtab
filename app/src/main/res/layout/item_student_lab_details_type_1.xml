@@ -41,7 +41,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/level_master" />
+            android:src="@drawable/ic_level_master" />
 
     </LinearLayout>
 
@@ -151,11 +151,11 @@
         <ImageView
             android:id="@+id/iv_action_view"
             android:layout_width="@dimen/lab_detail_image_width"
-            android:layout_height="@dimen/lab_detail_image_height"
-            android:background="@drawable/circle_blue"
+            android:layout_height="25dp"
+            android:background="@drawable/rounded_layout_blue"
             android:contentDescription="@string/action_image"
-            android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/action_view" />
+            android:padding="2dp"
+            android:src="@drawable/ic_back" />
 
     </LinearLayout>
 

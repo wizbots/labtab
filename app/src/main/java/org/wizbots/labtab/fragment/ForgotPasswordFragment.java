@@ -48,6 +48,7 @@ public class ForgotPasswordFragment extends ParentFragment implements View.OnCli
         labTabHeaderLayout = (LabTabHeaderLayout) getActivity().findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(getActivity().getResources().getString(R.string.please_enter_your_email));
         labTabHeaderLayout.getMenuImageView().setVisibility(View.GONE);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
     }
 
     public void initListeners() {
@@ -58,7 +59,7 @@ public class ForgotPasswordFragment extends ParentFragment implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_submit:
-                homeActivityContext.replaceFragment(FRAGMENT_LOGIN);
+                homeActivityContext.replaceFragment(FRAGMENT_LOGIN, new Bundle());
                 break;
         }
     }

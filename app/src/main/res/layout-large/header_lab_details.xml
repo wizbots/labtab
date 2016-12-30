@@ -10,25 +10,23 @@
 
     <LinearLayout
         android:id="@+id/lab_details_checkbox_container"
-        android:layout_width="match_parent"
+        android:layout_width="45dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:background="@drawable/rounded_layout_blue"
-            android:padding="@dimen/extra_small_padding"
-            android:src="@drawable/upload_video" />
+            android:src="@drawable/ic_add_video" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/student_name_container"
-        android:layout_width="@dimen/lab_detail_student_name_container_width"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -46,9 +44,8 @@
 
     <LinearLayout
         android:id="@+id/lab_level_container"
-        android:layout_width="match_parent"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -66,41 +63,52 @@
 
     <LinearLayout
         android:id="@+id/projects_container"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/lab_detail_image_width"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_projects"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/projects"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+        <ImageView
+            android:id="@+id/iv_project"
+            android:layout_width="@dimen/lab_detail_image_width"
+            android:layout_height="@dimen/lab_detail_image_height"
+            android:contentDescription="@string/action_image"
+            android:padding="@dimen/extra_extra_small_padding"
+            android:src="@drawable/ic_project" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chips_container"
+        android:layout_width="@dimen/lab_detail_image_width"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_chip"
+            android:layout_width="@dimen/lab_detail_image_width"
+            android:layout_height="@dimen/lab_detail_image_height"
+            android:contentDescription="@string/action_image"
+            android:padding="@dimen/extra_extra_small_padding"
+            android:src="@drawable/ic_chip" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/lab_time_container"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/lab_detail_image_width"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
-        <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_lab_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/lab_time"
-            android:textColor="@color/purple"
-            android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+        <ImageView
+            android:id="@+id/iv_lab_time"
+            android:layout_width="@dimen/lab_detail_image_width"
+            android:layout_height="37dp"
+            android:contentDescription="@string/action_image"
+            android:padding="@dimen/extra_extra_small_padding"
+            android:src="@drawable/ic_time" />
 
     </LinearLayout>
 
@@ -117,7 +125,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/marks_done" />
+            android:src="@drawable/ic_marks_done" />
 
     </LinearLayout>
 
@@ -134,7 +142,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/marks_skipped" />
+            android:src="@drawable/ic_marks_skipped" />
 
     </LinearLayout>
 
@@ -151,13 +159,13 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/marks_pending" />
+            android:src="@drawable/ic_marks_pending" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/actions_container"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">

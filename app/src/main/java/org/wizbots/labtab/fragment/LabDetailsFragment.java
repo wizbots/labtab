@@ -59,7 +59,8 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab Details");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
 
         recyclerViewLabDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_details);
         objectArrayList = new ArrayList<>();
@@ -72,13 +73,13 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS);
+                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
             }
         });
         rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION);
+                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
             }
         });
     }
@@ -114,12 +115,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
     @Override
     public void onActionViewClick(LabDetails labList) {
-        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_LAB_DETAILS);
+        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_LAB_DETAILS, new Bundle());
     }
 
     @Override
     public void onActionEditClick(LabDetails labList) {
-        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_PROFILE);
+        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_PROFILE, new Bundle());
     }
 
     @Override

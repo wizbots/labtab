@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +35,7 @@ import org.wizbots.labtab.fragment.StudentLabDetailsFragment;
 import org.wizbots.labtab.fragment.StudentProfileFragment;
 import org.wizbots.labtab.fragment.StudentStatsDetailsFragment;
 import org.wizbots.labtab.fragment.VideoListFragment;
+import org.wizbots.labtab.fragment.ViewVideoFragment;
 import org.wizbots.labtab.model.LeftDrawerItem;
 
 public class HomeActivity extends ParentActivity implements View.OnClickListener {
@@ -79,23 +79,25 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         }
                         break;
                     case 2:
-                        replaceFragment(FRAGMENT_LAB_LIST);
+                        replaceFragment(FRAGMENT_LAB_LIST, new Bundle());
                         break;
                     case 3:
-                        replaceFragment(FRAGMENT_VIDEO_LIST);
+                        replaceFragment(FRAGMENT_VIDEO_LIST, new Bundle());
                         break;
                     case 4:
-                        replaceFragment(FRAGMENT_ADD_VIDEO);
+                        replaceFragment(FRAGMENT_ADD_VIDEO, new Bundle());
                         break;
                     case 5:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
-                        ActivityCompat.finishAffinity(HomeActivity.this);
-                        Intent intent = new Intent(HomeActivity.this, SplashActivity.class);
-                        intent.putExtra(FINISH, true);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+//                        ActivityCompat.finishAffinity(HomeActivity.this);
+//                        Intent intent = new Intent(HomeActivity.this, SplashActivity.class);
+//                        intent.putExtra(FINISH, true);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(intent);
+                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        replaceFragment(FRAGMENT_LOGIN, new Bundle());
                         break;
                 }
             }
@@ -113,10 +115,10 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[5];
-        leftDrawerItem[0] = new LeftDrawerItem(R.drawable.home_button_go_to_web, "Go to www.wizbots.com");
-        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.home_button_lab_list, "Lab List");
-        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.home_button_video_list, "Video List");
-        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.upload_video, "Add Video");
+        leftDrawerItem[0] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, "Go to www.wizbots.com");
+        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, "Lab List");
+        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, "Video List");
+        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_upload_video, "Add Video");
         leftDrawerItem[4] = new LeftDrawerItem(R.drawable.icon_video_play, "Logout");
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -131,7 +133,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 drawerHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        replaceFragment(FRAGMENT_MENTOR_PROFILE);
+                        replaceFragment(FRAGMENT_MENTOR_PROFILE, new Bundle());
                     }
                 }, 400);
             }
@@ -176,7 +178,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         }
     }
 
-    public void replaceFragment(int fragmentToBePut) {
+    public void replaceFragment(int fragmentToBePut, Bundle bundle) {
         fragmentManager = getSupportFragmentManager();
         switch (fragmentToBePut) {
             case FRAGMENT_LOGIN:
@@ -224,8 +226,12 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             case FRAGMENT_ADDITIONAL_INFORMATION:
                 fragment = new AdditionalInformationFragment();
                 break;
+            case FRAGMENT_VIEW_VIDEO:
+                fragment = new ViewVideoFragment();
+                break;
 
         }
+        fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
         fragmentTransaction.addToBackStack(fragment.getFragmentName());
@@ -264,4 +270,14 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     public void setNameOfTheLoggedInUser(String loggedInUserName) {
         ((TextViewCustom) myHeader.findViewById(R.id.profile_name)).setText(loggedInUserName);
     }
+
+    public void clearAllTheFragmentFromStack() {
+//        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager = getSupportFragmentManager();
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
+        }
+
+    }
+
 }

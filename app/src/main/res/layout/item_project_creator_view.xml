@@ -21,7 +21,7 @@
             android:layout_margin="@dimen/extra_extra_small_margin"
             android:background="@drawable/rounded_layout_white"
             android:padding="3dp"
-            android:src="@drawable/level_explorer"
+            android:src="@drawable/ic_level_explorer"
             android:contentDescription="@string/creato_lab_level" />
 
         <org.wizbots.labtab.customview.TextViewCustom
@@ -44,7 +44,7 @@
             android:background="@drawable/rounded_layout_white"
             android:contentDescription="@string/delete_creator"
             android:padding="3dp"
-            android:src="@drawable/close" />
+            android:src="@drawable/ic_close" />
 
     </LinearLayout>
 

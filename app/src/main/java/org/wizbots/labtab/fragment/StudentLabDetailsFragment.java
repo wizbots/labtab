@@ -60,7 +60,8 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab Details");
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
 
         recyclerViewStudentLabDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_student_lab_details);
         objectArrayList = new ArrayList<>();
@@ -73,13 +74,13 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
         rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS);
+                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
             }
         });
         rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION);
+                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
             }
         });
     }
@@ -103,11 +104,11 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
 
     @Override
     public void onViewTypeClick1() {
-        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_STATS_DETAILS);
+        homeActivityContext.replaceFragment(FRAGMENT_LAB_DETAILS_LIST, new Bundle());
     }
 
     @Override
     public void onViewTypeClick2() {
-        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_STATS_DETAILS);
+        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_STATS_DETAILS, new Bundle());
     }
 }

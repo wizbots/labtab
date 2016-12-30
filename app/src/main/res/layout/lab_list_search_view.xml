@@ -182,7 +182,7 @@
             android:layout_height="30dp"
             android:layout_margin="@dimen/extra_extra_small_margin"
             android:background="@drawable/rounded_layout_blue"
-            android:src="@android:drawable/ic_menu_search" />
+            android:src="@drawable/ic_search" />
 
         <ImageView
             android:id="@+id/iv_cancel"
@@ -190,7 +190,7 @@
             android:layout_height="30dp"
             android:layout_margin="@dimen/extra_extra_small_margin"
             android:background="@drawable/rounded_layout_purple"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:src="@drawable/ic_cross" />
 
 
     </LinearLayout>

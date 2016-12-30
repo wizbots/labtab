@@ -20,7 +20,7 @@
             android:id="@+id/profile_pic"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/home_button_my_profile" />
+            android:src="@drawable/ic_home_button_my_profile" />
     </LinearLayout>
 
     <org.wizbots.labtab.customview.TextViewCustom

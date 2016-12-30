@@ -171,7 +171,7 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         studentLabDetailsType1ViewHolder.noOfDoneTextViewCustom.setText(studentLabDetailsType1.getNoOfDone());
         studentLabDetailsType1ViewHolder.noOfSkippedTextViewCustom.setText(studentLabDetailsType1.getNoOfSkipped());
         studentLabDetailsType1ViewHolder.noOfPendingTextViewCustom.setText(studentLabDetailsType1.getNoOfPending());
-        studentLabDetailsType1ViewHolder.actionImageView.setImageResource(R.drawable.action_view);
+        studentLabDetailsType1ViewHolder.actionImageView.setImageResource(R.drawable.ic_back);
     }
 
     private void configureStudentStatsDetailListType2ViewHolder(StudentLabDetailsType2ViewHolder studentLabDetailsType2ViewHolder, int position) {
@@ -199,7 +199,7 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         studentLabDetailsType2ViewHolder.noOfDoneTextViewCustom.setTextColor(labDetailTextColor);
         studentLabDetailsType2ViewHolder.noOfSkippedTextViewCustom.setTextColor(labDetailTextColor);
         studentLabDetailsType2ViewHolder.noOfPendingTextViewCustom.setTextColor(labDetailTextColor);
-        studentLabDetailsType2ViewHolder.actionImageView.setImageResource(R.drawable.action_view);
+        studentLabDetailsType2ViewHolder.actionImageView.setImageResource(R.drawable.ic_action_view);
     }
 
     @Override

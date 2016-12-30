@@ -40,7 +40,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/level_master" />
+            android:src="@drawable/ic_level_master" />
 
     </LinearLayout>
 
@@ -154,7 +154,7 @@
             android:background="@drawable/circle_blue"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_extra_small_padding"
-            android:src="@drawable/action_view" />
+            android:src="@drawable/ic_action_view" />
 
     </LinearLayout>
 

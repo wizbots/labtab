@@ -75,6 +75,7 @@ public interface LabTabConstants {
     int FRAGMENT_ADD_VIDEO = 11;
     int FRAGMENT_LIST_OF_SKIPS = 12;
     int FRAGMENT_ADDITIONAL_INFORMATION = 13;
+    int FRAGMENT_VIEW_VIDEO = 14;
 
 
     //Lab Levels

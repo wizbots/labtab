@@ -139,7 +139,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_small_padding"
-            android:src="@drawable/marks_imagineering" />
+            android:src="@drawable/ic_marks_imagineering" />
 
     </LinearLayout>
 
@@ -156,7 +156,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_small_padding"
-            android:src="@drawable/marks_programming" />
+            android:src="@drawable/ic_marks_programming" />
 
     </LinearLayout>
 
@@ -173,7 +173,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_small_padding"
-            android:src="@drawable/marks_mechanisms" />
+            android:src="@drawable/ic_marks_mechanisms" />
 
     </LinearLayout>
 
@@ -190,7 +190,7 @@
             android:layout_height="@dimen/lab_detail_image_height"
             android:contentDescription="@string/action_image"
             android:padding="@dimen/extra_small_padding"
-            android:src="@drawable/marks_structures" />
+            android:src="@drawable/ic_marks_structures" />
 
     </LinearLayout>
 
