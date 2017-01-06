@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/hours"
+            android:text="@string/mentor_name"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/general"
+            android:text="@string/date"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
@@ -79,7 +79,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:layout_width="match_parent"

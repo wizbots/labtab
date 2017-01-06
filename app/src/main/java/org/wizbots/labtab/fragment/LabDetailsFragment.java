@@ -1,6 +1,7 @@
 package org.wizbots.labtab.fragment;
 
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,16 +11,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.ImageView;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.LabDetailsAdapter;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.enums.LabLevel;
 import org.wizbots.labtab.interfaces.LabDetailsAdapterClickListener;
 import org.wizbots.labtab.model.LabDetails;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener {
     private LabTabHeaderLayout labTabHeaderLayout;
@@ -29,6 +35,8 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     private RecyclerView recyclerViewLabDetails;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
     private HomeActivity homeActivityContext;
+    private ImageView calendarImageView;
+    private DatePickerDialog datePickerDialog;
 
     public LabDetailsFragment() {
 
@@ -82,6 +90,16 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
             }
         });
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
+
+        calendarImageView = (ImageView) rootView.findViewById(R.id.iv_calendar);
+
+        calendarImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCalendar();
+            }
+        });
     }
 
     public void prepareDummyList() {
@@ -131,5 +149,19 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     @Override
     public void onCheckChanged(int position, boolean value) {
         ((LabDetails) objectArrayList.get(position)).setCheck(value);
+    }
+
+    private void showCalendar() {
+        final Calendar myCalendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            }
+
+        };
+        new DatePickerDialog(homeActivityContext,
+                date, myCalendar.get(Calendar.YEAR),
+                myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 }

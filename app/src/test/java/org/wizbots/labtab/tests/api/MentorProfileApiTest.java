@@ -16,12 +16,16 @@ import org.wizbots.labtab.util.LabTabUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MentorProfileApiTest {
-    LabTabApiInterface labTabApiInterface;
+    private LabTabApiInterface labTabApiInterface;
+    private CreateTokenResponse createTokenResponse;
 
     @Before
     public void beforeTest() {
         // Initializing Api Interface
         labTabApiInterface = LabTabUtil.getApiInterface();
+        //Logging In User
+        LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com"));
+        createTokenResponse = (CreateTokenResponse) labTabResponse.getResponse();
     }
 
     @Test

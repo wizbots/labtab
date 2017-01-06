@@ -10,15 +10,20 @@
 
     <LinearLayout
         android:id="@+id/lab_details_checkbox_container"
-        android:layout_width="45dp"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/ic_add_video" />
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/select"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 

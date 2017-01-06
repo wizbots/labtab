@@ -149,16 +149,16 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 });
 
         int statusTextColor;
-//        if (videoList.getVideoStatus() == 100) {
-//            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
-//        } else if (videoList.getVideoStatus() == 0) {
-//            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.red);
-//        } else {
-//            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.orange);
-//        }
+        if (video.getStatus().equals("100")) {
+            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
+        } else if (video.getStatus().equals("0")) {
+            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.red);
+        } else {
+            statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.orange);
+        }
 
-//        videoListViewHolder.videoStatusTextViewCustom.setText(videoList.getVideoStatus() + "%");
-//        videoListViewHolder.videoStatusTextViewCustom.setTextColor(statusTextColor);
+        videoListViewHolder.videoStatusTextViewCustom.setText(video.getStatus() + "%");
+        videoListViewHolder.videoStatusTextViewCustom.setTextColor(statusTextColor);
         videoListViewHolder.videoNameTextViewCustom.setText(video.getTitle());
 
     }

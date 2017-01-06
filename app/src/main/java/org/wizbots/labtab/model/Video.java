@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 public class Video implements Parcelable {
     private String id;
+    private String mentor_id;
+    private String status;
     private String path;
     private String title;
     private String category;
@@ -20,8 +22,10 @@ public class Video implements Parcelable {
     public Video() {
     }
 
-    public Video(String id, String path, String title, String category, String mentor_name, String lab_sku, String lab_level, String knowledge_nuggets, String description, String project_creators, String notes_to_the_family) {
+    public Video(String id, String mentor_id, String status, String path, String title, String category, String mentor_name, String lab_sku, String lab_level, String knowledge_nuggets, String description, String project_creators, String notes_to_the_family) {
         this.id = id;
+        this.mentor_id = mentor_id;
+        this.status = status;
         this.path = path;
         this.title = title;
         this.category = category;
@@ -40,6 +44,22 @@ public class Video implements Parcelable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getMentor_id() {
+        return mentor_id;
+    }
+
+    public void setMentor_id(String mentor_id) {
+        this.mentor_id = mentor_id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPath() {
@@ -122,7 +142,6 @@ public class Video implements Parcelable {
         this.notes_to_the_family = notes_to_the_family;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -131,6 +150,8 @@ public class Video implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
+        dest.writeString(this.mentor_id);
+        dest.writeString(this.status);
         dest.writeString(this.path);
         dest.writeString(this.title);
         dest.writeString(this.category);
@@ -145,6 +166,8 @@ public class Video implements Parcelable {
 
     protected Video(Parcel in) {
         this.id = in.readString();
+        this.mentor_id = in.readString();
+        this.status = in.readString();
         this.path = in.readString();
         this.title = in.readString();
         this.category = in.readString();
@@ -157,7 +180,7 @@ public class Video implements Parcelable {
         this.notes_to_the_family = in.readString();
     }
 
-    public static final Parcelable.Creator<Video> CREATOR = new Parcelable.Creator<Video>() {
+    public static final Creator<Video> CREATOR = new Creator<Video>() {
         @Override
         public Video createFromParcel(Parcel source) {
             return new Video(source);

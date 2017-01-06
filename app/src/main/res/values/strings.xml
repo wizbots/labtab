@@ -116,13 +116,24 @@
     <string name="notes">Notes</string>
     <string name="lab_tab_video">Lab Tab Video</string>
     <string name="self_ncheckout">Self\ncheckout</string>
+    <string name="self_checkout">Self checkout</string>
     <string name="pickup_ninstructions">Pickup\nInstructions</string>
+    <string name="pickup_instructions">Pickup Instructions</string>
     <string name="in_out_ntimes">In-out\ntimes</string>
     <string name="additional">Additional</string>
     <string name="absences">Absences</string>
     <string name="creato_lab_level">Creato Lab level</string>
     <string name="upload_video">Upload Video</string>
     <string name="syncing_image">Syncing Image</string>
+    <string name="select">Select</string>
+    <string name="promote">PROMOTE</string>
+    <string name="demote">DEMOTE</string>
+    <string name="mark_absent">MARK ABSENT</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="send_absent_notification">Send Absent Notification</string>
+    <string name="date">Date</string>
+    <string name="_12_12_2016">12/12/2016</string>
 
     <string-array name="fruit_array">
         <item>Apple</item>

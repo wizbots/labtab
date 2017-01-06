@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -89,15 +90,13 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         break;
                     case 5:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
-//                        ActivityCompat.finishAffinity(HomeActivity.this);
-//                        Intent intent = new Intent(HomeActivity.this, SplashActivity.class);
-//                        intent.putExtra(FINISH, true);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent);
-                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        replaceFragment(FRAGMENT_LOGIN, new Bundle());
+                        ActivityCompat.finishAffinity(HomeActivity.this);
+                        Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                        intent.putExtra(FINISH, true);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                         break;
                 }
             }

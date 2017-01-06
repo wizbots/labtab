@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.AdditionalInformationAdapter;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.interfaces.AdditionalInformationAdapterClickListener;
 import org.wizbots.labtab.model.AdditionalInformation;
@@ -70,6 +72,7 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
                 homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
             }
         });
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     @Override

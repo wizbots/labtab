@@ -1,4 +1,4 @@
-package org.wizbots.labtab.tests.fragment;
+package org.wizbots.labtab.uitests.fragment;
 
 import android.test.ActivityInstrumentationTestCase2;
 

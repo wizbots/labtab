@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.model.Video;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class VideoTable extends AbstractTable {
     private static final String NAME = "video";
 
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_MENTOR_ID = "mentor_id";
+    private static final String COLUMN_STATUS = "status";
     private static final String COLUMN_PATH = "path";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_CATEGORY = "category";
@@ -50,6 +54,8 @@ public class VideoTable extends AbstractTable {
         daoManager.execSQL(db, "CREATE TABLE IF NOT EXISTS "
                 + NAME + "("
                 + COLUMN_ID + " text PRIMARY KEY,"
+                + COLUMN_MENTOR_ID + " text,"
+                + COLUMN_STATUS + " text,"
                 + COLUMN_PATH + " text,"
                 + COLUMN_TITLE + " text,"
                 + COLUMN_CATEGORY + " text,"
@@ -105,6 +111,8 @@ public class VideoTable extends AbstractTable {
     private void insert(SQLiteDatabase db, Video video) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, video.getId());
+        values.put(COLUMN_MENTOR_ID, video.getMentor_id());
+        values.put(COLUMN_STATUS, video.getStatus());
         values.put(COLUMN_PATH, video.getPath());
         values.put(COLUMN_TITLE, video.getTitle());
         values.put(COLUMN_CATEGORY, video.getCategory());
@@ -127,6 +135,8 @@ public class VideoTable extends AbstractTable {
             if (cursor.moveToFirst()) {
                 video = new Video(
                         cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_ID)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_STATUS)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
@@ -154,12 +164,14 @@ public class VideoTable extends AbstractTable {
         ArrayList<Video> mentorArrayList = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME, null);
+            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME + " where " + COLUMN_MENTOR_ID + " = '" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "'", null);
             if (cursor.moveToFirst()) {
                 do {
                     mentorArrayList.add(
                             new Video(
                                     cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STATUS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
@@ -202,6 +214,8 @@ public class VideoTable extends AbstractTable {
             db.beginTransaction();
             try {
                 ContentValues values = new ContentValues();
+                values.put(COLUMN_MENTOR_ID, video.getMentor_id());
+                values.put(COLUMN_STATUS, video.getStatus());
                 values.put(COLUMN_PATH, video.getPath());
                 values.put(COLUMN_TITLE, video.getTitle());
                 values.put(COLUMN_CATEGORY, video.getCategory());

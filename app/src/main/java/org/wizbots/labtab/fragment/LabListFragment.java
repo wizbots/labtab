@@ -102,7 +102,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         recyclerViewLabList.setItemAnimator(new DefaultItemAnimator());
         recyclerViewLabList.setAdapter(labListAdapter);
         progressDialog = new ProgressDialog(homeActivityContext);
-        ArrayList<ProgramOrLab> programOrLabArrayList = ProgramsOrLabsTable.getInstance().getProgramsList();
+        ArrayList<ProgramOrLab> programOrLabArrayList
+                = ProgramsOrLabsTable
+                .getInstance()
+                .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
         progressDialog.setMessage("processing");
         progressDialog.setCanceledOnTouchOutside(false);
         if (!programOrLabArrayList.isEmpty()) {
@@ -115,6 +118,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 BackgroundExecutor.getInstance().execute(programOrLabRequester);
             }
         }
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
 

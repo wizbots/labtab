@@ -23,7 +23,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="120dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
@@ -42,7 +42,7 @@
 
 
     <LinearLayout
-        android:layout_width="80dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
@@ -60,8 +60,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="110dp"
+        android:layout_width="@dimen/zero_dimension"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -80,7 +81,8 @@
         android:layout_width="70dp"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_in_out_times"
@@ -99,7 +101,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <org.wizbots.labtab.customview.TextViewCustom

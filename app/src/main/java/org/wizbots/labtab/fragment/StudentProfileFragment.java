@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.StudentStatsAdapter;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.interfaces.StudentStatsAdapterClickListener;
 import org.wizbots.labtab.model.StudentStatistics;
@@ -70,6 +72,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         recyclerViewStudentStats.setLayoutManager(mLayoutManager);
         recyclerViewStudentStats.setItemAnimator(new DefaultItemAnimator());
         recyclerViewStudentStats.setAdapter(studentStatsAdapter);
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     public void prepareDummyList() {

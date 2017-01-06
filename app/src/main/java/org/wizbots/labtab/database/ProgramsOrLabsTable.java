@@ -17,6 +17,7 @@ public class ProgramsOrLabsTable extends AbstractTable {
     private static final String NAME = "programs_or_labs";
 
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_MEMBER_ID = "member_id";
     private static final String COLUMN_SKU = "sku";
     private static final String COLUMN_ENDS = "ends";
     private static final String COLUMN_TITLE = "title";
@@ -50,6 +51,7 @@ public class ProgramsOrLabsTable extends AbstractTable {
                 + NAME + "("
                 + COLUMN_ID + " text PRIMARY KEY,"
                 + COLUMN_SKU + " integer,"
+                + COLUMN_MEMBER_ID + " text,"
                 + COLUMN_ENDS + " text,"
                 + COLUMN_TITLE + " text,"
                 + COLUMN_STARTS + " text,"
@@ -84,6 +86,7 @@ public class ProgramsOrLabsTable extends AbstractTable {
     private void insert(SQLiteDatabase db, ProgramOrLab programOrLab) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, programOrLab.getId());
+        values.put(COLUMN_MEMBER_ID, programOrLab.getMember_id());
         values.put(COLUMN_SKU, programOrLab.getSku());
         values.put(COLUMN_ENDS, programOrLab.getEnds());
         values.put(COLUMN_TITLE, programOrLab.getTitle());
@@ -105,6 +108,7 @@ public class ProgramsOrLabsTable extends AbstractTable {
             if (cursor.moveToFirst()) {
                 programOrLab = new ProgramOrLab(
                         cursor.getInt(cursor.getColumnIndex(COLUMN_SKU)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_MEMBER_ID)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_ENDS)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_STARTS)),
@@ -136,6 +140,41 @@ public class ProgramsOrLabsTable extends AbstractTable {
                     programOrLabs.add(
                             new ProgramOrLab(
                                     cursor.getInt(cursor.getColumnIndex(COLUMN_SKU)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MEMBER_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ENDS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STARTS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STATE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STREET)),
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_ENROLLMENT_COUNT)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL))
+                            ));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get programs or labs", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return programOrLabs;
+    }
+
+    public ArrayList<ProgramOrLab> getProgramsByMemberId(String memberId) {
+        ArrayList<ProgramOrLab> programOrLabs = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            final String query = "Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "';";
+            cursor = daoManager.getReadableDatabase().rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    programOrLabs.add(
+                            new ProgramOrLab(
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_SKU)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MEMBER_ID)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_ENDS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_STARTS)),

@@ -2,6 +2,7 @@ package org.wizbots.labtab.model;
 
 public class ProgramOrLab {
     private int sku;
+    private String member_id;
     private String ends;
     private String title;
     private String starts;
@@ -15,8 +16,9 @@ public class ProgramOrLab {
     public ProgramOrLab() {
     }
 
-    public ProgramOrLab(int sku, String ends, String title, String starts, String state, String street, int enrollment_count, String address, String id, String labLevel) {
+    public ProgramOrLab(int sku, String member_id, String ends, String title, String starts, String state, String street, int enrollment_count, String address, String id, String labLevel) {
         this.sku = sku;
+        this.member_id = member_id;
         this.ends = ends;
         this.title = title;
         this.starts = starts;
@@ -34,6 +36,14 @@ public class ProgramOrLab {
 
     public void setSku(int sku) {
         this.sku = sku;
+    }
+
+    public String getMember_id() {
+        return member_id;
+    }
+
+    public void setMember_id(String member_id) {
+        this.member_id = member_id;
     }
 
     public String getEnds() {
@@ -107,5 +117,4 @@ public class ProgramOrLab {
     public void setLabLevel(String labLevel) {
         this.labLevel = labLevel;
     }
-
 }

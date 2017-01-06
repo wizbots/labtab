@@ -7,10 +7,14 @@
         android:id="@+id/lab_details_extra_layout"
         layout="@layout/lab_details_extra_layout" />
 
+    <include
+        android:id="@+id/lab_details_extra_layout_1"
+        layout="@layout/lab_details_extra_layout_1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lab_details_extra_layout"
+        android:layout_below="@id/lab_details_extra_layout_1"
         android:layout_marginTop="@dimen/extra_small_margin"
         android:background="@drawable/rounded_layout_blue_from_edges"
         android:orientation="vertical"

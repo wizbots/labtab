@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.ListOfSkipsAdapter;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.interfaces.ListOfSkipsAdapterClickListener;
 import org.wizbots.labtab.model.ListOfSkips;
@@ -70,6 +72,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
                 homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
             }
         });
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     @Override
@@ -84,26 +87,26 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
     }
 
     public void prepareDummyList() {
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(true, "Student Name", "50", "45", ""));
-        objectArrayList.add(new ListOfSkips(false, "Student Name", "50", "45", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(true, "Student Name", "Mentor Name", "12/12/2016", ""));
+        objectArrayList.add(new ListOfSkips(false, "Student Name", "Mentor Name", "12/12/2016", ""));
         listOfSkipsAdapter.notifyDataSetChanged();
     }
 

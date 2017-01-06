@@ -14,7 +14,7 @@ import org.wizbots.labtab.util.LabTabUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LoginApiTest {
-    LabTabApiInterface labTabApiInterface;
+    private LabTabApiInterface labTabApiInterface;
 
     @Before
     public void beforeTest() {

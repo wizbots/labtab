@@ -1,4 +1,4 @@
-package org.wizbots.labtab.tests.actvity;
+package org.wizbots.labtab.uitests.actvity;
 
 import android.test.ActivityInstrumentationTestCase2;
 

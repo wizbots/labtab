@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/_100"
+            android:text="@string/mentor_name"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/_100"
+            android:text="@string/_12_12_2016"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -84,7 +84,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <org.wizbots.labtab.customview.TextViewCustom

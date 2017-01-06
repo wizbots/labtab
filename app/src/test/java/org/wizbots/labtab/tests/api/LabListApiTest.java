@@ -18,24 +18,21 @@ import java.util.ArrayList;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LabListApiTest {
-    LabTabApiInterface labTabApiInterface;
+    private LabTabApiInterface labTabApiInterface;
+    private CreateTokenResponse createTokenResponse;
 
     @Before
     public void beforeTest() {
         // Initializing Api Interface
         labTabApiInterface = LabTabUtil.getApiInterface();
+        //Logging In User
+        LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com"));
+        createTokenResponse = (CreateTokenResponse) labTabResponse.getResponse();
     }
 
 
     @Test
     public void labsListAvailableForMentorTest() throws InterruptedException { // Lab List Api Test When Labs Are Available Case 200
-        LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com"));
-        Assert.assertNotNull(labTabResponse);
-        Assert.assertTrue("Token Created Successfully", labTabResponse.getResponseCode() == LabTabConstants.SC_CREATED);
-
-        CreateTokenResponse createTokenResponse = (CreateTokenResponse) labTabResponse.getResponse();
-        Assert.assertNotNull(createTokenResponse);
-
         LabTabResponse listLabTabResponse = ConnectionUtil.execute(labTabApiInterface.returnPrograms(
                 createTokenResponse.getToken(),
                 createTokenResponse.getMember_id(),
@@ -47,14 +44,7 @@ public class LabListApiTest {
     }
 
     @Test
-    public void invalideAuthTokenUsageWhileFetchingLabsTest() throws InterruptedException { // Lab List Api Test When Wrong Auth Token Is Used Case 401
-        LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com"));
-        Assert.assertNotNull(labTabResponse);
-        Assert.assertTrue("Token Created Successfully", labTabResponse.getResponseCode() == LabTabConstants.SC_CREATED);
-
-        CreateTokenResponse createTokenResponse = (CreateTokenResponse) labTabResponse.getResponse();
-        Assert.assertNotNull(createTokenResponse);
-
+    public void invalidAuthTokenUsageWhileFetchingLabsTest() throws InterruptedException { // Lab List Api Test When Wrong Auth Token Is Used Case 401
         LabTabResponse listLabTabResponse = ConnectionUtil.execute(labTabApiInterface.returnPrograms(
                 createTokenResponse.getToken() + "k",
                 createTokenResponse.getMember_id(),

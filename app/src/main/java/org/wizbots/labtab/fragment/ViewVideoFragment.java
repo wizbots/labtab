@@ -13,16 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.HorizontalProjectCreatorAdapter;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.ButtonCustom;
 import org.wizbots.labtab.customview.EditTextCustom;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
@@ -52,6 +55,7 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
     private ButtonCustom createButtonCustom, cancelButtonCustom;
     private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
     private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom;
+    private LinearLayout closeLinearLayout;
 
     private Uri savedVideoUri;
     private Video video;
@@ -99,6 +103,11 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
         knowledgeNuggetsEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
         descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
         notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
+        projectCreatorEditTextCustom.setFocusable(false);
+        titleEditTextCustom.setFocusable(false);
+        knowledgeNuggetsEditTextCustom.setFocusable(false);
+        descriptionEditTextCustom.setFocusable(false);
+        notesToTheFamilyEditTextCustom.setFocusable(false);
 
         mentorNameTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_mentor_name);
         labSKUTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_lab_sku);
@@ -115,6 +124,7 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
 
         videoThumbnailImageView = (ImageView) rootView.findViewById(R.id.iv_video_thumbnail);
         closeImageView = (ImageView) rootView.findViewById(R.id.iv_close);
+        closeLinearLayout = (LinearLayout) rootView.findViewById(R.id.ll_close);
         createButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_create);
         cancelButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_cancel);
 
@@ -122,6 +132,8 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
         createButtonCustom.setVisibility(View.GONE);
         cancelButtonCustom.setVisibility(View.GONE);
         closeImageView.setOnClickListener(this);
+        closeLinearLayout.setOnClickListener(this);
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     public void prepareCategoryList() {
@@ -143,6 +155,9 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
                 startActivity(intent);
                 break;
             case R.id.iv_close:
+                homeActivityContext.onBackPressed();
+                break;
+            case R.id.ll_close:
                 homeActivityContext.onBackPressed();
                 break;
 

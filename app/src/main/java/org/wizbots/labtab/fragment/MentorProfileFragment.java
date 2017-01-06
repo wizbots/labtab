@@ -66,6 +66,7 @@ public class MentorProfileFragment extends ParentFragment implements View.OnClic
         ((TextViewCustom) rootView.findViewById(R.id.tv_zip_code)).setText(mentorProfile.getZipCode());
         ((TextViewCustom) rootView.findViewById(R.id.tv_phone1)).setText(mentorProfile.getPhone1());
         ((TextViewCustom) rootView.findViewById(R.id.tv_phone2)).setText(mentorProfile.getPhone2());
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     public void initListeners() {

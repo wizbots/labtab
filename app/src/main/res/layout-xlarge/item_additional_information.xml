@@ -84,7 +84,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_in_out_times"
@@ -103,7 +104,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <org.wizbots.labtab.customview.TextViewCustom

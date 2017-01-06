@@ -28,12 +28,14 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.activity.TrimmerActivity;
 import org.wizbots.labtab.adapter.HorizontalProjectCreatorAdapter;
 import org.wizbots.labtab.adapter.ProjectCreatorAdapter;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.ButtonCustom;
 import org.wizbots.labtab.customview.EditTextCustom;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
@@ -74,6 +76,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private ImageView videoThumbnailImageView, closeImageView;
     private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
     private ButtonCustom saveButtonCustom, cancelButtonCustom;
+    private LinearLayout closeLinearLayout;
 
     public static final int MEDIA_TYPE_VIDEO = 2;
     public static final String EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH";
@@ -154,6 +157,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
         videoThumbnailImageView = (ImageView) rootView.findViewById(R.id.iv_video_thumbnail);
         closeImageView = (ImageView) rootView.findViewById(R.id.iv_close);
+        closeLinearLayout = (LinearLayout) rootView.findViewById(R.id.ll_close);
         titleEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_title);
         knowledgeNuggetsEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
         descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
@@ -165,6 +169,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         saveButtonCustom.setOnClickListener(this);
         cancelButtonCustom.setOnClickListener(this);
         closeImageView.setOnClickListener(this);
+        closeLinearLayout.setOnClickListener(this);
 
         if (bundle != null) {
             savedVideoUri = bundle.getParcelable(URI);
@@ -180,6 +185,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
             }
         }
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     public void prepareDummyList() {
@@ -275,6 +281,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
                 Video video = new Video();
                 video.setId(this.video.getId());
+                video.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
+                video.setStatus(this.video.getStatus());
                 video.setTitle(titleEditTextCustom.getText().toString());
                 video.setPath(savedVideoUri.getPath());
                 video.setCategory((String) (categorySpinner.getSelectedItem()));
@@ -293,6 +301,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 homeActivityContext.onBackPressed();
                 break;
             case R.id.iv_close:
+                homeActivityContext.onBackPressed();
+                break;
+            case R.id.ll_close:
                 homeActivityContext.onBackPressed();
                 break;
 

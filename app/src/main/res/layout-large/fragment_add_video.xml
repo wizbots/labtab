@@ -35,12 +35,19 @@
                     android:textSize="@dimen/text_size_large"
                     app:font="@string/font_pt_sans_narrow_regular" />
 
-                <ImageView
-                    android:id="@+id/iv_close"
-                    android:layout_width="@dimen/password_reminder_close_image_width"
-                    android:layout_height="@dimen/password_reminder_close_image_height"
+                <LinearLayout
+                    android:id="@+id/ll_close"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_close" />
+                    android:gravity="right">
+
+                    <ImageView
+                        android:id="@+id/iv_close"
+                        android:layout_width="@dimen/password_reminder_close_image_width"
+                        android:layout_height="@dimen/password_reminder_close_image_height"
+                        android:src="@drawable/ic_close" />
+                </LinearLayout>
             </RelativeLayout>
 
             <LinearLayout

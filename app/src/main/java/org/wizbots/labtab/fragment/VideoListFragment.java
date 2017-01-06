@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.VideoListAdapter;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
@@ -48,7 +50,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         rootView = inflater.inflate(R.layout.fragment_video_list, container, false);
         homeActivityContext = (HomeActivity) context;
         initView();
-        prepareDummyList();
+        prepareVideoList();
         return rootView;
     }
 
@@ -68,6 +70,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         recyclerViewVideoList.setLayoutManager(mLayoutManager);
         recyclerViewVideoList.setItemAnimator(new DefaultItemAnimator());
         recyclerViewVideoList.setAdapter(videoListAdapter);
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     @Override
@@ -96,7 +99,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         startActivity(intent);
     }
 
-    public void prepareDummyList() {
+    public void prepareVideoList() {
         ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideoList();
         if (!videoArrayList.isEmpty()) {
             objectArrayList.addAll(videoArrayList);
