@@ -17,7 +17,7 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.util.ArrayList;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class LabListApiTest {
+public class LabListApiTest implements LabTabConstants{
     private LabTabApiInterface labTabApiInterface;
     private CreateTokenResponse createTokenResponse;
 
@@ -39,7 +39,7 @@ public class LabListApiTest {
                 "2013/01/01", "2016/12/31"));
         Assert.assertNotNull(listLabTabResponse);
         Assert.assertTrue("Labs are there", ((ArrayList<ProgramOrLab>) listLabTabResponse.getResponse()).size() > 0);
-        Assert.assertTrue("Labs are there", listLabTabResponse.getResponseCode() == LabTabConstants.SC_OK);
+        Assert.assertTrue("Labs are there", listLabTabResponse.getResponseCode() == StatusCode.OK);
 
     }
 
@@ -50,7 +50,7 @@ public class LabListApiTest {
                 createTokenResponse.getMember_id(),
                 "2013/01/01", "2016/12/31"));
         Assert.assertNotNull(listLabTabResponse);
-        Assert.assertTrue("Labs are not there", listLabTabResponse.getResponseCode() == LabTabConstants.SC_UNAUTHORIZED);
+        Assert.assertTrue("Labs are not there", listLabTabResponse.getResponseCode() == LabTabConstants.StatusCode.UNAUTHORIZED);
     }
 
     @After

@@ -14,7 +14,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import org.wizbots.labtab.LabTabApplication;
-import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.controller.LabTabPreferences;
@@ -28,6 +27,7 @@ import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.requesters.LoginRequester;
 import org.wizbots.labtab.requesters.MentorProfileRequester;
+import org.wizbots.labtab.service.LabTabUploadService;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
@@ -112,15 +112,15 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
                 String email = editTextCustomEmail.getText().toString();
                 String password = editTextCustomPassword.getText().toString();
                 if (email.trim().length() == 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LabTabConstants.PLEASE_ENTER_EMAIL);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_ENTER_EMAIL);
                     editTextCustomEmail.requestFocus();
                     break;
                 } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LabTabConstants.PLEASE_ENTER_VALID_EMAIL_ADDRESS);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_ENTER_VALID_EMAIL_ADDRESS);
                     editTextCustomEmail.requestFocus();
                     break;
                 } else if (password.trim().length() == 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LabTabConstants.PLEASE_ENTER_PASSWORD);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_ENTER_PASSWORD);
                     editTextCustomPassword.requestFocus();
                     break;
                 }
@@ -130,7 +130,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
                 BackgroundExecutor.getInstance().execute(new LoginRequester(editTextCustomEmail.getText().toString(), editTextCustomPassword.getText().toString()));
                 break;
             case R.id.tv_forgot_password:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(LabTabConstants.GO_TO_WIZBOTS_COM));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ToastTexts.GO_TO_WIZBOTS_COM));
                 if (browserIntent.resolveActivity(homeActivityContext.getPackageManager()) != null) {
                     startActivity(browserIntent);
                 }
@@ -148,12 +148,12 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     public void unableToCreateToken(int responseCode) {
         progressDialog.dismiss();
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
-        if (responseCode == SC_FORBIDDEN) {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, PROVIDED_PASSWORD_OR_USERNAME_ARE_INVALID);
-        } else if (responseCode == SC_NOT_FOUND) {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, NOT_USER_WITH_PROVIDED_CREDENTIALS);
+        if (responseCode == StatusCode.FORBIDDEN) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROVIDED_PASSWORD_OR_USERNAME_ARE_INVALID);
+        } else if (responseCode == StatusCode.NOT_FOUND) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NOT_USER_WITH_PROVIDED_CREDENTIALS);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
     }
 
@@ -192,19 +192,21 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
 
         MentorsTable.getInstance().insert(mentor);
 
-        homeActivityContext.replaceFragment(FRAGMENT_HOME, new Bundle());
-        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, LOGIN_SUCCESSFULL);
-
+        homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.LOGIN_SUCCESSFULL);
+        Intent uploadService = new Intent(homeActivityContext, LabTabUploadService.class);
+        uploadService.putExtra(LabTabUploadService.EVENT, Events.USER_LOGGED_IN);
+        homeActivityContext.startService(uploadService);
     }
 
     @Override
     public void unableToFetchMentor(int responseCode) {
         progressDialog.dismiss();
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
-        if (responseCode == SC_NOT_FOUND) {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, MENTOR_NOT_FOUND);
+        if (responseCode == StatusCode.NOT_FOUND) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.MENTOR_NOT_FOUND);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
     }
 }

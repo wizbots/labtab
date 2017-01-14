@@ -27,7 +27,7 @@ public class MentorProfileRequester implements Runnable, LabTabConstants {
         LabTabResponse<Mentor> mentorProfileResponse = LabTabHTTPOperationController.getMentorProfile();
         if (mentorProfileResponse != null) {
             for (GetMentorProfileListener getMentorProfileListener : LabTabApplication.getInstance().getUIListeners(GetMentorProfileListener.class)) {
-                if (mentorProfileResponse.getResponseCode() == SC_OK) {
+                if (mentorProfileResponse.getResponseCode() == StatusCode.OK) {
                     Mentor mentor = mentorProfileResponse.getResponse();
                     mentor.setDate(createTokenResponse.getDate());
                     mentor.setToken(createTokenResponse.getToken());

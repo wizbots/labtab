@@ -82,14 +82,14 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     public void onVideoListItemActionView(Video video) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(VIDEO, video);
-        homeActivityContext.replaceFragment(FRAGMENT_VIEW_VIDEO, bundle);
+        homeActivityContext.replaceFragment(Fragments.VIEW_VIDEO, bundle);
     }
 
     @Override
     public void onVideoListItemActionEdit(Video video) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(VIDEO, video);
-        homeActivityContext.replaceFragment(FRAGMENT_EDIT_VIDEO, bundle);
+        homeActivityContext.replaceFragment(Fragments.EDIT_VIDEO, bundle);
     }
 
     @Override
@@ -104,8 +104,21 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         if (!videoArrayList.isEmpty()) {
             objectArrayList.addAll(videoArrayList);
             videoListAdapter.notifyDataSetChanged();
+
+            boolean videoUploadTaskCompleted = true;
+            for (Video video : videoArrayList) {
+                videoUploadTaskCompleted &= (video.getStatus() == 100);
+            }
+
+            if (videoUploadTaskCompleted) {
+                labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+            } else {
+                labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+            }
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No Video Available");
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+
         }
     }
 }

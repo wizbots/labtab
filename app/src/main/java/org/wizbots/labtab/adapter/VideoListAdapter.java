@@ -149,9 +149,9 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 });
 
         int statusTextColor;
-        if (video.getStatus().equals("100")) {
+        if (video.getStatus() == 100) {
             statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
-        } else if (video.getStatus().equals("0")) {
+        } else if (video.getStatus() == 0) {
             statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.red);
         } else {
             statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.orange);

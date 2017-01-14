@@ -55,7 +55,7 @@ public class VideoTable extends AbstractTable {
                 + NAME + "("
                 + COLUMN_ID + " text PRIMARY KEY,"
                 + COLUMN_MENTOR_ID + " text,"
-                + COLUMN_STATUS + " text,"
+                + COLUMN_STATUS + " integer,"
                 + COLUMN_PATH + " text,"
                 + COLUMN_TITLE + " text,"
                 + COLUMN_CATEGORY + " text,"
@@ -136,7 +136,7 @@ public class VideoTable extends AbstractTable {
                 video = new Video(
                         cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_ID)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_STATUS)),
+                        cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
@@ -171,7 +171,7 @@ public class VideoTable extends AbstractTable {
                             new Video(
                                     cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_ID)),
-                                    cursor.getString(cursor.getColumnIndex(COLUMN_STATUS)),
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
@@ -241,4 +241,41 @@ public class VideoTable extends AbstractTable {
             db.endTransaction();
         }
     }
+
+    public ArrayList<Video> getVideosToBeUploaded() {
+        ArrayList<Video> mentorArrayList = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME + " where " + COLUMN_MENTOR_ID + " = '" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and status < 100 ", null);
+            if (cursor.moveToFirst()) {
+                do {
+                    mentorArrayList.add(
+                            new Video(
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_ID)),
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_NAME)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_SKU)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_KNOWLEDGE_NUGGETS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY))
+                            )
+                    );
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get video", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return mentorArrayList;
+    }
+
 }

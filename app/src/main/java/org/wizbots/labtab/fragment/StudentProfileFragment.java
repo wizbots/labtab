@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.wizbots.labtab.LabTabApplication;
-import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.StudentStatsAdapter;
@@ -22,7 +21,7 @@ import org.wizbots.labtab.model.StudentStatistics;
 
 import java.util.ArrayList;
 
-public class StudentProfileFragment extends ParentFragment implements View.OnClickListener, StudentStatsAdapterClickListener, LabTabConstants {
+public class StudentProfileFragment extends ParentFragment implements View.OnClickListener, StudentStatsAdapterClickListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -76,13 +75,13 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
     }
 
     public void prepareDummyList() {
-        objectArrayList.add(new StudentStatistics(LAB_LEVEL_APPRENTICE, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
-        objectArrayList.add(new StudentStatistics(LAB_LEVEL_EXPLORER, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
-        objectArrayList.add(new StudentStatistics(LAB_LEVEL_IMAGINEER, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
-        objectArrayList.add(new StudentStatistics(LAB_LEVEL_LAB_CERTIFIED, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
-        objectArrayList.add(new StudentStatistics(LAB_LEVEL_MAKER, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
-        objectArrayList.add(new StudentStatistics(LAB_LEVEL_MASTER, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
-        objectArrayList.add(new StudentStatistics(LAB_LEVEL_WIZARD, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
+        objectArrayList.add(new StudentStatistics(LabLevels.APPRENTICE, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
+        objectArrayList.add(new StudentStatistics(LabLevels.EXPLORER, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
+        objectArrayList.add(new StudentStatistics(LabLevels.IMAGINEER, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
+        objectArrayList.add(new StudentStatistics(LabLevels.LAB_CERTIFIED, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
+        objectArrayList.add(new StudentStatistics(LabLevels.MAKER, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
+        objectArrayList.add(new StudentStatistics(LabLevels.MASTER, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
+        objectArrayList.add(new StudentStatistics(LabLevels.WIZARD, "50", "45", "40", "35", "30", "25", "20", "15", "10"));
         studentStatsAdapter.notifyDataSetChanged();
     }
 
@@ -93,6 +92,6 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 
     @Override
     public void onActionViewClick() {
-        homeActivityContext.replaceFragment(LabTabConstants.FRAGMENT_STUDENT_STATS_DETAILS, new Bundle());
+        homeActivityContext.replaceFragment(Fragments.STUDENT_STATS_DETAILS, new Bundle());
     }
 }

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.wizbots.labtab.LabTabApplication;
-import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.StudentStatsDetailsAdapter;
@@ -23,7 +22,7 @@ import org.wizbots.labtab.model.StudentStatisticsDetailProjects;
 
 import java.util.ArrayList;
 
-public class StudentStatsDetailsFragment extends ParentFragment implements View.OnClickListener, LabTabConstants, StudentStatsDetailsAdapterClickListener {
+public class StudentStatsDetailsFragment extends ParentFragment implements View.OnClickListener, StudentStatsDetailsAdapterClickListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -76,32 +75,32 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, new Bundle());
             }
         });
         rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, new Bundle());
             }
         });
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     public void prepareDummyList() {
-        objectArrayList.add(new StudentStatisticsDetail("Judy", LAB_LEVEL_APPRENTICE, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_1, "Algorithms", MARKS_DONE));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_2, "Gyroscope", MARKS_PENDING));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_3, "Data Structures", MARKS_SKIPPED));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_4, "Accelerometer", MARKS_CLOSE_TO_NEXT_LEVEl));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_1, "Algorithms", MARKS_MECHANISMS));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_2, "Gyroscope", MARKS_PROGRAMMING));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_3, "Data Structures", MARKS_STRUCTURES));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_4, "Accelerometer", MARKS_NONE));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_1, "Algorithms", MARKS_DONE));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_2, "Gyroscope", MARKS_PENDING));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_3, "Data Structures", MARKS_SKIPPED));
-        objectArrayList.add(new StudentStatisticsDetailProjects(LAB_STEP_4, "Accelerometer", MARKS_CLOSE_TO_NEXT_LEVEl));
+        objectArrayList.add(new StudentStatisticsDetail("Judy", LabLevels.APPRENTICE, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_1, "Algorithms", Marks.DONE));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_2, "Gyroscope", Marks.PENDING));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_3, "Data Structures", Marks.SKIPPED));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_4, "Accelerometer", Marks.CLOSE_TO_NEXT_LEVEl));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_1, "Algorithms", Marks.MECHANISMS));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_2, "Gyroscope", Marks.PROGRAMMING));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_3, "Data Structures", Marks.STRUCTURES));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_4, "Accelerometer", Marks.NONE));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_1, "Algorithms", Marks.DONE));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_2, "Gyroscope", Marks.PENDING));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_3, "Data Structures", Marks.SKIPPED));
+        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_4, "Accelerometer", Marks.CLOSE_TO_NEXT_LEVEl));
         studentStatsDetailsAdapter.notifyDataSetChanged();
     }
 
@@ -117,6 +116,6 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
 
     @Override
     public void onViewTypeClick2() {
-        homeActivityContext.replaceFragment(LabTabConstants.FRAGMENT_LAB_DETAILS_LIST, new Bundle());
+        homeActivityContext.replaceFragment(Fragments.LAB_DETAILS_LIST, new Bundle());
     }
 }

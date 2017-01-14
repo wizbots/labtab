@@ -81,13 +81,13 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, new Bundle());
             }
         });
         rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, new Bundle());
             }
         });
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
@@ -133,12 +133,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
     @Override
     public void onActionViewClick(LabDetails labList) {
-        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_LAB_DETAILS, new Bundle());
+        homeActivityContext.replaceFragment(Fragments.STUDENT_LAB_DETAILS, new Bundle());
     }
 
     @Override
     public void onActionEditClick(LabDetails labList) {
-        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_PROFILE, new Bundle());
+        homeActivityContext.replaceFragment(Fragments.STUDENT_PROFILE, new Bundle());
     }
 
     @Override

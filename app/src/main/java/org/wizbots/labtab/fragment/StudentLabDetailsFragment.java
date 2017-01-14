@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.wizbots.labtab.LabTabApplication;
-import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.StudentLabDetailsAdapter;
@@ -23,7 +22,7 @@ import org.wizbots.labtab.model.StudentLabDetailsType2;
 
 import java.util.ArrayList;
 
-public class StudentLabDetailsFragment extends ParentFragment implements View.OnClickListener, LabTabConstants, StudentLabDetailsAdapterClickListener {
+public class StudentLabDetailsFragment extends ParentFragment implements View.OnClickListener, StudentLabDetailsAdapterClickListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -76,27 +75,27 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
         rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, new Bundle());
             }
         });
         rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, new Bundle());
             }
         });
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
     public void prepareDummyList() {
-        objectArrayList.add(new StudentLabDetailsType1("Judy", LAB_LEVEL_APPRENTICE, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentLabDetailsType2("", LAB_LEVEL_APPRENTICE, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentLabDetailsType2("", LAB_LEVEL_EXPLORER, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentLabDetailsType2("", LAB_LEVEL_IMAGINEER, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentLabDetailsType2("", LAB_LEVEL_LAB_CERTIFIED, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentLabDetailsType2("", LAB_LEVEL_MAKER, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentLabDetailsType2("", LAB_LEVEL_MASTER, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentLabDetailsType2("", LAB_LEVEL_WIZARD, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentLabDetailsType1("Judy", LabLevels.APPRENTICE, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentLabDetailsType2("", LabLevels.APPRENTICE, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentLabDetailsType2("", LabLevels.EXPLORER, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentLabDetailsType2("", LabLevels.IMAGINEER, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentLabDetailsType2("", LabLevels.LAB_CERTIFIED, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentLabDetailsType2("", LabLevels.MAKER, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentLabDetailsType2("", LabLevels.MASTER, "50", "45", "40", "35", "30"));
+        objectArrayList.add(new StudentLabDetailsType2("", LabLevels.WIZARD, "50", "45", "40", "35", "30"));
         studentLabDetailsAdapter.notifyDataSetChanged();
     }
 
@@ -107,11 +106,11 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
 
     @Override
     public void onViewTypeClick1() {
-        homeActivityContext.replaceFragment(FRAGMENT_LAB_DETAILS_LIST, new Bundle());
+        homeActivityContext.replaceFragment(Fragments.LAB_DETAILS_LIST, new Bundle());
     }
 
     @Override
     public void onViewTypeClick2() {
-        homeActivityContext.replaceFragment(FRAGMENT_STUDENT_STATS_DETAILS, new Bundle());
+        homeActivityContext.replaceFragment(Fragments.STUDENT_STATS_DETAILS, new Bundle());
     }
 }

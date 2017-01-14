@@ -29,7 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.wizbots.labtab.LabTabApplication;
-import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.activity.TrimmerActivity;
@@ -39,6 +38,7 @@ import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.ButtonCustom;
 import org.wizbots.labtab.customview.EditTextCustom;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
@@ -50,7 +50,7 @@ import java.util.ArrayList;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
-public class EditVideoFragment extends ParentFragment implements View.OnClickListener, LabTabConstants, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener {
+public class EditVideoFragment extends ParentFragment implements View.OnClickListener, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener {
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
@@ -75,6 +75,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private Spinner categorySpinner;
     private ImageView videoThumbnailImageView, closeImageView;
     private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
+    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom;
     private ButtonCustom saveButtonCustom, cancelButtonCustom;
     private LinearLayout closeLinearLayout;
 
@@ -164,6 +165,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
         saveButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_save);
         cancelButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_cancel);
+
+        mentorNameTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_mentor_name);
+        labSKUTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_lab_sku);
 
         videoThumbnailImageView.setOnClickListener(this);
         saveButtonCustom.setOnClickListener(this);
@@ -286,16 +290,16 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 video.setTitle(titleEditTextCustom.getText().toString());
                 video.setPath(savedVideoUri.getPath());
                 video.setCategory((String) (categorySpinner.getSelectedItem()));
-                video.setMentor_name("Conor Mcgaan");
-                video.setLab_sku("5998");
-                video.setLab_level(LAB_LEVEL_APPRENTICE);
+                video.setMentor_name(mentorNameTextViewCustom.getText().toString());
+                video.setLab_sku(labSKUTextViewCustom.getText().toString());
+                video.setLab_level(LabLevels.APPRENTICE);
                 video.setKnowledge_nuggets(knowledgeNuggetsEditTextCustom.getText().toString());
                 video.setDescription(descriptionEditTextCustom.getText().toString());
                 video.setProject_creators(LabTabUtil.toJson(objectArrayListCreatorsSelected));
                 video.setNotes_to_the_family(notesToTheFamilyEditTextCustom.getText().toString());
                 VideoTable.getInstance().updateVideo(video);
                 homeActivityContext.clearAllTheFragmentFromStack();
-                homeActivityContext.replaceFragment(FRAGMENT_HOME, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
                 break;
             case R.id.btn_cancel:
                 homeActivityContext.onBackPressed();
@@ -500,6 +504,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         knowledgeNuggetsEditTextCustom.setText(video.getKnowledge_nuggets());
         descriptionEditTextCustom.setText(video.getDescription());
         notesToTheFamilyEditTextCustom.setText(video.getNotes_to_the_family());
+
+        mentorNameTextViewCustom.setText(video.getMentor_name());
+        labSKUTextViewCustom.setText(video.getLab_sku());
 
         ArrayList<Object> objectArrayList = new Gson().fromJson(video.getProject_creators(), new TypeToken<ArrayList<Object>>() {
         }.getType());

@@ -24,7 +24,7 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
                 programOrLab.setLabLevel(LabTabUtil.getRandomLabLevel());
             }
             for (GetProgramOrLabListener getProgramOrLabListener : LabTabApplication.getInstance().getUIListeners(GetProgramOrLabListener.class)) {
-                if (programsOrLabs.getResponseCode() == SC_OK) {
+                if (programsOrLabs.getResponseCode() == StatusCode.OK) {
                     getProgramOrLabListener.programOrLabFetchedSuccessfully(programOrLabArrayList);
                 } else {
                     getProgramOrLabListener.unableToFetchPrograms(programsOrLabs.getResponseCode());

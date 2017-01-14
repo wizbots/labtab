@@ -69,7 +69,7 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
         rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_LIST_OF_SKIPS, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, new Bundle());
             }
         });
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());

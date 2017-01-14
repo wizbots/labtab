@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.wizbots.labtab.LabTabApplication;
-import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.HorizontalProjectCreatorAdapter;
@@ -36,7 +35,7 @@ import org.wizbots.labtab.model.Video;
 import java.io.File;
 import java.util.ArrayList;
 
-public class ViewVideoFragment extends ParentFragment implements View.OnClickListener, LabTabConstants, HorizontalProjectCreatorAdapterClickListener {
+public class ViewVideoFragment extends ParentFragment implements View.OnClickListener, HorizontalProjectCreatorAdapterClickListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -183,6 +182,7 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
 
         titleEditTextCustom.setText(video.getTitle());
         mentorNameTextViewCustom.setText(video.getMentor_name());
+        labSKUTextViewCustom.setText(video.getLab_sku());
         knowledgeNuggetsEditTextCustom.setText(video.getKnowledge_nuggets());
         descriptionEditTextCustom.setText(video.getDescription());
         notesToTheFamilyEditTextCustom.setText(video.getNotes_to_the_family());

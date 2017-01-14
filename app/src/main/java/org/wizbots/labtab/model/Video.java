@@ -7,7 +7,7 @@ import android.os.Parcelable;
 public class Video implements Parcelable {
     private String id;
     private String mentor_id;
-    private String status;
+    private int status;
     private String path;
     private String title;
     private String category;
@@ -22,7 +22,7 @@ public class Video implements Parcelable {
     public Video() {
     }
 
-    public Video(String id, String mentor_id, String status, String path, String title, String category, String mentor_name, String lab_sku, String lab_level, String knowledge_nuggets, String description, String project_creators, String notes_to_the_family) {
+    public Video(String id, String mentor_id, int status, String path, String title, String category, String mentor_name, String lab_sku, String lab_level, String knowledge_nuggets, String description, String project_creators, String notes_to_the_family) {
         this.id = id;
         this.mentor_id = mentor_id;
         this.status = status;
@@ -54,11 +54,11 @@ public class Video implements Parcelable {
         this.mentor_id = mentor_id;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -151,7 +151,7 @@ public class Video implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
         dest.writeString(this.mentor_id);
-        dest.writeString(this.status);
+        dest.writeInt(this.status);
         dest.writeString(this.path);
         dest.writeString(this.title);
         dest.writeString(this.category);
@@ -167,7 +167,7 @@ public class Video implements Parcelable {
     protected Video(Parcel in) {
         this.id = in.readString();
         this.mentor_id = in.readString();
-        this.status = in.readString();
+        this.status = in.readInt();
         this.path = in.readString();
         this.title = in.readString();
         this.category = in.readString();

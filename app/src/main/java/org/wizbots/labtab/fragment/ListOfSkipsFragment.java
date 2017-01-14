@@ -69,7 +69,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivityContext.replaceFragment(FRAGMENT_ADDITIONAL_INFORMATION, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, new Bundle());
             }
         });
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());

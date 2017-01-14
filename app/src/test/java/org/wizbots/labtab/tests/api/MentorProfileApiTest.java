@@ -15,7 +15,7 @@ import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.util.LabTabUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MentorProfileApiTest {
+public class MentorProfileApiTest implements LabTabConstants {
     private LabTabApiInterface labTabApiInterface;
     private CreateTokenResponse createTokenResponse;
 
@@ -32,14 +32,14 @@ public class MentorProfileApiTest {
     public void fetchMentorProfileSuccessFullTest() throws InterruptedException { // Fetch MentorProfile Case 200
         LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com"));
         Assert.assertNotNull(labTabResponse);
-        Assert.assertTrue("Token Created Successfully", labTabResponse.getResponseCode() == LabTabConstants.SC_CREATED);
+        Assert.assertTrue("Token Created Successfully", labTabResponse.getResponseCode() == StatusCode.CREATED);
 
         CreateTokenResponse createTokenResponse = (CreateTokenResponse) labTabResponse.getResponse();
         Assert.assertNotNull(createTokenResponse);
 
         LabTabResponse mentorProfile = ConnectionUtil.execute(labTabApiInterface.returnMentor(createTokenResponse.getToken()));
         Assert.assertNotNull(mentorProfile);
-        Assert.assertTrue("Mentor Profile Fetched Successfully", mentorProfile.getResponseCode() == LabTabConstants.SC_OK);
+        Assert.assertTrue("Mentor Profile Fetched Successfully", mentorProfile.getResponseCode() == StatusCode.OK);
 
         Mentor mentor = (Mentor) mentorProfile.getResponse();
         Assert.assertEquals("Judy", mentor.getFirst_name());
@@ -49,14 +49,14 @@ public class MentorProfileApiTest {
     public void fetchMentorProfileUsingInvalidAuthTokenTest() throws InterruptedException { // Fetch MentorProfile Case 401
         LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com"));
         Assert.assertNotNull(labTabResponse);
-        Assert.assertTrue("Token Created Successfully", labTabResponse.getResponseCode() == LabTabConstants.SC_CREATED);
+        Assert.assertTrue("Token Created Successfully", labTabResponse.getResponseCode() == StatusCode.CREATED);
 
         CreateTokenResponse createTokenResponse = (CreateTokenResponse) labTabResponse.getResponse();
         Assert.assertNotNull(createTokenResponse);
 
         LabTabResponse mentorProfile = ConnectionUtil.execute(labTabApiInterface.returnMentor(createTokenResponse.getToken() + "k"));
         Assert.assertNotNull(mentorProfile);
-        Assert.assertTrue("Invalid Token", mentorProfile.getResponseCode() == LabTabConstants.SC_UNAUTHORIZED);
+        Assert.assertTrue("Invalid Token", mentorProfile.getResponseCode() == StatusCode.UNAUTHORIZED);
 
     }
 

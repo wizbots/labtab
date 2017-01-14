@@ -2,6 +2,9 @@ package org.wizbots.labtab.util;
 
 
 import android.app.Activity;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -9,6 +12,7 @@ import android.widget.ImageView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.enums.LabLevel;
 import org.wizbots.labtab.enums.LabSteps;
@@ -83,28 +87,28 @@ public class LabTabUtil implements LabTabConstants {
         String labLevel = "";
         switch (generateRandomInteger(0, 7)) {
             case 1:
-                labLevel = LAB_LEVEL_APPRENTICE;
+                labLevel = LabLevels.APPRENTICE;
                 break;
             case 2:
-                labLevel = LAB_LEVEL_EXPLORER;
+                labLevel = LabLevels.EXPLORER;
                 break;
             case 3:
-                labLevel = LAB_LEVEL_IMAGINEER;
+                labLevel = LabLevels.IMAGINEER;
                 break;
             case 4:
-                labLevel = LAB_LEVEL_LAB_CERTIFIED;
+                labLevel = LabLevels.LAB_CERTIFIED;
                 break;
             case 5:
-                labLevel = LAB_LEVEL_MAKER;
+                labLevel = LabLevels.MAKER;
                 break;
             case 6:
-                labLevel = LAB_LEVEL_MASTER;
+                labLevel = LabLevels.MASTER;
                 break;
             case 7:
-                labLevel = LAB_LEVEL_WIZARD;
+                labLevel = LabLevels.WIZARD;
                 break;
             default:
-                labLevel = LAB_LEVEL_APPRENTICE;
+                labLevel = LabLevels.APPRENTICE;
                 break;
         }
         return labLevel;
@@ -118,25 +122,25 @@ public class LabTabUtil implements LabTabConstants {
 
     public static void setLabLevelImageResource(String labLevel, ImageView imageView) {
         switch (labLevel) {
-            case LAB_LEVEL_APPRENTICE:
+            case LabLevels.APPRENTICE:
                 imageView.setImageResource(LabLevel.APPRENTICE.getLabLevel());
                 break;
-            case LAB_LEVEL_EXPLORER:
+            case LabLevels.EXPLORER:
                 imageView.setImageResource(LabLevel.EXPLORER.getLabLevel());
                 break;
-            case LAB_LEVEL_IMAGINEER:
+            case LabLevels.IMAGINEER:
                 imageView.setImageResource(LabLevel.IMAGINEER.getLabLevel());
                 break;
-            case LAB_LEVEL_LAB_CERTIFIED:
+            case LabLevels.LAB_CERTIFIED:
                 imageView.setImageResource(LabLevel.LAB_CERTIFIED.getLabLevel());
                 break;
-            case LAB_LEVEL_MAKER:
+            case LabLevels.MAKER:
                 imageView.setImageResource(LabLevel.MAKER.getLabLevel());
                 break;
-            case LAB_LEVEL_MASTER:
+            case LabLevels.MASTER:
                 imageView.setImageResource(LabLevel.MASTER.getLabLevel());
                 break;
-            case LAB_LEVEL_WIZARD:
+            case LabLevels.WIZARD:
                 imageView.setImageResource(LabLevel.WIZARD.getLabLevel());
                 break;
             default:
@@ -147,30 +151,30 @@ public class LabTabUtil implements LabTabConstants {
 
     public static void setProjectStatusImageResource(String projectStatus, ImageView imageView) {
         switch (projectStatus) {
-            case MARKS_NONE:
+            case Marks.NONE:
                 break;
-            case MARKS_DONE:
+            case Marks.DONE:
                 imageView.setImageResource(ProjectStatus.DONE.getProjectStatus());
                 break;
-            case MARKS_SKIPPED:
+            case Marks.SKIPPED:
                 imageView.setImageResource(ProjectStatus.SKIPPED.getProjectStatus());
                 break;
-            case MARKS_PENDING:
+            case Marks.PENDING:
                 imageView.setImageResource(ProjectStatus.PENDING.getProjectStatus());
                 break;
-            case MARKS_IMAGINEERING:
+            case Marks.IMAGINEERING:
                 imageView.setImageResource(ProjectStatus.IMAGINEERING.getProjectStatus());
                 break;
-            case MARKS_PROGRAMMING:
-                imageView.setImageResource(ProjectStatus.PENDING.getProjectStatus());
+            case Marks.PROGRAMMING:
+                imageView.setImageResource(ProjectStatus.PROGRAMMING.getProjectStatus());
                 break;
-            case MARKS_MECHANISMS:
+            case Marks.MECHANISMS:
                 imageView.setImageResource(ProjectStatus.MECHANISMS.getProjectStatus());
                 break;
-            case MARKS_STRUCTURES:
+            case Marks.STRUCTURES:
                 imageView.setImageResource(ProjectStatus.STRUCTURES.getProjectStatus());
                 break;
-            case MARKS_CLOSE_TO_NEXT_LEVEl:
+            case Marks.CLOSE_TO_NEXT_LEVEl:
                 imageView.setImageResource(ProjectStatus.CLOSE_NEXT_LEVEL.getProjectStatus());
                 break;
             default:
@@ -182,16 +186,16 @@ public class LabTabUtil implements LabTabConstants {
 
     public static void setLabStepImageResource(String labStep, ImageView imageView) {
         switch (labStep) {
-            case LAB_STEP_1:
+            case Steps.LAB_STEP_1:
                 imageView.setImageResource(LabSteps.LAB_STEP1.getLabStep());
                 break;
-            case LAB_STEP_2:
+            case Steps.LAB_STEP_2:
                 imageView.setImageResource(LabSteps.LAB_STEP2.getLabStep());
                 break;
-            case LAB_STEP_3:
+            case Steps.LAB_STEP_3:
                 imageView.setImageResource(LabSteps.LAB_STEP3.getLabStep());
                 break;
-            case LAB_STEP_4:
+            case Steps.LAB_STEP_4:
                 imageView.setImageResource(LabSteps.LAB_STEP4.getLabStep());
                 break;
             default:
@@ -220,4 +224,10 @@ public class LabTabUtil implements LabTabConstants {
         return retrofit.create(LabTabApiInterface.class);
     }
 
+
+    public static void setServiceEnabled(final Class<? extends Service> serviceClass, final boolean enable) {
+        final PackageManager pm = LabTabApplication.getInstance().getPackageManager();
+        final int enableFlag = enable ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+        pm.setComponentEnabledSetting(new ComponentName(LabTabApplication.getInstance(), serviceClass), enableFlag, PackageManager.DONT_KILL_APP);
+    }
 }

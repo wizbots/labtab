@@ -59,7 +59,7 @@ public class ForgotPasswordFragment extends ParentFragment implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_submit:
-                homeActivityContext.replaceFragment(FRAGMENT_LOGIN, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.LOGIN, new Bundle());
                 break;
         }
     }

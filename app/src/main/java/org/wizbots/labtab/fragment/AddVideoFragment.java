@@ -28,7 +28,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import org.wizbots.labtab.LabTabApplication;
-import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.activity.TrimmerActivity;
@@ -38,10 +37,12 @@ import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.ButtonCustom;
 import org.wizbots.labtab.customview.EditTextCustom;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.model.Video;
+import org.wizbots.labtab.service.LabTabUploadService;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;
@@ -50,7 +51,7 @@ import java.util.Calendar;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
-public class AddVideoFragment extends ParentFragment implements View.OnClickListener, LabTabConstants, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener {
+public class AddVideoFragment extends ParentFragment implements View.OnClickListener, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener {
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
@@ -76,6 +77,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private ImageView videoThumbnailImageView, closeImageView;
     private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
     private ButtonCustom createButtonCustom, cancelButtonCustom;
+    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom;
     private LinearLayout closeLinearLayout;
 
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -155,6 +157,12 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
         createButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_create);
         cancelButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_cancel);
+
+        mentorNameTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_mentor_name);
+        labSKUTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_lab_sku);
+
+        mentorNameTextViewCustom.setText(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
+        labSKUTextViewCustom.setText(Calendar.getInstance().getTimeInMillis() + "");
 
         videoThumbnailImageView.setOnClickListener(this);
         createButtonCustom.setOnClickListener(this);
@@ -282,20 +290,23 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 Video video = new Video();
                 video.setId(Calendar.getInstance().getTimeInMillis() + "");
                 video.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
-                video.setStatus("0");
+                video.setStatus(0);
                 video.setTitle(titleEditTextCustom.getText().toString());
                 video.setPath(savedVideoUri.getPath());
                 video.setCategory((String) (categorySpinner.getSelectedItem()));
-                video.setMentor_name("Conor Mcgaan");
-                video.setLab_sku("5998");
-                video.setLab_level(LAB_LEVEL_APPRENTICE);
+                video.setMentor_name(mentorNameTextViewCustom.getText().toString());
+                video.setLab_sku(labSKUTextViewCustom.getText().toString());
+                video.setLab_level(LabLevels.APPRENTICE);
                 video.setKnowledge_nuggets(knowledgeNuggetsEditTextCustom.getText().toString());
                 video.setDescription(descriptionEditTextCustom.getText().toString());
                 video.setProject_creators(LabTabUtil.toJson(objectArrayListCreatorsSelected));
                 video.setNotes_to_the_family(notesToTheFamilyEditTextCustom.getText().toString());
                 VideoTable.getInstance().insert(video);
+                Intent uploadService = new Intent(homeActivityContext, LabTabUploadService.class);
+                uploadService.putExtra(LabTabUploadService.EVENT, Events.ADD_VIDEO);
+                homeActivityContext.startService(uploadService);
                 homeActivityContext.clearAllTheFragmentFromStack();
-                homeActivityContext.replaceFragment(FRAGMENT_HOME, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
                 break;
             case R.id.btn_cancel:
                 homeActivityContext.onBackPressed();

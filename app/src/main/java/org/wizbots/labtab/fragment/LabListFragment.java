@@ -128,7 +128,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
     @Override
     public void onActionViewClick(ProgramOrLab labList) {
-        homeActivityContext.replaceFragment(FRAGMENT_LAB_DETAILS_LIST, new Bundle());
+        homeActivityContext.replaceFragment(Fragments.LAB_DETAILS_LIST, new Bundle());
     }
 
     @Override
@@ -164,10 +164,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             }
         });
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
-        if (responseCode == SC_FORBIDDEN) {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, NO_LAB_FOUND);
+        if (responseCode == StatusCode.FORBIDDEN) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
     }
 

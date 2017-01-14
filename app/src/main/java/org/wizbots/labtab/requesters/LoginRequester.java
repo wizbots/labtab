@@ -27,7 +27,7 @@ public class LoginRequester implements Runnable, LabTabConstants {
         LabTabResponse<CreateTokenResponse> createTokenResponse = LabTabHTTPOperationController.loginUser(new LoginRequest(password, email));
         if (createTokenResponse != null) {
             for (CreateTokenListener createTokenListener : LabTabApplication.getInstance().getUIListeners(CreateTokenListener.class)) {
-                if (createTokenResponse.getResponseCode() == SC_CREATED) {
+                if (createTokenResponse.getResponseCode() == StatusCode.CREATED) {
                     createTokenListener.tokenCreatedSuccessfully(createTokenResponse.getResponse());
                 } else {
                     createTokenListener.unableToCreateToken(createTokenResponse.getResponseCode());

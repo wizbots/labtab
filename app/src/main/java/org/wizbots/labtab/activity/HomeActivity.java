@@ -38,13 +38,13 @@ import org.wizbots.labtab.fragment.StudentStatsDetailsFragment;
 import org.wizbots.labtab.fragment.VideoListFragment;
 import org.wizbots.labtab.fragment.ViewVideoFragment;
 import org.wizbots.labtab.model.LeftDrawerItem;
+import org.wizbots.labtab.service.LabTabUploadService;
 
 public class HomeActivity extends ParentActivity implements View.OnClickListener {
 
     private ParentFragment fragment;
     private FragmentManager fragmentManager;
     private Toolbar toolbar;
-    private String[] mNavigationDrawerItemTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private LabTabHeaderLayout labTabHeaderLayout;
@@ -74,25 +74,25 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             public void run() {
                 switch (position) {
                     case 1:
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GO_TO_WIZBOTS_COM));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ToastTexts.GO_TO_WIZBOTS_COM));
                         if (browserIntent.resolveActivity(getPackageManager()) != null) {
                             startActivity(browserIntent);
                         }
                         break;
                     case 2:
-                        replaceFragment(FRAGMENT_LAB_LIST, new Bundle());
+                        replaceFragment(Fragments.LAB_LIST, new Bundle());
                         break;
                     case 3:
-                        replaceFragment(FRAGMENT_VIDEO_LIST, new Bundle());
+                        replaceFragment(Fragments.VIDEO_LIST, new Bundle());
                         break;
                     case 4:
-                        replaceFragment(FRAGMENT_ADD_VIDEO, new Bundle());
+                        replaceFragment(Fragments.ADD_VIDEO, new Bundle());
                         break;
                     case 5:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
                         ActivityCompat.finishAffinity(HomeActivity.this);
                         Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-                        intent.putExtra(FINISH, true);
+                        intent.putExtra(Constants.FINISH, true);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -132,7 +132,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 drawerHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        replaceFragment(FRAGMENT_MENTOR_PROFILE, new Bundle());
+                        replaceFragment(Fragments.MENTOR_PROFILE, new Bundle());
                     }
                 }, 400);
             }
@@ -180,52 +180,55 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     public void replaceFragment(int fragmentToBePut, Bundle bundle) {
         fragmentManager = getSupportFragmentManager();
         switch (fragmentToBePut) {
-            case FRAGMENT_LOGIN:
+            case Fragments.LOGIN:
                 fragment = new LoginFragment();
                 lockDrawerLayout();
                 break;
-            case FRAGMENT_FORGOT_PASSWORD:
+            case Fragments.FORGOT_PASSWORD:
                 fragment = new ForgotPasswordFragment();
                 lockDrawerLayout();
                 break;
-            case FRAGMENT_HOME:
+            case Fragments.HOME:
                 fragment = new HomeFragment();
                 unlockDrawerLayout();
                 break;
-            case FRAGMENT_LAB_LIST:
+            case Fragments.LAB_LIST:
                 fragment = new LabListFragment();
                 break;
-            case FRAGMENT_LAB_DETAILS_LIST:
+            case Fragments.LAB_DETAILS_LIST:
                 fragment = new LabDetailsFragment();
                 break;
-            case FRAGMENT_MENTOR_PROFILE:
+            case Fragments.MENTOR_PROFILE:
                 fragment = new MentorProfileFragment();
                 break;
-            case FRAGMENT_STUDENT_PROFILE:
+            case Fragments.STUDENT_PROFILE:
                 fragment = new StudentProfileFragment();
                 break;
-            case FRAGMENT_STUDENT_STATS_DETAILS:
+            case Fragments.STUDENT_STATS_DETAILS:
                 fragment = new StudentStatsDetailsFragment();
                 break;
-            case FRAGMENT_STUDENT_LAB_DETAILS:
+            case Fragments.STUDENT_LAB_DETAILS:
                 fragment = new StudentLabDetailsFragment();
                 break;
-            case FRAGMENT_VIDEO_LIST:
+            case Fragments.VIDEO_LIST:
+                Intent uploadService = new Intent(this, LabTabUploadService.class);
+                uploadService.putExtra(LabTabUploadService.EVENT, Events.VIDEO_LIST);
+                startService(uploadService);
                 fragment = new VideoListFragment();
                 break;
-            case FRAGMENT_EDIT_VIDEO:
+            case Fragments.EDIT_VIDEO:
                 fragment = new EditVideoFragment();
                 break;
-            case FRAGMENT_ADD_VIDEO:
+            case Fragments.ADD_VIDEO:
                 fragment = new AddVideoFragment();
                 break;
-            case FRAGMENT_LIST_OF_SKIPS:
+            case Fragments.LIST_OF_SKIPS:
                 fragment = new ListOfSkipsFragment();
                 break;
-            case FRAGMENT_ADDITIONAL_INFORMATION:
+            case Fragments.ADDITIONAL_INFORMATION:
                 fragment = new AdditionalInformationFragment();
                 break;
-            case FRAGMENT_VIEW_VIDEO:
+            case Fragments.VIEW_VIDEO:
                 fragment = new ViewVideoFragment();
                 break;
 

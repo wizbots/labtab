@@ -69,19 +69,19 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cv_lab_list:
-                homeActivityContext.replaceFragment(FRAGMENT_LAB_LIST, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.LAB_LIST, new Bundle());
                 break;
             case R.id.cv_go_to:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GO_TO_WIZBOTS_COM));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ToastTexts.GO_TO_WIZBOTS_COM));
                 if (browserIntent.resolveActivity(homeActivityContext.getPackageManager()) != null) {
                     startActivity(browserIntent);
                 }
                 break;
             case R.id.cv_video_list:
-                homeActivityContext.replaceFragment(FRAGMENT_VIDEO_LIST, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());
                 break;
             case R.id.cv_my_profile:
-                homeActivityContext.replaceFragment(FRAGMENT_MENTOR_PROFILE, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.MENTOR_PROFILE, new Bundle());
                 break;
         }
     }
