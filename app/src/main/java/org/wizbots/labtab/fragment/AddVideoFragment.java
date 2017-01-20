@@ -42,6 +42,7 @@ import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.model.Video;
+import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.service.LabTabUploadService;
 import org.wizbots.labtab.util.LabTabUtil;
 
@@ -85,6 +86,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
     private Uri fileUri;
     private Uri savedVideoUri;
+    private Program program;
 
     public AddVideoFragment() {
 
@@ -100,6 +102,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_add_video, container, false);
         homeActivityContext = (HomeActivity) context;
+        program = getArguments().getParcelable(LabDetailsFragment.PROGRAM);
         initView(savedInstanceState);
         prepareDummyList();
         ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, stringArrayList);
@@ -162,7 +165,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         labSKUTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_lab_sku);
 
         mentorNameTextViewCustom.setText(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
-        labSKUTextViewCustom.setText(Calendar.getInstance().getTimeInMillis() + "");
+        labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
 
         videoThumbnailImageView.setOnClickListener(this);
         createButtonCustom.setOnClickListener(this);

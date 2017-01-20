@@ -1,5 +1,7 @@
 package org.wizbots.labtab.model;
 
+import org.wizbots.labtab.model.student.Student;
+
 import java.util.ArrayList;
 
 public class ProgramOrLabWithStudents {

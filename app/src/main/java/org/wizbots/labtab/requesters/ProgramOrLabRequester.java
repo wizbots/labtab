@@ -4,7 +4,7 @@ import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.controller.LabTabPreferences;
-import org.wizbots.labtab.interfaces.GetProgramOrLabListener;
+import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.util.LabTabUtil;

@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.AdditionalInformationAdapterClickListener;
-import org.wizbots.labtab.model.AdditionalInformation;
+import org.wizbots.labtab.model.program.Student;
 
 import java.util.ArrayList;
 
@@ -45,11 +46,17 @@ public class AdditionalInformationAdapter extends RecyclerView.Adapter<RecyclerV
             inOutTimesTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_in_out_times);
             notesTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_notes);
             listOfAddtionalInformationLinearLayout.setOnClickListener(this);
+            checkBoxAdditionalInformation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checkState) {
+                    additionalInformationAdapterClickListener.onCheckChanged(getAdapterPosition(), checkState);
+                }
+            });
         }
 
         @Override
         public void onClick(View view) {
-//            LabDetails labDetails = (LabDetails) objectArrayList.get(getAdapterPosition());
+//            Student student = (Student) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.list_of_additional_information_root_layout:
                     additionalInformationAdapterClickListener.onActionViewClick();
@@ -84,7 +91,7 @@ public class AdditionalInformationAdapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public int getItemViewType(int position) {
-        if (objectArrayList.get(position) instanceof AdditionalInformation) {
+        if (objectArrayList.get(position) instanceof Student) {
             return VIEW_ITEM_DATA;
         }
         return -1;
@@ -105,7 +112,7 @@ public class AdditionalInformationAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void configureLabListViewHolder(AdditionalInformationViewHolder additionalInformationViewHolder, int position) {
-        AdditionalInformation listOfSkips = (AdditionalInformation) objectArrayList.get(position);
+        Student student = (Student) objectArrayList.get(position);
         int additionalInformationLinearLayoutColor;
         if (position % 2 == 0) {
             additionalInformationLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.white);
@@ -113,12 +120,10 @@ public class AdditionalInformationAdapter extends RecyclerView.Adapter<RecyclerV
             additionalInformationLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
         }
         additionalInformationViewHolder.listOfAddtionalInformationLinearLayout.setBackgroundColor(additionalInformationLinearLayoutColor);
-        additionalInformationViewHolder.checkBoxAdditionalInformation.setChecked(listOfSkips.isCheck());
-        additionalInformationViewHolder.studentNameTextViewCustom.setText(listOfSkips.getStudentName());
-        additionalInformationViewHolder.selfCheckoutTextViewCustom.setText(listOfSkips.getSelfCheckout());
-        additionalInformationViewHolder.pickupInstructionsTextViewCustom.setText(listOfSkips.getPickupInstructions());
-        additionalInformationViewHolder.inOutTimesTextViewCustom.setText(listOfSkips.getIn_out_times());
-        additionalInformationViewHolder.notesTextViewCustom.setText(listOfSkips.getNotes());
+        additionalInformationViewHolder.checkBoxAdditionalInformation.setChecked(student.isCheck());
+        additionalInformationViewHolder.studentNameTextViewCustom.setText(student.getName());
+        additionalInformationViewHolder.selfCheckoutTextViewCustom.setText(student.getSelf_sign_out() == 1 ? "Yes" : "No");
+        additionalInformationViewHolder.pickupInstructionsTextViewCustom.setText(student.getPickup_instructions().equals("") ? "Not Available" : student.getPickup_instructions());
     }
 
     @Override

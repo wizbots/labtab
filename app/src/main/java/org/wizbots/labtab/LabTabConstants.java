@@ -87,7 +87,7 @@ public interface LabTabConstants {
         String APPRENTICE = "APPRENTICE";
         String EXPLORER = "EXPLORER";
         String IMAGINEER = "IMAGINEER";
-        String LAB_CERTIFIED = "LAB_CERTIFIED";
+        String LAB_CERTIFIED = "LAB CERTIFIED";
         String MAKER = "MAKER";
         String MASTER = "MASTER";
         String WIZARD = "WIZARD";
@@ -131,6 +131,11 @@ public interface LabTabConstants {
         String NO_LAB_FOUND = "No Lab Found";
         String STUDENT_STATISTICS = "Student Statistics";
         String MENTOR_NOT_FOUND = "Mentor Not Found";
+        String NO_LAB_DETAIL_FOR_THIS_LAB = "No Lab Detail for this Lab";
+        String NO_STUDENT_FOUND_FOR_THIS_LAB = "No Student Found for this Lab";
+        String NO_ADDITIONAL_INFO_FOUND_FOR_THIS_LAB = "No Additional Info found for this Lab";
+        String NO_LIST_OF_SKIPS_FOUND_FOR_THIS_LAB = "No List of Skips found for this Lab";
+        String AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO = "At least one student is needed to add video";
     }
 
     /**

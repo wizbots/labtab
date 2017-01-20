@@ -9,6 +9,7 @@
     android:orientation="horizontal">
 
     <LinearLayout
+        android:id="@+id/ll_add_video"
         android:layout_width="80dp"
         android:layout_height="match_parent"
         android:gravity="center"

@@ -21,8 +21,8 @@ import org.wizbots.labtab.adapter.SpinnerAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.ProgramsOrLabsTable;
-import org.wizbots.labtab.interfaces.GetProgramOrLabListener;
 import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
+import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 public class LabListFragment extends ParentFragment implements LabListAdapterClickListener, GetProgramOrLabListener, View.OnClickListener {
 
+    public static final String LAB = "LAB";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
@@ -127,13 +128,16 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     @Override
-    public void onActionViewClick(ProgramOrLab labList) {
-        homeActivityContext.replaceFragment(Fragments.LAB_DETAILS_LIST, new Bundle());
+    public void onActionViewClick(ProgramOrLab programOrLab) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(LAB, programOrLab);
+        homeActivityContext.replaceFragment(Fragments.LAB_DETAILS_LIST, bundle);
     }
 
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
+        progressDialog.dismiss();
         super.onDestroy();
     }
 

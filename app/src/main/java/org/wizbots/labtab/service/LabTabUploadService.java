@@ -19,7 +19,7 @@ import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.SplashActivity;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.database.VideoTable;
-import org.wizbots.labtab.interfaces.VideoUploadListener;
+import org.wizbots.labtab.interfaces.requesters.VideoUploadListener;
 import org.wizbots.labtab.model.Video;
 import org.wizbots.labtab.requesters.VideoUploaderRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;

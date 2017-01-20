@@ -1,4 +1,4 @@
-package org.wizbots.labtab.model;
+package org.wizbots.labtab.model.student;
 
 public class StudentStatisticsDetailProjects {
     private String labStep;

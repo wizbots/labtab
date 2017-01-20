@@ -50,7 +50,7 @@
         android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_no_of_hours"
+            android:id="@+id/tv_mentor_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -69,7 +69,7 @@
         android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_no_of_general"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

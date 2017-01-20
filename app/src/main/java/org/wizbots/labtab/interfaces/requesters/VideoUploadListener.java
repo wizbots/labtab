@@ -1,4 +1,4 @@
-package org.wizbots.labtab.interfaces;
+package org.wizbots.labtab.interfaces.requesters;
 
 import org.wizbots.labtab.model.Video;
 

@@ -1,5 +1,6 @@
-package org.wizbots.labtab.interfaces;
+package org.wizbots.labtab.interfaces.requesters;
 
+import org.wizbots.labtab.interfaces.BaseUIListener;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
 

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import org.wizbots.labtab.model.Student;
+import org.wizbots.labtab.model.student.Student;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;

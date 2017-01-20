@@ -36,7 +36,8 @@
                 android:gravity="left"
                 android:text="3052"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_lab_sku" />
         </LinearLayout>
 
         <LinearLayout
@@ -62,7 +63,8 @@
                 android:gravity="left"
                 android:text="YES"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_availability" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,7 +90,8 @@
                 android:gravity="left"
                 android:text="Late Pickup"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_name" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,7 +117,8 @@
                 android:gravity="left"
                 android:text="Palo Verde ELementary"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_location" />
         </LinearLayout>
 
     </LinearLayout>
@@ -148,7 +152,8 @@
                 android:gravity="left"
                 android:text="Summer Camps"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_category" />
         </LinearLayout>
 
         <LinearLayout
@@ -174,7 +179,8 @@
                 android:gravity="left"
                 android:text="YTBD"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_room" />
         </LinearLayout>
 
         <LinearLayout
@@ -200,7 +206,8 @@
                 android:gravity="left"
                 android:text="2,3,4,5,6,7,8"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_grades" />
         </LinearLayout>
 
         <LinearLayout
@@ -226,7 +233,8 @@
                 android:gravity="left"
                 android:text="308.0"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_price" />
         </LinearLayout>
 
     </LinearLayout>
@@ -265,7 +273,8 @@
                     android:gravity="left"
                     android:text="09/25/16"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:id="@+id/tv_from" />
             </LinearLayout>
 
             <LinearLayout
@@ -290,7 +299,8 @@
                     android:gravity="left"
                     android:text="10/05/16"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:id="@+id/tv_to" />
             </LinearLayout>
         </LinearLayout>
 
@@ -318,7 +328,7 @@
                 android:text="Sun-Wed:10:00am-01:00pm"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:id="@+id/textViewCustom8" />
+                android:id="@+id/tv_time_slot" />
         </LinearLayout>
 
         <LinearLayout
@@ -344,7 +354,8 @@
                 android:gravity="left"
                 android:text="18/12/2016"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/tv_day" />
         </LinearLayout>
 
         <RelativeLayout

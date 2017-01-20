@@ -22,6 +22,7 @@ import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.lang.reflect.Type;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -230,4 +231,11 @@ public class LabTabUtil implements LabTabConstants {
         final int enableFlag = enable ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
         pm.setComponentEnabledSetting(new ComponentName(LabTabApplication.getInstance(), serviceClass), enableFlag, PackageManager.DONT_KILL_APP);
     }
+
+
+    public static String getFormattedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(new Date());
+    }
+
 }

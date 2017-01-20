@@ -1,6 +1,9 @@
 package org.wizbots.labtab.model;
 
-public class ProgramOrLab {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ProgramOrLab implements Parcelable {
     private int sku;
     private String member_id;
     private String ends;
@@ -117,4 +120,50 @@ public class ProgramOrLab {
     public void setLabLevel(String labLevel) {
         this.labLevel = labLevel;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.sku);
+        dest.writeString(this.member_id);
+        dest.writeString(this.ends);
+        dest.writeString(this.title);
+        dest.writeString(this.starts);
+        dest.writeString(this.state);
+        dest.writeString(this.street);
+        dest.writeInt(this.enrollment_count);
+        dest.writeString(this.address);
+        dest.writeString(this.id);
+        dest.writeString(this.labLevel);
+    }
+
+    protected ProgramOrLab(Parcel in) {
+        this.sku = in.readInt();
+        this.member_id = in.readString();
+        this.ends = in.readString();
+        this.title = in.readString();
+        this.starts = in.readString();
+        this.state = in.readString();
+        this.street = in.readString();
+        this.enrollment_count = in.readInt();
+        this.address = in.readString();
+        this.id = in.readString();
+        this.labLevel = in.readString();
+    }
+
+    public static final Parcelable.Creator<ProgramOrLab> CREATOR = new Parcelable.Creator<ProgramOrLab>() {
+        @Override
+        public ProgramOrLab createFromParcel(Parcel source) {
+            return new ProgramOrLab(source);
+        }
+
+        @Override
+        public ProgramOrLab[] newArray(int size) {
+            return new ProgramOrLab[size];
+        }
+    };
 }

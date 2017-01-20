@@ -1,13 +1,13 @@
 package org.wizbots.labtab.interfaces;
 
-import org.wizbots.labtab.model.LabDetails;
+import org.wizbots.labtab.model.program.Student;
 
 public interface LabDetailsAdapterClickListener {
-    void onActionViewClick(LabDetails labList);
+    void onActionViewClick(Student student);
 
-    void onActionEditClick(LabDetails labList);
+    void onActionEditClick(Student student);
 
-    void onActionCloseToNextLevelClick(LabDetails labList);
+    void onActionCloseToNextLevelClick(Student student);
 
     void onCheckChanged(int position, boolean value);
 }

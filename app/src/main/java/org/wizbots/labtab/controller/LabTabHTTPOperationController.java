@@ -37,4 +37,23 @@ public class LabTabHTTPOperationController {
         return ConnectionUtil.execute(labTabApiInterface.returnMentor(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken()));
     }
 
+    public static LabTabResponse getProgramWithListOfStudents(String programId) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.returnProgramWithListOfStudents
+                (
+                        programId,
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken())
+        );
+    }
+
+    public static LabTabResponse getStudentStatsAndProfile(String student_id) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.returnStudentProfileAndStats
+                (
+                        student_id,
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken())
+        );
+    }
+
+
 }

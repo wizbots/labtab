@@ -17,7 +17,10 @@ import org.wizbots.labtab.adapter.StudentStatsAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.interfaces.StudentStatsAdapterClickListener;
-import org.wizbots.labtab.model.StudentStatistics;
+import org.wizbots.labtab.model.ProgramOrLab;
+import org.wizbots.labtab.model.program.Program;
+import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.model.student.StudentStatistics;
 
 import java.util.ArrayList;
 
@@ -30,6 +33,9 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
     private RecyclerView recyclerViewStudentStats;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
     private HomeActivity homeActivityContext;
+    private Program program;
+    private Student student;
+    private ProgramOrLab programOrLab;
 
     public StudentProfileFragment() {
 
@@ -45,6 +51,9 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_student_profile, container, false);
         homeActivityContext = (HomeActivity) context;
+        programOrLab = getArguments().getParcelable(LabListFragment.LAB);
+        program = getArguments().getParcelable(LabDetailsFragment.PROGRAM);
+        student = getArguments().getParcelable(LabDetailsFragment.STUDENT);
         initView();
         prepareDummyList();
         return rootView;
@@ -92,6 +101,10 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 
     @Override
     public void onActionViewClick() {
-        homeActivityContext.replaceFragment(Fragments.STUDENT_STATS_DETAILS, new Bundle());
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+        bundle.putParcelable(LabListFragment.LAB, programOrLab);
+        bundle.putParcelable(LabDetailsFragment.STUDENT, student);
+        homeActivityContext.replaceFragment(Fragments.STUDENT_STATS_DETAILS, bundle);
     }
 }

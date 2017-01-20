@@ -4,7 +4,7 @@ package org.wizbots.labtab.requesters;
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
-import org.wizbots.labtab.interfaces.CreateTokenListener;
+import org.wizbots.labtab.interfaces.requesters.CreateTokenListener;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.LoginRequest;
 import org.wizbots.labtab.retrofit.LabTabResponse;

@@ -1,6 +1,6 @@
-package org.wizbots.labtab.model;
+package org.wizbots.labtab.model.student;
 
-public class StudentLabDetailsType1 {
+public class StudentLabDetailsType2 {
     private String studentName;
     private String labLevel;
     private String noOfProjects;
@@ -9,10 +9,10 @@ public class StudentLabDetailsType1 {
     private String noOfSkipped;
     private String noOfPending;
 
-    public StudentLabDetailsType1() {
+    public StudentLabDetailsType2() {
     }
 
-    public StudentLabDetailsType1(String studentName, String labLevel, String noOfProjects, String noOfLabTime, String noOfDone, String noOfSkipped, String noOfPending) {
+    public StudentLabDetailsType2(String studentName, String labLevel, String noOfProjects, String noOfLabTime, String noOfDone, String noOfSkipped, String noOfPending) {
         this.studentName = studentName;
         this.labLevel = labLevel;
         this.noOfProjects = noOfProjects;

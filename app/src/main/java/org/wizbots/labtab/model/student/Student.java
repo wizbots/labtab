@@ -1,4 +1,6 @@
-package org.wizbots.labtab.model;
+package org.wizbots.labtab.model.student;
+
+import org.wizbots.labtab.model.Project;
 
 import java.util.ArrayList;
 

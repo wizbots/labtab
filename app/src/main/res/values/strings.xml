@@ -153,6 +153,8 @@
         <item>org.wizbots.labtab.database.MentorsTable</item>
         <item>org.wizbots.labtab.database.ProgramsOrLabsTable</item>
         <item>org.wizbots.labtab.database.ProgramStudentsTable</item>
+        <item>org.wizbots.labtab.database.ProgramAbsencesTable</item>
+        <item>org.wizbots.labtab.database.ProgramTable</item>
         <item>org.wizbots.labtab.database.StudentsTable</item>
         <item>org.wizbots.labtab.database.VideoTable</item>
     </string-array>

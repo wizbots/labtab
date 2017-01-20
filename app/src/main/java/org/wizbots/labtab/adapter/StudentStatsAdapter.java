@@ -14,7 +14,7 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.StudentStatsAdapterClickListener;
-import org.wizbots.labtab.model.StudentStatistics;
+import org.wizbots.labtab.model.student.StudentStatistics;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
