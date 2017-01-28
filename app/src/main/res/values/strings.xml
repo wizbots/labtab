@@ -29,7 +29,7 @@
     <string name="go_to_www_wizbots_com">go to\nwww.wizbots.com</string>
     <string name="lab_list">lab list</string>
     <string name="video_list">video list</string>
-    <string name="my_profile">my profile</string>
+    <string name="my_profile">My Profile</string>
     <string name="filter_lab_certified_image">Filter Lab Certified Image</string>
     <string name="filter_explorer_image">Filter Explorer Image</string>
     <string name="filter_apprentice_image">Filter Apprentice Image</string>
@@ -72,7 +72,7 @@
     <string name="zip_code">Zip Code</string>
     <string name="phone_1">Phone 1</string>
     <string name="phone_2">Phone 2</string>
-    <string name="dummy_text">Dummy Text</string>
+    <string name="dummy_text"></string>
     <string name="avatar">avatar</string>
     <string name="email_parent_s">Email (parent\'s)</string>
     <string name="grade">Grade</string>
@@ -134,6 +134,9 @@
     <string name="send_absent_notification">Send Absent Notification</string>
     <string name="date">Date</string>
     <string name="_12_12_2016">12/12/2016</string>
+    <string name="add_video">Add Video</string>
+    <string name="drawer_item_image">Drawer Item Image</string>
+    <string name="yes">YES</string>
 
     <string-array name="fruit_array">
         <item>Apple</item>
@@ -155,7 +158,8 @@
         <item>org.wizbots.labtab.database.ProgramStudentsTable</item>
         <item>org.wizbots.labtab.database.ProgramAbsencesTable</item>
         <item>org.wizbots.labtab.database.ProgramTable</item>
-        <item>org.wizbots.labtab.database.StudentsTable</item>
+        <item>org.wizbots.labtab.database.StudentsProfileTable</item>
+        <item>org.wizbots.labtab.database.StudentStatsTable</item>
         <item>org.wizbots.labtab.database.VideoTable</item>
     </string-array>
 

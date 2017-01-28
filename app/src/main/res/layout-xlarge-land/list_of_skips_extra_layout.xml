@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_layout_orange"
     android:orientation="horizontal"
-    android:padding="@dimen/extra_small_padding">
+    android:padding="@dimen/extra_small_padding"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -65,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="YES"
+                android:text="@string/yes"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -257,7 +258,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="match_parent"

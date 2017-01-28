@@ -27,7 +27,8 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:src="@mipmap/ic_launcher"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:contentDescription="@string/thumbnail" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:id="@+id/tv_thumbnail"

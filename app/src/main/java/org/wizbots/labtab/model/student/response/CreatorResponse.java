@@ -37,4 +37,19 @@ public class CreatorResponse {
     public void setPhone_1(String phone_1) {
         this.phone_1 = phone_1;
     }
+
+    public String parentsPhone() {
+        String parentsPhone = "";
+        if (getPhone_1().equals("") && getPhone_2().equals("")) {
+            parentsPhone = "";
+        } else if (!getPhone_1().equals("") && getPhone_2().equals("")) {
+            parentsPhone = getPhone_1();
+        } else if (getPhone_1().equals("") && !getPhone_2().equals("")) {
+            parentsPhone = getPhone_2();
+        } else {
+            parentsPhone = getPhone_1() + "\n" + getPhone_2();
+        }
+        return parentsPhone;
+    }
+
 }

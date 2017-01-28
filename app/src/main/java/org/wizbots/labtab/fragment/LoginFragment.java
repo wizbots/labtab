@@ -64,7 +64,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     public void initView() {
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText(getActivity().getResources().getString(R.string.please_enter_your_name_and_password));
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LOGIN);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.GONE);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
         editTextCustomEmail = (EditTextCustom) rootView.findViewById(R.id.edt_email);

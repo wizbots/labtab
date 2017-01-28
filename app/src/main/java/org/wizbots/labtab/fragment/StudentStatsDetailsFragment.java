@@ -18,12 +18,14 @@ import org.wizbots.labtab.adapter.StudentStatsDetailsAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.customview.TextViewCustom;
+import org.wizbots.labtab.database.StudentStatsTable;
 import org.wizbots.labtab.interfaces.StudentStatsDetailsAdapterClickListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.student.StudentStatisticsDetail;
-import org.wizbots.labtab.model.student.StudentStatisticsDetailProjects;
+import org.wizbots.labtab.model.student.StudentStats;
+import org.wizbots.labtab.model.student.response.ProjectResponse;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
     private Student student;
     private ProgramOrLab programOrLab;
     private ProgressDialog progressDialog;
+    private String level;
     private TextViewCustom labSKUTextViewCustom, availabilityTextViewCustom,
             nameTextViewCustom, locationTextViewCustom, categoryTextViewCustom,
             roomTextViewCustom, gradesTextViewCustom, priceTextViewCustom,
@@ -63,8 +66,9 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         programOrLab = getArguments().getParcelable(LabListFragment.LAB);
         program = getArguments().getParcelable(LabDetailsFragment.PROGRAM);
         student = getArguments().getParcelable(LabDetailsFragment.STUDENT);
+        level = getArguments().getString(StudentLabDetailsFragment.LEVEL);
         initView();
-        prepareDummyList();
+        prepareStats();
         return rootView;
     }
 
@@ -81,13 +85,14 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab Details");
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.STUDENT_STATS_DETAILS);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
         initHeaderView();
 
         recyclerViewStudentStatsDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_student_stats_details);
+//        recyclerViewStudentStatsDetails.setFocusable(false);
         objectArrayList = new ArrayList<>();
 
         studentStatsDetailsAdapter = new StudentStatsDetailsAdapter(objectArrayList, homeActivityContext, this);
@@ -115,27 +120,37 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
 
         if (program != null) {
             setHeaderView(program);
-            progressDialog.dismiss();
-        } else {
-            progressDialog.dismiss();
         }
     }
 
-    public void prepareDummyList() {
-        objectArrayList.add(new StudentStatisticsDetail("Judy", LabLevels.APPRENTICE, "50", "45", "40", "35", "30"));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_1, "Algorithms", Marks.DONE));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_2, "Gyroscope", Marks.PENDING));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_3, "Data Structures", Marks.SKIPPED));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_4, "Accelerometer", Marks.CLOSE_TO_NEXT_LEVEl));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_1, "Algorithms", Marks.MECHANISMS));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_2, "Gyroscope", Marks.PROGRAMMING));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_3, "Data Structures", Marks.STRUCTURES));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_4, "Accelerometer", Marks.NONE));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_1, "Algorithms", Marks.DONE));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_2, "Gyroscope", Marks.PENDING));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_3, "Data Structures", Marks.SKIPPED));
-        objectArrayList.add(new StudentStatisticsDetailProjects(Steps.LAB_STEP_4, "Accelerometer", Marks.CLOSE_TO_NEXT_LEVEl));
+    public void prepareStats() {
+        ArrayList<StudentStats> statsArrayList = StudentStatsTable.getInstance().getStudentStatsById(student.getStudent_id());
+        StudentStats studentStats = null;
+        for (StudentStats studentStat : statsArrayList) {
+            if (level.equalsIgnoreCase("NOVICE")) {
+                studentStats = studentStat;
+                break;
+            }
+            if (level.equalsIgnoreCase(studentStat.getLevel())) {
+                studentStats = studentStat;
+                break;
+            }
+        }
+        StudentStatisticsDetail studentStatisticsDetail = new StudentStatisticsDetail(
+                student.getName(),
+                studentStats.getLevel(),
+                String.valueOf(studentStats.getProject_count()),
+                String.valueOf(studentStats.getLab_time_count().replaceAll("\"", "")),
+                String.valueOf(studentStats.getDone_count()),
+                String.valueOf(studentStats.getSkipped_count()),
+                String.valueOf(studentStats.getPending_count()));
+        objectArrayList.add(studentStatisticsDetail);
+
+        ArrayList<ProjectResponse> projectStatusArrayList = new ArrayList<>();
+        projectStatusArrayList.addAll(LabTabUtil.convertStringToProjects(studentStats.getProjects()));
+        objectArrayList.addAll(projectStatusArrayList);
         studentStatsDetailsAdapter.notifyDataSetChanged();
+        progressDialog.dismiss();
     }
 
     @Override

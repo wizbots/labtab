@@ -129,6 +129,7 @@ public interface LabTabConstants {
         String GO_TO_WIZBOTS_COM = "http://wizbots.com";
         String FEATURE_NOT_AVAILABLE_RIGHT_NOW = "Feature Not Available Right Now";
         String NO_LAB_FOUND = "No Lab Found";
+        String NO_DETAIL_FOUND = "No Detail Found";
         String STUDENT_STATISTICS = "Student Statistics";
         String MENTOR_NOT_FOUND = "Mentor Not Found";
         String NO_LAB_DETAIL_FOR_THIS_LAB = "No Lab Detail for this Lab";
@@ -175,4 +176,27 @@ public interface LabTabConstants {
 
     int FOREGROUND_SERVICE = 500;
 
+    interface DrawerItem {
+        String ITEM_GO_TO = "Go to www.wizbots.com";
+        String ITEM_LAB_LIST = "Lab List";
+        String ITEM_VIDEO_LIST = "Video List";
+        String ITEM_LOGOUT = "Logout";
+    }
+
+    interface Title {
+        String ADDITIONAL_INFORMATION = "Additional Information";
+        String ADD_VIDEO = "Add Video";
+        String EDIT_VIDEO = "Edit Video";
+        String FORGOT_PASSWORD = "Please enter your email";
+        String LAB_DETAILS = "Lab Details";
+        String LAB_LIST = "Lab List";
+        String LIST_OF_SKIPS = "List Of Skips";
+        String LOGIN = "Please enter your name and password";
+        String MENTOR_PROFILE = "My Account";
+        String STUDENT_LAB_DETAILS = "Lab Details";
+        String STUDENT_PROFILE = "Kid Name Account";
+        String STUDENT_STATS_DETAILS = "Lab Details";
+        String VIDEO_LIST = "Video List";
+        String VIEW_VIDEO = "View Video";
+    }
 }

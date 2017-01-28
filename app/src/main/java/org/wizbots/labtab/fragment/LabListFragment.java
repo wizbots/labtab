@@ -89,12 +89,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             }
         });
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab List");
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
 
         recyclerViewLabList = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_list);
+//        recyclerViewLabList.setFocusable(false);
         objectArrayList = new ArrayList<>();
 
         labListAdapter = new LabListAdapter(objectArrayList, homeActivityContext, this);

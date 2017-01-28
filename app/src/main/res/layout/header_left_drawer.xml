@@ -20,7 +20,8 @@
             android:id="@+id/profile_pic"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/ic_home_button_my_profile" />
+            android:src="@drawable/ic_home_button_my_profile"
+            android:contentDescription="@string/my_profile" />
     </LinearLayout>
 
     <org.wizbots.labtab.customview.TextViewCustom
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="My Profile"
+        android:text="@string/my_profile"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_extra_extra_large"
         app:font="@string/font_pt_sans_narrow_regular" />

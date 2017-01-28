@@ -70,13 +70,14 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("List Of Skips");
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LIST_OF_SKIPS);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
         initHeaderView();
 
         recyclerViewListOfSkips = (RecyclerView) rootView.findViewById(R.id.recycler_view_list_of_skips);
+//        recyclerViewListOfSkips.setFocusable(false);
         objectArrayList = new ArrayList<>();
 
         listOfSkipsAdapter = new ListOfSkipsAdapter(objectArrayList, homeActivityContext, this);

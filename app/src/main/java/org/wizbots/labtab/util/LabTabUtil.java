@@ -14,10 +14,12 @@ import com.google.gson.reflect.TypeToken;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
+import org.wizbots.labtab.R;
 import org.wizbots.labtab.enums.LabLevel;
 import org.wizbots.labtab.enums.LabSteps;
 import org.wizbots.labtab.enums.ProjectStatus;
 import org.wizbots.labtab.model.Project;
+import org.wizbots.labtab.model.student.response.ProjectResponse;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.lang.reflect.Type;
@@ -25,6 +27,7 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -35,11 +38,11 @@ public class LabTabUtil implements LabTabConstants {
 
     private static final String TAG = LabTabUtil.class.getName();
 
-    public static ArrayList<Project> convertStringToProjects(String string) {
-        ArrayList<Project> projects = null;
+    public static ArrayList<ProjectResponse> convertStringToProjects(String string) {
+        ArrayList<ProjectResponse> projects = null;
         Gson gson = new Gson();
         if (!string.equals("")) {
-            projects = gson.fromJson(string, new TypeToken<ArrayList<Project>>() {
+            projects = gson.fromJson(string, new TypeToken<ArrayList<ProjectResponse>>() {
             }.getType());
         } else {
             projects = null;
@@ -151,7 +154,7 @@ public class LabTabUtil implements LabTabConstants {
     }
 
     public static void setProjectStatusImageResource(String projectStatus, ImageView imageView) {
-        switch (projectStatus) {
+        switch (projectStatus.toUpperCase()) {
             case Marks.NONE:
                 break;
             case Marks.DONE:
@@ -234,8 +237,38 @@ public class LabTabUtil implements LabTabConstants {
 
 
     public static String getFormattedDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return sdf.format(new Date());
     }
+
+    public static void setBackGroundImageResource(String labLevel, ImageView imageView) {
+        switch (labLevel.toUpperCase()) {
+            case LabLevels.APPRENTICE:
+                imageView.setBackgroundResource(R.drawable.ic_filter_apprentice);
+                break;
+            case LabLevels.EXPLORER:
+                imageView.setBackgroundResource(R.drawable.ic_filter_explorer);
+                break;
+            case LabLevels.IMAGINEER:
+                imageView.setBackgroundResource(R.drawable.ic_filter_imagineer);
+                break;
+            case LabLevels.LAB_CERTIFIED:
+                imageView.setBackgroundResource(R.drawable.ic_filter_lab_certified);
+                break;
+            case LabLevels.MAKER:
+                imageView.setBackgroundResource(R.drawable.ic_filter_maker);
+                break;
+            case LabLevels.MASTER:
+                imageView.setBackgroundResource(R.drawable.ic_filter_master);
+                break;
+            case LabLevels.WIZARD:
+                imageView.setBackgroundResource(R.drawable.ic_filter_wizard);
+                break;
+            default:
+                imageView.setBackgroundResource(R.drawable.ic_filter_apprentice);
+                break;
+        }
+    }
+
 
 }

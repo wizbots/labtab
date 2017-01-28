@@ -57,12 +57,13 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     public void initView() {
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("Video List");
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.VIDEO_LIST);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
 
         recyclerViewVideoList = (RecyclerView) rootView.findViewById(R.id.recycler_view_video_list);
+//        recyclerViewVideoList.setFocusable(false);
         objectArrayList = new ArrayList<>();
 
         videoListAdapter = new VideoListAdapter(objectArrayList, homeActivityContext, this);

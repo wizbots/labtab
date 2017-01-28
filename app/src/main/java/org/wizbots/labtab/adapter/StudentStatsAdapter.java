@@ -14,7 +14,7 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.StudentStatsAdapterClickListener;
-import org.wizbots.labtab.model.student.StudentStatistics;
+import org.wizbots.labtab.model.student.StudentStats;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
@@ -60,10 +60,10 @@ public class StudentStatsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onClick(View view) {
-            StudentStatistics studentStatistics = (StudentStatistics) objectArrayList.get(getAdapterPosition());
+            StudentStats studentStats = (StudentStats) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.student_stats_root_layout:
-                    studentStatsAdapterClickListener.onActionViewClick();
+                    studentStatsAdapterClickListener.onActionViewClick(studentStats.getLevel());
                     break;
             }
         }
@@ -95,7 +95,7 @@ public class StudentStatsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        if (objectArrayList.get(position) instanceof StudentStatistics) {
+        if (objectArrayList.get(position) instanceof StudentStats) {
             return VIEW_ITEM_DATA;
         }
         return -1;
@@ -116,7 +116,7 @@ public class StudentStatsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void configureLabListViewHolder(StudentStatsViewHolder studentStatsViewHolder, int position) {
-        StudentStatistics studentStatistics = (StudentStatistics) objectArrayList.get(position);
+        StudentStats studentStats = (StudentStats) objectArrayList.get(position);
         int studentsStatsListLinearLayoutColor;
         if (position % 2 == 0) {
             studentsStatsListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.white);
@@ -124,16 +124,16 @@ public class StudentStatsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             studentsStatsListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
         }
         studentStatsViewHolder.studentStatsLinearLayout.setBackgroundColor(studentsStatsListLinearLayoutColor);
-        LabTabUtil.setLabLevelImageResource(studentStatistics.getLabLevel(), studentStatsViewHolder.labLevelImageView);
-        studentStatsViewHolder.noOfProjectsTextViewCustom.setText(studentStatistics.getNoOfProjects());
-        studentStatsViewHolder.noOfLabTimeTextViewCustom.setText(studentStatistics.getNoOfLabTime());
-        studentStatsViewHolder.noOfDoneTextViewCustom.setText(studentStatistics.getNoOfDone());
-        studentStatsViewHolder.noOfSkippedTextViewCustom.setText(studentStatistics.getNoOfSkipped());
-        studentStatsViewHolder.noOfPendingTextViewCustom.setText(studentStatistics.getNoOfPending());
-        studentStatsViewHolder.noOfImagineeringTextViewCustom.setText(studentStatistics.getNoOfImagineering());
-        studentStatsViewHolder.noOfProgrammingTextViewCustom.setText(studentStatistics.getNoOfProgramming());
-        studentStatsViewHolder.noOfMechanismsTextViewCustom.setText(studentStatistics.getNoOfMechanisms());
-        studentStatsViewHolder.noOfStructuresTextViewCustom.setText(studentStatistics.getNoOfStructures());
+        LabTabUtil.setLabLevelImageResource(studentStats.getLevel(), studentStatsViewHolder.labLevelImageView);
+        studentStatsViewHolder.noOfProjectsTextViewCustom.setText(String.valueOf(studentStats.getProject_count()));
+        studentStatsViewHolder.noOfLabTimeTextViewCustom.setText(studentStats.getLab_time_count().replaceAll("\"", ""));
+        studentStatsViewHolder.noOfDoneTextViewCustom.setText(String.valueOf(studentStats.getDone_count()));
+        studentStatsViewHolder.noOfSkippedTextViewCustom.setText(String.valueOf(studentStats.getSkipped_count()));
+        studentStatsViewHolder.noOfPendingTextViewCustom.setText(String.valueOf(studentStats.getPending_count()));
+        studentStatsViewHolder.noOfImagineeringTextViewCustom.setText(String.valueOf(studentStats.getImagineering_count()));
+        studentStatsViewHolder.noOfProgrammingTextViewCustom.setText(String.valueOf(studentStats.getProgramming_count()));
+        studentStatsViewHolder.noOfMechanismsTextViewCustom.setText(String.valueOf(studentStats.getMechanisms_count()));
+        studentStatsViewHolder.noOfStructuresTextViewCustom.setText(String.valueOf(studentStats.getStructures_count()));
     }
 
     @Override

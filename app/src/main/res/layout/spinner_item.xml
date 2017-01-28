@@ -13,7 +13,7 @@
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/upload_video"
         android:textColor="#6c6c6c"
         android:textSize="@dimen/text_size_extra_small"

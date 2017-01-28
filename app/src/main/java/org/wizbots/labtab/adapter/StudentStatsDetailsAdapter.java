@@ -15,7 +15,7 @@ import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.StudentStatsDetailsAdapterClickListener;
 import org.wizbots.labtab.model.student.StudentStatisticsDetail;
-import org.wizbots.labtab.model.student.StudentStatisticsDetailProjects;
+import org.wizbots.labtab.model.student.response.ProjectResponse;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
         @Override
         public void onClick(View view) {
-            StudentStatisticsDetailProjects studentStatisticsDetailProjects = (StudentStatisticsDetailProjects) objectArrayList.get(getAdapterPosition());
+            ProjectResponse projectResponse = (ProjectResponse) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.student_stats_details_root_layout_type_2:
                     studentStatsDetailsAdapterClickListener.onViewTypeClick2();
@@ -126,7 +126,7 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     public int getItemViewType(int position) {
         if (objectArrayList.get(position) instanceof StudentStatisticsDetail) {
             return VIEW_ITEM_DATA_TYPE_1;
-        } else if (objectArrayList.get(position) instanceof StudentStatisticsDetailProjects) {
+        } else if (objectArrayList.get(position) instanceof ProjectResponse) {
             return VIEW_ITEM_DATA_TYPE_2;
         }
         return -1;
@@ -162,7 +162,7 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private void configureStudentStatsDetailListType2ViewHolder(StudentStatsDetailsType2ViewHolder studentStatsDetailsType2ViewHolder, int position) {
-        StudentStatisticsDetailProjects studentStatisticsDetailProjects = (StudentStatisticsDetailProjects) objectArrayList.get(position);
+        ProjectResponse projectResponse = (ProjectResponse) objectArrayList.get(position);
         int studentsStatsDetailListLinearLayoutColor;
         int projectCategoryColor;
         if (position % 2 == 0) {
@@ -173,10 +173,11 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             projectCategoryColor = ContextCompat.getColor(LabTabApplication.getInstance(), android.R.color.black);
         }
         studentStatsDetailsType2ViewHolder.studentStatsDetailsType2LinearLayout.setBackgroundColor(studentsStatsDetailListLinearLayoutColor);
-        LabTabUtil.setLabStepImageResource(studentStatisticsDetailProjects.getLabStep(), studentStatsDetailsType2ViewHolder.labStepImageView);
-        studentStatsDetailsType2ViewHolder.projectCategoryTextViewCustom.setText(studentStatisticsDetailProjects.getProjectCategory());
+        LabTabUtil.setLabStepImageResource(Steps.LAB_STEP_2, studentStatsDetailsType2ViewHolder.labStepImageView);
+        studentStatsDetailsType2ViewHolder.projectCategoryTextViewCustom.setText(projectResponse.getProjectName());
         studentStatsDetailsType2ViewHolder.projectCategoryTextViewCustom.setTextColor(projectCategoryColor);
-        LabTabUtil.setProjectStatusImageResource(studentStatisticsDetailProjects.getProjectStatus(), studentStatsDetailsType2ViewHolder.projectStatusImageView);
+        LabTabUtil.setProjectStatusImageResource(projectResponse.getProjectStatus(), studentStatsDetailsType2ViewHolder.projectStatusImageView);
+//        studentStatsDetailsType2ViewHolder.labStepImageView.setVisibility(View.INVISIBLE);
     }
 
     @Override

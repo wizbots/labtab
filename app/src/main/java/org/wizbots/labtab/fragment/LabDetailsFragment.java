@@ -90,13 +90,14 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         progressDialog.show();
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("Lab Details");
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_DETAILS);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         initHeaderView();
 
         recyclerViewLabDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_details);
+//        recyclerViewLabDetails.setFocusable(false);
         objectArrayList = new ArrayList<>();
 
         labDetailsAdapter = new LabDetailsAdapter(objectArrayList, homeActivityContext, this);

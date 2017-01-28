@@ -1,11 +1,16 @@
 package org.wizbots.labtab.model.student.response;
 
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class ProjectHistoryResponse {
     private ImagineerResponse imagineer;
     private ExplorerResponse explorer;
     private WizardResponse wizard;
     private MasterResponse master;
+    @SerializedName("lab certified")
+    @Expose
     private LabCertifiedResponse lab_certified;
     private MakerResponse maker;
     private ApprenticeResponse apprentice;

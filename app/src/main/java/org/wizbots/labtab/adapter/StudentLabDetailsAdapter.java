@@ -100,7 +100,7 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             StudentLabDetailsType2 studentLabDetailsType2 = (StudentLabDetailsType2) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.iv_action_view:
-                    studentLabDetailsAdapterClickListener.onViewTypeClick2();
+                    studentLabDetailsAdapterClickListener.onViewTypeClick2(studentLabDetailsType2.getLabLevel());
                     break;
             }
         }
@@ -164,7 +164,7 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private void configureStudentLabDetailListType1ViewHolder(StudentLabDetailsType1ViewHolder studentLabDetailsType1ViewHolder, int position) {
         StudentLabDetailsType1 studentLabDetailsType1 = (StudentLabDetailsType1) objectArrayList.get(position);
-        LabTabUtil.setLabLevelImageResource(studentLabDetailsType1.getLabLevel(), studentLabDetailsType1ViewHolder.labLevelImageView);
+        LabTabUtil.setLabLevelImageResource(studentLabDetailsType1.getLabLevel().toUpperCase(), studentLabDetailsType1ViewHolder.labLevelImageView);
         studentLabDetailsType1ViewHolder.studentNameTextViewCustom.setText(studentLabDetailsType1.getStudentName());
         studentLabDetailsType1ViewHolder.noOfProjectsTextViewCustom.setText(studentLabDetailsType1.getNoOfProjects());
         studentLabDetailsType1ViewHolder.noOfLabTimeTextViewCustom.setText(studentLabDetailsType1.getNoOfLabTime());
@@ -186,7 +186,7 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             labDetailTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), android.R.color.white);
         }
         studentLabDetailsType2ViewHolder.studentLabDetailsType2LinearLayout.setBackgroundColor(studentsLabDetailListLinearLayoutColor);
-        LabTabUtil.setLabLevelImageResource(studentLabDetailsType2.getLabLevel(), studentLabDetailsType2ViewHolder.labLevelImageView);
+        LabTabUtil.setLabLevelImageResource(studentLabDetailsType2.getLabLevel().toUpperCase(), studentLabDetailsType2ViewHolder.labLevelImageView);
         studentLabDetailsType2ViewHolder.studentNameTextViewCustom.setText(studentLabDetailsType2.getStudentName());
         studentLabDetailsType2ViewHolder.noOfProjectsTextViewCustom.setText(studentLabDetailsType2.getNoOfProjects());
         studentLabDetailsType2ViewHolder.noOfLabTimeTextViewCustom.setText(studentLabDetailsType2.getNoOfLabTime());

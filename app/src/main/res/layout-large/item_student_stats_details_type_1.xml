@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:id="@+id/student_name_container"
-        android:layout_width="@dimen/zero_dimension"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"

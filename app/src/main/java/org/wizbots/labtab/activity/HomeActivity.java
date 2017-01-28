@@ -111,10 +111,10 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[4];
-        leftDrawerItem[0] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, "Go to www.wizbots.com");
-        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, "Lab List");
-        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, "Video List");
-        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.icon_video_play, "Logout");
+        leftDrawerItem[0] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, DrawerItem.ITEM_GO_TO);
+        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, DrawerItem.ITEM_LAB_LIST);
+        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, DrawerItem.ITEM_VIDEO_LIST);
+        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);

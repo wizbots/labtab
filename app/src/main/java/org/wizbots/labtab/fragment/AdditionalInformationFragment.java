@@ -69,13 +69,14 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("Additional Information");
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.ADDITIONAL_INFORMATION);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         initHeaderView();
 
         recyclerViewAdditionalInformation = (RecyclerView) rootView.findViewById(R.id.recycler_view_additional_information);
+//        recyclerViewAdditionalInformation.setFocusable(false);
         objectArrayList = new ArrayList<>();
 
         additionalInformationAdapter = new AdditionalInformationAdapter(objectArrayList, homeActivityContext, this);

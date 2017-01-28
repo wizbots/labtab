@@ -91,7 +91,7 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
         categorySpinner = (Spinner) rootView.findViewById(R.id.spinner_category);
         stringArrayList = new ArrayList<>();
 
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("View Video");
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.VIEW_VIDEO);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);

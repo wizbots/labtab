@@ -1,10 +1,11 @@
-package org.wizbots.labtab.model.student.response;
+package org.wizbots.labtab.model.student;
 
-public class StudentResponse {
+
+public class StudentProfile {
     private String enrollments_count;
     private String last_name;
     private String date_of_birth;
-    private CreatorResponse creator;
+    private String creator;
     private String grade;
     private String after_care_after;
     private String id;
@@ -16,12 +17,11 @@ public class StudentResponse {
     private String after_care_before;
     private String after_care_phone;
     private String after_care_name;
-    private ProjectHistoryResponse projects_history;
 
-    public StudentResponse() {
+    public StudentProfile() {
     }
 
-    public StudentResponse(String enrollments_count, String last_name, String date_of_birth, CreatorResponse creator, String grade, String after_care_after, String id, String first_name, String level, String absence_count, String allergies, String special_needs, String after_care_before, String after_care_phone, String after_care_name, ProjectHistoryResponse projects_history) {
+    public StudentProfile(String enrollments_count, String last_name, String date_of_birth, String creator, String grade, String after_care_after, String id, String first_name, String level, String absence_count, String allergies, String special_needs, String after_care_before, String after_care_phone, String after_care_name) {
         this.enrollments_count = enrollments_count;
         this.last_name = last_name;
         this.date_of_birth = date_of_birth;
@@ -37,7 +37,6 @@ public class StudentResponse {
         this.after_care_before = after_care_before;
         this.after_care_phone = after_care_phone;
         this.after_care_name = after_care_name;
-        this.projects_history = projects_history;
     }
 
     public String getEnrollments_count() {
@@ -64,11 +63,11 @@ public class StudentResponse {
         this.date_of_birth = date_of_birth;
     }
 
-    public CreatorResponse getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(CreatorResponse creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -160,11 +159,22 @@ public class StudentResponse {
         this.after_care_name = after_care_name;
     }
 
-    public ProjectHistoryResponse getProject_history() {
-        return projects_history;
+    public String getFullName() {
+        return this.first_name + " " + last_name;
     }
 
-    public void setProject_history(ProjectHistoryResponse project_history) {
-        this.projects_history = project_history;
+    public String allergiesSpecialNeeds() {
+        String allergiesSpecialNeeds = "";
+        if (getAllergies() == null && getSpecial_needs() == null) {
+            allergiesSpecialNeeds = "";
+        } else if (getAllergies() != null && getSpecial_needs() == null) {
+            allergiesSpecialNeeds = getAllergies();
+        } else if (getAllergies() == null && getSpecial_needs() != null) {
+            allergiesSpecialNeeds = getSpecial_needs();
+        } else {
+            allergiesSpecialNeeds = getAllergies() + " / " + getSpecial_needs();
+        }
+        return allergiesSpecialNeeds;
     }
+
 }
