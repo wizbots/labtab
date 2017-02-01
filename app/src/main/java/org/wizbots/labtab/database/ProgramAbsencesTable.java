@@ -51,7 +51,7 @@ public class ProgramAbsencesTable extends AbstractTable {
                 + COLUMN_PROGRAM_ID + " text,"
                 + COLUMN_STUDENT_ID + " text,"
                 + COLUMN_MENTOR_ID + " text,"
-                + COLUMN_DATE + " text, PRIMARY KEY(mentor_id,program_id,student_id));");
+                + COLUMN_DATE + " text, PRIMARY KEY(mentor_id,program_id,student_id,date));");
     }
 
     public synchronized void insert(Absence absence) {

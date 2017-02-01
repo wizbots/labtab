@@ -12,8 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -26,19 +28,24 @@ import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.ProgramTable;
 import org.wizbots.labtab.interfaces.LabDetailsAdapterClickListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramStudentsListener;
+import org.wizbots.labtab.interfaces.requesters.MarkStudentAbsentListener;
+import org.wizbots.labtab.interfaces.requesters.PromotionDemotionListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.program.response.ProgramResponse;
+import org.wizbots.labtab.requesters.MarkStudentAbsentRequester;
 import org.wizbots.labtab.requesters.ProgramStudentsRequester;
+import org.wizbots.labtab.requesters.PromotionDemotionRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
-public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener, GetProgramStudentsListener {
+public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener, GetProgramStudentsListener, View.OnClickListener, MarkStudentAbsentListener, PromotionDemotionListener {
     public static final String PROGRAM = "PROGRAM";
     public static final String STUDENT = "STUDENT";
     private LabTabHeaderLayout labTabHeaderLayout;
@@ -57,6 +64,9 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             nameTextViewCustom, locationTextViewCustom, categoryTextViewCustom,
             roomTextViewCustom, gradesTextViewCustom, priceTextViewCustom,
             fromTextViewCustom, toTextViewCustom, timeSlotTextViewCustom, dayTextViewCustom;
+    private TextView markAbsentTextView, promoteTextView, demoteTextView;
+    private CheckBox checkBoxSendNotification;
+    private Date dateSelected;
 
     public LabDetailsFragment() {
 
@@ -88,6 +98,10 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         progressDialog.setMessage("processing");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+        markAbsentTextView = (TextView) rootView.findViewById(R.id.tv_mark_absent);
+        demoteTextView = (TextView) rootView.findViewById(R.id.tv_promote);
+        promoteTextView = (TextView) rootView.findViewById(R.id.tv_demote);
+        checkBoxSendNotification = (CheckBox) rootView.findViewById(R.id.cb_send_absent_notification);
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_DETAILS);
@@ -105,32 +119,13 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         recyclerViewLabDetails.setLayoutManager(mLayoutManager);
         recyclerViewLabDetails.setItemAnimator(new DefaultItemAnimator());
         recyclerViewLabDetails.setAdapter(labDetailsAdapter);
-        rootView.findViewById(R.id.btn_absences).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(PROGRAM, program);
-                homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, bundle);
-            }
-        });
-        rootView.findViewById(R.id.btn_additional).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(PROGRAM, program);
-                homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, bundle);
-            }
-        });
+        rootView.findViewById(R.id.btn_absences).setOnClickListener(this);
+        rootView.findViewById(R.id.btn_additional).setOnClickListener(this);
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
 
         calendarImageView = (ImageView) rootView.findViewById(R.id.iv_calendar);
 
-        calendarImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCalendar();
-            }
-        });
+        calendarImageView.setOnClickListener(this);
         program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
         if (program != null) {
             setHeaderView(program);
@@ -146,18 +141,10 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             BackgroundExecutor.getInstance().execute(new ProgramStudentsRequester(programOrLab.getId()));
         }
 
-        rootView.findViewById(R.id.iv_add_video).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()).isEmpty()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
-                    homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
-                } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO);
-                }
-            }
-        });
+        rootView.findViewById(R.id.iv_add_video).setOnClickListener(this);
+        markAbsentTextView.setOnClickListener(this);
+        promoteTextView.setOnClickListener(this);
+        demoteTextView.setOnClickListener(this);
     }
 
     @Override
@@ -190,9 +177,14 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
     private void showCalendar() {
         final Calendar myCalendar = Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dateSelected = calendar.getTime();
             }
 
         };
@@ -204,6 +196,8 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(GetProgramStudentsListener.class, this);
+        LabTabApplication.getInstance().addUIListener(MarkStudentAbsentListener.class, this);
+        LabTabApplication.getInstance().addUIListener(PromotionDemotionListener.class, this);
     }
 
     @Override
@@ -242,6 +236,8 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(GetProgramStudentsListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(MarkStudentAbsentListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(PromotionDemotionListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
     }
@@ -286,6 +282,147 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         fromTextViewCustom.setText(program.getStarts());
         toTextViewCustom.setText(program.getEnds());
         timeSlotTextViewCustom.setText(program.getTime_slot());
-        dayTextViewCustom.setText(LabTabUtil.getFormattedDate());
+        dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT, new Date()));
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch ((v.getId())) {
+            case R.id.tv_mark_absent:
+                progressDialog.show();
+                ArrayList<Student> studentArrayList = getSelectedStudents();
+                if (!studentArrayList.isEmpty()) {
+                    if (dateSelected != null) {
+                        BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
+                                LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, dateSelected),
+                                program,
+                                checkBoxSendNotification.isChecked()));
+                    } else {
+                        BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
+                                LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, new Date()),
+                                program,
+                                checkBoxSendNotification.isChecked()));
+                    }
+                } else {
+                    progressDialog.dismiss();
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT);
+                }
+                break;
+            case R.id.tv_promote:
+                progressDialog.show();
+                ArrayList<Student> promoteStudents = getSelectedStudents();
+                if (!promoteStudents.isEmpty()) {
+                    BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(promoteStudents,
+                            program,
+                            true));
+                } else {
+                    progressDialog.dismiss();
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT);
+                }
+                break;
+            case R.id.tv_demote:
+                progressDialog.show();
+                ArrayList<Student> demoteStudents = getSelectedStudents();
+                if (!demoteStudents.isEmpty()) {
+                    BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(demoteStudents,
+                            program,
+                            false));
+                } else {
+                    progressDialog.dismiss();
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT);
+                }
+                break;
+            case R.id.iv_add_video:
+                if (!ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()).isEmpty()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+                    homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
+                } else {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO);
+                }
+                break;
+            case R.id.btn_absences:
+                Bundle listOfSkipBundle = new Bundle();
+                listOfSkipBundle.putParcelable(PROGRAM, program);
+                homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, listOfSkipBundle);
+                break;
+            case R.id.btn_additional:
+                Bundle additionalBundle = new Bundle();
+                additionalBundle.putParcelable(PROGRAM, program);
+                homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, additionalBundle);
+                break;
+            case R.id.iv_calendar:
+                showCalendar();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private ArrayList<Student> getSelectedStudents() {
+        ArrayList<Student> studentArrayList = new ArrayList<>();
+        for (Object object : objectArrayList) {
+            if (((Student) object).isCheck()) {
+                studentArrayList.add((Student) object);
+            }
+        }
+        return studentArrayList;
+    }
+
+    @Override
+    public void markAbsentSuccessful(ArrayList<Student> studentArrayList, final String date) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                for (Object object : objectArrayList) {
+                    ((Student) object).setCheck(false);
+                }
+                labDetailsAdapter.notifyDataSetChanged();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_MARKED_ABSENT_SUCCESSFULLY_FOR + date);
+            }
+        });
+    }
+
+    @Override
+    public void markAbsentUnSuccessful(int status) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+            }
+        });
+    }
+
+    @Override
+    public void promotionDemotionSuccessful(ArrayList<Student> student, Program program, final boolean promote) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                for (Object object : objectArrayList) {
+                    ((Student) object).setCheck(false);
+                }
+                labDetailsAdapter.notifyDataSetChanged();
+                if (promote) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_PROMOTED_SUCCESSFULLY);
+                } else {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_DEMOTED_SUCCESSFULLY);
+                }
+                homeActivityContext.onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void promotionDemotionUnSuccessful(int status) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+            }
+        });
     }
 }

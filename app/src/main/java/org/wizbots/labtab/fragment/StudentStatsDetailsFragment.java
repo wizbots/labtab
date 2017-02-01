@@ -29,6 +29,7 @@ import org.wizbots.labtab.model.student.response.ProjectResponse;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class StudentStatsDetailsFragment extends ParentFragment implements View.OnClickListener, StudentStatsDetailsAdapterClickListener {
 
@@ -210,7 +211,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         fromTextViewCustom.setText(program.getStarts());
         toTextViewCustom.setText(program.getEnds());
         timeSlotTextViewCustom.setText(program.getTime_slot());
-        dayTextViewCustom.setText(LabTabUtil.getFormattedDate());
+        dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT,new Date()));
     }
 
 }

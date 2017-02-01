@@ -26,6 +26,7 @@ import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAdapterClickListener {
 
@@ -174,7 +175,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         fromTextViewCustom.setText(program.getStarts());
         toTextViewCustom.setText(program.getEnds());
         timeSlotTextViewCustom.setText(program.getTime_slot());
-        dayTextViewCustom.setText(LabTabUtil.getFormattedDate());
+        dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT, new Date()));
     }
 
     @Override

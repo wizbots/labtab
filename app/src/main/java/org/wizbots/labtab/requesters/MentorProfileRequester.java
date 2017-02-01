@@ -4,7 +4,6 @@ package org.wizbots.labtab.requesters;
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
-import org.wizbots.labtab.interfaces.requesters.CreateTokenListener;
 import org.wizbots.labtab.interfaces.requesters.GetMentorProfileListener;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
@@ -33,14 +32,14 @@ public class MentorProfileRequester implements Runnable, LabTabConstants {
                     mentor.setToken(createTokenResponse.getToken());
                     mentor.setId(createTokenResponse.getId());
                     mentor.setMember_id(createTokenResponse.getMember_id());
-                    getMentorProfileListener.mentorProfileFetchedSuccessfully(mentor,createTokenResponse);
+                    getMentorProfileListener.mentorProfileFetchedSuccessfully(mentor, createTokenResponse);
                 } else {
                     getMentorProfileListener.unableToFetchMentor(mentorProfileResponse.getResponseCode());
                 }
             }
         } else {
-            for (CreateTokenListener createTokenListener : LabTabApplication.getInstance().getUIListeners(CreateTokenListener.class)) {
-                createTokenListener.unableToCreateToken(0);
+            for (GetMentorProfileListener getMentorProfileListener : LabTabApplication.getInstance().getUIListeners(GetMentorProfileListener.class)) {
+                getMentorProfileListener.unableToFetchMentor(0);
             }
         }
     }

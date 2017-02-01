@@ -228,17 +228,29 @@ public class LabTabUtil implements LabTabConstants {
         return retrofit.create(LabTabApiInterface.class);
     }
 
-
     public static void setServiceEnabled(final Class<? extends Service> serviceClass, final boolean enable) {
         final PackageManager pm = LabTabApplication.getInstance().getPackageManager();
         final int enableFlag = enable ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
         pm.setComponentEnabledSetting(new ComponentName(LabTabApplication.getInstance(), serviceClass), enableFlag, PackageManager.DONT_KILL_APP);
     }
 
-
-    public static String getFormattedDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        return sdf.format(new Date());
+    public static String getFormattedDate(String dateFormat, Date date) {
+        String formattedDate = "";
+        switch (dateFormat) {
+            case DateFormat.DEFAULT:
+                SimpleDateFormat sdf1 = new SimpleDateFormat(DateFormat.DEFAULT, Locale.getDefault());
+                formattedDate = sdf1.format(date);
+                break;
+            case DateFormat.YYYYMMDD:
+                SimpleDateFormat sdf2 = new SimpleDateFormat(DateFormat.YYYYMMDD, Locale.getDefault());
+                formattedDate = sdf2.format(date);
+                break;
+            default:
+                SimpleDateFormat sdfDefault = new SimpleDateFormat(DateFormat.DEFAULT, Locale.getDefault());
+                formattedDate = sdfDefault.format(date);
+                break;
+        }
+        return formattedDate;
     }
 
     public static void setBackGroundImageResource(String labLevel, ImageView imageView) {
@@ -270,5 +282,68 @@ public class LabTabUtil implements LabTabConstants {
         }
     }
 
-
+    public static String getPromotionDemotionLevel(String level, boolean promote) {
+        if (promote) {
+            switch (level.toUpperCase()) {
+                case LabLevels.NOVICE:
+                    level = LabLevels.LAB_CERTIFIED;
+                    break;
+                case LabLevels.LAB_CERTIFIED:
+                    level = LabLevels.EXPLORER;
+                    break;
+                case LabLevels.EXPLORER:
+                    level = LabLevels.APPRENTICE;
+                    break;
+                case LabLevels.APPRENTICE:
+                    level = LabLevels.MAKER;
+                    break;
+                case LabLevels.MAKER:
+                    level = LabLevels.IMAGINEER;
+                    break;
+                case LabLevels.IMAGINEER:
+                    level = LabLevels.WIZARD;
+                    break;
+                case LabLevels.WIZARD:
+                    level = LabLevels.MASTER;
+                    break;
+                case LabLevels.MASTER:
+                    level = LabLevels.MASTER;
+                    break;
+                default:
+                    level = LabLevels.NOVICE;
+                    break;
+            }
+        } else {
+            switch (level.toUpperCase()) {
+                case LabLevels.NOVICE:
+                    level = LabLevels.NOVICE;
+                    break;
+                case LabLevels.LAB_CERTIFIED:
+                    level = LabLevels.NOVICE;
+                    break;
+                case LabLevels.EXPLORER:
+                    level = LabLevels.LAB_CERTIFIED;
+                    break;
+                case LabLevels.APPRENTICE:
+                    level = LabLevels.EXPLORER;
+                    break;
+                case LabLevels.MAKER:
+                    level = LabLevels.APPRENTICE;
+                    break;
+                case LabLevels.IMAGINEER:
+                    level = LabLevels.MAKER;
+                    break;
+                case LabLevels.WIZARD:
+                    level = LabLevels.IMAGINEER;
+                    break;
+                case LabLevels.MASTER:
+                    level = LabLevels.WIZARD;
+                    break;
+                default:
+                    level = LabLevels.NOVICE;
+                    break;
+            }
+        }
+        return level;
+    }
 }

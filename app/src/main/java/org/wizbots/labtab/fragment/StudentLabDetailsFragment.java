@@ -35,6 +35,7 @@ import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class StudentLabDetailsFragment extends ParentFragment implements View.OnClickListener, StudentLabDetailsAdapterClickListener, GetStudentProfileAndStatsListener {
 
@@ -201,7 +202,7 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
         fromTextViewCustom.setText(program.getStarts());
         toTextViewCustom.setText(program.getEnds());
         timeSlotTextViewCustom.setText(program.getTime_slot());
-        dayTextViewCustom.setText(LabTabUtil.getFormattedDate());
+        dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT, new Date()));
     }
 
 

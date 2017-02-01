@@ -91,6 +91,7 @@ public interface LabTabConstants {
         String MAKER = "MAKER";
         String MASTER = "MASTER";
         String WIZARD = "WIZARD";
+        String NOVICE = "NOVICE";
     }
 
     //Lab MARKS
@@ -137,6 +138,11 @@ public interface LabTabConstants {
         String NO_ADDITIONAL_INFO_FOUND_FOR_THIS_LAB = "No Additional Info found for this Lab";
         String NO_LIST_OF_SKIPS_FOUND_FOR_THIS_LAB = "No List of Skips found for this Lab";
         String AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO = "At least one student is needed to add video";
+        String PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT = "Please Select at least one student to mark absent";
+        String STUDENTS_ARE_MARKED_ABSENT_SUCCESSFULLY_FOR = "Students are Marked Absent Successfully for ";
+        String STUDENTS_PROMOTED_SUCCESSFULLY = "Students Promoted Successfully";
+        String STUDENTS_DEMOTED_SUCCESSFULLY = "Students Demoted Successfully";
+        String OOPS_SOMETHING_WENT_WRONG = "Oops Something Went Wrong";
     }
 
     /**
@@ -198,5 +204,10 @@ public interface LabTabConstants {
         String STUDENT_STATS_DETAILS = "Lab Details";
         String VIDEO_LIST = "Video List";
         String VIEW_VIDEO = "View Video";
+    }
+
+    interface DateFormat {
+        String DEFAULT = "dd/MM/yyyy";
+        String YYYYMMDD = "yyyy-MM-dd";
     }
 }

@@ -55,5 +55,26 @@ public class LabTabHTTPOperationController {
         );
     }
 
+    public static LabTabResponse markStudentAbsents(String[] students, String date, String programId, boolean sendNotification) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.markStudentAbsent
+                (
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),
+                        students,
+                        date,
+                        programId,
+                        sendNotification
+                ));
+    }
+
+    public static LabTabResponse promoteDemoteStudents(String[] students, boolean promoteDemote) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.promoteDemoteStudent
+                (
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),
+                        students,
+                        promoteDemote
+                ));
+    }
 
 }

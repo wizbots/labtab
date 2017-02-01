@@ -3,7 +3,9 @@ package org.wizbots.labtab.retrofit;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.model.ProgramOrLab;
+import org.wizbots.labtab.model.markabsent.MarkStudentAbsentResponse;
 import org.wizbots.labtab.model.program.response.ProgramResponse;
+import org.wizbots.labtab.model.promotedemote.PromotionDemotionResponse;
 import org.wizbots.labtab.model.student.response.StudentResponse;
 
 import java.util.ArrayList;
@@ -60,5 +62,16 @@ public interface LabTabApiInterface {
     //    8. Returns a student
     @GET("students/{id}")
     Call<StudentResponse> returnStudentProfileAndStats(@Path("id") String id, @Header("Auth-Token") String authToken);
+
+    //    8. Mark Student Absent
+    @POST("students/mark-absent")
+    Call<MarkStudentAbsentResponse> markStudentAbsent(@Header("Auth-Token") String authToken, @Query("students") String[] students,
+                                                      @Query("date") String date, @Query("program") String program,
+                                                      @Query("send_notification") boolean sendNotification);
+
+    //    8. Promote Or Demote Student
+    @POST("students/promotion")
+    Call<PromotionDemotionResponse> promoteDemoteStudent(@Header("Auth-Token") String authToken, @Query("students") String[] students,
+                                                         @Query("promote") boolean promoteDemote);
 
 }

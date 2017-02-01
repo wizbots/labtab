@@ -3,6 +3,7 @@ package org.wizbots.labtab.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import org.wizbots.labtab.LabTabApplication;
@@ -157,6 +158,13 @@ public class ProgramStudentsTable extends AbstractTable {
             }
         }
         return students;
+    }
+
+    public void upDateStudentLevel(String studentId, String level) {
+        String updateStudentLevelQuery = "UPDATE " + NAME + " SET " + COLUMN_LEVEL + " = '" + level + "' WHERE " + COLUMN_STUDENT_ID + "= '" + studentId + "';";
+        SQLiteDatabase db = daoManager.getWritableDatabase();
+        SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
+        stmt.execute();
     }
 
     @Override
