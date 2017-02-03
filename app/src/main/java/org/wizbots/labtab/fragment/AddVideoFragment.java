@@ -337,12 +337,34 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                creatorsSelected.add(student);
-                horizontalProjectCreatorAdapter.notifyDataSetChanged();
-                recyclerViewContainer.setVisibility(View.GONE);
-                recyclerViewProjectCreator.setVisibility(View.GONE);
-                projectCreatorEditTextCustom.clearFocus();
-                LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                if (creatorsSelected.isEmpty()) {
+                    creatorsSelected.add(student);
+                    horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                    recyclerViewContainer.setVisibility(View.GONE);
+                    recyclerViewProjectCreator.setVisibility(View.GONE);
+                    projectCreatorEditTextCustom.clearFocus();
+                    LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                } else {
+                    boolean found = false;
+
+                    for (Student studentFound : creatorsSelected) {
+                        if (studentFound.getStudent_id().equals(student.getStudent_id())) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        creatorsSelected.add(student);
+                        horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                        recyclerViewContainer.setVisibility(View.GONE);
+                        recyclerViewProjectCreator.setVisibility(View.GONE);
+                        projectCreatorEditTextCustom.clearFocus();
+                        LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                    } else {
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "This student is already in the list");
+                    }
+                }
             }
         });
     }

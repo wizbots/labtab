@@ -309,12 +309,34 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                creatorsSelected.add(student);
-                horizontalProjectCreatorAdapter.notifyDataSetChanged();
-                recyclerViewContainer.setVisibility(View.GONE);
-                recyclerViewProjectCreator.setVisibility(View.GONE);
-                projectCreatorEditTextCustom.clearFocus();
-                LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                if (creatorsSelected.isEmpty()) {
+                    creatorsSelected.add(student);
+                    horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                    recyclerViewContainer.setVisibility(View.GONE);
+                    recyclerViewProjectCreator.setVisibility(View.GONE);
+                    projectCreatorEditTextCustom.clearFocus();
+                    LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                } else {
+                    boolean found = false;
+
+                    for (Student studentFound : creatorsSelected) {
+                        if (studentFound.getStudent_id().equals(student.getStudent_id())) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        creatorsSelected.add(student);
+                        horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                        recyclerViewContainer.setVisibility(View.GONE);
+                        recyclerViewProjectCreator.setVisibility(View.GONE);
+                        projectCreatorEditTextCustom.clearFocus();
+                        LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                    } else {
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "This student is already in the list");
+                    }
+                }
             }
         });
     }
@@ -512,12 +534,20 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     public void initKnowledgeNuggets() {
-
-
-
         builder = new AlertDialog.Builder(homeActivityContext);
         final String[] components = homeActivityContext.getResources().getStringArray(R.array.components);
         final boolean[] componentSelection = new boolean[components.length];
+
+        String[] knwlgngts = (String[]) LabTabUtil.fromJson(video.getKnowledge_nuggets(), String[].class);
+        for (String kn : knwlgngts) {
+            for (int i = 0; i < components.length; i++) {
+                if (components[i].equals(kn)) {
+                    componentSelection[i] = true;
+                    break;
+                }
+            }
+            knowledgeNuggets.add(kn);
+        }
 
         builder.setMultiChoiceItems(components, componentSelection, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
