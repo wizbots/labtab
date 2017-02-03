@@ -6,7 +6,7 @@ import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.database.VideoTable;
-import org.wizbots.labtab.model.Video;
+import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.service.LabTabUploadService;
 import org.wizbots.labtab.util.NetworkUtils;
 

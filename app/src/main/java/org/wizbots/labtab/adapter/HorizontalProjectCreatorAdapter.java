@@ -11,19 +11,23 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
+import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 
 public class HorizontalProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
 
     private final int VIEW_ITEM_DATA = 1;
-    private ArrayList<Object> objectArrayList;
+    private ArrayList<Student> studentArrayList;
     private Context context;
     private HorizontalProjectCreatorAdapterClickListener horizontalProjectCreatorAdapterClickListener;
 
     private class HorizontalProjectCreatorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextViewCustom projectCreatorNameTextViewCustom;
         ImageView projectCreatorDeleteImageView;
+        ImageView projectCreatorLabLevelImageView;
+
         HorizontalProjectCreatorAdapterClickListener horizontalProjectCreatorAdapterClickListener;
 
         HorizontalProjectCreatorViewHolder(View view, HorizontalProjectCreatorAdapterClickListener horizontalProjectCreatorAdapterClickListener) {
@@ -31,12 +35,13 @@ public class HorizontalProjectCreatorAdapter extends RecyclerView.Adapter<Recycl
             this.horizontalProjectCreatorAdapterClickListener = horizontalProjectCreatorAdapterClickListener;
             projectCreatorDeleteImageView = (ImageView) view.findViewById(R.id.iv_delete_creator);
             projectCreatorNameTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_project_creator);
+            projectCreatorLabLevelImageView = (ImageView) view.findViewById(R.id.iv_student_lab_level);
             projectCreatorDeleteImageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            String projectCreator = (String) objectArrayList.get(getAdapterPosition());
+            Student projectCreator = studentArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.iv_delete_creator:
                     horizontalProjectCreatorAdapterClickListener.onProjectCreatorDeleteClick(projectCreator);
@@ -45,8 +50,8 @@ public class HorizontalProjectCreatorAdapter extends RecyclerView.Adapter<Recycl
         }
     }
 
-    public HorizontalProjectCreatorAdapter(ArrayList<Object> objectArrayList, Context context, HorizontalProjectCreatorAdapterClickListener horizontalProjectCreatorAdapterClickListener) {
-        this.objectArrayList = objectArrayList;
+    public HorizontalProjectCreatorAdapter(ArrayList<Student> studentArrayList, Context context, HorizontalProjectCreatorAdapterClickListener horizontalProjectCreatorAdapterClickListener) {
+        this.studentArrayList = studentArrayList;
         this.context = context;
         this.horizontalProjectCreatorAdapterClickListener = horizontalProjectCreatorAdapterClickListener;
     }
@@ -71,7 +76,7 @@ public class HorizontalProjectCreatorAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public int getItemViewType(int position) {
-        if (objectArrayList.get(position) instanceof String) {
+        if (studentArrayList.get(position) != null) {
             return VIEW_ITEM_DATA;
         }
         return -1;
@@ -92,13 +97,14 @@ public class HorizontalProjectCreatorAdapter extends RecyclerView.Adapter<Recycl
     }
 
     private void configureLabListViewHolder(HorizontalProjectCreatorViewHolder horizontalProjectCreatorViewHolder, int position) {
-        String projectCreator = (String) objectArrayList.get(position);
-        horizontalProjectCreatorViewHolder.projectCreatorNameTextViewCustom.setText(projectCreator);
+        Student projectCreator = studentArrayList.get(position);
+        horizontalProjectCreatorViewHolder.projectCreatorNameTextViewCustom.setText(projectCreator.getName());
+        LabTabUtil.setLabLevelImageResource(projectCreator.getLevel(), horizontalProjectCreatorViewHolder.projectCreatorLabLevelImageView);
     }
 
     @Override
     public int getItemCount() {
-        return objectArrayList.size();
+        return studentArrayList.size();
     }
 
 }

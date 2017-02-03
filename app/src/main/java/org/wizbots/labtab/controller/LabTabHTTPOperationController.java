@@ -6,6 +6,8 @@ import org.wizbots.labtab.retrofit.ConnectionUtil;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 
+import okhttp3.MultipartBody;
+
 public class LabTabHTTPOperationController {
 
     private final String TAG = LabTabHTTPOperationController.class.getSimpleName();
@@ -74,6 +76,40 @@ public class LabTabHTTPOperationController {
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),
                         students,
                         promoteDemote
+                ));
+    }
+
+
+    public static LabTabResponse createProject(String category, String sku, String description, String title, String notes,
+                                               MultipartBody.Part file, String[] components, String[] creators) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.createProject
+                (
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),
+                        category,
+                        sku,
+                        description,
+                        title,
+                        notes,
+                        file,
+                        components,
+                        creators
+                ));
+    }
+
+    public static LabTabResponse editProject(String projectId, String category, String sku, String description, String title, String notes,
+                                             String[] components, String[] creators) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.editProject
+                (
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),
+                        projectId,
+                        category,
+                        description,
+                        title,
+                        notes,
+                        components,
+                        creators
                 ));
     }
 

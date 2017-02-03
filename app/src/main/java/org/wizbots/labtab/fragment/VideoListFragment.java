@@ -20,7 +20,7 @@ import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
-import org.wizbots.labtab.model.Video;
+import org.wizbots.labtab.model.video.Video;
 
 import java.util.ArrayList;
 
@@ -88,9 +88,13 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
 
     @Override
     public void onVideoListItemActionEdit(Video video) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(VIDEO, video);
-        homeActivityContext.replaceFragment(Fragments.EDIT_VIDEO, bundle);
+        if (video.getStatus() == 100) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(VIDEO, video);
+            homeActivityContext.replaceFragment(Fragments.EDIT_VIDEO, bundle);
+        } else {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.VIDEO_CAN_NOT_BE_EDITED_WHEN_IT_IS_NOT_UPLOADED_TO_WIZBOTS_SERVER);
+        }
     }
 
     @Override

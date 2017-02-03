@@ -117,7 +117,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
                     bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
                     homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
                 } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_FOR_PROMOTION_FOR_THIS_LAB);
                 }
             }
         });

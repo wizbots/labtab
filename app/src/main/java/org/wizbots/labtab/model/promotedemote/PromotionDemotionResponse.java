@@ -1,22 +1,24 @@
 package org.wizbots.labtab.model.promotedemote;
 
+import java.util.ArrayList;
+
 public class PromotionDemotionResponse {
-    private String students[];
+    private ArrayList<Student> students;
     private boolean success;
 
     public PromotionDemotionResponse() {
     }
 
-    public PromotionDemotionResponse(String[] students, boolean success) {
+    public PromotionDemotionResponse(ArrayList<Student> students, boolean success) {
         this.students = students;
         this.success = success;
     }
 
-    public String[] getStudents() {
+    public ArrayList<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(String[] students) {
+    public void setStudents(ArrayList<Student> students) {
         this.students = students;
     }
 

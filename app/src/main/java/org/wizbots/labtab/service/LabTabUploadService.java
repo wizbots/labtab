@@ -20,8 +20,8 @@ import org.wizbots.labtab.activity.SplashActivity;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.requesters.VideoUploadListener;
-import org.wizbots.labtab.model.Video;
-import org.wizbots.labtab.requesters.VideoUploaderRequester;
+import org.wizbots.labtab.model.video.Video;
+import org.wizbots.labtab.requesters.CreateProjectRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class LabTabUploadService extends Service implements LabTabConstants, Vid
                     startForegroundIntent();
                     statusOfSingleVideoUploadBackgroundExecutor = new boolean[videoArrayList.size()];
                     for (int i = 0; i < videoArrayList.size(); i++) {
-                        BackgroundExecutor.getInstance().execute(new VideoUploaderRequester(labTabUploadService, videoArrayList.get(i), i));
+                        BackgroundExecutor.getInstance().execute(new CreateProjectRequester(labTabUploadService, videoArrayList.get(i), i));
                     }
                 }
             }

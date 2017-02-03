@@ -1,5 +1,4 @@
-package org.wizbots.labtab.model;
-
+package org.wizbots.labtab.model.video;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,11 +17,15 @@ public class Video implements Parcelable {
     private String description;
     private String project_creators;
     private String notes_to_the_family;
+    private String is_transCoding;
+    private String video;
+    private String videoId;
+    private String programId;
 
     public Video() {
     }
 
-    public Video(String id, String mentor_id, int status, String path, String title, String category, String mentor_name, String lab_sku, String lab_level, String knowledge_nuggets, String description, String project_creators, String notes_to_the_family) {
+    public Video(String id, String mentor_id, int status, String path, String title, String category, String mentor_name, String lab_sku, String lab_level, String knowledge_nuggets, String description, String project_creators, String notes_to_the_family, String is_transCoding, String video, String videoId, String programId) {
         this.id = id;
         this.mentor_id = mentor_id;
         this.status = status;
@@ -36,6 +39,10 @@ public class Video implements Parcelable {
         this.description = description;
         this.project_creators = project_creators;
         this.notes_to_the_family = notes_to_the_family;
+        this.is_transCoding = is_transCoding;
+        this.video = video;
+        this.videoId = videoId;
+        this.programId = programId;
     }
 
     public String getId() {
@@ -142,6 +149,39 @@ public class Video implements Parcelable {
         this.notes_to_the_family = notes_to_the_family;
     }
 
+    public String getIs_transCoding() {
+        return is_transCoding;
+    }
+
+    public void setIs_transCoding(String is_transCoding) {
+        this.is_transCoding = is_transCoding;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
+    }
+
+    public String getProgramId() {
+        return programId;
+    }
+
+    public void setProgramId(String programId) {
+        this.programId = programId;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -162,6 +202,10 @@ public class Video implements Parcelable {
         dest.writeString(this.description);
         dest.writeString(this.project_creators);
         dest.writeString(this.notes_to_the_family);
+        dest.writeString(this.is_transCoding);
+        dest.writeString(this.video);
+        dest.writeString(this.videoId);
+        dest.writeString(this.programId);
     }
 
     protected Video(Parcel in) {
@@ -178,6 +222,10 @@ public class Video implements Parcelable {
         this.description = in.readString();
         this.project_creators = in.readString();
         this.notes_to_the_family = in.readString();
+        this.is_transCoding = in.readString();
+        this.video = in.readString();
+        this.videoId = in.readString();
+        this.programId = in.readString();
     }
 
     public static final Creator<Video> CREATOR = new Creator<Video>() {

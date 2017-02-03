@@ -1,6 +1,9 @@
 package org.wizbots.labtab.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,18 +42,24 @@ import org.wizbots.labtab.customview.ButtonCustom;
 import org.wizbots.labtab.customview.EditTextCustom;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.customview.TextViewCustom;
-import org.wizbots.labtab.database.VideoTable;
+import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
-import org.wizbots.labtab.model.Video;
+import org.wizbots.labtab.interfaces.requesters.EditProjectListener;
+import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.model.video.Video;
+import org.wizbots.labtab.model.video.response.EditProjectResponse;
+import org.wizbots.labtab.requesters.EditProjectRequester;
+import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
-public class EditVideoFragment extends ParentFragment implements View.OnClickListener, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener {
+public class EditVideoFragment extends ParentFragment implements View.OnClickListener, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener, EditProjectListener {
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
@@ -65,17 +74,17 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private RecyclerView recyclerViewProjectCreator;
     private RecyclerView horizontalRecyclerViewProjectCreator;
 
-    private ArrayList<Object> objectArrayListCreatorsAvailable = new ArrayList<>();
-    private ArrayList<Object> objectArrayListCreatorsSelected = new ArrayList<>();
+    private ArrayList<Student> creatorsAvailable = new ArrayList<>();
+    private ArrayList<Student> creatorsSelected = new ArrayList<>();
 
     private HomeActivity homeActivityContext;
     private LinearLayout recyclerViewContainer;
     private NestedScrollView nestedScrollView;
-    private ArrayList<String> stringArrayList;
+    private ArrayList<String> categoryArrayList;
     private Spinner categorySpinner;
     private ImageView videoThumbnailImageView, closeImageView;
     private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
-    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom;
+    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom, componentTextViewCustom;
     private ButtonCustom saveButtonCustom, cancelButtonCustom;
     private LinearLayout closeLinearLayout;
 
@@ -85,6 +94,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private Uri fileUri;
     private Uri savedVideoUri;
     private Video video;
+    private AlertDialog.Builder builder;
+    private ArrayList<String> knowledgeNuggets = new ArrayList<>();
+    private ProgressDialog progressDialog;
 
     public EditVideoFragment() {
 
@@ -100,11 +112,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_edit_video, container, false);
         homeActivityContext = (HomeActivity) context;
+        initListeners();
         initView(savedInstanceState);
-        prepareDummyList();
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, stringArrayList);
-        categorySpinner.setAdapter(spinnerArrayAdapter);
-        addProjectCreatorEditTextListeners();
         if (savedInstanceState == null) {
             video = getArguments().getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
@@ -113,6 +122,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             video = savedInstanceState.getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
         }
+        initKnowledgeNuggets();
+        prepareStudentsCategoryList();
+        initCategory();
+        addProjectCreatorEditTextListeners();
         return rootView;
     }
 
@@ -122,13 +135,17 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     public void initView(Bundle bundle) {
+        progressDialog = new ProgressDialog(homeActivityContext);
+        progressDialog.setMessage("processing");
+        progressDialog.setCanceledOnTouchOutside(false);
+
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         projectCreatorEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_project_creators);
         recyclerViewContainer = (LinearLayout) rootView.findViewById(R.id.recycler_view_container);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.scroll_view_edit_video);
         categorySpinner = (Spinner) rootView.findViewById(R.id.spinner_category);
-        stringArrayList = new ArrayList<>();
+        categoryArrayList = new ArrayList<>();
 
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.EDIT_VIDEO);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
@@ -138,16 +155,16 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         recyclerViewProjectCreator = (RecyclerView) rootView.findViewById(R.id.recycler_view_project_creators);
         horizontalRecyclerViewProjectCreator = (RecyclerView) rootView.findViewById(R.id.recycler_view_horizontal_project_creators);
 
-        objectArrayListCreatorsAvailable = new ArrayList<>();
-        objectArrayListCreatorsSelected = new ArrayList<>();
+        creatorsAvailable = new ArrayList<>();
+        creatorsSelected = new ArrayList<>();
 
-        projectCreatorAdapter = new ProjectCreatorAdapter(objectArrayListCreatorsAvailable, homeActivityContext, this);
+        projectCreatorAdapter = new ProjectCreatorAdapter(creatorsAvailable, homeActivityContext, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewProjectCreator.setLayoutManager(mLayoutManager);
         recyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
-        horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(objectArrayListCreatorsSelected, homeActivityContext, this);
+        horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
         RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
@@ -168,12 +185,14 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
         mentorNameTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_mentor_name);
         labSKUTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_lab_sku);
+        componentTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.component);
 
         videoThumbnailImageView.setOnClickListener(this);
         saveButtonCustom.setOnClickListener(this);
         cancelButtonCustom.setOnClickListener(this);
         closeImageView.setOnClickListener(this);
         closeLinearLayout.setOnClickListener(this);
+        componentTextViewCustom.setOnClickListener(this);
 
         if (bundle != null) {
             savedVideoUri = bundle.getParcelable(URI);
@@ -183,53 +202,17 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                         .load(Uri.fromFile(new File(savedVideoUri.getPath())))
                         .into(videoThumbnailImageView);
             }
-            ArrayList<Object> objects = (ArrayList<Object>) bundle.getSerializable(PROJECT_CREATORS);
+            ArrayList<Student> objects = (ArrayList<Student>) bundle.getSerializable(PROJECT_CREATORS);
             if (!objects.isEmpty()) {
-                objectArrayListCreatorsSelected.addAll(objects);
+                creatorsSelected.addAll(objects);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
             }
         }
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
-    public void prepareDummyList() {
-        objectArrayListCreatorsAvailable.add("Harsh Sharma");
-        objectArrayListCreatorsAvailable.add("Ankush Rana");
-        objectArrayListCreatorsAvailable.add("Vineet Handa");
-        objectArrayListCreatorsAvailable.add("Gaurav Bhardwaj");
-        objectArrayListCreatorsAvailable.add("Niraj Raskoti");
-        objectArrayListCreatorsAvailable.add("Shweta Jha");
-        objectArrayListCreatorsAvailable.add("Nishant Arora");
-        objectArrayListCreatorsAvailable.add("Arushi Sharma");
-        objectArrayListCreatorsAvailable.add("Manav budhia");
-        objectArrayListCreatorsAvailable.add("Harry Potter");
-        objectArrayListCreatorsAvailable.add("John");
-        objectArrayListCreatorsAvailable.add("Afghanistan");
-        objectArrayListCreatorsAvailable.add("Albania");
-        objectArrayListCreatorsAvailable.add("Algeria");
-        objectArrayListCreatorsAvailable.add("Bangladesh");
-        objectArrayListCreatorsAvailable.add("Belarus");
-        objectArrayListCreatorsAvailable.add("Canada");
-        objectArrayListCreatorsAvailable.add("Cape Verde");
-        objectArrayListCreatorsAvailable.add("Central African Republic");
-        objectArrayListCreatorsAvailable.add("Denmark");
-        objectArrayListCreatorsAvailable.add("Dominican Republic");
-        objectArrayListCreatorsAvailable.add("Egypt");
-        objectArrayListCreatorsAvailable.add("France");
-        objectArrayListCreatorsAvailable.add("Germany");
-        objectArrayListCreatorsAvailable.add("Hong Kong");
-        objectArrayListCreatorsAvailable.add("India");
-        objectArrayListCreatorsAvailable.add("Iceland");
-
-
-        stringArrayList.add("Select Category");
-        stringArrayList.add("Category 1");
-        stringArrayList.add("Category 2");
-        stringArrayList.add("Category 3");
-        stringArrayList.add("Category 4");
-        stringArrayList.add("Category 5");
-        stringArrayList.add("Category 6");
-
+    public void prepareStudentsCategoryList() {
+        creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(video.getProgramId()));
         projectCreatorAdapter.notifyDataSetChanged();
     }
 
@@ -263,8 +246,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     break;
                 }
 
-                if (knowledgeNuggetsEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Knowledge Nuggets must consist 5 words");
+                if (knowledgeNuggets.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select At Least One Knowledge Nugget");
                     break;
                 }
 
@@ -273,7 +256,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     break;
                 }
 
-                if (objectArrayListCreatorsSelected.isEmpty()) {
+                if (creatorsSelected.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
                     break;
                 }
@@ -283,23 +266,26 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     break;
                 }
 
-                Video video = new Video();
-                video.setId(this.video.getId());
-                video.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
-                video.setStatus(this.video.getStatus());
-                video.setTitle(titleEditTextCustom.getText().toString());
-                video.setPath(savedVideoUri.getPath());
-                video.setCategory((String) (categorySpinner.getSelectedItem()));
-                video.setMentor_name(mentorNameTextViewCustom.getText().toString());
-                video.setLab_sku(labSKUTextViewCustom.getText().toString());
-                video.setLab_level(LabLevels.APPRENTICE);
-                video.setKnowledge_nuggets(knowledgeNuggetsEditTextCustom.getText().toString());
-                video.setDescription(descriptionEditTextCustom.getText().toString());
-                video.setProject_creators(LabTabUtil.toJson(objectArrayListCreatorsSelected));
-                video.setNotes_to_the_family(notesToTheFamilyEditTextCustom.getText().toString());
-                VideoTable.getInstance().updateVideo(video);
-                homeActivityContext.clearAllTheFragmentFromStack();
-                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+                Video videoRequest = new Video();
+                videoRequest.setId(video.getId());
+                videoRequest.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
+                videoRequest.setStatus(100);
+                videoRequest.setPath(video.getPath());
+                videoRequest.setTitle(titleEditTextCustom.getText().toString());
+                videoRequest.setCategory((String) (categorySpinner.getSelectedItem()));
+                videoRequest.setMentor_name(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
+                videoRequest.setLab_sku(video.getLab_sku());
+                videoRequest.setLab_level(LabLevels.APPRENTICE);
+                videoRequest.setKnowledge_nuggets(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)));
+                videoRequest.setDescription(descriptionEditTextCustom.getText().toString());
+                videoRequest.setProject_creators(LabTabUtil.toJson(creatorsSelected));
+                videoRequest.setNotes_to_the_family(notesToTheFamilyEditTextCustom.getText().toString());
+                videoRequest.setIs_transCoding(String.valueOf(false));
+                videoRequest.setVideo(video.getVideo());
+                videoRequest.setVideoId(video.getVideoId());
+                videoRequest.setProgramId(video.getProgramId());
+                progressDialog.show();
+                BackgroundExecutor.getInstance().execute(new EditProjectRequester(videoRequest));
                 break;
             case R.id.btn_cancel:
                 homeActivityContext.onBackPressed();
@@ -310,16 +296,20 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             case R.id.ll_close:
                 homeActivityContext.onBackPressed();
                 break;
+            case R.id.component:
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                break;
 
         }
     }
 
     @Override
-    public void onProjectCreatorClick(final String string) {
+    public void onProjectCreatorClick(final Student student) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                objectArrayListCreatorsSelected.add(string);
+                creatorsSelected.add(student);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
                 recyclerViewContainer.setVisibility(View.GONE);
                 recyclerViewProjectCreator.setVisibility(View.GONE);
@@ -343,13 +333,13 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
                 query = query.toString().toLowerCase();
 
-                final ArrayList<Object> filteredList = new ArrayList<>();
+                final ArrayList<Student> filteredList = new ArrayList<>();
 
-                for (int i = 0; i < objectArrayListCreatorsAvailable.size(); i++) {
+                for (int i = 0; i < creatorsAvailable.size(); i++) {
 
-                    final String text = ((String) objectArrayListCreatorsAvailable.get(i)).toLowerCase();
+                    final String text = ((creatorsAvailable.get(i)).getName().toLowerCase());
                     if (text.contains(query)) {
-                        filteredList.add(objectArrayListCreatorsAvailable.get(i));
+                        filteredList.add(creatorsAvailable.get(i));
                     }
                 }
 
@@ -375,11 +365,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     @Override
-    public void onProjectCreatorDeleteClick(final String string) {
+    public void onProjectCreatorDeleteClick(final Student student) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                objectArrayListCreatorsSelected.remove(string);
+                creatorsSelected.remove(student);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
             }
         });
@@ -484,37 +474,130 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(URI, savedVideoUri);
-        outState.putSerializable(PROJECT_CREATORS, objectArrayListCreatorsSelected);
+        outState.putSerializable(PROJECT_CREATORS, creatorsSelected);
         outState.putParcelable(VideoListFragment.VIDEO, video);
         super.onSaveInstanceState(outState);
     }
 
     public void fetchDataFromBundle() {
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, stringArrayList);
-        categorySpinner.setAdapter(spinnerArrayAdapter);
-
-        for (String s : stringArrayList) {
-            if (s.equals(video.getCategory())) {
-                categorySpinner.setSelection(stringArrayList.indexOf(s));
-                break;
-            }
-        }
-
         titleEditTextCustom.setText(video.getTitle());
-        knowledgeNuggetsEditTextCustom.setText(video.getKnowledge_nuggets());
+        knowledgeNuggetsEditTextCustom.setText(video.getKnowledge_nuggets().replaceAll("\"", ""));
         descriptionEditTextCustom.setText(video.getDescription());
         notesToTheFamilyEditTextCustom.setText(video.getNotes_to_the_family());
 
         mentorNameTextViewCustom.setText(video.getMentor_name());
         labSKUTextViewCustom.setText(video.getLab_sku());
 
-        ArrayList<Object> objectArrayList = new Gson().fromJson(video.getProject_creators(), new TypeToken<ArrayList<Object>>() {
+        ArrayList<Student> objectArrayList = new Gson().fromJson(video.getProject_creators(), new TypeToken<ArrayList<Student>>() {
         }.getType());
-        objectArrayListCreatorsSelected.addAll(objectArrayList);
+        creatorsSelected.addAll(objectArrayList);
         horizontalProjectCreatorAdapter.notifyDataSetChanged();
         Glide.with(context)
                 .load(Uri.fromFile(new File(video.getPath())))
                 .into(videoThumbnailImageView);
     }
 
+    private void initCategory() {
+        String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
+        categoryArrayList.addAll(Arrays.asList(categories));
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, categoryArrayList);
+        categorySpinner.setAdapter(spinnerArrayAdapter);
+
+        for (String s : categoryArrayList) {
+            if (s.equals(video.getCategory())) {
+                categorySpinner.setSelection(categoryArrayList.indexOf(s));
+                break;
+            }
+        }
+    }
+
+    public void initKnowledgeNuggets() {
+
+
+
+        builder = new AlertDialog.Builder(homeActivityContext);
+        final String[] components = homeActivityContext.getResources().getStringArray(R.array.components);
+        final boolean[] componentSelection = new boolean[components.length];
+
+        builder.setMultiChoiceItems(components, componentSelection, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                componentSelection[which] = isChecked;
+            }
+        });
+        builder.setCancelable(false);
+        builder.setTitle("Select Knowledge Nuggets");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                knowledgeNuggets.clear();
+                for (int i = 0; i < componentSelection.length; i++) {
+                    boolean checked = componentSelection[i];
+                    if (checked) {
+                        knowledgeNuggets.add(components[i]);
+                    }
+                }
+                knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)).replaceAll("\"", ""));
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+    }
+
+    private String[] getKnowledgeNuggets(ArrayList<String> knowledgeNuggets) {
+        String[] nuggets = new String[knowledgeNuggets.size()];
+        for (int i = 0; i < knowledgeNuggets.size(); i++) {
+            nuggets[i] = knowledgeNuggets.get(i);
+        }
+        return nuggets;
+    }
+
+    public void initListeners() {
+        LabTabApplication.getInstance().addUIListener(EditProjectListener.class, this);
+    }
+
+    @Override
+    public void projectUpdatedSuccessfully(EditProjectResponse editProjectResponse, Video video) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_EDITED_SUCCESSFULLY);
+                homeActivityContext.clearAllTheFragmentFromStack();
+                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+            }
+        });
+    }
+
+    @Override
+    public void unableToUpdateProject(final int responseCode) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                if (responseCode != 0) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+                } else {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        progressDialog.dismiss();
+        super.onDestroy();
+    }
 }

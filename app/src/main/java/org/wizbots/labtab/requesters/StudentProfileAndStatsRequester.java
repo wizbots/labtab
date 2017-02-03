@@ -56,7 +56,6 @@ public class StudentProfileAndStatsRequester implements Runnable, LabTabConstant
         }
     }
 
-
     private StudentProfile getStudentProfile(StudentResponse studentResponse) {
         StudentProfile studentProfile = new StudentProfile();
         studentProfile.setEnrollments_count(studentResponse.getEnrollments_count());

@@ -137,12 +137,22 @@ public interface LabTabConstants {
         String NO_STUDENT_FOUND_FOR_THIS_LAB = "No Student Found for this Lab";
         String NO_ADDITIONAL_INFO_FOUND_FOR_THIS_LAB = "No Additional Info found for this Lab";
         String NO_LIST_OF_SKIPS_FOUND_FOR_THIS_LAB = "No List of Skips found for this Lab";
-        String AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO = "At least one student is needed to add video";
+        String AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO_FOR_THIS_LAB = "At least one student is needed to add video for this lab";
+        String AT_LEAST_ONE_STUDENT_IS_NEEDED_FOR_PROMOTION_FOR_THIS_LAB = "At least one student is needed for promotion for this lab";
+        String AT_LEAST_ONE_STUDENT_IS_NEEDED_FOR_DEMOTION_FOR_THIS_LAB = "At least one student is needed for demotion for this lab";
+        String AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_MARK_ABSENT_FOR_THIS_LAB = "At least one student is needed to mark absent for this lab";
         String PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT = "Please Select at least one student to mark absent";
+        String PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_PROMOTE = "Please Select at least one student to promote";
+        String PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_DEMOTE = "Please Select at least one student to demote";
         String STUDENTS_ARE_MARKED_ABSENT_SUCCESSFULLY_FOR = "Students are Marked Absent Successfully for ";
+        String STUDENT_IS_MARKED_ABSENT_SUCCESSFULLY_FOR = "Student is Marked Absent Successfully for ";
         String STUDENTS_PROMOTED_SUCCESSFULLY = "Students Promoted Successfully";
         String STUDENTS_DEMOTED_SUCCESSFULLY = "Students Demoted Successfully";
+        String STUDENT_IS_PROMOTED_SUCCESSFULLY = "Student is Promoted Successfully";
+        String STUDENT_IS_DEMOTED_SUCCESSFULLY = "Student is Demoted Successfully";
         String OOPS_SOMETHING_WENT_WRONG = "Oops Something Went Wrong";
+        String PROJECT_EDITED_SUCCESSFULLY = "Project Edited Successfully";
+        String VIDEO_CAN_NOT_BE_EDITED_WHEN_IT_IS_NOT_UPLOADED_TO_WIZBOTS_SERVER = "Video can't be edited when it is not uploaded to wizbots server";
     }
 
     /**

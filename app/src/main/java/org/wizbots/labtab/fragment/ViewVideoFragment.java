@@ -30,10 +30,12 @@ import org.wizbots.labtab.customview.EditTextCustom;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
-import org.wizbots.labtab.model.Video;
+import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.model.video.Video;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ViewVideoFragment extends ParentFragment implements View.OnClickListener, HorizontalProjectCreatorAdapterClickListener {
 
@@ -43,11 +45,11 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
 
     private HorizontalProjectCreatorAdapter horizontalProjectCreatorAdapter;
     private RecyclerView horizontalRecyclerViewProjectCreator;
-    private ArrayList<Object> objectArrayListCreatorsSelected = new ArrayList<>();
+    private ArrayList<Student> creatorsSelected = new ArrayList<>();
 
     private HomeActivity homeActivityContext;
 
-    private ArrayList<String> stringArrayList;
+    private ArrayList<String> categoryArrayList;
     private Spinner categorySpinner;
 
     private ImageView videoThumbnailImageView, closeImageView;
@@ -89,7 +91,7 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
 
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         categorySpinner = (Spinner) rootView.findViewById(R.id.spinner_category);
-        stringArrayList = new ArrayList<>();
+        categoryArrayList = new ArrayList<>();
 
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.VIEW_VIDEO);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
@@ -112,8 +114,8 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
         labSKUTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_lab_sku);
 
         horizontalRecyclerViewProjectCreator = (RecyclerView) rootView.findViewById(R.id.recycler_view_horizontal_project_creators);
-        objectArrayListCreatorsSelected = new ArrayList<>();
-        horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(objectArrayListCreatorsSelected, homeActivityContext, this);
+        creatorsSelected = new ArrayList<>();
+        horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
 
         RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
@@ -136,13 +138,8 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     public void prepareCategoryList() {
-        stringArrayList.add("Select Category");
-        stringArrayList.add("Category 1");
-        stringArrayList.add("Category 2");
-        stringArrayList.add("Category 3");
-        stringArrayList.add("Category 4");
-        stringArrayList.add("Category 5");
-        stringArrayList.add("Category 6");
+        String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
+        categoryArrayList.addAll(Arrays.asList(categories));
     }
 
     @Override
@@ -164,18 +161,18 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     @Override
-    public void onProjectCreatorDeleteClick(String string) {
+    public void onProjectCreatorDeleteClick(Student student) {
 
     }
 
     public void fetchDataFromBundle() {
         prepareCategoryList();
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, stringArrayList);
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, categoryArrayList);
         categorySpinner.setAdapter(spinnerArrayAdapter);
 
-        for (String s : stringArrayList) {
+        for (String s : categoryArrayList) {
             if (s.equals(video.getCategory())) {
-                categorySpinner.setSelection(stringArrayList.indexOf(s));
+                categorySpinner.setSelection(categoryArrayList.indexOf(s));
                 break;
             }
         }
@@ -187,9 +184,9 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
         descriptionEditTextCustom.setText(video.getDescription());
         notesToTheFamilyEditTextCustom.setText(video.getNotes_to_the_family());
 
-        ArrayList<Object> objectArrayList = new Gson().fromJson(video.getProject_creators(), new TypeToken<ArrayList<Object>>() {
+        ArrayList<Student> objectArrayList = new Gson().fromJson(video.getProject_creators(), new TypeToken<ArrayList<Student>>() {
         }.getType());
-        objectArrayListCreatorsSelected.addAll(objectArrayList);
+        creatorsSelected.addAll(objectArrayList);
         horizontalProjectCreatorAdapter.notifyDataSetChanged();
         Glide.with(context)
                 .load(Uri.fromFile(new File(video.getPath())))

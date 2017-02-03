@@ -289,56 +289,68 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     public void onClick(View v) {
         switch ((v.getId())) {
             case R.id.tv_mark_absent:
-                progressDialog.show();
-                ArrayList<Student> studentArrayList = getSelectedStudents();
-                if (!studentArrayList.isEmpty()) {
-                    if (dateSelected != null) {
-                        BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
-                                LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, dateSelected),
-                                program,
-                                checkBoxSendNotification.isChecked()));
+                if (!objectArrayList.isEmpty()) {
+                    progressDialog.show();
+                    ArrayList<Student> studentArrayList = getSelectedStudents();
+                    if (!studentArrayList.isEmpty()) {
+                        if (dateSelected != null) {
+                            BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
+                                    LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, dateSelected),
+                                    program,
+                                    checkBoxSendNotification.isChecked()));
+                        } else {
+                            BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
+                                    LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, new Date()),
+                                    program,
+                                    checkBoxSendNotification.isChecked()));
+                        }
                     } else {
-                        BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
-                                LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, new Date()),
-                                program,
-                                checkBoxSendNotification.isChecked()));
+                        progressDialog.dismiss();
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT);
                     }
                 } else {
-                    progressDialog.dismiss();
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_MARK_ABSENT_FOR_THIS_LAB);
                 }
                 break;
             case R.id.tv_promote:
-                progressDialog.show();
-                ArrayList<Student> promoteStudents = getSelectedStudents();
-                if (!promoteStudents.isEmpty()) {
-                    BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(promoteStudents,
-                            program,
-                            true));
+                if (!objectArrayList.isEmpty()) {
+                    progressDialog.show();
+                    ArrayList<Student> promoteStudents = getSelectedStudents();
+                    if (!promoteStudents.isEmpty()) {
+                        BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(promoteStudents,
+                                program,
+                                true));
+                    } else {
+                        progressDialog.dismiss();
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_PROMOTE);
+                    }
                 } else {
-                    progressDialog.dismiss();
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_FOR_PROMOTION_FOR_THIS_LAB);
                 }
                 break;
             case R.id.tv_demote:
-                progressDialog.show();
-                ArrayList<Student> demoteStudents = getSelectedStudents();
-                if (!demoteStudents.isEmpty()) {
-                    BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(demoteStudents,
-                            program,
-                            false));
+                if (!objectArrayList.isEmpty()) {
+                    progressDialog.show();
+                    ArrayList<Student> demoteStudents = getSelectedStudents();
+                    if (!demoteStudents.isEmpty()) {
+                        BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(demoteStudents,
+                                program,
+                                false));
+                    } else {
+                        progressDialog.dismiss();
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_DEMOTE);
+                    }
                 } else {
-                    progressDialog.dismiss();
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_FOR_DEMOTION_FOR_THIS_LAB);
                 }
                 break;
             case R.id.iv_add_video:
-                if (!ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()).isEmpty()) {
+                if (!objectArrayList.isEmpty()) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
                     homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
                 } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO_FOR_THIS_LAB);
                 }
                 break;
             case R.id.btn_absences:
@@ -357,6 +369,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             default:
                 break;
         }
+
     }
 
     private ArrayList<Student> getSelectedStudents() {
@@ -370,7 +383,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     @Override
-    public void markAbsentSuccessful(ArrayList<Student> studentArrayList, final String date) {
+    public void markAbsentSuccessful(final ArrayList<Student> studentArrayList, final String date) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -379,24 +392,34 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     ((Student) object).setCheck(false);
                 }
                 labDetailsAdapter.notifyDataSetChanged();
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_MARKED_ABSENT_SUCCESSFULLY_FOR + date);
+                if (studentArrayList != null) {
+                    if (!studentArrayList.isEmpty() && studentArrayList.size() > 1) {
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_MARKED_ABSENT_SUCCESSFULLY_FOR + date);
+                    } else {
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_MARKED_ABSENT_SUCCESSFULLY_FOR + date);
+                    }
+                }
             }
         });
     }
 
     @Override
-    public void markAbsentUnSuccessful(int status) {
+    public void markAbsentUnSuccessful(final int status) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+                if (status != 0) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+                } else {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+                }
             }
         });
     }
 
     @Override
-    public void promotionDemotionSuccessful(ArrayList<Student> student, Program program, final boolean promote) {
+    public void promotionDemotionSuccessful(final ArrayList<Student> student, Program program, final boolean promote) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -406,9 +429,19 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 }
                 labDetailsAdapter.notifyDataSetChanged();
                 if (promote) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_PROMOTED_SUCCESSFULLY);
+                    if (student != null) {
+                        if (!student.isEmpty() && student.size() > 1) {
+                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_PROMOTED_SUCCESSFULLY);
+                        } else {
+                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_PROMOTED_SUCCESSFULLY);
+                        }
+                    }
                 } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_DEMOTED_SUCCESSFULLY);
+                    if (!student.isEmpty() && student.size() > 1) {
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_DEMOTED_SUCCESSFULLY);
+                    } else {
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_DEMOTED_SUCCESSFULLY);
+                    }
                 }
                 homeActivityContext.onBackPressed();
             }
@@ -416,12 +449,16 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     @Override
-    public void promotionDemotionUnSuccessful(int status) {
+    public void promotionDemotionUnSuccessful(final int status) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+                if (status != 0) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+                } else {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+                }
             }
         });
     }

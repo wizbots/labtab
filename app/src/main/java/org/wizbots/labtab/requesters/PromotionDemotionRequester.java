@@ -39,7 +39,7 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                     promoteDemoteStudents(promoteDemoteResponse.getResponse().getStudents());
                     promotionDemotionListener.promotionDemotionSuccessful(studentArrayList, program, promoteDemote);
                 } else {
-                    promotionDemotionListener.promotionDemotionUnSuccessful(0);
+                    promotionDemotionListener.promotionDemotionUnSuccessful(promoteDemoteResponse.getResponseCode());
                 }
             }
         } else {
@@ -57,10 +57,10 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
         return students;
     }
 
-    private void promoteDemoteStudents(String[] students) {
-        if (students != null) {
-            for (int i = 0; i < students.length; i++) {
-                Student student = getStudent(students[i]);
+    private void promoteDemoteStudents(ArrayList<org.wizbots.labtab.model.promotedemote.Student> students) {
+        if (students != null && !students.isEmpty()) {
+            for (int i = 0; i < students.size(); i++) {
+                Student student = getStudent(students.get(i).getId());
                 StudentsProfileTable.getInstance().upDateStudentLevel(student.getStudent_id(), student.getLevel());
                 ProgramStudentsTable.getInstance().upDateStudentLevel(student.getStudent_id(), student.getLevel());
             }

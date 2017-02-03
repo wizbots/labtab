@@ -41,7 +41,7 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
                     markStudentsAbsent();
                     markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
                 } else {
-                    markStudentAbsentListener.markAbsentUnSuccessful(0);
+                    markStudentAbsentListener.markAbsentUnSuccessful(markStudentAbsentResponse.getResponseCode());
                 }
             }
         } else {

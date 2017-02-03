@@ -15,7 +15,7 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
-        LabTabResponse<ArrayList<ProgramOrLab>> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013/01/01", "2016/12/31");
+        LabTabResponse<ArrayList<ProgramOrLab>> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
         if (programsOrLabs != null) {
             ArrayList<ProgramOrLab> programOrLabArrayList = programsOrLabs.getResponse();
             String member_id = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id();

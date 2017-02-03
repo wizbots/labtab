@@ -20,7 +20,7 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
-import org.wizbots.labtab.model.Video;
+import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;

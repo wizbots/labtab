@@ -262,6 +262,7 @@
                     android:padding="@dimen/extra_small_padding">
 
                     <org.wizbots.labtab.customview.TextViewCustom
+                        android:id="@+id/component"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/extra_extra_small_margin"

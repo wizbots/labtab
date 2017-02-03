@@ -19,6 +19,7 @@ import org.wizbots.labtab.enums.LabLevel;
 import org.wizbots.labtab.enums.LabSteps;
 import org.wizbots.labtab.enums.ProjectStatus;
 import org.wizbots.labtab.model.Project;
+import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.student.response.ProjectResponse;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
@@ -125,7 +126,7 @@ public class LabTabUtil implements LabTabConstants {
     }
 
     public static void setLabLevelImageResource(String labLevel, ImageView imageView) {
-        switch (labLevel) {
+        switch (labLevel.toUpperCase()) {
             case LabLevels.APPRENTICE:
                 imageView.setImageResource(LabLevel.APPRENTICE.getLabLevel());
                 break;
@@ -346,4 +347,29 @@ public class LabTabUtil implements LabTabConstants {
         }
         return level;
     }
+
+    public static ArrayList<String> convertStringToKnowledgeNuggets(String string) {
+        ArrayList<String> knowledgeNuggets = null;
+        Gson gson = new Gson();
+        if (!string.equals("")) {
+            knowledgeNuggets = gson.fromJson(string, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } else {
+            knowledgeNuggets = new ArrayList<>();
+        }
+        return knowledgeNuggets;
+    }
+
+    public static ArrayList<Student> convertStringToProjectCreators(String string) {
+        ArrayList<Student> studentArrayList = null;
+        Gson gson = new Gson();
+        if (!string.equals("")) {
+            studentArrayList = gson.fromJson(string, new TypeToken<ArrayList<Student>>() {
+            }.getType());
+        } else {
+            studentArrayList = new ArrayList<>();
+        }
+        return studentArrayList;
+    }
+
 }

@@ -13,13 +13,14 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
+import org.wizbots.labtab.model.program.Student;
 
 import java.util.ArrayList;
 
 public class ProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
 
     private final int VIEW_ITEM_DATA = 1;
-    private ArrayList<Object> objectArrayList;
+    private ArrayList<Student> studentArrayList;
     private Context context;
     private ProjectCreatorAdapterClickListener projectCreatorAdapterClickListener;
 
@@ -38,7 +39,7 @@ public class ProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         @Override
         public void onClick(View view) {
-            String projectCreator = (String) objectArrayList.get(getAdapterPosition());
+            Student projectCreator = (Student) studentArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.tv_project_creator:
                     projectCreatorAdapterClickListener.onProjectCreatorClick(projectCreator);
@@ -47,8 +48,8 @@ public class ProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public ProjectCreatorAdapter(ArrayList<Object> objectArrayList, Context context, ProjectCreatorAdapterClickListener projectCreatorAdapterClickListener) {
-        this.objectArrayList = objectArrayList;
+    public ProjectCreatorAdapter(ArrayList<Student> studentArrayList, Context context, ProjectCreatorAdapterClickListener projectCreatorAdapterClickListener) {
+        this.studentArrayList = studentArrayList;
         this.context = context;
         this.projectCreatorAdapterClickListener = projectCreatorAdapterClickListener;
     }
@@ -73,7 +74,7 @@ public class ProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemViewType(int position) {
-        if (objectArrayList.get(position) instanceof String) {
+        if (studentArrayList.get(position) != null) {
             return VIEW_ITEM_DATA;
         }
         return -1;
@@ -94,7 +95,7 @@ public class ProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private void configureLabListViewHolder(ProjectCreatorViewHolder projectCreatorViewHolder, int position) {
-        String projectCreator = (String) objectArrayList.get(position);
+        Student projectCreator = studentArrayList.get(position);
         int projectCreatorLinearLayoutColor;
         if (position % 2 == 0) {
             projectCreatorLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.white);
@@ -102,12 +103,12 @@ public class ProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             projectCreatorLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
         }
         projectCreatorViewHolder.labListLinearLayout.setBackgroundColor(projectCreatorLinearLayoutColor);
-        projectCreatorViewHolder.projectCreatorNameTextViewCustom.setText(projectCreator);
+        projectCreatorViewHolder.projectCreatorNameTextViewCustom.setText(projectCreator.getName());
     }
 
     @Override
     public int getItemCount() {
-        return objectArrayList.size();
+        return studentArrayList.size();
     }
 
 }

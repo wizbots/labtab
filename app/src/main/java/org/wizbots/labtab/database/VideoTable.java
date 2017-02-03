@@ -7,7 +7,7 @@ import android.util.Log;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.controller.LabTabPreferences;
-import org.wizbots.labtab.model.Video;
+import org.wizbots.labtab.model.video.Video;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,6 +31,10 @@ public class VideoTable extends AbstractTable {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_PROJECT_CREATORS = "project_creators";
     private static final String COLUMN_NOTES_TO_THE_FAMILY = "notes_to_the_family";
+    private static final String COLUMN_IS_TRANSCODING = "is_transcoding";
+    private static final String COLUMN_VIDEO = "video";
+    private static final String COLUMN_VIDEO_ID = "video_id";
+    private static final String COLUMN_PROGRAM_ID = "program_id";
 
 
     private DAOManager daoManager = null;
@@ -65,7 +69,11 @@ public class VideoTable extends AbstractTable {
                 + COLUMN_KNOWLEDGE_NUGGETS + " text,"
                 + COLUMN_DESCRIPTION + " text,"
                 + COLUMN_PROJECT_CREATORS + " text,"
-                + COLUMN_NOTES_TO_THE_FAMILY + " text);");
+                + COLUMN_NOTES_TO_THE_FAMILY + " text,"
+                + COLUMN_IS_TRANSCODING + " text,"
+                + COLUMN_VIDEO + " text,"
+                + COLUMN_VIDEO_ID + " text,"
+                + COLUMN_PROGRAM_ID + " text);");
     }
 
     public synchronized void insert(Collection<Video> videos) {
@@ -123,6 +131,10 @@ public class VideoTable extends AbstractTable {
         values.put(COLUMN_DESCRIPTION, video.getDescription());
         values.put(COLUMN_PROJECT_CREATORS, video.getProject_creators());
         values.put(COLUMN_NOTES_TO_THE_FAMILY, video.getNotes_to_the_family());
+        values.put(COLUMN_IS_TRANSCODING, video.getIs_transCoding());
+        values.put(COLUMN_VIDEO, video.getVideo());
+        values.put(COLUMN_VIDEO_ID, video.getVideoId());
+        values.put(COLUMN_PROGRAM_ID, video.getProgramId());
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
@@ -146,7 +158,11 @@ public class VideoTable extends AbstractTable {
                         cursor.getString(cursor.getColumnIndex(COLUMN_KNOWLEDGE_NUGGETS)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY))
+                        cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_IS_TRANSCODING)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO_ID)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID))
                 );
             }
         } catch (Exception e) {
@@ -181,7 +197,11 @@ public class VideoTable extends AbstractTable {
                                     cursor.getString(cursor.getColumnIndex(COLUMN_KNOWLEDGE_NUGGETS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
-                                    cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY))
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_IS_TRANSCODING)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID))
                             )
                     );
                 } while (cursor.moveToNext());
@@ -226,7 +246,10 @@ public class VideoTable extends AbstractTable {
                 values.put(COLUMN_DESCRIPTION, video.getDescription());
                 values.put(COLUMN_PROJECT_CREATORS, video.getProject_creators());
                 values.put(COLUMN_NOTES_TO_THE_FAMILY, video.getNotes_to_the_family());
-
+                values.put(COLUMN_IS_TRANSCODING, video.getIs_transCoding());
+                values.put(COLUMN_VIDEO, video.getVideo());
+                values.put(COLUMN_VIDEO_ID, video.getVideoId());
+                values.put(COLUMN_PROGRAM_ID, video.getProgramId());
                 db.update(NAME, values, COLUMN_ID + " = ?",
                         new String[]{String.valueOf(video.getId())});
 
@@ -263,7 +286,11 @@ public class VideoTable extends AbstractTable {
                                     cursor.getString(cursor.getColumnIndex(COLUMN_KNOWLEDGE_NUGGETS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
-                                    cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY))
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_IS_TRANSCODING)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID))
                             )
                     );
                 } while (cursor.moveToNext());
