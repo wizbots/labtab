@@ -112,6 +112,8 @@ public class ProgramStudentsRequester implements Runnable, LabTabConstants {
             for (AbsenceResponse absenceResponse : absenceResponseArrayList) {
                 Absence absence = new Absence();
                 absence.setDate(absenceResponse.getDate());
+                absence.setMark_absent_synced(SyncStatus.SYNCED);
+                absence.setSend_absent_notification("0");
                 absence.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
                 absence.setMentor_name(absenceResponse.getMentor_name());
                 absence.setProgram_id(programResponse.getId());

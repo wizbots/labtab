@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -52,9 +51,11 @@ import java.util.Date;
 
 public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener,
         GetProgramStudentsListener, View.OnClickListener, MarkStudentAbsentListener, PromotionDemotionListener,
-        WithdrawWizchipsListener, AddWizchipsListener{
+        WithdrawWizchipsListener, AddWizchipsListener {
     public static final String PROGRAM = "PROGRAM";
     public static final String STUDENT = "STUDENT";
+    public static final String SELECTED_STUDENTS = "SELECTED_STUDENTS";
+    public static final String LAB_LEVEL = "LAB_LEVEL";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
@@ -193,7 +194,11 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                dateSelected = calendar.getTime();
+                if (LabTabUtil.isValidDateSelection(calendar.getTime())) {
+                    dateSelected = calendar.getTime();
+                } else {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY);
+                }
             }
 
         };
@@ -221,9 +226,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             @Override
             public void run() {
                 setHeaderView(program);
-                objectArrayList.addAll(studentArrayList);
-                labDetailsAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                notifyLabDetailsAdapter();
             }
         });
     }
@@ -236,7 +239,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 progressDialog.dismiss();
             }
         });
-        LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
         if (responseCode == StatusCode.FORBIDDEN) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_DETAIL_FOR_THIS_LAB);
         } else {
@@ -361,6 +363,8 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 if (!objectArrayList.isEmpty()) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+                    bundle.putSerializable(SELECTED_STUDENTS, getSelectedStudents());
+                    bundle.putString(LAB_LEVEL, programOrLab.getLevel());
                     homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
                 } else {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO_FOR_THIS_LAB);
@@ -381,26 +385,26 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 break;
             case R.id.tv_plus:
                 ArrayList<Student> studentList = getSelectedStudents();
-                if(studentList.isEmpty()){
+                if (studentList.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST);
-                }else if(studentList.size() > 1){
+                } else if (studentList.size() > 1) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS);
-                }else {
+                } else {
                     progressDialog.show();
                     String studentId = studentList.get(0).getStudent_id();
-                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab, studentId,1));
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab, studentId, 1));
                 }
                 break;
             case R.id.tv_minus:
                 studentList = getSelectedStudents();
-                if(studentList.isEmpty()){
+                if (studentList.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST);
-                }else if(studentList.size() > 1){
+                } else if (studentList.size() > 1) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS);
-                }else {
+                } else {
                     progressDialog.show();
                     String studentId = studentList.get(0).getStudent_id();
-                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab, studentId,1));
+                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab, studentId, 1));
                 }
                 break;
             default:
@@ -424,11 +428,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
-                for (Object object : objectArrayList) {
-                    ((Student) object).setCheck(false);
-                }
-                labDetailsAdapter.notifyDataSetChanged();
+                notifyLabDetailsAdapter();
                 if (studentArrayList != null) {
                     if (!studentArrayList.isEmpty() && studentArrayList.size() > 1) {
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_MARKED_ABSENT_SUCCESSFULLY_FOR + date);
@@ -460,11 +460,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
-                for (Object object : objectArrayList) {
-                    ((Student) object).setCheck(false);
-                }
-                labDetailsAdapter.notifyDataSetChanged();
+                notifyLabDetailsAdapter();
                 if (promote) {
                     if (student != null) {
                         if (!student.isEmpty() && student.size() > 1) {
@@ -480,7 +476,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_DEMOTED_SUCCESSFULLY);
                     }
                 }
-                homeActivityContext.onBackPressed();
             }
         });
     }
@@ -505,7 +500,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                notifyAdapter();
+                notifyLabDetailsAdapter();
             }
         });
     }
@@ -515,7 +510,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                notifyAdapter();
+                notifyLabDetailsAdapter();
             }
         });
     }
@@ -525,7 +520,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-            notifyAdapter();
+                notifyLabDetailsAdapter();
             }
         });
     }
@@ -535,12 +530,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                notifyAdapter();
+                notifyLabDetailsAdapter();
             }
         });
     }
 
-    private void notifyAdapter(){
+    private void notifyLabDetailsAdapter() {
         progressDialog.dismiss();
         objectArrayList.clear();
         objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));

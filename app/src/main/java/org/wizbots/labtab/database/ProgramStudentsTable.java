@@ -8,7 +8,6 @@ import android.util.Log;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.controller.LabTabPreferences;
-import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Student;
 
 import java.util.ArrayList;
@@ -124,7 +123,7 @@ public class ProgramStudentsTable extends AbstractTable {
         values.put(COLUMN_NAME, student.getName());
         values.put(COLUMN_LEVEL, student.getLevel());
         values.put(COLUMN_WIZCHIPS, student.getWizchips());
-        values.put(COLUMN_WIZCHIPS_HAS_SYNC, student.isSync()?1:0);
+        values.put(COLUMN_WIZCHIPS_HAS_SYNC, student.isSync() ? 1 : 0);
         values.put(COLUMN_SPECIAL_NEEDS, student.getSpecial_needs());
         values.put(COLUMN_SELF_SIGN_OUT, student.getSelf_sign_out());
         values.put(COLUMN_PICKUP_INSTRUCTIONS, student.getPickup_instructions());
@@ -207,7 +206,7 @@ public class ProgramStudentsTable extends AbstractTable {
 
     public Student getWizchipsByStudentId(String programId, String studentId) {
         final String query = "Select * from " + NAME + " where " + COLUMN_PROGRAM_ID + " = '" + programId + "' and " + COLUMN_MEMBER_ID
-                + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_STUDENT_ID + "='" + studentId +"'";
+                + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_STUDENT_ID + "='" + studentId + "'";
         ArrayList<Student> students = new ArrayList<>();
         Cursor cursor = null;
         try {
@@ -250,14 +249,14 @@ public class ProgramStudentsTable extends AbstractTable {
         stmt.execute();
     }
 
-    public void updateWizchips(String studentId, int count, boolean hasSync){
+    public void updateWizchips(String studentId, int count, boolean hasSync) {
         String updateStudentLevelQuery = "UPDATE " + NAME + " SET " + COLUMN_WIZCHIPS + " = " + count + " , " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + (hasSync ? 1 : 0) + " WHERE " + COLUMN_STUDENT_ID + "= '" + studentId + "';";
         SQLiteDatabase db = daoManager.getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
         stmt.execute();
     }
 
-    public void updateWizchipsOffline(String studentId, int count, boolean hasSync){
+    public void updateWizchipsOffline(String studentId, int count, boolean hasSync) {
         String updateStudentLevelQuery = "UPDATE " + NAME + " SET " + COLUMN_OFFLINE_WIZCHIPS + " = " + count + " , " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + (hasSync ? 1 : 0) + " WHERE " + COLUMN_STUDENT_ID + "= '" + studentId + "';";
         SQLiteDatabase db = daoManager.getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);

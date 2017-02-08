@@ -97,6 +97,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private AlertDialog.Builder builder;
     private ArrayList<String> knowledgeNuggets = new ArrayList<>();
     private ProgressDialog progressDialog;
+    private String knowledgeNuggetsSelected = "";
 
     public EditVideoFragment() {
 
@@ -275,7 +276,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 videoRequest.setCategory((String) (categorySpinner.getSelectedItem()));
                 videoRequest.setMentor_name(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
                 videoRequest.setLab_sku(video.getLab_sku());
-                videoRequest.setLab_level(LabLevels.APPRENTICE);
+                videoRequest.setLab_level(video.getLab_level());
                 videoRequest.setKnowledge_nuggets(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)));
                 videoRequest.setDescription(descriptionEditTextCustom.getText().toString());
                 videoRequest.setProject_creators(LabTabUtil.toJson(creatorsSelected));
@@ -535,7 +536,12 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     public void initKnowledgeNuggets() {
         builder = new AlertDialog.Builder(homeActivityContext);
-        final String[] components = homeActivityContext.getResources().getStringArray(R.array.components);
+        final String[] components;
+        if (video.getLab_level() != null) {
+            components = LabTabApplication.getInstance().getKnowledgeNuggets(video.getLab_level());
+        } else {
+            components = homeActivityContext.getResources().getStringArray(R.array.components);
+        }
         final boolean[] componentSelection = new boolean[components.length];
 
         String[] knwlgngts = (String[]) LabTabUtil.fromJson(video.getKnowledge_nuggets(), String[].class);
@@ -567,6 +573,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                         knowledgeNuggets.add(components[i]);
                     }
                 }
+                knowledgeNuggetsSelected = (LabTabUtil.toJson(knowledgeNuggets));
                 knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)).replaceAll("\"", ""));
             }
         });
@@ -574,12 +581,58 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
+                if (knwlgngts != null) {
+                    ArrayList<Integer> integers = new ArrayList<>();
+                    for (String kn : knwlgngts) {
+                        for (int i = 0; i < components.length; i++) {
+                            if (components[i].equals(kn)) {
+                                integers.add(i);
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < components.length; i++) {
+                            componentSelection[i] = false;
+                        }
+
+                        for (int a : integers) {
+                            componentSelection[a] = true;
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < components.length; i++) {
+                        componentSelection[i] = false;
+                    }
+                }
             }
         });
 
         builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
+                if (knwlgngts != null) {
+                    ArrayList<Integer> integers = new ArrayList<>();
+                    for (String kn : knwlgngts) {
+                        for (int i = 0; i < components.length; i++) {
+                            if (components[i].equals(kn)) {
+                                integers.add(i);
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < components.length; i++) {
+                            componentSelection[i] = false;
+                        }
+
+                        for (int a : integers) {
+                            componentSelection[a] = true;
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < components.length; i++) {
+                        componentSelection[i] = false;
+                    }
+                }
             }
         });
 

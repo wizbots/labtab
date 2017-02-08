@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
-import org.wizbots.labtab.service.LabTabUploadService;
+import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.NetworkUtils;
 
 public class NetworkConnectivityChangeReceiver extends BroadcastReceiver implements LabTabConstants {
@@ -20,8 +20,8 @@ public class NetworkConnectivityChangeReceiver extends BroadcastReceiver impleme
             Toast.makeText(context, "Not Connected To Internet", Toast.LENGTH_SHORT).show();
         } else {
             //Device Is Connected To Internet
-            Intent uploadService = new Intent(context, LabTabUploadService.class);
-            uploadService.putExtra(LabTabUploadService.EVENT, Events.DEVICE_CONNECTED_TO_INTERNET);
+            Intent uploadService = new Intent(context, LabTabSyncService.class);
+            uploadService.putExtra(LabTabSyncService.EVENT, Events.DEVICE_CONNECTED_TO_INTERNET);
             context.startService(uploadService);
             Toast.makeText(context, "Connected To Internet", Toast.LENGTH_SHORT).show();
         }

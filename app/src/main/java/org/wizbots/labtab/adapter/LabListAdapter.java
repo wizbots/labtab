@@ -109,7 +109,7 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             labListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
         }
         labListViewHolder.labListLinearLayout.setBackgroundColor(labListLinearLayoutColor);
-        LabTabUtil.setLabLevelImageResource(labList.getLabLevel(), labListViewHolder.labLevelImageView);
+        LabTabUtil.setLabLevelImageResource(labList.getLevel(), labListViewHolder.labLevelImageView);
         labListViewHolder.labNameTextViewCustom.setText(labList.getTitle());
         labListViewHolder.actionImageView.setImageResource(R.drawable.ic_action_view);
     }

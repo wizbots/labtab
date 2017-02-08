@@ -38,14 +38,16 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
         if (markStudentAbsentResponse != null) {
             for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
                 if (markStudentAbsentResponse.getResponseCode() == StatusCode.OK) {
-                    markStudentsAbsent();
+                    markStudentsAbsent(SyncStatus.SYNCED);
                     markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
                 } else {
+                    markStudentsAbsent(SyncStatus.NOT_SYNCED);
                     markStudentAbsentListener.markAbsentUnSuccessful(markStudentAbsentResponse.getResponseCode());
                 }
             }
         } else {
             for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
+                markStudentsAbsent(SyncStatus.NOT_SYNCED);
                 markStudentAbsentListener.markAbsentUnSuccessful(0);
             }
         }
@@ -60,11 +62,11 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
         return students;
     }
 
-    private void markStudentsAbsent() {
+    private void markStudentsAbsent(String syncStatus) {
         ArrayList<Absence> absenceArrayList = new ArrayList<>();
         Mentor mentor = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor();
         for (Student student : studentArrayList) {
-            absenceArrayList.add(new Absence(student.getName(), mentor.getFullName(), program.getId(), student.getStudent_id(), mentor.getMember_id(), date));
+            absenceArrayList.add(new Absence(student.getName(), syncStatus, sendNotification ? "1" : "0", mentor.getFullName(), program.getId(), student.getStudent_id(), mentor.getMember_id(), date));
         }
         ProgramAbsencesTable.getInstance().insert(absenceArrayList);
     }

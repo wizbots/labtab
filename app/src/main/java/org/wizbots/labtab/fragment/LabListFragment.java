@@ -25,6 +25,7 @@ import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
+import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
@@ -59,6 +60,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_lab_list, container, false);
         homeActivityContext = (HomeActivity) context;
+        if (LabTabApplication.getInstance().getMetaDatas() == null) {
+            BackgroundExecutor.getInstance().execute(new ProjectsMetaDataRequester());
+        }
         initListeners();
         initView();
         return rootView;
@@ -152,8 +156,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ProgramsOrLabsTable.getInstance().insert(programOrLabs);
-                objectArrayList.addAll(programOrLabs);
+                objectArrayList.clear();
+                objectArrayList.addAll(ProgramsOrLabsTable
+                        .getInstance()
+                        .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id()));
                 labListAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
@@ -168,7 +174,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 progressDialog.dismiss();
             }
         });
-        LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
         if (responseCode == StatusCode.FORBIDDEN) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {

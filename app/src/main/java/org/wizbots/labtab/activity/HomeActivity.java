@@ -38,7 +38,7 @@ import org.wizbots.labtab.fragment.StudentStatsDetailsFragment;
 import org.wizbots.labtab.fragment.VideoListFragment;
 import org.wizbots.labtab.fragment.ViewVideoFragment;
 import org.wizbots.labtab.model.LeftDrawerItem;
-import org.wizbots.labtab.service.LabTabUploadService;
+import org.wizbots.labtab.service.LabTabSyncService;
 
 public class HomeActivity extends ParentActivity implements View.OnClickListener {
 
@@ -193,6 +193,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 break;
             case Fragments.LAB_DETAILS_LIST:
                 fragment = new LabDetailsFragment();
+                Intent uploadServiceStudentLabDetails = new Intent(this, LabTabSyncService.class);
+                uploadServiceStudentLabDetails.putExtra(LabTabSyncService.EVENT, Events.LAB_DETAIL_LIST);
+                startService(uploadServiceStudentLabDetails);
                 break;
             case Fragments.MENTOR_PROFILE:
                 fragment = new MentorProfileFragment();
@@ -207,8 +210,8 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragment = new StudentLabDetailsFragment();
                 break;
             case Fragments.VIDEO_LIST:
-                Intent uploadService = new Intent(this, LabTabUploadService.class);
-                uploadService.putExtra(LabTabUploadService.EVENT, Events.VIDEO_LIST);
+                Intent uploadService = new Intent(this, LabTabSyncService.class);
+                uploadService.putExtra(LabTabSyncService.EVENT, Events.VIDEO_LIST);
                 startService(uploadService);
                 fragment = new VideoListFragment();
                 break;
@@ -230,10 +233,14 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
 
         }
         fragment.setArguments(bundle);
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
-        fragmentTransaction.addToBackStack(fragment.getFragmentName());
-        fragmentTransaction.commit();
+        try {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+            fragmentTransaction.addToBackStack(fragment.getFragmentName());
+            fragmentTransaction.commit();
+        } catch (Exception ignored) {
+
+        }
     }
 
     @Override
@@ -270,10 +277,14 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     }
 
     public void clearAllTheFragmentFromStack() {
+        try {
 //        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        fragmentManager = getSupportFragmentManager();
-        while (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStackImmediate();
+            fragmentManager = getSupportFragmentManager();
+            while (fragmentManager.getBackStackEntryCount() > 0) {
+                fragmentManager.popBackStackImmediate();
+            }
+        } catch (Exception ignored) {
+
         }
 
     }

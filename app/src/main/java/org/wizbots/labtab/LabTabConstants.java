@@ -154,7 +154,8 @@ public interface LabTabConstants {
         String PROJECT_EDITED_SUCCESSFULLY = "Project Edited Successfully";
         String VIDEO_CAN_NOT_BE_EDITED_WHEN_IT_IS_NOT_UPLOADED_TO_WIZBOTS_SERVER = "Video can't be edited when it is not uploaded to wizbots server";
         String SELECT_STUDENT_FIRST = "Select Student First";
-        String PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS= "Please Select one student";
+        String YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY = "You can not select a date more than today";
+        String PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS = "Please Select one student";
     }
 
     /**
@@ -180,6 +181,7 @@ public interface LabTabConstants {
         String VIDEO_LIST = "VIDEO_LIST";
         String NO_EVENT = "NO_EVENT";
         String DEFAULT = "DEFAULT";
+        String LAB_DETAIL_LIST = "LAB_DETAIL_LIST";
     }
 
     interface Constants {
@@ -222,4 +224,190 @@ public interface LabTabConstants {
         String DEFAULT = "dd/MM/yyyy";
         String YYYYMMDD = "yyyy-MM-dd";
     }
+
+    interface SyncStatus {
+        String SYNCED = "SYNCED";
+        String NOT_SYNCED = "NOT_SYNCED";
+    }
+
+    interface ProjectsMetaData {
+        String CONTENT = "[\n" +
+                "  {\n" +
+                "    \"index\": 1,\n" +
+                "    \"name\": \"Lab Certified\",\n" +
+                "    \"color1\": \"white\",\n" +
+                "    \"color2\": \"lightsteelblue\",\n" +
+                "    \"nuggets\": [\n" +
+                "      \"Tool Chain - 1\",\n" +
+                "      \"Motor Control\",\n" +
+                "      \"NXT Button Control\",\n" +
+                "      \"Touch Sensor Control\"\n" +
+                "    ],\n" +
+                "    \"projects\": [\n" +
+                "      \"Tick Tock\",\n" +
+                "      \"Hypnotizer\",\n" +
+                "      \"Chariot\",\n" +
+                "      \"Obstacle Course\",\n" +
+                "      \"Build Strong\",\n" +
+                "      \"Castles and Catapults\",\n" +
+                "      \"The Wizbots Way\",\n" +
+                "      \"MadLib\"\n" +
+                "    ],\n" +
+                "    \"wiz_chips\": 10\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"index\": 2,\n" +
+                "    \"name\": \"Explorer\",\n" +
+                "    \"color1\": \"purple\",\n" +
+                "    \"color2\": \"lightsteelblue\",\n" +
+                "    \"nuggets\": [\n" +
+                "      \"Wait Commands\",\n" +
+                "      \"Flow Control - 1\",\n" +
+                "      \"Speaker Control\",\n" +
+                "      \"Display Control\",\n" +
+                "      \"Tool Chain - 2\"\n" +
+                "    ],\n" +
+                "    \"projects\": [\n" +
+                "      \"Windscreen Wiper\",\n" +
+                "      \"Bumper Car\",\n" +
+                "      \"Hello World!\",\n" +
+                "      \"Sound and Music\",\n" +
+                "      \"Plastic Fabtastic\",\n" +
+                "      \"Tallest Robot\",\n" +
+                "      \"LED Wand\",\n" +
+                "      \"Dancing Puppets\",\n" +
+                "      \"Parallerl Programming\",\n" +
+                "      \"Diff Drive Control\",\n" +
+                "      \"Wizball\"\n" +
+                "    ],\n" +
+                "    \"wiz_chips\": 10\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"index\": 3,\n" +
+                "    \"name\": \"Apprentice\",\n" +
+                "    \"color1\": \"#324596\",\n" +
+                "    \"color2\": \"lightsteelblue\",\n" +
+                "    \"nuggets\": [\n" +
+                "      \"Distance Sensor Control\",\n" +
+                "      \"Sound Sensor Control\",\n" +
+                "      \"Light Sensor Control\",\n" +
+                "      \"LED Wand\",\n" +
+                "      \"Color Sensor Control\"\n" +
+                "    ],\n" +
+                "    \"projects\": [\n" +
+                "      \"Troubleshooting\",\n" +
+                "      \"Wheel Free Racing\",\n" +
+                "      \"Distance Sensor\",\n" +
+                "      \"Table Top Survival\",\n" +
+                "      \"Sound Sensor\",\n" +
+                "      \"Barking Dog\",\n" +
+                "      \"Light Sensor\",\n" +
+                "      \"Sun Flower\",\n" +
+                "      \"Color Sensor\",\n" +
+                "      \"Red Light Green Light\",\n" +
+                "      \"Random Numbers\",\n" +
+                "      \"Floor Sweeper\"\n" +
+                "    ],\n" +
+                "    \"wiz_chips\": 15\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"index\": 4,\n" +
+                "    \"name\": \"Maker\",\n" +
+                "    \"color1\": \"#C84239\",\n" +
+                "    \"color2\": \"lightsteelblue\",\n" +
+                "    \"nuggets\": [\n" +
+                "      \"Parallel Programming\",\n" +
+                "      \"Flow Control - 2\",\n" +
+                "      \"Line Following\",\n" +
+                "      \"Play Station Control - 1\"\n" +
+                "    ],\n" +
+                "    \"projects\": [\n" +
+                "      \"Line Following\",\n" +
+                "      \"Line Racing\",\n" +
+                "      \"Using The Force\",\n" +
+                "      \"Drag Racing\",\n" +
+                "      \"Hoist\",\n" +
+                "      \"Elevator\",\n" +
+                "      \"Screw Gear\",\n" +
+                "      \"Slow Poke\"\n" +
+                "    ],\n" +
+                "    \"wiz_chips\": 15\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"index\": 5,\n" +
+                "    \"name\": \"Imagineer\",\n" +
+                "    \"color1\": \"#1B7BA4\",\n" +
+                "    \"color2\": \"lightsteelblue\",\n" +
+                "    \"nuggets\": [\n" +
+                "      \"Variables\",\n" +
+                "      \"Tool Chain - 3\",\n" +
+                "      \"Arithmetic Relations\",\n" +
+                "      \"Rotation Sensor Control\",\n" +
+                "      \"Gyroscope Sensor Control\",\n" +
+                "      \"Compass Sensor Control\",\n" +
+                "      \"Magnetic Sensor Control\",\n" +
+                "      \"Optical Distance Sensor Control\",\n" +
+                "      \"Play Station Control - 2\"\n" +
+                "    ],\n" +
+                "    \"projects\": [\n" +
+                "      \"Counting\",\n" +
+                "      \"Boolean Logic\",\n" +
+                "      \"Rotation Sensor\",\n" +
+                "      \"Etch-A-Sketch\",\n" +
+                "      \"Compass Sensor\",\n" +
+                "      \"North Pole Express\",\n" +
+                "      \"Slider Crank\",\n" +
+                "      \"Magnetic Sensor\",\n" +
+                "      \"Shell Game\",\n" +
+                "      \"Ackerman\",\n" +
+                "      \"Steering\"\n" +
+                "    ],\n" +
+                "    \"wiz_chips\": 15\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"index\": 6,\n" +
+                "    \"name\": \"Wizard\",\n" +
+                "    \"color1\": \"green\",\n" +
+                "    \"color2\": \"lightsteelblue\",\n" +
+                "    \"nuggets\": [\n" +
+                "      \"Flow Control - 3\",\n" +
+                "      \"Boolean Operators\",\n" +
+                "      \"Accelerometer Sensor Control\",\n" +
+                "      \"Camera Sensor Control\",\n" +
+                "      \"File Input and Output\",\n" +
+                "      \"Math Functions\",\n" +
+                "      \"String manipulation\"\n" +
+                "    ],\n" +
+                "    \"projects\": [\n" +
+                "      \"Algorithms\",\n" +
+                "      \"Gyroscope\",\n" +
+                "      \"Data Structures\",\n" +
+                "      \"Accelerometer\",\n" +
+                "      \"Camera\"\n" +
+                "    ],\n" +
+                "    \"wiz_chips\": 15\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"index\": 7,\n" +
+                "    \"name\": \"Master\",\n" +
+                "    \"color1\": \"orange\",\n" +
+                "    \"color2\": \"lightsteelblue\",\n" +
+                "    \"nuggets\": [\n" +
+                "      \"Advanced Data Structures\",\n" +
+                "      \"Basic Object Oriented Progamming\",\n" +
+                "      \"Behavior-based Control\",\n" +
+                "      \"PID Control\"\n" +
+                "    ],\n" +
+                "    \"projects\": [\n" +
+                "      \"Objects\",\n" +
+                "      \"Networking\",\n" +
+                "      \"Behaviors\",\n" +
+                "      \"PID Control\",\n" +
+                "      \"Segway\"\n" +
+                "    ],\n" +
+                "    \"wiz_chips\": 15\n" +
+                "  }\n" +
+                "]";
+    }
+
 }

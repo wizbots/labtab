@@ -14,12 +14,15 @@ public class ProgramOrLab implements Parcelable {
     private int enrollment_count;
     private String address;
     private String id;
-    private String labLevel;
+    private String season;
+    private String location;
+    private String level;
+    private String year;
 
     public ProgramOrLab() {
     }
 
-    public ProgramOrLab(int sku, String member_id, String ends, String title, String starts, String state, String street, int enrollment_count, String address, String id, String labLevel) {
+    public ProgramOrLab(int sku, String member_id, String ends, String title, String starts, String state, String street, int enrollment_count, String address, String id, String season, String location, String level, String year) {
         this.sku = sku;
         this.member_id = member_id;
         this.ends = ends;
@@ -30,7 +33,10 @@ public class ProgramOrLab implements Parcelable {
         this.enrollment_count = enrollment_count;
         this.address = address;
         this.id = id;
-        this.labLevel = labLevel;
+        this.season = season;
+        this.location = location;
+        this.level = level;
+        this.year = year;
     }
 
     public int getSku() {
@@ -113,13 +119,38 @@ public class ProgramOrLab implements Parcelable {
         this.id = id;
     }
 
-    public String getLabLevel() {
-        return labLevel;
+    public String getSeason() {
+        return season;
     }
 
-    public void setLabLevel(String labLevel) {
-        this.labLevel = labLevel;
+    public void setSeason(String season) {
+        this.season = season;
     }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
 
     @Override
     public int describeContents() {
@@ -138,7 +169,10 @@ public class ProgramOrLab implements Parcelable {
         dest.writeInt(this.enrollment_count);
         dest.writeString(this.address);
         dest.writeString(this.id);
-        dest.writeString(this.labLevel);
+        dest.writeString(this.season);
+        dest.writeString(this.location);
+        dest.writeString(this.level);
+        dest.writeString(this.year);
     }
 
     protected ProgramOrLab(Parcel in) {
@@ -152,10 +186,13 @@ public class ProgramOrLab implements Parcelable {
         this.enrollment_count = in.readInt();
         this.address = in.readString();
         this.id = in.readString();
-        this.labLevel = in.readString();
+        this.season = in.readString();
+        this.location = in.readString();
+        this.level = in.readString();
+        this.year = in.readString();
     }
 
-    public static final Parcelable.Creator<ProgramOrLab> CREATOR = new Parcelable.Creator<ProgramOrLab>() {
+    public static final Creator<ProgramOrLab> CREATOR = new Creator<ProgramOrLab>() {
         @Override
         public ProgramOrLab createFromParcel(Parcel source) {
             return new ProgramOrLab(source);

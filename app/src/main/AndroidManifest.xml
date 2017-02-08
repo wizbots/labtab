@@ -75,11 +75,11 @@
 
 
         <service
-            android:name=".service.LabTabUploadService"
+            android:name=".service.LabTabSyncService"
             android:enabled="true"
             android:exported="false" />
 
-        <receiver android:name=".service.LabTabUploadService$NotificationLayoutHandler" />
+        <receiver android:name=".service.LabTabSyncService$NotificationLayoutHandler" />
 
     </application>
 

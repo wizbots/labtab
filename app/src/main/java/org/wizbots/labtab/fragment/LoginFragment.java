@@ -27,7 +27,8 @@ import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.requesters.LoginRequester;
 import org.wizbots.labtab.requesters.MentorProfileRequester;
-import org.wizbots.labtab.service.LabTabUploadService;
+import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
+import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
@@ -159,6 +160,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
 
     @Override
     public void onDestroy() {
+        progressDialog.dismiss();
         LabTabApplication.getInstance().removeUIListener(CreateTokenListener.class, this);
         LabTabApplication.getInstance().removeUIListener(GetMentorProfileListener.class, this);
         super.onDestroy();
@@ -181,6 +183,10 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
 
         homeActivityContext.getSupportFragmentManager().popBackStack();
 
+        if (LabTabApplication.getInstance().getMetaDatas() == null) {
+            BackgroundExecutor.getInstance().execute(new ProjectsMetaDataRequester());
+        }
+
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setMentor(mentor);
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(true);
 
@@ -194,8 +200,8 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
 
         homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.LOGIN_SUCCESSFULL);
-        Intent uploadService = new Intent(homeActivityContext, LabTabUploadService.class);
-        uploadService.putExtra(LabTabUploadService.EVENT, Events.USER_LOGGED_IN);
+        Intent uploadService = new Intent(homeActivityContext, LabTabSyncService.class);
+        uploadService.putExtra(LabTabSyncService.EVENT, Events.USER_LOGGED_IN);
         homeActivityContext.startService(uploadService);
     }
 

@@ -3,6 +3,8 @@ package org.wizbots.labtab.model.program;
 
 public class Absence {
     private String student_name;
+    private String mark_absent_synced;
+    private String send_absent_notification;
     private String mentor_name;
     private String program_id;
     private String student_id;
@@ -13,8 +15,10 @@ public class Absence {
     public Absence() {
     }
 
-    public Absence(String student_name, String mentor_name, String program_id, String student_id, String mentor_id, String date) {
+    public Absence(String student_name, String mark_absent_synced, String send_absent_notification, String mentor_name, String program_id, String student_id, String mentor_id, String date) {
         this.student_name = student_name;
+        this.mark_absent_synced = mark_absent_synced;
+        this.send_absent_notification = send_absent_notification;
         this.mentor_name = mentor_name;
         this.program_id = program_id;
         this.student_id = student_id;
@@ -28,6 +32,22 @@ public class Absence {
 
     public void setStudent_name(String student_name) {
         this.student_name = student_name;
+    }
+
+    public String getMark_absent_synced() {
+        return mark_absent_synced;
+    }
+
+    public void setMark_absent_synced(String mark_absent_synced) {
+        this.mark_absent_synced = mark_absent_synced;
+    }
+
+    public String getSend_absent_notification() {
+        return send_absent_notification;
+    }
+
+    public void setSend_absent_notification(String send_absent_notification) {
+        this.send_absent_notification = send_absent_notification;
     }
 
     public String getMentor_name() {

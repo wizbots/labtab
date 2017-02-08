@@ -9,6 +9,7 @@ import com.craterzone.logginglib.manager.LoggerManager;
 import org.wizbots.labtab.interfaces.BaseManagerInterface;
 import org.wizbots.labtab.interfaces.BaseUIListener;
 import org.wizbots.labtab.interfaces.OnLoadListener;
+import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class LabTabApplication extends Application {
     private ArrayList registeredManagers;
     private Map<Class<? extends BaseManagerInterface>, Collection<? extends BaseManagerInterface>> managerInterfaces;
     private Map<Class<? extends BaseUIListener>, Collection<? extends BaseUIListener>> uiListeners;
+    private MetaData[] metaDatas;
 
 
     public LabTabApplication() {
@@ -156,6 +158,29 @@ public class LabTabApplication extends Application {
     public <T extends BaseUIListener> void removeUIListener(Class<T> cls,
                                                             T listener) {
         getOrCreateUIListeners(cls).remove(listener);
+    }
+
+    public void setMetaDatas(MetaData[] metaDatas) {
+        this.metaDatas = metaDatas;
+    }
+
+    public MetaData[] getMetaDatas() {
+        return metaDatas;
+    }
+
+    public String[] getKnowledgeNuggets(String labLevel) {
+        String[] knowledgeNuggets = null;
+        if (metaDatas == null) {
+            return null;
+        } else {
+            for (int i = 0; i < metaDatas.length; i++) {
+                if (labLevel.toUpperCase().equals(metaDatas[i].getName().toUpperCase())) {
+                    knowledgeNuggets = metaDatas[i].getNuggets();
+                    break;
+                }
+            }
+        }
+        return knowledgeNuggets;
     }
 
 }

@@ -15,8 +15,8 @@
         android:layout_width="40dp"
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_add_video"
-        android:contentDescription="@string/add_video" />
+        android:contentDescription="@string/add_video"
+        android:src="@drawable/ic_add_video" />
 
     <TextView
         android:id="@+id/tv_promote"
@@ -127,6 +127,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:scaleType="fitXY"
-        android:src="@android:drawable/ic_menu_my_calendar" />
+        android:src="@drawable/ic_calendar" />
 
 </RelativeLayout>
