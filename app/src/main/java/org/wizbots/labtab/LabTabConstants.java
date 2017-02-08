@@ -153,6 +153,8 @@ public interface LabTabConstants {
         String OOPS_SOMETHING_WENT_WRONG = "Oops Something Went Wrong";
         String PROJECT_EDITED_SUCCESSFULLY = "Project Edited Successfully";
         String VIDEO_CAN_NOT_BE_EDITED_WHEN_IT_IS_NOT_UPLOADED_TO_WIZBOTS_SERVER = "Video can't be edited when it is not uploaded to wizbots server";
+        String SELECT_STUDENT_FIRST = "Select Student First";
+        String PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS= "Please Select one student";
     }
 
     /**

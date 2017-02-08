@@ -92,6 +92,7 @@ public class ProgramStudentsRequester implements Runnable, LabTabConstants {
                 student.setName(studentResponse.getName());
                 student.setLevel(studentResponse.getLevel());
                 student.setWizchips(studentResponse.getWizchips());
+                student.setSync(true);
                 student.setSpecial_needs(studentResponse.getSpecial_needs());
                 student.setSelf_sign_out(studentResponse.isSelf_sign_out() ? 1 : 0);
                 student.setPickup_instructions(studentResponse.getPickup_instructions());

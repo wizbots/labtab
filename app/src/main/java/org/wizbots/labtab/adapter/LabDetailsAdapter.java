@@ -149,13 +149,17 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         labDetailsViewHolder.noOfDoneTextViewCustom.setText(String.valueOf(student.getCompleted()));
         labDetailsViewHolder.noOfSkippedTextViewCustom.setText(String.valueOf(student.getSkipped()));
         labDetailsViewHolder.noOfPendingTextViewCustom.setText(String.valueOf(student.getPending()));
-        labDetailsViewHolder.noOfChipsTextViewCustom.setText(String.valueOf(student.getWizchips()));
+        labDetailsViewHolder.noOfChipsTextViewCustom.setText(String.valueOf(getChips(student.getWizchips(), student.getOfflinewizchips())));
         LabTabUtil.setLabLevelImageResource(student.getLevel().toUpperCase(), labDetailsViewHolder.labLevelImageView);
         if (student.isCloseToNextLevel()) {
             labDetailsViewHolder.actionCloseToNextLevelLabLevelImageView.setVisibility(View.VISIBLE);
         } else {
             labDetailsViewHolder.actionCloseToNextLevelLabLevelImageView.setVisibility(View.GONE);
         }
+    }
+
+    private int getChips(int onlineChips, int offlineChips){
+        return (onlineChips + offlineChips) > 0 ? (onlineChips + offlineChips) : 0;
     }
 
     @Override

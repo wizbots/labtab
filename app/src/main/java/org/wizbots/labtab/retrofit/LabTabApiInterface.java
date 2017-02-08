@@ -9,6 +9,8 @@ import org.wizbots.labtab.model.promotedemote.PromotionDemotionResponse;
 import org.wizbots.labtab.model.student.response.StudentResponse;
 import org.wizbots.labtab.model.video.response.CreateProjectResponse;
 import org.wizbots.labtab.model.video.response.EditProjectResponse;
+import org.wizbots.labtab.model.wizchips.WizchipsAddResponse;
+import org.wizbots.labtab.model.wizchips.WizchipsWithdrawResponse;
 
 import java.util.ArrayList;
 
@@ -97,6 +99,16 @@ public interface LabTabApiInterface {
                                           @Query("title") String title, @Query("notes") String notes,
                                           @Query("components") String[] components,
                                           @Query("creators") String[] creators);
+
+//    13. Add wizchips
+    @POST("students/wizchips/add")
+    Call<WizchipsAddResponse> addWizchips(@Header("Auth-Token") String authToken,
+                                          @Query("student_id") String studentId, @Query("wizchips") int wizchip);
+
+//    14. withdraw wizchips
+    @POST("students/wizchips/withdraw")
+    Call<WizchipsWithdrawResponse> withdrawWizchips(@Header("Auth-Token") String authToken,
+                                                    @Query("student_id") String studentId, @Query("wizchips") int wizchips);
 
 
 }

@@ -19,12 +19,16 @@ public class Student implements Parcelable {
     private String pickup_instructions;
     private int projects;
     private boolean check;
+    private boolean isSync;
+    private int offlinewizchips;
     private boolean closeToNextLevel;
 
     public Student() {
     }
 
-    public Student(String program_id, String member_id, String student_id, String lab_time, int completed, int skipped, int pending, String name, String level, int wizchips, String special_needs, int self_sign_out, String pickup_instructions) {
+    public Student(String program_id, String member_id, String student_id, String lab_time,
+                   int completed, int skipped, int pending, String name, String level, int wizchips,
+                   String special_needs, int self_sign_out, String pickup_instructions, boolean isSync, int offlinewizchips) {
         this.program_id = program_id;
         this.member_id = member_id;
         this.student_id = student_id;
@@ -38,6 +42,8 @@ public class Student implements Parcelable {
         this.special_needs = special_needs;
         this.self_sign_out = self_sign_out;
         this.pickup_instructions = pickup_instructions;
+        this.isSync = isSync;
+        this.offlinewizchips = offlinewizchips;
     }
 
     public String getProgram_id() {
@@ -160,12 +166,28 @@ public class Student implements Parcelable {
         this.check = check;
     }
 
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
+    }
+
     public boolean isCloseToNextLevel() {
         return closeToNextLevel;
     }
 
     public void setCloseToNextLevel(boolean closeToNextLevel) {
         this.closeToNextLevel = closeToNextLevel;
+    }
+
+    public int getOfflinewizchips() {
+        return offlinewizchips;
+    }
+
+    public void setOfflinewizchips(int offlinewizchips) {
+        this.offlinewizchips = offlinewizchips;
     }
 
 
@@ -191,6 +213,8 @@ public class Student implements Parcelable {
         dest.writeString(this.pickup_instructions);
         dest.writeInt(this.projects);
         dest.writeByte(this.check ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isSync ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.offlinewizchips);
         dest.writeByte(this.closeToNextLevel ? (byte) 1 : (byte) 0);
     }
 
@@ -210,10 +234,12 @@ public class Student implements Parcelable {
         this.pickup_instructions = in.readString();
         this.projects = in.readInt();
         this.check = in.readByte() != 0;
+        this.isSync = in.readByte() != 0;
+        this.offlinewizchips = in.readInt();
         this.closeToNextLevel = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>() {
+    public static final Creator<Student> CREATOR = new Creator<Student>() {
         @Override
         public Student createFromParcel(Parcel source) {
             return new Student(source);

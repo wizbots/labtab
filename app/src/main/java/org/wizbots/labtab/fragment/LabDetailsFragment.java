@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -27,17 +28,21 @@ import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.ProgramTable;
 import org.wizbots.labtab.interfaces.LabDetailsAdapterClickListener;
+import org.wizbots.labtab.interfaces.requesters.AddWizchipsListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramStudentsListener;
 import org.wizbots.labtab.interfaces.requesters.MarkStudentAbsentListener;
 import org.wizbots.labtab.interfaces.requesters.PromotionDemotionListener;
+import org.wizbots.labtab.interfaces.requesters.WithdrawWizchipsListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.program.response.ProgramResponse;
+import org.wizbots.labtab.requesters.AddWizchipsRequester;
 import org.wizbots.labtab.requesters.MarkStudentAbsentRequester;
 import org.wizbots.labtab.requesters.ProgramStudentsRequester;
 import org.wizbots.labtab.requesters.PromotionDemotionRequester;
+import org.wizbots.labtab.requesters.WithdrawWizchipsRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
@@ -45,7 +50,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener, GetProgramStudentsListener, View.OnClickListener, MarkStudentAbsentListener, PromotionDemotionListener {
+public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener,
+        GetProgramStudentsListener, View.OnClickListener, MarkStudentAbsentListener, PromotionDemotionListener,
+        WithdrawWizchipsListener, AddWizchipsListener{
     public static final String PROGRAM = "PROGRAM";
     public static final String STUDENT = "STUDENT";
     private LabTabHeaderLayout labTabHeaderLayout;
@@ -145,6 +152,8 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         markAbsentTextView.setOnClickListener(this);
         promoteTextView.setOnClickListener(this);
         demoteTextView.setOnClickListener(this);
+        rootView.findViewById(R.id.tv_plus).setOnClickListener(this);
+        rootView.findViewById(R.id.tv_minus).setOnClickListener(this);
     }
 
     @Override
@@ -198,6 +207,8 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         LabTabApplication.getInstance().addUIListener(GetProgramStudentsListener.class, this);
         LabTabApplication.getInstance().addUIListener(MarkStudentAbsentListener.class, this);
         LabTabApplication.getInstance().addUIListener(PromotionDemotionListener.class, this);
+        LabTabApplication.getInstance().addUIListener(WithdrawWizchipsListener.class, this);
+        LabTabApplication.getInstance().addUIListener(AddWizchipsListener.class, this);
     }
 
     @Override
@@ -238,6 +249,8 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         LabTabApplication.getInstance().removeUIListener(GetProgramStudentsListener.class, this);
         LabTabApplication.getInstance().removeUIListener(MarkStudentAbsentListener.class, this);
         LabTabApplication.getInstance().removeUIListener(PromotionDemotionListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(AddWizchipsListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(WithdrawWizchipsListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
     }
@@ -366,6 +379,30 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             case R.id.iv_calendar:
                 showCalendar();
                 break;
+            case R.id.tv_plus:
+                ArrayList<Student> studentList = getSelectedStudents();
+                if(studentList.isEmpty()){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST);
+                }else if(studentList.size() > 1){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS);
+                }else {
+                    progressDialog.show();
+                    String studentId = studentList.get(0).getStudent_id();
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab, studentId,1));
+                }
+                break;
+            case R.id.tv_minus:
+                studentList = getSelectedStudents();
+                if(studentList.isEmpty()){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST);
+                }else if(studentList.size() > 1){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS);
+                }else {
+                    progressDialog.show();
+                    String studentId = studentList.get(0).getStudent_id();
+                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab, studentId,1));
+                }
+                break;
             default:
                 break;
         }
@@ -461,5 +498,52 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 }
             }
         });
+    }
+
+    @Override
+    public void onAddWizchipsSuccess() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyAdapter();
+            }
+        });
+    }
+
+    @Override
+    public void onAddWizchipsError() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyAdapter();
+            }
+        });
+    }
+
+    @Override
+    public void onWithdrawWizchipsSuccess() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+            notifyAdapter();
+            }
+        });
+    }
+
+    @Override
+    public void onWithdrawWizchipsError() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyAdapter();
+            }
+        });
+    }
+
+    private void notifyAdapter(){
+        progressDialog.dismiss();
+        objectArrayList.clear();
+        objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
+        labDetailsAdapter.notifyDataSetChanged();
     }
 }

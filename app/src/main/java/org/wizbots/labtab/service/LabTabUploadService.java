@@ -18,8 +18,10 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.SplashActivity;
 import org.wizbots.labtab.controller.LabTabPreferences;
+import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.requesters.VideoUploadListener;
+import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.requesters.CreateProjectRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
@@ -101,6 +103,15 @@ public class LabTabUploadService extends Service implements LabTabConstants, Vid
 
     public void setUploadServiceRunning(boolean uploadServiceRunning) {
         isUploadServiceRunning = uploadServiceRunning;
+    }
+
+    private void syncWizChips(){
+        ArrayList<Student> studentList = ProgramStudentsTable.getInstance().getUnSyncData();
+        if (!studentList.isEmpty()) {
+            startForegroundIntent();
+            for (int i = 0; i < studentList.size(); i++) {
+            }
+        }
     }
 
     private void uploadVideo() {

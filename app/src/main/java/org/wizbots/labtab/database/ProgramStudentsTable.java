@@ -8,6 +8,7 @@ import android.util.Log;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.controller.LabTabPreferences;
+import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Student;
 
 import java.util.ArrayList;
@@ -29,9 +30,11 @@ public class ProgramStudentsTable extends AbstractTable {
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_LEVEL = "level";
     private static final String COLUMN_WIZCHIPS = "wizchips";
+    private static final String COLUMN_OFFLINE_WIZCHIPS = "offline_wizchips";
     private static final String COLUMN_SPECIAL_NEEDS = "special_needs";
     private static final String COLUMN_SELF_SIGN_OUT = "self_sign_out";
     private static final String COLUMN_PICKUP_INSTRUCTIONS = "pickup_instructions";
+    private static final String COLUMN_WIZCHIPS_HAS_SYNC = "whzchips_has_sync";
 
     private DAOManager daoManager = null;
     private final static ProgramStudentsTable instance;
@@ -63,6 +66,8 @@ public class ProgramStudentsTable extends AbstractTable {
                 + COLUMN_NAME + " text,"
                 + COLUMN_LEVEL + " text,"
                 + COLUMN_WIZCHIPS + " integer,"
+                + COLUMN_WIZCHIPS_HAS_SYNC + " integer DEFAULT 0,"
+                + COLUMN_OFFLINE_WIZCHIPS + " integer DEFAULT 0 ,"
                 + COLUMN_SPECIAL_NEEDS + " text,"
                 + COLUMN_SELF_SIGN_OUT + " integer,"
                 + COLUMN_PICKUP_INSTRUCTIONS + " text, PRIMARY KEY(member_id,program_id,id));");
@@ -119,6 +124,7 @@ public class ProgramStudentsTable extends AbstractTable {
         values.put(COLUMN_NAME, student.getName());
         values.put(COLUMN_LEVEL, student.getLevel());
         values.put(COLUMN_WIZCHIPS, student.getWizchips());
+        values.put(COLUMN_WIZCHIPS_HAS_SYNC, student.isSync()?1:0);
         values.put(COLUMN_SPECIAL_NEEDS, student.getSpecial_needs());
         values.put(COLUMN_SELF_SIGN_OUT, student.getSelf_sign_out());
         values.put(COLUMN_PICKUP_INSTRUCTIONS, student.getPickup_instructions());
@@ -126,7 +132,7 @@ public class ProgramStudentsTable extends AbstractTable {
     }
 
     public ArrayList<Student> getStudentsListByProgramId(String programId) {
-        final String query = "Select * from " + NAME + " where " + COLUMN_PROGRAM_ID + " = '" + programId + "' and " + COLUMN_MEMBER_ID + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "'";
+        final String query = "Select * from " + NAME + " where " + COLUMN_PROGRAM_ID + " = '" + programId + "' and " + COLUMN_MEMBER_ID + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "'" + " ORDER BY " + COLUMN_NAME + " ASC";
         ArrayList<Student> students = new ArrayList<>();
         Cursor cursor = null;
         try {
@@ -146,7 +152,9 @@ public class ProgramStudentsTable extends AbstractTable {
                             cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS)),
                             cursor.getString(cursor.getColumnIndex(COLUMN_SPECIAL_NEEDS)),
                             cursor.getInt(cursor.getColumnIndex(COLUMN_SELF_SIGN_OUT)),
-                            cursor.getString(cursor.getColumnIndex(COLUMN_PICKUP_INSTRUCTIONS))
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PICKUP_INSTRUCTIONS)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS_HAS_SYNC)) == 1,
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -160,8 +168,97 @@ public class ProgramStudentsTable extends AbstractTable {
         return students;
     }
 
+    public ArrayList<Student> getUnSyncData() {
+        final String query = "Select * from " + NAME + " where " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + 0;
+        ArrayList<Student> students = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    students.add(new Student(
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_MEMBER_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_STUDENT_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_LAB_TIME)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_COMPLETED)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_SKIPPED)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_PENDING)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_SPECIAL_NEEDS)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_SELF_SIGN_OUT)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PICKUP_INSTRUCTIONS)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS_HAS_SYNC)) == 1,
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get students", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return students;
+    }
+
+    public Student getWizchipsByStudentId(String programId, String studentId) {
+        final String query = "Select * from " + NAME + " where " + COLUMN_PROGRAM_ID + " = '" + programId + "' and " + COLUMN_MEMBER_ID
+                + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_STUDENT_ID + "='" + studentId +"'";
+        ArrayList<Student> students = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    students.add(new Student(
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_MEMBER_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_STUDENT_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_LAB_TIME)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_COMPLETED)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_SKIPPED)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_PENDING)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_SPECIAL_NEEDS)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_SELF_SIGN_OUT)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PICKUP_INSTRUCTIONS)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS_HAS_SYNC)) == 1,
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get students", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return students.get(0);
+    }
+
     public void upDateStudentLevel(String studentId, String level) {
         String updateStudentLevelQuery = "UPDATE " + NAME + " SET " + COLUMN_LEVEL + " = '" + level + "' WHERE " + COLUMN_STUDENT_ID + "= '" + studentId + "';";
+        SQLiteDatabase db = daoManager.getWritableDatabase();
+        SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
+        stmt.execute();
+    }
+
+    public void updateWizchips(String studentId, int count, boolean hasSync){
+        String updateStudentLevelQuery = "UPDATE " + NAME + " SET " + COLUMN_WIZCHIPS + " = " + count + " , " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + (hasSync ? 1 : 0) + " WHERE " + COLUMN_STUDENT_ID + "= '" + studentId + "';";
+        SQLiteDatabase db = daoManager.getWritableDatabase();
+        SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
+        stmt.execute();
+    }
+
+    public void updateWizchipsOffline(String studentId, int count, boolean hasSync){
+        String updateStudentLevelQuery = "UPDATE " + NAME + " SET " + COLUMN_OFFLINE_WIZCHIPS + " = " + count + " , " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + (hasSync ? 1 : 0) + " WHERE " + COLUMN_STUDENT_ID + "= '" + studentId + "';";
         SQLiteDatabase db = daoManager.getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
         stmt.execute();
