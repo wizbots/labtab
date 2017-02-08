@@ -6,9 +6,7 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.interfaces.requesters.WithdrawWizchipsListener;
-import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Student;
-import org.wizbots.labtab.model.wizchips.WizchipsAddResponse;
 import org.wizbots.labtab.model.wizchips.WizchipsWithdrawResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 import java.net.HttpURLConnection;
@@ -22,10 +20,10 @@ public class WithdrawWizchipsRequester implements Runnable {
     private static String TAG = WithdrawWizchipsRequester.class.getSimpleName();
 
     private String mStudentId;
-    private ProgramOrLab mProgramOrLab;
+    private String mProgramOrLab;
     private int mCount;
 
-    public WithdrawWizchipsRequester(ProgramOrLab programOrLab, String mStudentId, int mCount) {
+    public WithdrawWizchipsRequester(String programOrLab, String mStudentId, int mCount) {
         this.mProgramOrLab = programOrLab;
         this.mStudentId = mStudentId;
         this.mCount = mCount;
@@ -46,12 +44,12 @@ public class WithdrawWizchipsRequester implements Runnable {
                 Log.d(TAG , "Student Not Found with id = " + mStudentId);
             } else {
                 Log.d(TAG , "Failed to withdraw wizchips");
-                Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab.getId(), mStudentId);
+                Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
                 ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
             }
         }else {
             Log.d(TAG , "Failed to withdraw wizchips");
-            Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab.getId(), mStudentId);
+            Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
             ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
         }
         for (WithdrawWizchipsListener listener : LabTabApplication.getInstance().getUIListeners(WithdrawWizchipsListener.class)) {

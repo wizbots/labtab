@@ -169,7 +169,8 @@ public class ProgramStudentsTable extends AbstractTable {
     }
 
     public ArrayList<Student> getUnSyncData() {
-        final String query = "Select * from " + NAME + " where " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + 0;
+        final String query = "Select * from " + NAME + " where " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + 0 +
+                " and "  + COLUMN_MEMBER_ID + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "'";
         ArrayList<Student> students = new ArrayList<>();
         Cursor cursor = null;
         try {

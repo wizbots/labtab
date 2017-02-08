@@ -21,10 +21,10 @@ public class AddWizchipsRequester implements Runnable {
     private static String TAG = AddWizchipsRequester.class.getSimpleName();
 
     private String mStudentId;
-    private ProgramOrLab mProgramOrLab;
+    private String mProgramOrLab;
     private int mCount;
 
-    public AddWizchipsRequester(ProgramOrLab programOrLab, String mStudentId, int mCount) {
+    public AddWizchipsRequester(String programOrLab, String mStudentId, int mCount) {
         this.mProgramOrLab = programOrLab;
         this.mStudentId = mStudentId;
         this.mCount = mCount;
@@ -45,12 +45,12 @@ public class AddWizchipsRequester implements Runnable {
                 Log.d(TAG , "Student Not Found with id = " + mStudentId);
             } else {
                 Log.d(TAG , "Failed to add wizchips");
-                Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab.getId(), mStudentId);
+                Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
                 ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, (student.getOfflinewizchips() + mCount), false);
             }
         }else {
             Log.d(TAG , "Failed to add wizchips");
-            Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab.getId(), mStudentId);
+            Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
             ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, (student.getOfflinewizchips() + mCount), false);
         }
         for (AddWizchipsListener listener : LabTabApplication.getInstance().getUIListeners(AddWizchipsListener.class)) {

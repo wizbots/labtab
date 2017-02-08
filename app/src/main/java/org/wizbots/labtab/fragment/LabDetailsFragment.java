@@ -388,7 +388,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 }else {
                     progressDialog.show();
                     String studentId = studentList.get(0).getStudent_id();
-                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab, studentId,1));
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), studentId,1));
                 }
                 break;
             case R.id.tv_minus:
@@ -400,7 +400,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 }else {
                     progressDialog.show();
                     String studentId = studentList.get(0).getStudent_id();
-                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab, studentId,1));
+                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), studentId,1));
                 }
                 break;
             default:
