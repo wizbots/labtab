@@ -34,6 +34,19 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+        ArrayList<Absence> checkAbsence = new ArrayList<>();
+        for (Student student : studentArrayList) {
+            checkAbsence.addAll(ProgramAbsencesTable.getInstance().findAbsencesForSpecificDate(date, student.getStudent_id()));
+        }
+        if (checkAbsence.size() == studentArrayList.size()) {
+            for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
+                if(studentArrayList.size() == 1)
+                    markStudentAbsentListener.markAbsentUnSuccessful(1001);
+                else
+                    markStudentAbsentListener.markAbsentUnSuccessful(1002);
+                break;
+            }
+        } else {
         LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(), date, program.getId(), sendNotification);
         if (markStudentAbsentResponse != null) {
             for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
@@ -50,7 +63,7 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
                 markStudentsAbsent(SyncStatus.NOT_SYNCED);
                 markStudentAbsentListener.markAbsentUnSuccessful(0);
             }
-        }
+        }}
     }
 
 

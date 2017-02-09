@@ -96,6 +96,7 @@ public class ProgramStudentsRequester implements Runnable, LabTabConstants {
                 student.setSpecial_needs(studentResponse.getSpecial_needs());
                 student.setSelf_sign_out(studentResponse.isSelf_sign_out() ? 1 : 0);
                 student.setPickup_instructions(studentResponse.getPickup_instructions());
+                student.setPromotionDemotionSync(SyncStatus.PROMOTION_DEMOTION_SYNCED);
                 studentArrayList.add(student);
             }
             ProgramStudentsTable.getInstance().insert(studentArrayList);

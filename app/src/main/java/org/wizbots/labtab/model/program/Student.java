@@ -22,13 +22,14 @@ public class Student implements Parcelable {
     private boolean isSync;
     private int offlinewizchips;
     private boolean closeToNextLevel;
+    private String promotionDemotionSync;
 
     public Student() {
     }
 
     public Student(String program_id, String member_id, String student_id, String lab_time,
                    int completed, int skipped, int pending, String name, String level, int wizchips,
-                   String special_needs, int self_sign_out, String pickup_instructions, boolean isSync, int offlinewizchips) {
+                   String special_needs, int self_sign_out, String pickup_instructions, boolean isSync, int offlinewizchips, String promotionDemotionSync) {
         this.program_id = program_id;
         this.member_id = member_id;
         this.student_id = student_id;
@@ -44,6 +45,7 @@ public class Student implements Parcelable {
         this.pickup_instructions = pickup_instructions;
         this.isSync = isSync;
         this.offlinewizchips = offlinewizchips;
+        this.promotionDemotionSync = promotionDemotionSync;
     }
 
     public String getProgram_id() {
@@ -190,6 +192,14 @@ public class Student implements Parcelable {
         this.offlinewizchips = offlinewizchips;
     }
 
+    public String getPromotionDemotionSync() {
+        return promotionDemotionSync;
+    }
+
+    public void setPromotionDemotionSync(String promotionDemotionSync) {
+        this.promotionDemotionSync = promotionDemotionSync;
+    }
+
 
     @Override
     public int describeContents() {
@@ -216,6 +226,7 @@ public class Student implements Parcelable {
         dest.writeByte(this.isSync ? (byte) 1 : (byte) 0);
         dest.writeInt(this.offlinewizchips);
         dest.writeByte(this.closeToNextLevel ? (byte) 1 : (byte) 0);
+        dest.writeString(this.promotionDemotionSync);
     }
 
     protected Student(Parcel in) {
@@ -237,6 +248,7 @@ public class Student implements Parcelable {
         this.isSync = in.readByte() != 0;
         this.offlinewizchips = in.readInt();
         this.closeToNextLevel = in.readByte() != 0;
+        this.promotionDemotionSync = in.readString();
     }
 
     public static final Creator<Student> CREATOR = new Creator<Student>() {

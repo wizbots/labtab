@@ -205,6 +205,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             }
             ArrayList<Student> objects = (ArrayList<Student>) bundle.getSerializable(PROJECT_CREATORS);
             if (!objects.isEmpty()) {
+                creatorsSelected.clear();
                 creatorsSelected.addAll(objects);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
             }

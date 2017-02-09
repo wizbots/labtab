@@ -156,6 +156,8 @@ public interface LabTabConstants {
         String SELECT_STUDENT_FIRST = "Select Student First";
         String YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY = "You can not select a date more than today";
         String PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS = "Please Select one student";
+        String STUDENT_IS_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE = "Student is already marked absent for the selected date";
+        String STUDENTS_ARE_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE = "Students are already marked absent for the selected date";
     }
 
     /**
@@ -228,6 +230,9 @@ public interface LabTabConstants {
     interface SyncStatus {
         String SYNCED = "SYNCED";
         String NOT_SYNCED = "NOT_SYNCED";
+        String PROMOTION_NOT_SYNCED = "PROMOTION_NOT_SYNCED";
+        String DEMOTION_NOT_SYNCED = "DEMOTION_NOT_SYNCED";
+        String PROMOTION_DEMOTION_SYNCED = "PROMOTION_DEMOTION_SYNCED";
     }
 
     interface ProjectsMetaData {

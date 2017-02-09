@@ -1,8 +1,5 @@
 package org.wizbots.labtab.model.wizchips;
 
-/**
- * Created by ashish on 7/2/17.
- */
 
 public class WizchipsWithdrawResponse {
 

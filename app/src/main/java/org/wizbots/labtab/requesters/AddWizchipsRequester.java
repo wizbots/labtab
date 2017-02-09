@@ -1,6 +1,7 @@
 package org.wizbots.labtab.requesters;
 
 import android.util.Log;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -10,11 +11,9 @@ import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.wizchips.WizchipsAddResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+
 import java.net.HttpURLConnection;
 
-/**
- * Created by ashish on 7/2/17.
- */
 
 public class AddWizchipsRequester implements Runnable {
 

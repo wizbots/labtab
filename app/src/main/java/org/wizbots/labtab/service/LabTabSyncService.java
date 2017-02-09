@@ -22,23 +22,26 @@ import org.wizbots.labtab.database.ProgramAbsencesTable;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.requesters.MarkAbsentListener;
+import org.wizbots.labtab.interfaces.requesters.PromoteDemoteListener;
 import org.wizbots.labtab.interfaces.requesters.VideoUploadListener;
 import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.requesters.CreateProjectRequester;
 import org.wizbots.labtab.requesters.MarkStudentAbsentSyncRequester;
+import org.wizbots.labtab.requesters.PromotionDemotionSyncRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
 
-public class LabTabSyncService extends Service implements LabTabConstants, VideoUploadListener, MarkAbsentListener {
+public class LabTabSyncService extends Service implements LabTabConstants, VideoUploadListener, MarkAbsentListener, PromoteDemoteListener {
 
     private static final String TAG = LabTabSyncService.class.getSimpleName();
     public static final String EVENT = "EVENT";
     public static LabTabSyncService labTabSyncService = new LabTabSyncService();
     public static boolean statusOfSingleVideoUploadBackgroundExecutor[];
     public static boolean statusOfSingleMarkAbsentUploadBackgroundExecutor[];
+    public static boolean statusOfSinglePromotionDemotionBackgroundExecutor[];
     private boolean isUploadServiceRunning = false;
 
     @Override
@@ -181,11 +184,13 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
     private boolean isServiceToBeStopped() {
         boolean videoUploadCompleted;
         boolean markAbsentCompleted;
+        boolean promoteDemoteCompleted;
 
         videoUploadCompleted = statusOfSingleVideoUploadBackgroundExecutor == null;
-
         markAbsentCompleted = statusOfSingleMarkAbsentUploadBackgroundExecutor == null;
-        return videoUploadCompleted && markAbsentCompleted;
+        promoteDemoteCompleted = statusOfSinglePromotionDemotionBackgroundExecutor == null;
+
+        return videoUploadCompleted && markAbsentCompleted && promoteDemoteCompleted;
     }
 
     private void checkAndStartWhatToSync() {
@@ -219,6 +224,23 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                 }
             }
         }
+
+        synchronized (this) {
+            if (statusOfSinglePromotionDemotionBackgroundExecutor == null) {
+                ArrayList<Student> studentsToBePromotedOrDemoted = ProgramStudentsTable.getInstance().getStudentsToBePromotedOrDemoted();
+                if (!studentsToBePromotedOrDemoted.isEmpty()) {
+                    startForegroundIntent();
+                    statusOfSinglePromotionDemotionBackgroundExecutor = new boolean[studentsToBePromotedOrDemoted.size()];
+                    for (int i = 0; i < studentsToBePromotedOrDemoted.size(); i++) {
+                        BackgroundExecutor.getInstance().execute(new PromotionDemotionSyncRequester(
+                                labTabSyncService,
+                                studentsToBePromotedOrDemoted.get(i),
+                                i));
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
@@ -238,4 +260,20 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
         }
     }
 
+    @Override
+    public void promoteDemoteCompleted(int position) {
+        statusOfSinglePromotionDemotionBackgroundExecutor[position] = true;
+        boolean promoteDemoteTaskCompleted = true;
+        for (boolean all : statusOfSinglePromotionDemotionBackgroundExecutor) {
+            promoteDemoteTaskCompleted &= all;
+        }
+        if (promoteDemoteTaskCompleted) {
+            Log.i(TAG, "Received Stop Foreground Intent");
+            statusOfSinglePromotionDemotionBackgroundExecutor = null;
+            if (isServiceToBeStopped()) {
+                stopForeground(true);
+                stopSelf();
+            }
+        }
+    }
 }
