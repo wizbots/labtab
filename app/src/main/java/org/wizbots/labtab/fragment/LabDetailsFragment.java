@@ -540,9 +540,9 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     private void notifyLabDetailsAdapter() {
+        progressDialog.dismiss();
         objectArrayList.clear();
         objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
         labDetailsAdapter.notifyDataSetChanged();
-        progressDialog.dismiss();
     }
 }

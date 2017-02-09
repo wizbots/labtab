@@ -38,11 +38,12 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                 if (promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
                     promoteDemoteStudents(promoteDemoteResponse.getResponse().getStudents());
                     promotionDemotionListener.promotionDemotionSuccessful(studentArrayList, program, promoteDemote);
+                    break;
                 } else {
                     promoteDemoteStudentsList();
                     promotionDemotionListener.promotionDemotionUnSuccessful(promoteDemoteResponse.getResponseCode());
+                    break;
                 }
-                break;
             }
         } else {
             for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
