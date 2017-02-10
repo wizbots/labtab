@@ -185,6 +185,36 @@ public class ProgramAbsencesTable extends AbstractTable {
         stmt.execute();
     }
 
+    public ArrayList<Absence> findAbsencesForSpecificDate(String date, String studentId) {
+        final String query = "Select * from " + NAME + " where " + COLUMN_DATE + " = '" + date + "' and " + COLUMN_MENTOR_ID + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_STUDENT_NAME + "!='' and " + COLUMN_STUDENT_ID + "='" + studentId + "';";
+        ArrayList<Absence> absences = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    absences.add(new Absence(
+                            cursor.getString(cursor.getColumnIndex(COLUMN_STUDENT_NAME)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_IS_MARK_ABSENT_SYNCED)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_SEND_ABSENT_NOTIFICATION)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_NAME)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_STUDENT_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_DATE))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get absences", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return absences;
+    }
+
     @Override
     protected String getTableName() {
         return NAME;

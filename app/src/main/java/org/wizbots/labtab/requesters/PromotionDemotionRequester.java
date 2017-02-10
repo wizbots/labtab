@@ -5,7 +5,6 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.StudentsProfileTable;
-import org.wizbots.labtab.interfaces.requesters.MarkStudentAbsentListener;
 import org.wizbots.labtab.interfaces.requesters.PromotionDemotionListener;
 import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
@@ -32,19 +31,25 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+
         LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote);
         if (promoteDemoteResponse != null) {
             for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
                 if (promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
                     promoteDemoteStudents(promoteDemoteResponse.getResponse().getStudents());
                     promotionDemotionListener.promotionDemotionSuccessful(studentArrayList, program, promoteDemote);
+                    break;
                 } else {
+                    promoteDemoteStudentsList();
                     promotionDemotionListener.promotionDemotionUnSuccessful(promoteDemoteResponse.getResponseCode());
+                    break;
                 }
             }
         } else {
-            for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
-                markStudentAbsentListener.markAbsentUnSuccessful(0);
+            for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
+                promoteDemoteStudentsList();
+                promotionDemotionListener.promotionDemotionUnSuccessful(0);
+                break;
             }
         }
     }
@@ -77,6 +82,13 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
         }
         studentFound.setLevel(LabTabUtil.getPromotionDemotionLevel(studentFound.getLevel(), promoteDemote));
         return studentFound;
+    }
+
+    private void promoteDemoteStudentsList() {
+        for (int i = 0; i < studentArrayList.size(); i++) {
+            Student student = getStudent(studentArrayList.get(i).getStudent_id());
+            ProgramStudentsTable.getInstance().offlinePromoteDemote(student, promoteDemote);
+        }
     }
 
 }

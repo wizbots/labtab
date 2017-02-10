@@ -445,8 +445,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
-                if (status != 0) {
+                notifyLabDetailsAdapter();
+                if (status == 1001) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE);
+                } else if (status == 1002) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE);
+                } else if (status != 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
                 } else {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
@@ -485,7 +489,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
+                notifyLabDetailsAdapter();
                 if (status != 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
                 } else {

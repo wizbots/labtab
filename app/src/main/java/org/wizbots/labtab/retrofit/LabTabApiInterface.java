@@ -34,7 +34,7 @@ import retrofit2.http.QueryMap;
 
 public interface LabTabApiInterface {
 
-    String BASE_URL = "http://45.33.27.64/api/";
+    String BASE_URL = "http://test.wizbots.com/api/";
 
     //    Operations related to deal with tokens
 

@@ -169,6 +169,9 @@ public class LabTabApplication extends Application {
     }
 
     public String[] getKnowledgeNuggets(String labLevel) {
+        if (labLevel.toUpperCase().equals(LabTabConstants.LabLevels.NOVICE)) {
+            labLevel = LabTabConstants.LabLevels.LAB_CERTIFIED;
+        }
         String[] knowledgeNuggets = null;
         if (metaDatas == null) {
             return null;
