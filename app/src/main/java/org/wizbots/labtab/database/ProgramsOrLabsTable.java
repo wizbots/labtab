@@ -5,10 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
+import org.wizbots.labtab.model.program.Student;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 public class ProgramsOrLabsTable extends AbstractTable {
 
@@ -27,9 +30,9 @@ public class ProgramsOrLabsTable extends AbstractTable {
     private static final String COLUMN_ENROLLMENT_COUNT = "enrollment_count";
     private static final String COLUMN_ADDRESS = "address";
     private static final String COLUMN_SEASON = "season";
-    private static final String COLUMN_LOCATION = "location";
+    private static final String COLUMN_LOCATION = "location_id";
     private static final String COLUMN_LEVEL = "level";
-    private static final String COLUMN_YEAR = "year";
+    private static final String COLUMN_YEAR = "season_year";
 
 
     private DAOManager daoManager = null;
@@ -106,6 +109,59 @@ public class ProgramsOrLabsTable extends AbstractTable {
         values.put(COLUMN_LEVEL, programOrLab.getLevel());
         values.put(COLUMN_YEAR, programOrLab.getYear());
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    public ArrayList<ProgramOrLab> getFilteredData(String memberId, Map<String, String> params){
+        ArrayList<ProgramOrLab> programOrLabs = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+
+            final String query = getFilterQuery(memberId,params);
+            cursor = daoManager.getReadableDatabase().rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    programOrLabs.add(
+                            new ProgramOrLab(
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_SKU)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MEMBER_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ENDS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STARTS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STATE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STREET)),
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_ENROLLMENT_COUNT)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_SEASON)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LOCATION)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_YEAR))
+                            ));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get programs or labs", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return programOrLabs;
+    }
+
+    private String getFilterQuery(String memberId, Map<String, String> params){
+        StringBuilder query = new StringBuilder("Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "'");
+        StringBuilder orderBy = new StringBuilder(" ORDER BY " + COLUMN_TITLE + " ASC");
+        if(params != null && params.size() > 0){
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                if(entry.getKey().equalsIgnoreCase(COLUMN_LOCATION)){
+                    LocationResponse location = LocationTable.getInstance().getLocationById(entry.getValue());
+                    params.put(COLUMN_LOCATION, location.getName());
+                }
+                query.append(" and ").append(entry.getKey()).append(" = '").append(entry.getValue()).append("'");
+            }
+        }
+        return query.toString();
     }
 
     public ArrayList<ProgramOrLab> getProgramsByMemberId(String memberId) {

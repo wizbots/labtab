@@ -391,21 +391,26 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             case R.id.tv_plus:
                 ArrayList<Student> studentList = getSelectedStudents();
                 if (studentList.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
                 } else if (studentList.size() > 1) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
                 } else {
                     progressDialog.show();
-                    String studentId = studentList.get(0).getStudent_id();
-                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), studentId,1));
+                    Student student = studentList.get(0);
+/*                    if(getChips(student.getWizchips(), student.getOfflinewizchips()) <= 0){
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
+                        return;
+                    }*/
+
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), student.getStudent_id(), 1));
                 }
                 break;
             case R.id.tv_minus:
                 studentList = getSelectedStudents();
                 if (studentList.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_DECREMENT);
                 } else if (studentList.size() > 1) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_DECREMENT);
                 } else {
                     progressDialog.show();
                     String studentId = studentList.get(0).getStudent_id();
@@ -416,6 +421,10 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 break;
         }
 
+    }
+
+    private int getChips(int onlineChips, int offlineChips){
+        return (onlineChips + offlineChips) > 0 ? (onlineChips + offlineChips) : 0;
     }
 
     private ArrayList<Student> getSelectedStudents() {

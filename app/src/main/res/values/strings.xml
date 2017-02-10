@@ -161,6 +161,7 @@
         <item>org.wizbots.labtab.database.StudentsProfileTable</item>
         <item>org.wizbots.labtab.database.StudentStatsTable</item>
         <item>org.wizbots.labtab.database.VideoTable</item>
+        <item>org.wizbots.labtab.database.LocationTable</item>
     </string-array>
 
 
@@ -192,10 +193,10 @@
 
     <string-array name="array_season">
         <item>All Seasons</item>
-        <item>Fall</item>
-        <item>Spring</item>
-        <item>Summer</item>
-        <item>Winter</item>
+        <item>fall</item>
+        <item>spring</item>
+        <item>summer</item>
+        <item>winter</item>
     </string-array>
 
     <string-array name="components">

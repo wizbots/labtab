@@ -25,6 +25,7 @@ import org.wizbots.labtab.interfaces.requesters.CreateTokenListener;
 import org.wizbots.labtab.interfaces.requesters.GetMentorProfileListener;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
+import org.wizbots.labtab.requesters.LocationRequester;
 import org.wizbots.labtab.requesters.LoginRequester;
 import org.wizbots.labtab.requesters.MentorProfileRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
@@ -145,6 +146,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     public void tokenCreatedSuccessfully(CreateTokenResponse createTokenResponse) {
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setCreateTokenResponse(createTokenResponse);
         BackgroundExecutor.getInstance().execute(new MentorProfileRequester(createTokenResponse));
+        BackgroundExecutor.getInstance().execute(new LocationRequester());
     }
 
     @Override
