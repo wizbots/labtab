@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabPreferences;
-import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Student;
 
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ public class ProgramStudentsTable extends AbstractTable {
     private static final String COLUMN_SELF_SIGN_OUT = "self_sign_out";
     private static final String COLUMN_PICKUP_INSTRUCTIONS = "pickup_instructions";
     private static final String COLUMN_WIZCHIPS_HAS_SYNC = "whzchips_has_sync";
+    private static final String COLUMN_PROMOTION_DEMOTION_SYNC = "promotion_demotion_sync";
 
     private DAOManager daoManager = null;
     private final static ProgramStudentsTable instance;
@@ -68,6 +69,7 @@ public class ProgramStudentsTable extends AbstractTable {
                 + COLUMN_WIZCHIPS + " integer,"
                 + COLUMN_WIZCHIPS_HAS_SYNC + " integer DEFAULT 0,"
                 + COLUMN_OFFLINE_WIZCHIPS + " integer DEFAULT 0 ,"
+                + COLUMN_PROMOTION_DEMOTION_SYNC + " text ,"
                 + COLUMN_SPECIAL_NEEDS + " text,"
                 + COLUMN_SELF_SIGN_OUT + " integer,"
                 + COLUMN_PICKUP_INSTRUCTIONS + " text, PRIMARY KEY(member_id,program_id,id));");
@@ -124,10 +126,11 @@ public class ProgramStudentsTable extends AbstractTable {
         values.put(COLUMN_NAME, student.getName());
         values.put(COLUMN_LEVEL, student.getLevel());
         values.put(COLUMN_WIZCHIPS, student.getWizchips());
-        values.put(COLUMN_WIZCHIPS_HAS_SYNC, student.isSync()?1:0);
+        values.put(COLUMN_WIZCHIPS_HAS_SYNC, student.isSync() ? 1 : 0);
         values.put(COLUMN_SPECIAL_NEEDS, student.getSpecial_needs());
         values.put(COLUMN_SELF_SIGN_OUT, student.getSelf_sign_out());
         values.put(COLUMN_PICKUP_INSTRUCTIONS, student.getPickup_instructions());
+        values.put(COLUMN_PROMOTION_DEMOTION_SYNC, student.getPromotionDemotionSync());
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
@@ -154,7 +157,8 @@ public class ProgramStudentsTable extends AbstractTable {
                             cursor.getInt(cursor.getColumnIndex(COLUMN_SELF_SIGN_OUT)),
                             cursor.getString(cursor.getColumnIndex(COLUMN_PICKUP_INSTRUCTIONS)),
                             cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS_HAS_SYNC)) == 1,
-                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS))
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PROMOTION_DEMOTION_SYNC))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -192,7 +196,8 @@ public class ProgramStudentsTable extends AbstractTable {
                             cursor.getInt(cursor.getColumnIndex(COLUMN_SELF_SIGN_OUT)),
                             cursor.getString(cursor.getColumnIndex(COLUMN_PICKUP_INSTRUCTIONS)),
                             cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS_HAS_SYNC)) == 1,
-                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS))
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PROMOTION_DEMOTION_SYNC))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -208,7 +213,7 @@ public class ProgramStudentsTable extends AbstractTable {
 
     public Student getWizchipsByStudentId(String programId, String studentId) {
         final String query = "Select * from " + NAME + " where " + COLUMN_PROGRAM_ID + " = '" + programId + "' and " + COLUMN_MEMBER_ID
-                + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_STUDENT_ID + "='" + studentId +"'";
+                + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_STUDENT_ID + "='" + studentId + "'";
         ArrayList<Student> students = new ArrayList<>();
         Cursor cursor = null;
         try {
@@ -230,7 +235,8 @@ public class ProgramStudentsTable extends AbstractTable {
                             cursor.getInt(cursor.getColumnIndex(COLUMN_SELF_SIGN_OUT)),
                             cursor.getString(cursor.getColumnIndex(COLUMN_PICKUP_INSTRUCTIONS)),
                             cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS_HAS_SYNC)) == 1,
-                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS))
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PROMOTION_DEMOTION_SYNC))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -251,18 +257,84 @@ public class ProgramStudentsTable extends AbstractTable {
         stmt.execute();
     }
 
-    public void updateWizchips(String studentId, int count, boolean hasSync){
+    public void updateWizchips(String studentId, int count, boolean hasSync) {
         String updateStudentLevelQuery = "UPDATE " + NAME + " SET " + COLUMN_WIZCHIPS + " = " + count + " , " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + (hasSync ? 1 : 0) + " WHERE " + COLUMN_STUDENT_ID + "= '" + studentId + "';";
         SQLiteDatabase db = daoManager.getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
         stmt.execute();
     }
 
-    public void updateWizchipsOffline(String studentId, int count, boolean hasSync){
+    public void updateWizchipsOffline(String studentId, int count, boolean hasSync) {
         String updateStudentLevelQuery = "UPDATE " + NAME + " SET " + COLUMN_OFFLINE_WIZCHIPS + " = " + count + " , " + COLUMN_WIZCHIPS_HAS_SYNC + " = " + (hasSync ? 1 : 0) + " WHERE " + COLUMN_STUDENT_ID + "= '" + studentId + "';";
         SQLiteDatabase db = daoManager.getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
         stmt.execute();
+    }
+
+    public void updatePromoteDemote(Student student) {
+        String updateStudentLevelQuery = "UPDATE " + NAME
+                + " SET " + COLUMN_PROMOTION_DEMOTION_SYNC
+                + " = '" + LabTabConstants.SyncStatus.PROMOTION_DEMOTION_SYNCED
+                + "' WHERE " + COLUMN_STUDENT_ID + "= '" + student.getStudent_id()
+                + "' AND " + "" + COLUMN_PROGRAM_ID + "= '" + student.getProgram_id() + "'"
+                + " AND " + "" + COLUMN_MEMBER_ID + "= '" + student.getMember_id() + "'"
+                + " AND " + "" + COLUMN_PROMOTION_DEMOTION_SYNC + "!= '" + LabTabConstants.SyncStatus.PROMOTION_DEMOTION_SYNCED + "'";
+        SQLiteDatabase db = daoManager.getWritableDatabase();
+        SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
+        stmt.execute();
+    }
+
+    public void offlinePromoteDemote(Student student, boolean promoteDemote) {
+        String syncState = promoteDemote ? LabTabConstants.SyncStatus.PROMOTION_NOT_SYNCED : LabTabConstants.SyncStatus.DEMOTION_NOT_SYNCED;
+
+        String updateStudentLevelQuery = "UPDATE " + NAME
+                + " SET " + COLUMN_PROMOTION_DEMOTION_SYNC
+                + " = '" + syncState
+                + "' WHERE " + COLUMN_STUDENT_ID + "= '" + student.getStudent_id()
+                + "' AND " + "" + COLUMN_PROGRAM_ID + "= '" + student.getProgram_id() + "'"
+                + " AND " + "" + COLUMN_MEMBER_ID + "= '" + student.getMember_id() + "'"
+                + " AND " + "" + COLUMN_PROMOTION_DEMOTION_SYNC + "= '" + LabTabConstants.SyncStatus.PROMOTION_DEMOTION_SYNCED + "'";
+        SQLiteDatabase db = daoManager.getWritableDatabase();
+        SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
+        stmt.execute();
+    }
+
+    public ArrayList<Student> getStudentsToBePromotedOrDemoted() {
+        final String query = "Select * from " + NAME + " where " + COLUMN_PROMOTION_DEMOTION_SYNC + " != '" + LabTabConstants.SyncStatus.PROMOTION_DEMOTION_SYNCED + "' and " + COLUMN_MEMBER_ID + "='" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "'" + " ORDER BY " + COLUMN_NAME + " ASC";
+        ArrayList<Student> students = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    students.add(new Student(
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_MEMBER_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_STUDENT_ID)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_LAB_TIME)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_COMPLETED)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_SKIPPED)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_PENDING)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_SPECIAL_NEEDS)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_SELF_SIGN_OUT)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PICKUP_INSTRUCTIONS)),
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_WIZCHIPS_HAS_SYNC)) == 1,
+                            cursor.getInt(cursor.getColumnIndex(COLUMN_OFFLINE_WIZCHIPS)),
+                            cursor.getString(cursor.getColumnIndex(COLUMN_PROMOTION_DEMOTION_SYNC))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get students", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return students;
     }
 
     @Override

@@ -1,24 +1,22 @@
 package org.wizbots.labtab.model.markabsent;
 
-import java.util.ArrayList;
-
 public class MarkStudentAbsentResponse {
-    private ArrayList<Student> students;
+    private String students[];
     private boolean success;
 
     public MarkStudentAbsentResponse() {
     }
 
-    public MarkStudentAbsentResponse(ArrayList<Student> students, boolean success) {
+    public MarkStudentAbsentResponse(String[] students, boolean success) {
         this.students = students;
         this.success = success;
     }
 
-    public ArrayList<Student> getStudents() {
+    public String[] getStudents() {
         return students;
     }
 
-    public void setStudents(ArrayList<Student> students) {
+    public void setStudents(String[] students) {
         this.students = students;
     }
 

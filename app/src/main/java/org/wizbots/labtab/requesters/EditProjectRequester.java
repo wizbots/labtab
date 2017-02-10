@@ -74,7 +74,7 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
         videoUploaded.setCategory(projectCreated.getCategory());
         videoUploaded.setMentor_name(video.getMentor_name());
         videoUploaded.setLab_sku(projectCreated.getSku());
-        videoUploaded.setLab_level(LabLevels.APPRENTICE);
+        videoUploaded.setLab_level(video.getLab_level());
         videoUploaded.setKnowledge_nuggets(LabTabUtil.toJson(projectCreated.getComponents()));
         videoUploaded.setDescription(projectCreated.getDescription());
         videoUploaded.setProject_creators(video.getProject_creators());

@@ -26,7 +26,10 @@ public class ProgramsOrLabsTable extends AbstractTable {
     private static final String COLUMN_STREET = "street";
     private static final String COLUMN_ENROLLMENT_COUNT = "enrollment_count";
     private static final String COLUMN_ADDRESS = "address";
-    private static final String COLUMN_LAB_LEVEL = "lab_level";
+    private static final String COLUMN_SEASON = "season";
+    private static final String COLUMN_LOCATION = "location";
+    private static final String COLUMN_LEVEL = "level";
+    private static final String COLUMN_YEAR = "year";
 
 
     private DAOManager daoManager = null;
@@ -59,7 +62,10 @@ public class ProgramsOrLabsTable extends AbstractTable {
                 + COLUMN_STREET + " text,"
                 + COLUMN_ENROLLMENT_COUNT + " integer,"
                 + COLUMN_ADDRESS + " text,"
-                + COLUMN_LAB_LEVEL + " text);");
+                + COLUMN_SEASON + " text,"
+                + COLUMN_LOCATION + " text,"
+                + COLUMN_LEVEL + " text,"
+                + COLUMN_YEAR + " text);");
     }
 
     public synchronized void insert(Collection<ProgramOrLab> programOrLabs) {
@@ -95,7 +101,10 @@ public class ProgramsOrLabsTable extends AbstractTable {
         values.put(COLUMN_STREET, programOrLab.getStreet());
         values.put(COLUMN_ENROLLMENT_COUNT, programOrLab.getEnrollment_count());
         values.put(COLUMN_ADDRESS, programOrLab.getAddress());
-        values.put(COLUMN_LAB_LEVEL, programOrLab.getLabLevel());
+        values.put(COLUMN_SEASON, programOrLab.getSeason());
+        values.put(COLUMN_LOCATION, programOrLab.getLocation());
+        values.put(COLUMN_LEVEL, programOrLab.getLevel());
+        values.put(COLUMN_YEAR, programOrLab.getYear());
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
@@ -103,7 +112,7 @@ public class ProgramsOrLabsTable extends AbstractTable {
         ArrayList<ProgramOrLab> programOrLabs = new ArrayList<>();
         Cursor cursor = null;
         try {
-            final String query = "Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "';";
+            final String query = "Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "'" + " ORDER BY " + COLUMN_TITLE + " ASC";
             cursor = daoManager.getReadableDatabase().rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -119,7 +128,10 @@ public class ProgramsOrLabsTable extends AbstractTable {
                                     cursor.getInt(cursor.getColumnIndex(COLUMN_ENROLLMENT_COUNT)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID)),
-                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL))
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_SEASON)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LOCATION)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_YEAR))
                             ));
                 } while (cursor.moveToNext());
             }

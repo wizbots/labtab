@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.wizbots.labtab.LabTabConstants;
-import org.wizbots.labtab.service.LabTabUploadService;
+import org.wizbots.labtab.service.LabTabSyncService;
 
 public class RebootReceiver extends BroadcastReceiver implements LabTabConstants {
 
@@ -14,8 +14,8 @@ public class RebootReceiver extends BroadcastReceiver implements LabTabConstants
     public void onReceive(Context context, Intent intent) {
         try {
             //Start Upload Service When Device Rebooted
-            Intent uploadService = new Intent(context, LabTabUploadService.class);
-            uploadService.putExtra(LabTabUploadService.EVENT, Events.DEVICE_REBOOTED);
+            Intent uploadService = new Intent(context, LabTabSyncService.class);
+            uploadService.putExtra(LabTabSyncService.EVENT, Events.DEVICE_REBOOTED);
             context.startService(uploadService);
         } catch (Exception e) {
             //Something Went Wrong While Starting Service When Device Reboots

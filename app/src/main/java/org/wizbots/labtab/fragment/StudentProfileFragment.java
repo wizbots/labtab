@@ -177,7 +177,6 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
                 progressDialog.dismiss();
             }
         });
-        LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
         if (responseCode == StatusCode.NOT_FOUND) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {

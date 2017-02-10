@@ -96,6 +96,7 @@ public class ProgramStudentsRequester implements Runnable, LabTabConstants {
                 student.setSpecial_needs(studentResponse.getSpecial_needs());
                 student.setSelf_sign_out(studentResponse.isSelf_sign_out() ? 1 : 0);
                 student.setPickup_instructions(studentResponse.getPickup_instructions());
+                student.setPromotionDemotionSync(SyncStatus.PROMOTION_DEMOTION_SYNCED);
                 studentArrayList.add(student);
             }
             ProgramStudentsTable.getInstance().insert(studentArrayList);
@@ -112,6 +113,8 @@ public class ProgramStudentsRequester implements Runnable, LabTabConstants {
             for (AbsenceResponse absenceResponse : absenceResponseArrayList) {
                 Absence absence = new Absence();
                 absence.setDate(absenceResponse.getDate());
+                absence.setMark_absent_synced(SyncStatus.SYNCED);
+                absence.setSend_absent_notification("0");
                 absence.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
                 absence.setMentor_name(absenceResponse.getMentor_name());
                 absence.setProgram_id(programResponse.getId());

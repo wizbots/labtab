@@ -9,7 +9,7 @@ import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.model.video.response.CreateProjectResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
-import org.wizbots.labtab.service.LabTabUploadService;
+import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;
@@ -20,15 +20,15 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class CreateProjectRequester implements Runnable, LabTabConstants {
-    private LabTabUploadService labTabUploadService;
+    private LabTabSyncService labTabSyncService;
     private Video videoInDB;
     private int position;
 
     public CreateProjectRequester() {
     }
 
-    public CreateProjectRequester(LabTabUploadService labTabUploadService, Video videoInDB, int position) {
-        this.labTabUploadService = labTabUploadService;
+    public CreateProjectRequester(LabTabSyncService labTabSyncService, Video videoInDB, int position) {
+        this.labTabSyncService = labTabSyncService;
         this.videoInDB = videoInDB;
         this.position = position;
     }
@@ -59,7 +59,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
                 unableToCreateProject();
             }
         }
-        labTabUploadService.videoUploadCompleted(videoInDB, position);
+        labTabSyncService.videoUploadCompleted(videoInDB, position);
     }
 
     private String[] getProjectCreators(ArrayList<Student> studentArrayList) {
@@ -89,7 +89,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
         videoUploaded.setCategory(projectCreated.getCategory());
         videoUploaded.setMentor_name(videoInDB.getMentor_name());
         videoUploaded.setLab_sku(projectCreated.getSku());
-        videoUploaded.setLab_level(LabLevels.APPRENTICE);
+        videoUploaded.setLab_level(videoInDB.getLab_level());
         videoUploaded.setKnowledge_nuggets(LabTabUtil.toJson(projectCreated.getComponents()));
         videoUploaded.setDescription(projectCreated.getDescription());
         videoUploaded.setProject_creators(videoInDB.getProject_creators());
@@ -111,7 +111,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
         storeVideoInDB.setCategory(videoInDB.getTitle());
         storeVideoInDB.setMentor_name(videoInDB.getMentor_name());
         storeVideoInDB.setLab_sku(videoInDB.getLab_sku());
-        storeVideoInDB.setLab_level(LabLevels.APPRENTICE);
+        storeVideoInDB.setLab_level(videoInDB.getLab_level());
         storeVideoInDB.setKnowledge_nuggets(videoInDB.getKnowledge_nuggets());
         storeVideoInDB.setDescription(videoInDB.getDescription());
         storeVideoInDB.setProject_creators(videoInDB.getProject_creators());

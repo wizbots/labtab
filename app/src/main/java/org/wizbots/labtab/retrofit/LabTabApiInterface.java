@@ -4,6 +4,7 @@ import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.markabsent.MarkStudentAbsentResponse;
+import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.model.program.response.ProgramResponse;
 import org.wizbots.labtab.model.promotedemote.PromotionDemotionResponse;
 import org.wizbots.labtab.model.student.response.StudentResponse;
@@ -30,7 +31,7 @@ import retrofit2.http.Query;
 
 public interface LabTabApiInterface {
 
-    String BASE_URL = "http://45.33.27.64/api/";
+    String BASE_URL = "http://test.wizbots.com/api/";
 
     //    Operations related to deal with tokens
 
@@ -100,15 +101,18 @@ public interface LabTabApiInterface {
                                           @Query("components") String[] components,
                                           @Query("creators") String[] creators);
 
-//    13. Add wizchips
+    //    13. Add wizchips
     @POST("students/wizchips/add")
     Call<WizchipsAddResponse> addWizchips(@Header("Auth-Token") String authToken,
                                           @Query("student_id") String studentId, @Query("wizchips") int wizchip);
 
-//    14. withdraw wizchips
+    //    14. withdraw wizchips
     @POST("students/wizchips/withdraw")
     Call<WizchipsWithdrawResponse> withdrawWizchips(@Header("Auth-Token") String authToken,
                                                     @Query("student_id") String studentId, @Query("wizchips") int wizchips);
 
+    //   15. Get Project metadata
+    @PUT("projects/metadata")
+    Call<MetaData[]> getProjectsMetaData();
 
 }

@@ -25,6 +25,7 @@ import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.lang.reflect.Type;
 import java.security.SecureRandom;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,7 +91,7 @@ public class LabTabUtil implements LabTabConstants {
 
     public static String getRandomLabLevel() {
         String labLevel = "";
-        switch (generateRandomInteger(0, 7)) {
+        switch (generateRandomInteger(0, 8)) {
             case 1:
                 labLevel = LabLevels.APPRENTICE;
                 break;
@@ -111,6 +112,9 @@ public class LabTabUtil implements LabTabConstants {
                 break;
             case 7:
                 labLevel = LabLevels.WIZARD;
+                break;
+            case 8:
+                labLevel = LabLevels.NOVICE;
                 break;
             default:
                 labLevel = LabLevels.APPRENTICE;
@@ -147,6 +151,9 @@ public class LabTabUtil implements LabTabConstants {
                 break;
             case LabLevels.WIZARD:
                 imageView.setImageResource(LabLevel.WIZARD.getLabLevel());
+                break;
+            case LabLevels.NOVICE:
+                imageView.setImageResource(LabLevel.NOVICE.getLabLevel());
                 break;
             default:
                 imageView.setImageResource(LabLevel.APPRENTICE.getLabLevel());
@@ -277,6 +284,9 @@ public class LabTabUtil implements LabTabConstants {
             case LabLevels.WIZARD:
                 imageView.setBackgroundResource(R.drawable.ic_filter_wizard);
                 break;
+            case LabLevels.NOVICE:
+                imageView.setBackgroundResource(R.drawable.ic_filter_wizard);
+                break;
             default:
                 imageView.setBackgroundResource(R.drawable.ic_filter_apprentice);
                 break;
@@ -372,4 +382,25 @@ public class LabTabUtil implements LabTabConstants {
         return studentArrayList;
     }
 
+    public static boolean isValidDateSelection(Date selectedDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DateFormat.YYYYMMDD);
+        boolean isValidDateSelection = false;
+        try {
+            Date currentDate = new Date();
+            Date dateSelected = sdf.parse(getFormattedDate(DateFormat.YYYYMMDD, selectedDate));
+
+            if (currentDate.compareTo(dateSelected) > 0) {
+                isValidDateSelection = true;
+            } else if (currentDate.compareTo(dateSelected) < 0) {
+                isValidDateSelection = false;
+            } else if (currentDate.compareTo(dateSelected) == 0) {
+                isValidDateSelection = true;
+            } else {
+                isValidDateSelection = false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return isValidDateSelection;
+    }
 }

@@ -10,7 +10,8 @@ public enum LabLevel {
     LAB_CERTIFIED(R.drawable.ic_level_lab_certified),
     MAKER(R.drawable.ic_level_maker),
     MASTER(R.drawable.ic_level_master),
-    WIZARD(R.drawable.ic_level_wizard);
+    WIZARD(R.drawable.ic_level_wizard),
+    NOVICE(R.drawable.ic_level_novice);
 
     private int value;
 

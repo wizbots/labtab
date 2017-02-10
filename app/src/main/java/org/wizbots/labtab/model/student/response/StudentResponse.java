@@ -105,7 +105,7 @@ public class StudentResponse {
     }
 
     public String getLevel() {
-        return level;
+        return level == null ? null : level.toUpperCase();
     }
 
     public void setLevel(String level) {

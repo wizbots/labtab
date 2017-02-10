@@ -14,6 +14,8 @@ import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
+import org.wizbots.labtab.util.BackgroundExecutor;
 
 public class HomeFragment extends ParentFragment implements View.OnClickListener {
 
@@ -36,6 +38,9 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         homeActivityContext = (HomeActivity) context;
+        if (LabTabApplication.getInstance().getMetaDatas() == null) {
+            BackgroundExecutor.getInstance().execute(new ProjectsMetaDataRequester());
+        }
         initView();
         initListeners();
         return rootView;
