@@ -1,6 +1,7 @@
 package org.wizbots.labtab.retrofit;
 
 import org.wizbots.labtab.model.CreateTokenResponse;
+import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.markabsent.MarkStudentAbsentResponse;
@@ -14,6 +15,7 @@ import org.wizbots.labtab.model.wizchips.WizchipsAddResponse;
 import org.wizbots.labtab.model.wizchips.WizchipsWithdrawResponse;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -27,6 +29,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 
 public interface LabTabApiInterface {
@@ -115,4 +118,11 @@ public interface LabTabApiInterface {
     @PUT("projects/metadata")
     Call<MetaData[]> getProjectsMetaData();
 
+//    16. Get Location for filter?
+    @GET("locations/")
+    Call<LocationResponse[]> location(@Header("Auth-Token") String authToken);
+
+//    17. Filter project Data
+    @GET("programs/")
+    Call<ArrayList<ProgramOrLab>> getFilter(@Header("Auth-Token") String authToken, @QueryMap(encoded = true) Map<String, String> params);
 }

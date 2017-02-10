@@ -153,7 +153,8 @@ public interface LabTabConstants {
         String OOPS_SOMETHING_WENT_WRONG = "Oops Something Went Wrong";
         String PROJECT_EDITED_SUCCESSFULLY = "Project Edited Successfully";
         String VIDEO_CAN_NOT_BE_EDITED_WHEN_IT_IS_NOT_UPLOADED_TO_WIZBOTS_SERVER = "Video can't be edited when it is not uploaded to wizbots server";
-        String SELECT_STUDENT_FIRST = "Select Student First";
+        String SELECT_STUDENT_FIRST_INCREMENT = "Please select one student to increase wizchips";
+        String SELECT_STUDENT_FIRST_DECREMENT = "Please select one student to descrease wizchips";
         String YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY = "You can not select a date more than today";
         String PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS = "Please Select one student";
     }
@@ -408,6 +409,16 @@ public interface LabTabConstants {
                 "    \"wiz_chips\": 15\n" +
                 "  }\n" +
                 "]";
+    }
+
+    interface FilterRequestParameter {
+        String CITY = "city";
+        String FROM = "from";
+        String SEASON = "season";
+        String TO = "to";
+        String SEASON_YEAR = "season_year";
+        String LOCATION_ID = "location_id";
+        String MENTOR_ID = "mentor_id";
     }
 
 }

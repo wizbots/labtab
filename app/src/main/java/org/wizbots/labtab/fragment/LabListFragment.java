@@ -1,5 +1,6 @@
 package org.wizbots.labtab.fragment;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,32 +8,45 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.LabListAdapter;
+import org.wizbots.labtab.adapter.LocationAdapter;
 import org.wizbots.labtab.adapter.SpinnerAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.database.LocationTable;
 import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
+import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
+import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
+import org.wizbots.labtab.requesters.FilterRequester;
+import org.wizbots.labtab.requesters.LocationRequester;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class LabListFragment extends ParentFragment implements LabListAdapterClickListener, GetProgramOrLabListener, View.OnClickListener {
+public class LabListFragment extends ParentFragment implements LabListAdapterClickListener, LabTabConstants, OnFilterListener, GetProgramOrLabListener, View.OnClickListener {
 
+    private static final String TAG = LabListFragment.class.getSimpleName();
     public static final String LAB = "LAB";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -44,7 +58,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private ProgressDialog progressDialog;
     private ProgramOrLabRequester programOrLabRequester;
     private Spinner spinnerLocation, spinnerYear, spinnerSeason;
-    private ImageView imageViewSearch, imageViewCancel;
+    private Map<String, String> filterMap;
+//    private ImageView imageViewSearch, imageViewCancel;
 
     public LabListFragment() {
 
@@ -59,10 +74,12 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_lab_list, container, false);
+        filterMap = new LinkedHashMap<String, String>();
         homeActivityContext = (HomeActivity) context;
         if (LabTabApplication.getInstance().getMetaDatas() == null) {
             BackgroundExecutor.getInstance().execute(new ProjectsMetaDataRequester());
         }
+
         initListeners();
         initView();
         return rootView;
@@ -80,9 +97,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season))));
         spinnerYear.setAdapter(new SpinnerAdapter(homeActivityContext,
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year))));
-        spinnerLocation.setAdapter(new SpinnerAdapter(homeActivityContext,
-                Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_location))));
-        imageViewSearch = (ImageView) rootView.findViewById(R.id.iv_search);
+        spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
+/*        imageViewSearch = (ImageView) rootView.findViewById(R.id.iv_search);
         imageViewCancel = (ImageView) rootView.findViewById(R.id.iv_cancel);
         imageViewCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +107,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 spinnerYear.setSelection(0);
                 spinnerSeason.setSelection(0);
             }
-        });
+        });*/
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
@@ -127,9 +143,91 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
+   /* private Map<String, String> updateFilterMap(){
+
+    }*/
+
+    private ArrayList<LocationResponse> getLocation(ArrayList<LocationResponse> list){
+        ArrayList<LocationResponse> locationList = new ArrayList<LocationResponse>();
+        locationList.addAll(list);
+        locationList.add(0,new LocationResponse("", "All Location"));
+        return locationList;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        rootView.findViewById(R.id.iv_search).setOnClickListener(this);
+        rootView.findViewById(R.id.iv_cancel).setOnClickListener(this);
+        rootView.findViewById(R.id.btn_today).setOnClickListener(this);
+        rootView.findViewById(R.id.btn_tomorrow).setOnClickListener(this);
+        initAdapterListener();
+    }
+
+    private void initAdapterListener(){
+        spinnerLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                LocationResponse location = (LocationResponse) adapterView.getItemAtPosition(position);
+                Toast.makeText(homeActivityContext, location.getId() + "   " + location.getName(), Toast.LENGTH_SHORT).show();
+                if (position == 0){
+                    filterMap.remove(FilterRequestParameter.LOCATION_ID);
+                }else {
+                    filterMap.put(FilterRequestParameter.LOCATION_ID, location.getId());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinnerSeason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String season = (String) adapterView.getItemAtPosition(position);
+                Toast.makeText(homeActivityContext, season, Toast.LENGTH_SHORT).show();
+                if (position == 0){
+                    filterMap.remove(FilterRequestParameter.SEASON);
+                }else {
+                    filterMap.put(FilterRequestParameter.SEASON, season);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String year = (String) adapterView.getItemAtPosition(position);
+                Toast.makeText(homeActivityContext, String.valueOf(year), Toast.LENGTH_SHORT).show();
+                if (position == 0){
+                    filterMap.remove(FilterRequestParameter.SEASON_YEAR);
+                }else {
+                    filterMap.put(FilterRequestParameter.SEASON_YEAR, year);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void callFilterApi(){
+        progressDialog.show();
+        BackgroundExecutor.getInstance().execute(new FilterRequester(filterMap));
+    }
 
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(GetProgramOrLabListener.class, this);
+        LabTabApplication.getInstance().addUIListener(OnFilterListener.class, this);
     }
 
     @Override
@@ -142,6 +240,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(OnFilterListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
     }
@@ -156,14 +255,18 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                objectArrayList.clear();
-                objectArrayList.addAll(ProgramsOrLabsTable
-                        .getInstance()
-                        .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id()));
-                labListAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                resetOriginalData();
             }
         });
+    }
+
+    private void resetOriginalData(){
+        objectArrayList.clear();
+        objectArrayList.addAll(ProgramsOrLabsTable
+                .getInstance()
+                .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id()));
+        labListAdapter.notifyDataSetChanged();
+        progressDialog.dismiss();
     }
 
     @Override
@@ -193,6 +296,50 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             case R.id.spinner_season_frame:
                 spinnerSeason.performClick();
                 break;
+            case R.id.iv_search:
+                callFilterApi();
+                break;
+            case R.id.btn_today:
+                Log.d(TAG, "TODAY BUTTON CLICKED");
+
+                break;
+            case R.id.btn_tomorrow:
+                Log.d(TAG, "TODAY BUTTON CLICKED");
+                break;
+            case R.id.iv_cancel:
+                spinnerLocation.setSelection(0);
+                spinnerYear.setSelection(0);
+                spinnerSeason.setSelection(0);
+                resetOriginalData();
+                break;
         }
+    }
+
+    @Override
+    public void onFilterSuccess(final ArrayList<ProgramOrLab> programOrLabs) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(programOrLabs != null && programOrLabs.isEmpty()){
+                    Toast.makeText(homeActivityContext, "No Data Found", Toast.LENGTH_SHORT).show();
+                }
+                objectArrayList.clear();
+                objectArrayList.addAll(programOrLabs);
+                labListAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void onFilterError(int responseCode) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                Toast.makeText(homeActivityContext, "Failed to fetch filter", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }

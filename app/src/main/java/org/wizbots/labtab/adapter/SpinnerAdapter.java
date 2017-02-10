@@ -31,7 +31,7 @@ public class SpinnerAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return position;
+        return spinnerData.get(position);
     }
 
     public long getItemId(int position) {

@@ -6,6 +6,8 @@ import org.wizbots.labtab.retrofit.ConnectionUtil;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 
+import java.util.Map;
+
 import okhttp3.MultipartBody;
 
 public class LabTabHTTPOperationController {
@@ -128,6 +130,18 @@ public class LabTabHTTPOperationController {
     public static LabTabResponse getProjectMetaData() {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
         return ConnectionUtil.execute(labTabApiInterface.getProjectsMetaData());
+    }
+
+    public static LabTabResponse getLocation() {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.location(LabTabPreferences.getInstance
+                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken()));
+    }
+
+    public static LabTabResponse getFilter(Map<String, String> params) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.getFilter(LabTabPreferences.getInstance
+                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), params));
     }
 
 }
