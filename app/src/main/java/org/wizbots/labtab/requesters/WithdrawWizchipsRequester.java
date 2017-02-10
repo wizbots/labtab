@@ -39,6 +39,7 @@ public class WithdrawWizchipsRequester implements Runnable {
             if (statusCode == HttpURLConnection.HTTP_OK) {
                 Log.d(TAG , "Wizchips withdraw successfully = " + response.getWizchips());
                 ProgramStudentsTable.getInstance().updateWizchips(mStudentId, response.getWizchips(), true);
+                ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, 0, false);
             }else if(statusCode == HttpURLConnection.HTTP_NOT_FOUND){
                 Log.d(TAG , "Student Not Found with id = " + mStudentId);
             } else {

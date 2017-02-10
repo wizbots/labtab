@@ -122,7 +122,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         categorySpinner.setAdapter(spinnerArrayAdapter);
         addProjectCreatorEditTextListeners();
         ArrayList<Student> objects = (ArrayList<Student>) getArguments().getSerializable(LabDetailsFragment.SELECTED_STUDENTS);
-        if (!objects.isEmpty()) {
+        if (savedInstanceState == null && objects != null && !objects.isEmpty()) {
             creatorsSelected.addAll(objects);
             horizontalProjectCreatorAdapter.notifyDataSetChanged();
         }
