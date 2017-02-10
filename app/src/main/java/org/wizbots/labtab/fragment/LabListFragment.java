@@ -141,9 +141,14 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
     @Override
     public void onDestroy() {
-        LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
     }
 
     @Override

@@ -32,6 +32,8 @@ import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.net.HttpURLConnection;
+
 public class LoginFragment extends ParentFragment implements View.OnClickListener, CreateTokenListener, GetMentorProfileListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
@@ -161,9 +163,14 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     @Override
     public void onDestroy() {
         progressDialog.dismiss();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         LabTabApplication.getInstance().removeUIListener(CreateTokenListener.class, this);
         LabTabApplication.getInstance().removeUIListener(GetMentorProfileListener.class, this);
-        super.onDestroy();
     }
 
     @Override
@@ -211,6 +218,8 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
         if (responseCode == StatusCode.NOT_FOUND) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.MENTOR_NOT_FOUND);
+        }else if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.USER_IS_NOT_MENTOR);
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }

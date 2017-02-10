@@ -248,13 +248,18 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
     @Override
     public void onDestroy() {
+        progressDialog.dismiss();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         LabTabApplication.getInstance().removeUIListener(GetProgramStudentsListener.class, this);
         LabTabApplication.getInstance().removeUIListener(MarkStudentAbsentListener.class, this);
         LabTabApplication.getInstance().removeUIListener(PromotionDemotionListener.class, this);
         LabTabApplication.getInstance().removeUIListener(AddWizchipsListener.class, this);
         LabTabApplication.getInstance().removeUIListener(WithdrawWizchipsListener.class, this);
-        progressDialog.dismiss();
-        super.onDestroy();
     }
 
     public void initHeaderView() {

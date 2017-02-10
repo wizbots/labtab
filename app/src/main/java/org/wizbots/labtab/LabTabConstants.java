@@ -133,6 +133,7 @@ public interface LabTabConstants {
         String NO_DETAIL_FOUND = "No Detail Found";
         String STUDENT_STATISTICS = "Student Statistics";
         String MENTOR_NOT_FOUND = "Mentor Not Found";
+        String USER_IS_NOT_MENTOR = "User is not mentor";
         String NO_LAB_DETAIL_FOR_THIS_LAB = "No Lab Detail for this Lab";
         String NO_STUDENT_FOUND_FOR_THIS_LAB = "No Student Found for this Lab";
         String NO_ADDITIONAL_INFO_FOUND_FOR_THIS_LAB = "No Additional Info found for this Lab";
