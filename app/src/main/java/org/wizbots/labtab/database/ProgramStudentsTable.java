@@ -329,7 +329,7 @@ public class ProgramStudentsTable extends AbstractTable {
         } catch (Exception e) {
             Log.e(TAG, "Error while get students", e);
         } finally {
-            if (!cursor.isClosed()) {
+            if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
             }
         }

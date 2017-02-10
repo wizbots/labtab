@@ -391,8 +391,14 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
                 } else {
                     progressDialog.show();
-                    String studentId = studentList.get(0).getStudent_id();
-                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab, studentId, 1));
+                    Student student = studentList.get(0);
+
+/*                    if(getChips(student.getWizchips(), student.getOfflinewizchips()) <= 0){
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
+                        return;
+                    }*/
+
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab, student.getStudent_id(), 1));
                 }
                 break;
             case R.id.tv_minus:
@@ -411,6 +417,10 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 break;
         }
 
+    }
+
+    private int getChips(int onlineChips, int offlineChips){
+        return (onlineChips + offlineChips) > 0 ? (onlineChips + offlineChips) : 0;
     }
 
     private ArrayList<Student> getSelectedStudents() {

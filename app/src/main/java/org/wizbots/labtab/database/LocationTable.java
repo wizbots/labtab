@@ -110,8 +110,8 @@ public class LocationTable extends AbstractTable {
         return locationList;
     }
 
-    private LocationResponse getLocationById(String locationId) {
-        LocationResponse location = null;
+    public LocationResponse getLocationById(String locationId) {
+        LocationResponse location = new LocationResponse();
         final String query = "Select * from " + NAME + " where " + COLUMN_ID + " = '" + locationId + "'";
         Cursor cursor = null;
         try {

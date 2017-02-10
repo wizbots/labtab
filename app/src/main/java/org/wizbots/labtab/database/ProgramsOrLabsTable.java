@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Student;
 
@@ -116,7 +117,6 @@ public class ProgramsOrLabsTable extends AbstractTable {
         try {
 
             final String query = getFilterQuery(memberId,params);
-//            final String query = "Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "'" + " ORDER BY " + COLUMN_TITLE + " ASC";
             cursor = daoManager.getReadableDatabase().rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -149,14 +149,14 @@ public class ProgramsOrLabsTable extends AbstractTable {
         return programOrLabs;
     }
 
-//    Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "'" + " and " + COLUMNNAME + " = '" + value +
     private String getFilterQuery(String memberId, Map<String, String> params){
         StringBuilder query = new StringBuilder("Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "'");
         StringBuilder orderBy = new StringBuilder(" ORDER BY " + COLUMN_TITLE + " ASC");
         if(params != null && params.size() > 0){
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 if(entry.getKey().equalsIgnoreCase(COLUMN_LOCATION)){
-                    params.put(COLUMN_LOCATION, "Roy Cloud");
+                    LocationResponse location = LocationTable.getInstance().getLocationById(entry.getValue());
+                    params.put(COLUMN_LOCATION, location.getName());
                 }
                 query.append(" and ").append(entry.getKey()).append(" = '").append(entry.getValue()).append("'");
             }

@@ -9,6 +9,9 @@ public class LocationResponse {
     String id;
     String name;
 
+    public LocationResponse() {
+    }
+
     public LocationResponse(String id, String name) {
         this.id = id;
         this.name = name;

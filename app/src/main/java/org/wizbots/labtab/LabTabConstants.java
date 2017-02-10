@@ -156,7 +156,7 @@ public interface LabTabConstants {
         String SELECT_STUDENT_FIRST_INCREMENT = "Please select one student to increase wizchips";
         String SELECT_STUDENT_FIRST_DECREMENT = "Please select one student to descrease wizchips";
         String YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY = "You can not select a date more than today";
-        String PLEASE_SELECT_AT_MOST_ONE_STUDENT_TO_WIZCHIPS = "Please Select one student";
+        String ALREADY_MINIMUM = "Student is already having lowest wizchips";
         String STUDENT_IS_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE = "Student is already marked absent for the selected date";
         String STUDENTS_ARE_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE = "Students are already marked absent for the selected date";
     }

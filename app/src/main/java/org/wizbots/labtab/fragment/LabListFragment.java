@@ -143,10 +143,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
-   /* private Map<String, String> updateFilterMap(){
-
-    }*/
-
     private ArrayList<LocationResponse> getLocation(ArrayList<LocationResponse> list){
         ArrayList<LocationResponse> locationList = new ArrayList<LocationResponse>();
         locationList.addAll(list);
@@ -169,7 +165,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 LocationResponse location = (LocationResponse) adapterView.getItemAtPosition(position);
-                Toast.makeText(homeActivityContext, location.getId() + "   " + location.getName(), Toast.LENGTH_SHORT).show();
                 if (position == 0){
                     filterMap.remove(FilterRequestParameter.LOCATION_ID);
                 }else {
@@ -187,7 +182,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String season = (String) adapterView.getItemAtPosition(position);
-                Toast.makeText(homeActivityContext, season, Toast.LENGTH_SHORT).show();
                 if (position == 0){
                     filterMap.remove(FilterRequestParameter.SEASON);
                 }else {
@@ -205,7 +199,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String year = (String) adapterView.getItemAtPosition(position);
-                Toast.makeText(homeActivityContext, String.valueOf(year), Toast.LENGTH_SHORT).show();
                 if (position == 0){
                     filterMap.remove(FilterRequestParameter.SEASON_YEAR);
                 }else {
