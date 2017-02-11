@@ -64,6 +64,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
     public static final String PROJECT_CREATORS = "PROJECT_CREATORS";
+    public static final String KNOWLEDGE_NUGGETS = "KNOWLEDGE_NUGGETS";
+    public static final String NUGGETS = "NUGGETS";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
@@ -116,7 +118,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         program = getArguments().getParcelable(LabDetailsFragment.PROGRAM);
         level = getArguments().getString(LabDetailsFragment.LAB_LEVEL);
         initView(savedInstanceState);
-        initKnowledgeNuggets();
+        initKnowledgeNuggets(savedInstanceState);
         prepareStudentCategoryList();
         ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, categoryArrayList);
         categorySpinner.setAdapter(spinnerArrayAdapter);
@@ -203,11 +205,17 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                         .into(videoThumbnailImageView);
             }
             ArrayList<Student> objects = (ArrayList<Student>) bundle.getSerializable(PROJECT_CREATORS);
-            if (!objects.isEmpty()) {
+            if (objects != null && !objects.isEmpty()) {
                 creatorsSelected.clear();
                 creatorsSelected.addAll(objects);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
             }
+            ArrayList<String> kN = (ArrayList<String>) bundle.getSerializable(KNOWLEDGE_NUGGETS);
+            if (kN != null && !kN.isEmpty()) {
+                knowledgeNuggets.clear();
+                knowledgeNuggets.addAll(kN);
+            }
+            knowledgeNuggetsSelected = bundle.getString(AddVideoFragment.NUGGETS,"");
         }
 
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
@@ -531,10 +539,12 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(URI, savedVideoUri);
         outState.putSerializable(PROJECT_CREATORS, creatorsSelected);
+        outState.putSerializable(KNOWLEDGE_NUGGETS, knowledgeNuggets);
+        outState.putString(NUGGETS,knowledgeNuggetsSelected);
         super.onSaveInstanceState(outState);
     }
 
-    public void initKnowledgeNuggets() {
+    public void initKnowledgeNuggets(Bundle bundle) {
         builder = new AlertDialog.Builder(homeActivityContext);
         final String[] components;
         if (level != null) {
@@ -545,6 +555,21 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
         final boolean[] componentSelection = new boolean[components.length];
 
+        if (bundle != null) {
+            ArrayList<String> kN = (ArrayList<String>) bundle.getSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS);
+            if (kN != null && !kN.isEmpty()) {
+                knowledgeNuggets.clear();
+                knowledgeNuggets.addAll(kN);
+                for (String kn : kN) {
+                    for (int i = 0; i < components.length; i++) {
+                        if (components[i].equals(kn)) {
+                            componentSelection[i] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         builder.setMultiChoiceItems(components, componentSelection, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {

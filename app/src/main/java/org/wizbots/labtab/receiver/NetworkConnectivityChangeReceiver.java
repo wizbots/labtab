@@ -7,8 +7,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
@@ -30,14 +28,14 @@ public class NetworkConnectivityChangeReceiver extends BroadcastReceiver impleme
         boolean isConnected = NetworkUtils.isConnected(LabTabApplication.getInstance());
         if (!isConnected) {
             //Device Is Not Connected To Internet
-            Toast.makeText(context, "Not Connected To Internet", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Not Connected To Internet", Toast.LENGTH_SHORT).show();
         } else {
             //Device Is Connected To Internet
             onRefreshButtonClick();
             Intent uploadService = new Intent(context, LabTabSyncService.class);
             uploadService.putExtra(LabTabSyncService.EVENT, Events.DEVICE_CONNECTED_TO_INTERNET);
             context.startService(uploadService);
-            Toast.makeText(context, "Connected To Internet", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Connected To Internet", Toast.LENGTH_SHORT).show();
         }
     }
 

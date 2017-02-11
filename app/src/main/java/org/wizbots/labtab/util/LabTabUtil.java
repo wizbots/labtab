@@ -21,6 +21,7 @@ import org.wizbots.labtab.enums.ProjectStatus;
 import org.wizbots.labtab.model.Project;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.student.response.ProjectResponse;
+import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.lang.reflect.Type;
@@ -39,6 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LabTabUtil implements LabTabConstants {
 
     private static final String TAG = LabTabUtil.class.getName();
+    public static Video videoRequestOnOpeningEditScreen;
 
     public static ArrayList<ProjectResponse> convertStringToProjects(String string) {
         ArrayList<ProjectResponse> projects = null;
@@ -415,4 +417,32 @@ public class LabTabUtil implements LabTabConstants {
         return timeStamp;
     }
 
+    public static boolean compareEditedVideo(Video videoToBeCompared) {
+        boolean change = false;
+
+        if (!videoToBeCompared.getTitle().equals(videoRequestOnOpeningEditScreen.getTitle())) {
+            change = true;
+        }
+        if (!videoToBeCompared.getCategory().equals(videoRequestOnOpeningEditScreen.getCategory())) {
+            change = true;
+        }
+        if (!videoToBeCompared.getCategory().equals(videoRequestOnOpeningEditScreen.getCategory())) {
+            change = true;
+        }
+        if (!videoToBeCompared.getKnowledge_nuggets().equals(videoRequestOnOpeningEditScreen.getKnowledge_nuggets())) {
+            change = true;
+        }
+        if (!videoToBeCompared.getDescription().equals(videoRequestOnOpeningEditScreen.getDescription())) {
+            change = true;
+        }
+
+        if (!videoToBeCompared.getNotes_to_the_family().equals(videoRequestOnOpeningEditScreen.getNotes_to_the_family())) {
+            change = true;
+        }
+
+        if (!videoToBeCompared.getProject_creators().equals(videoRequestOnOpeningEditScreen.getProject_creators())) {
+            change = true;
+        }
+        return change;
+    }
 }

@@ -164,6 +164,7 @@ public interface LabTabConstants {
         String STUDENT_IS_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE = "Student is already at highest level (Master)";
         String STUDENTS_ARE_ALREADY_AT_LOWEST_LEVEL_AVAILABLE = "Students are already at lowest level (Novice)";
         String STUDENTS_ARE_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE = "Students are already at highest level (Master)";
+        String NO_CHANGES_ARE_MADE = "No changes are made";
     }
 
     /**
