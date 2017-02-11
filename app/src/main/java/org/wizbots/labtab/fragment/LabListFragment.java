@@ -215,7 +215,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
     private void callFilterApi(){
         progressDialog.show();
-        BackgroundExecutor.getInstance().execute(new FilterRequester(filterMap));
+        Map<String, String> filterMap1 = new LinkedHashMap<>();
+        filterMap1.putAll(filterMap);
+        BackgroundExecutor.getInstance().execute(new FilterRequester(filterMap1));
     }
 
     public void initListeners() {

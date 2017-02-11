@@ -61,7 +61,8 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
         } else {
             for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
                 markStudentsAbsent(SyncStatus.NOT_SYNCED);
-                markStudentAbsentListener.markAbsentUnSuccessful(0);
+//                markStudentAbsentListener.markAbsentUnSuccessful(0);
+                markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
             }
         }}
     }
