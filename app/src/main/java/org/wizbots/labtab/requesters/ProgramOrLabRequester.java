@@ -8,6 +8,7 @@ import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,8 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
                 programOrLab.setMember_id(member_id);
                 programOrLab.setSeason(seasonYear[1]);
                 programOrLab.setYear(seasonYear[0]);
+                programOrLab.setStartTimeStamp(LabTabUtil.getTimeStamp(programOrLab.getStarts()));
+                programOrLab.setEndTimesStamp(LabTabUtil.getTimeStamp(programOrLab.getEnds()));
             }
             for (GetProgramOrLabListener getProgramOrLabListener : LabTabApplication.getInstance().getUIListeners(GetProgramOrLabListener.class)) {
                 if (programsOrLabs.getResponseCode() == StatusCode.OK) {

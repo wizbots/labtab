@@ -5,10 +5,10 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.database.ProgramsOrLabsTable;
-import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.util.LabTabUtil;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -41,6 +41,8 @@ public class FilterRequester implements Runnable {
                 programOrLab.setMember_id(member_id);
                 programOrLab.setSeason(seasonYear[1]);
                 programOrLab.setYear(seasonYear[0]);
+                programOrLab.setStartTimeStamp(LabTabUtil.getTimeStamp(programOrLab.getStarts()));
+                programOrLab.setEndTimesStamp(LabTabUtil.getTimeStamp(programOrLab.getEnds()));
             }
         }else {
             //Offline data filter

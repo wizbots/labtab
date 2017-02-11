@@ -31,7 +31,35 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
-
+        boolean isHighestOrLowestCheck = true;
+        if(promoteDemote) {
+            for (Student student : studentArrayList) {
+                isHighestOrLowestCheck &= student.getLevel().toUpperCase().equals(LabLevels.MASTER);
+            }
+        } else {
+            for (Student student : studentArrayList) {
+                isHighestOrLowestCheck &= student.getLevel().toUpperCase().equals(LabLevels.NOVICE);
+            }
+        }
+        if(isHighestOrLowestCheck) {
+            for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
+                if (studentArrayList.size() == 1) {
+                    if(promoteDemote) {
+                        promotionDemotionListener.promotionDemotionUnSuccessful(5000);
+                    } else {
+                        promotionDemotionListener.promotionDemotionUnSuccessful(6000);
+                    }
+                }
+                else {
+                    if (promoteDemote) {
+                        promotionDemotionListener.promotionDemotionUnSuccessful(7000);
+                    } else {
+                        promotionDemotionListener.promotionDemotionUnSuccessful(8000);
+                    }
+                }
+                break;
+            }
+        } else {
         LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote);
         if (promoteDemoteResponse != null) {
             for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
@@ -51,7 +79,7 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                 promotionDemotionListener.promotionDemotionUnSuccessful(0);
                 break;
             }
-        }
+        }}
     }
 
     private String[] getStudents() {

@@ -504,7 +504,15 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             @Override
             public void run() {
                 notifyLabDetailsAdapter();
-                if (status != 0) {
+                if (status == 5000) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE);
+                } else if (status == 6000) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_AT_LOWEST_LEVEL_AVAILABLE);
+                } else if (status == 7000) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE);
+                }  else if (status == 8000) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_ALREADY_AT_LOWEST_LEVEL_AVAILABLE);
+                }  else if (status != 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
                 } else {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);

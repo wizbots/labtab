@@ -7,7 +7,6 @@ import android.util.Log;
 
 import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
-import org.wizbots.labtab.model.program.Student;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +32,8 @@ public class ProgramsOrLabsTable extends AbstractTable {
     private static final String COLUMN_LOCATION = "location_id";
     private static final String COLUMN_LEVEL = "level";
     private static final String COLUMN_YEAR = "season_year";
+    private static final String COLUMN_START_TIMESTAMP = "start_timestamp";
+    private static final String COLUMN_END_TIMESTAMP = "end_timestamp";
 
 
     private DAOManager daoManager = null;
@@ -68,7 +69,9 @@ public class ProgramsOrLabsTable extends AbstractTable {
                 + COLUMN_SEASON + " text,"
                 + COLUMN_LOCATION + " text,"
                 + COLUMN_LEVEL + " text,"
-                + COLUMN_YEAR + " text);");
+                + COLUMN_YEAR + " text,"
+                + COLUMN_START_TIMESTAMP + " INTEGER,"
+                + COLUMN_END_TIMESTAMP + " INTEGER);");
     }
 
     public synchronized void insert(Collection<ProgramOrLab> programOrLabs) {
@@ -108,15 +111,17 @@ public class ProgramsOrLabsTable extends AbstractTable {
         values.put(COLUMN_LOCATION, programOrLab.getLocation());
         values.put(COLUMN_LEVEL, programOrLab.getLevel());
         values.put(COLUMN_YEAR, programOrLab.getYear());
+        values.put(COLUMN_START_TIMESTAMP, programOrLab.getStartTimeStamp());
+        values.put(COLUMN_END_TIMESTAMP, programOrLab.getEndTimesStamp());
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
-    public ArrayList<ProgramOrLab> getFilteredData(String memberId, Map<String, String> params){
+    public ArrayList<ProgramOrLab> getFilteredData(String memberId, Map<String, String> params) {
         ArrayList<ProgramOrLab> programOrLabs = new ArrayList<>();
         Cursor cursor = null;
         try {
 
-            final String query = getFilterQuery(memberId,params);
+            final String query = getFilterQuery(memberId, params);
             cursor = daoManager.getReadableDatabase().rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -135,7 +140,9 @@ public class ProgramsOrLabsTable extends AbstractTable {
                                     cursor.getString(cursor.getColumnIndex(COLUMN_SEASON)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_LOCATION)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL)),
-                                    cursor.getString(cursor.getColumnIndex(COLUMN_YEAR))
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_YEAR)),
+                                    cursor.getLong(cursor.getColumnIndex(COLUMN_START_TIMESTAMP)),
+                                    cursor.getLong(cursor.getColumnIndex(COLUMN_END_TIMESTAMP))
                             ));
                 } while (cursor.moveToNext());
             }
@@ -149,12 +156,12 @@ public class ProgramsOrLabsTable extends AbstractTable {
         return programOrLabs;
     }
 
-    private String getFilterQuery(String memberId, Map<String, String> params){
+    private String getFilterQuery(String memberId, Map<String, String> params) {
         StringBuilder query = new StringBuilder("Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "'");
         StringBuilder orderBy = new StringBuilder(" ORDER BY " + COLUMN_TITLE + " ASC");
-        if(params != null && params.size() > 0){
+        if (params != null && params.size() > 0) {
             for (Map.Entry<String, String> entry : params.entrySet()) {
-                if(entry.getKey().equalsIgnoreCase(COLUMN_LOCATION)){
+                if (entry.getKey().equalsIgnoreCase(COLUMN_LOCATION)) {
                     LocationResponse location = LocationTable.getInstance().getLocationById(entry.getValue());
                     params.put(COLUMN_LOCATION, location.getName());
                 }
@@ -187,7 +194,9 @@ public class ProgramsOrLabsTable extends AbstractTable {
                                     cursor.getString(cursor.getColumnIndex(COLUMN_SEASON)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_LOCATION)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL)),
-                                    cursor.getString(cursor.getColumnIndex(COLUMN_YEAR))
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_YEAR)),
+                                    cursor.getLong(cursor.getColumnIndex(COLUMN_START_TIMESTAMP)),
+                                    cursor.getLong(cursor.getColumnIndex(COLUMN_END_TIMESTAMP))
                             ));
                 } while (cursor.moveToNext());
             }

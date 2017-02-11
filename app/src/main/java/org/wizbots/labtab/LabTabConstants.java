@@ -160,6 +160,10 @@ public interface LabTabConstants {
         String ALREADY_MINIMUM = "Student is already having lowest wizchips";
         String STUDENT_IS_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE = "Student is already marked absent for the selected date";
         String STUDENTS_ARE_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE = "Students are already marked absent for the selected date";
+        String STUDENT_IS_ALREADY_AT_LOWEST_LEVEL_AVAILABLE = "Student is already at lowest level (Novice)";
+        String STUDENT_IS_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE = "Student is already at highest level (Master)";
+        String STUDENTS_ARE_ALREADY_AT_LOWEST_LEVEL_AVAILABLE = "Students are already at lowest level (Novice)";
+        String STUDENTS_ARE_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE = "Students are already at highest level (Master)";
     }
 
     /**
@@ -227,6 +231,7 @@ public interface LabTabConstants {
     interface DateFormat {
         String DEFAULT = "dd/MM/yyyy";
         String YYYYMMDD = "yyyy-MM-dd";
+        String MMDDYY = "MM/dd/yy";
     }
 
     interface SyncStatus {

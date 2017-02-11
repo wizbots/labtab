@@ -403,4 +403,16 @@ public class LabTabUtil implements LabTabConstants {
         }
         return isValidDateSelection;
     }
+
+    public static long getTimeStamp(String dateInString) {
+        long timeStamp = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat(DateFormat.MMDDYY);
+        try {
+            timeStamp = sdf.parse(dateInString).getTime() / 1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return timeStamp;
+    }
+
 }

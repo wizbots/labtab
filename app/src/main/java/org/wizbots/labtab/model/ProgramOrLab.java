@@ -18,11 +18,14 @@ public class ProgramOrLab implements Parcelable {
     private String location;
     private String level;
     private String year;
+    private long startTimeStamp;
+    private long endTimesStamp;
+
 
     public ProgramOrLab() {
     }
 
-    public ProgramOrLab(int sku, String member_id, String ends, String title, String starts, String state, String street, int enrollment_count, String address, String id, String season, String location, String level, String year) {
+    public ProgramOrLab(int sku, String member_id, String ends, String title, String starts, String state, String street, int enrollment_count, String address, String id, String season, String location, String level, String year, long startTimeStamp, long endTimesStamp) {
         this.sku = sku;
         this.member_id = member_id;
         this.ends = ends;
@@ -37,6 +40,8 @@ public class ProgramOrLab implements Parcelable {
         this.location = location;
         this.level = level;
         this.year = year;
+        this.startTimeStamp = startTimeStamp;
+        this.endTimesStamp = endTimesStamp;
     }
 
     public int getSku() {
@@ -151,6 +156,22 @@ public class ProgramOrLab implements Parcelable {
         this.year = year;
     }
 
+    public long getStartTimeStamp() {
+        return startTimeStamp;
+    }
+
+    public void setStartTimeStamp(long startTimeStamp) {
+        this.startTimeStamp = startTimeStamp;
+    }
+
+    public long getEndTimesStamp() {
+        return endTimesStamp;
+    }
+
+    public void setEndTimesStamp(long endTimesStamp) {
+        this.endTimesStamp = endTimesStamp;
+    }
+
 
     @Override
     public int describeContents() {
@@ -173,6 +194,8 @@ public class ProgramOrLab implements Parcelable {
         dest.writeString(this.location);
         dest.writeString(this.level);
         dest.writeString(this.year);
+        dest.writeLong(this.startTimeStamp);
+        dest.writeLong(this.endTimesStamp);
     }
 
     protected ProgramOrLab(Parcel in) {
@@ -190,6 +213,8 @@ public class ProgramOrLab implements Parcelable {
         this.location = in.readString();
         this.level = in.readString();
         this.year = in.readString();
+        this.startTimeStamp = in.readLong();
+        this.endTimesStamp = in.readLong();
     }
 
     public static final Creator<ProgramOrLab> CREATOR = new Creator<ProgramOrLab>() {
