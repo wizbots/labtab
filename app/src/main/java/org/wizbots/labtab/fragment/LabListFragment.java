@@ -1,6 +1,5 @@
 package org.wizbots.labtab.fragment;
 
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,10 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
@@ -34,11 +31,9 @@ import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
 import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.requesters.FilterRequester;
-import org.wizbots.labtab.requesters.LocationRequester;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -59,7 +54,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private ProgramOrLabRequester programOrLabRequester;
     private Spinner spinnerLocation, spinnerYear, spinnerSeason;
     private Map<String, String> filterMap;
-//    private ImageView imageViewSearch, imageViewCancel;
 
     public LabListFragment() {
 
@@ -98,16 +92,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         spinnerYear.setAdapter(new SpinnerAdapter(homeActivityContext,
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year))));
         spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
-/*        imageViewSearch = (ImageView) rootView.findViewById(R.id.iv_search);
-        imageViewCancel = (ImageView) rootView.findViewById(R.id.iv_cancel);
-        imageViewCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                spinnerLocation.setSelection(0);
-                spinnerYear.setSelection(0);
-                spinnerSeason.setSelection(0);
-            }
-        });*/
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
@@ -115,7 +99,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
 
         recyclerViewLabList = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_list);
-//        recyclerViewLabList.setFocusable(false);
         objectArrayList = new ArrayList<>();
 
         labListAdapter = new LabListAdapter(objectArrayList, homeActivityContext, this);
@@ -165,6 +148,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 LocationResponse location = (LocationResponse) adapterView.getItemAtPosition(position);
+                removeTodayTomorrowFilterKey();
                 if (position == 0){
                     filterMap.remove(FilterRequestParameter.LOCATION_ID);
                 }else {
@@ -182,6 +166,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String season = (String) adapterView.getItemAtPosition(position);
+                removeTodayTomorrowFilterKey();
                 if (position == 0){
                     filterMap.remove(FilterRequestParameter.SEASON);
                 }else {
@@ -199,6 +184,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String year = (String) adapterView.getItemAtPosition(position);
+                removeTodayTomorrowFilterKey();
                 if (position == 0){
                     filterMap.remove(FilterRequestParameter.SEASON_YEAR);
                 }else {
@@ -211,6 +197,11 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
             }
         });
+    }
+
+    private void removeTodayTomorrowFilterKey(){
+        filterMap.remove(FilterRequestParameter.TO);
+        filterMap.remove(FilterRequestParameter.FROM);
     }
 
     private void callFilterApi(){
@@ -301,12 +292,18 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 break;
             case R.id.btn_today:
                 Log.d(TAG, "TODAY BUTTON CLICKED");
-
+                filterMap.clear();
+                filterMap.putAll(getTodaysDate());
+                callFilterApi();
                 break;
             case R.id.btn_tomorrow:
-                Log.d(TAG, "TODAY BUTTON CLICKED");
+                Log.d(TAG, "TOMORROW BUTTON CLICKED");
+                filterMap.clear();
+                filterMap.putAll(getTomorrowDate());
+                callFilterApi();
                 break;
             case R.id.iv_cancel:
+                filterMap.clear();
                 spinnerLocation.setSelection(0);
                 spinnerYear.setSelection(0);
                 spinnerSeason.setSelection(0);
@@ -341,5 +338,19 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
             }
         });
+    }
+
+    private Map<String, String> getTodaysDate(){
+        Map<String, String> todayDate = new LinkedHashMap<>();
+        todayDate.put(FilterRequestParameter.FROM, "2012-09-25");
+        todayDate.put(FilterRequestParameter.TO, "2012-09-25");
+        return todayDate;
+    }
+
+    private Map<String, String> getTomorrowDate(){
+        Map<String, String> todayDate = new LinkedHashMap<>();
+        todayDate.put(FilterRequestParameter.FROM, "2012-09-25");
+        todayDate.put(FilterRequestParameter.TO, "2012-09-25");
+        return todayDate;
     }
 }

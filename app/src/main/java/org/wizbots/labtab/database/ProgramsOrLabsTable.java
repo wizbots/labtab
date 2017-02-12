@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
 
@@ -114,6 +115,67 @@ public class ProgramsOrLabsTable extends AbstractTable {
         values.put(COLUMN_START_TIMESTAMP, programOrLab.getStartTimeStamp());
         values.put(COLUMN_END_TIMESTAMP, programOrLab.getEndTimesStamp());
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    public ArrayList<ProgramOrLab> getDateWiseFilteredData(String memberId, Map<String, String> params) {
+        ArrayList<ProgramOrLab> programOrLabs = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+
+            final String query = getFilterByDateQuery(memberId, params);
+            cursor = daoManager.getReadableDatabase().rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    programOrLabs.add(
+                            new ProgramOrLab(
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_SKU)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MEMBER_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ENDS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STARTS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STATE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_STREET)),
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_ENROLLMENT_COUNT)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_SEASON)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LOCATION)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_YEAR)),
+                                    cursor.getLong(cursor.getColumnIndex(COLUMN_START_TIMESTAMP)),
+                                    cursor.getLong(cursor.getColumnIndex(COLUMN_END_TIMESTAMP))
+                            ));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get programs or labs", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return programOrLabs;
+    }
+
+    private String getFilterByDateQuery(String memberId, Map<String, String> params) {
+        StringBuilder query = new StringBuilder("Select * from " + NAME + " where " + COLUMN_MEMBER_ID + " = '" + memberId + "'");
+        StringBuilder orderBy = new StringBuilder(" ORDER BY " + COLUMN_TITLE + " ASC");
+        if (params != null && params.size() > 0) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase(LabTabConstants.FilterRequestParameter.FROM)) {
+                    String fromValue = entry.getValue();
+                    params.remove(LabTabConstants.FilterRequestParameter.FROM);
+                    params.put(COLUMN_START_TIMESTAMP, fromValue);
+                }
+                if (entry.getKey().equalsIgnoreCase(LabTabConstants.FilterRequestParameter.TO)) {
+                    String toValue = entry.getValue();
+                    params.remove(LabTabConstants.FilterRequestParameter.TO);
+                    params.put(COLUMN_END_TIMESTAMP, toValue);
+                }
+                query.append(" and ").append(entry.getKey()).append(" = '").append(entry.getValue()).append("'");
+            }
+        }
+        return query.toString();
     }
 
     public ArrayList<ProgramOrLab> getFilteredData(String memberId, Map<String, String> params) {
