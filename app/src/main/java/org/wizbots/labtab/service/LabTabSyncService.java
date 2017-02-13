@@ -23,6 +23,7 @@ import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.requesters.MarkAbsentListener;
 import org.wizbots.labtab.interfaces.requesters.PromoteDemoteListener;
+import org.wizbots.labtab.interfaces.requesters.UpdateProjectListener;
 import org.wizbots.labtab.interfaces.requesters.VideoUploadListener;
 import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Student;
@@ -30,15 +31,17 @@ import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.requesters.CreateProjectRequester;
 import org.wizbots.labtab.requesters.MarkStudentAbsentSyncRequester;
 import org.wizbots.labtab.requesters.PromotionDemotionSyncRequester;
+import org.wizbots.labtab.requesters.UpdateProjectRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
 
-public class LabTabSyncService extends Service implements LabTabConstants, VideoUploadListener, MarkAbsentListener, PromoteDemoteListener {
+public class LabTabSyncService extends Service implements LabTabConstants, VideoUploadListener, MarkAbsentListener, PromoteDemoteListener, UpdateProjectListener {
 
     private static final String TAG = LabTabSyncService.class.getSimpleName();
     public static final String EVENT = "EVENT";
     public static LabTabSyncService labTabSyncService = new LabTabSyncService();
+    public static boolean statusOfSingleEditVideoBackgroundExecutor[];
     public static boolean statusOfSingleVideoUploadBackgroundExecutor[];
     public static boolean statusOfSingleMarkAbsentUploadBackgroundExecutor[];
     public static boolean statusOfSinglePromotionDemotionBackgroundExecutor[];
@@ -117,16 +120,6 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
         isUploadServiceRunning = uploadServiceRunning;
     }
 
-    private void syncWizChips() {
-        ArrayList<Student> studentList = ProgramStudentsTable.getInstance().getUnSyncData();
-        if (!studentList.isEmpty()) {
-            startForegroundIntent();
-            for (int i = 0; i < studentList.size(); i++) {
-            }
-        }
-    }
-
-
     @Override
     public void videoUploadCompleted(Video video, int position) {
         statusOfSingleVideoUploadBackgroundExecutor[position] = true;
@@ -135,7 +128,6 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
             videoUploadTaskCompleted &= all;
         }
         if (videoUploadTaskCompleted) {
-            Log.i(TAG, "Received Stop Foreground Intent");
             statusOfSingleVideoUploadBackgroundExecutor = null;
             if (isServiceToBeStopped()) {
                 stopForeground(true);
@@ -182,18 +174,76 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
     }
 
     private boolean isServiceToBeStopped() {
+        boolean editVideoCompleted;
         boolean videoUploadCompleted;
         boolean markAbsentCompleted;
         boolean promoteDemoteCompleted;
 
+        editVideoCompleted = statusOfSingleEditVideoBackgroundExecutor == null;
         videoUploadCompleted = statusOfSingleVideoUploadBackgroundExecutor == null;
         markAbsentCompleted = statusOfSingleMarkAbsentUploadBackgroundExecutor == null;
         promoteDemoteCompleted = statusOfSinglePromotionDemotionBackgroundExecutor == null;
 
-        return videoUploadCompleted && markAbsentCompleted && promoteDemoteCompleted;
+        return videoUploadCompleted && markAbsentCompleted && promoteDemoteCompleted && editVideoCompleted;
     }
 
     private void checkAndStartWhatToSync() {
+        syncVideoUpload();
+        syncMarkAbsent();
+        syncPromoteDemote();
+        syncEditVideo();
+    }
+
+    @Override
+    public void onMarkAbsentCompleted(int position) {
+        statusOfSingleMarkAbsentUploadBackgroundExecutor[position] = true;
+        boolean markAbsentTaskCompleted = true;
+        for (boolean all : statusOfSingleMarkAbsentUploadBackgroundExecutor) {
+            markAbsentTaskCompleted &= all;
+        }
+        if (markAbsentTaskCompleted) {
+            statusOfSingleMarkAbsentUploadBackgroundExecutor = null;
+            if (isServiceToBeStopped()) {
+                stopForeground(true);
+                stopSelf();
+            }
+        }
+    }
+
+    @Override
+    public void promoteDemoteCompleted(int position) {
+        statusOfSinglePromotionDemotionBackgroundExecutor[position] = true;
+        boolean promoteDemoteTaskCompleted = true;
+        for (boolean all : statusOfSinglePromotionDemotionBackgroundExecutor) {
+            promoteDemoteTaskCompleted &= all;
+        }
+        if (promoteDemoteTaskCompleted) {
+            statusOfSinglePromotionDemotionBackgroundExecutor = null;
+            if (isServiceToBeStopped()) {
+                stopForeground(true);
+                stopSelf();
+            }
+        }
+    }
+
+    @Override
+    public void projectUpdateCompleted(int position) {
+        statusOfSingleEditVideoBackgroundExecutor[position] = true;
+        boolean editVideoTaskCompleted = true;
+        for (boolean all : statusOfSingleEditVideoBackgroundExecutor) {
+            editVideoTaskCompleted &= all;
+        }
+        if (editVideoTaskCompleted) {
+            statusOfSingleEditVideoBackgroundExecutor = null;
+            if (isServiceToBeStopped()) {
+                stopForeground(true);
+                stopSelf();
+            }
+        }
+    }
+
+
+    private void syncVideoUpload() {
         synchronized (this) {
             if (statusOfSingleVideoUploadBackgroundExecutor == null) {
                 ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideosToBeUploaded();
@@ -206,7 +256,9 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                 }
             }
         }
+    }
 
+    private void syncMarkAbsent() {
         synchronized (this) {
             if (statusOfSingleMarkAbsentUploadBackgroundExecutor == null) {
                 ArrayList<Absence> absenceArrayList = ProgramAbsencesTable.getInstance().getStudentToBeMarkedAbsent();
@@ -224,7 +276,9 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                 }
             }
         }
+    }
 
+    private void syncPromoteDemote() {
         synchronized (this) {
             if (statusOfSinglePromotionDemotionBackgroundExecutor == null) {
                 ArrayList<Student> studentsToBePromotedOrDemoted = ProgramStudentsTable.getInstance().getStudentsToBePromotedOrDemoted();
@@ -240,40 +294,21 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                 }
             }
         }
-
     }
 
-    @Override
-    public void onMarkAbsentCompleted(int position) {
-        statusOfSingleMarkAbsentUploadBackgroundExecutor[position] = true;
-        boolean markAbsentTaskCompleted = true;
-        for (boolean all : statusOfSingleMarkAbsentUploadBackgroundExecutor) {
-            markAbsentTaskCompleted &= all;
-        }
-        if (markAbsentTaskCompleted) {
-            Log.i(TAG, "Received Stop Foreground Intent");
-            statusOfSingleMarkAbsentUploadBackgroundExecutor = null;
-            if (isServiceToBeStopped()) {
-                stopForeground(true);
-                stopSelf();
+    private void syncEditVideo() {
+        synchronized (this) {
+            if (statusOfSingleEditVideoBackgroundExecutor == null) {
+                ArrayList<Video> videoArrayList = VideoTable.getInstance().getEditedVideosToBeUploaded();
+                if (!videoArrayList.isEmpty()) {
+                    startForegroundIntent();
+                    statusOfSingleEditVideoBackgroundExecutor = new boolean[videoArrayList.size()];
+                    for (int i = 0; i < videoArrayList.size(); i++) {
+                        BackgroundExecutor.getInstance().execute(new UpdateProjectRequester(labTabSyncService, videoArrayList.get(i), i));
+                    }
+                }
             }
         }
     }
 
-    @Override
-    public void promoteDemoteCompleted(int position) {
-        statusOfSinglePromotionDemotionBackgroundExecutor[position] = true;
-        boolean promoteDemoteTaskCompleted = true;
-        for (boolean all : statusOfSinglePromotionDemotionBackgroundExecutor) {
-            promoteDemoteTaskCompleted &= all;
-        }
-        if (promoteDemoteTaskCompleted) {
-            Log.i(TAG, "Received Stop Foreground Intent");
-            statusOfSinglePromotionDemotionBackgroundExecutor = null;
-            if (isServiceToBeStopped()) {
-                stopForeground(true);
-                stopSelf();
-            }
-        }
-    }
 }

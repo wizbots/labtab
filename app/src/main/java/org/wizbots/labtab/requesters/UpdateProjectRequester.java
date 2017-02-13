@@ -1,28 +1,29 @@
 package org.wizbots.labtab.requesters;
 
-import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.VideoTable;
-import org.wizbots.labtab.interfaces.requesters.EditProjectListener;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.model.video.response.EditProjectResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 
-public class EditProjectRequester implements Runnable, LabTabConstants {
+public class UpdateProjectRequester implements Runnable, LabTabConstants {
+    private LabTabSyncService labTabSyncService;
     private Video video;
-    private String editVideoCase;
+    private int position;
 
-    public EditProjectRequester() {
+    public UpdateProjectRequester() {
     }
 
-    public EditProjectRequester(Video video, String editVideoCase) {
+    public UpdateProjectRequester(LabTabSyncService labTabSyncService, Video video, int position) {
+        this.labTabSyncService = labTabSyncService;
         this.video = video;
-        this.editVideoCase = editVideoCase;
+        this.position = position;
     }
 
     @Override
@@ -34,24 +35,15 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
                 getProjectCreators(LabTabUtil.convertStringToProjectCreators(video.getProject_creators())));
 
         if (editProjectResponse != null) {
-            for (EditProjectListener editProjectListener : LabTabApplication.getInstance().getUIListeners(EditProjectListener.class)) {
-                if (editProjectResponse.getResponseCode() == StatusCode.OK) {
-                    projectUpdatedSuccessfully(editProjectResponse.getResponse());
-                    editProjectListener.projectUpdatedSuccessfully(editProjectResponse.getResponse(), video);
-                } else {
-                    projectEditedSuccessfully();
-                    editProjectListener.unableToUpdateProject(1000);
-                }
-                break;
+            if (editProjectResponse.getResponseCode() == StatusCode.OK) {
+                projectUpdatedSuccessfully(editProjectResponse.getResponse());
+            } else {
+                projectEditedSuccessfully();
             }
         } else {
-            for (EditProjectListener editProjectListener : LabTabApplication.getInstance().getUIListeners(EditProjectListener.class)) {
-                projectEditedSuccessfully();
-                editProjectListener.unableToUpdateProject(1000);
-                break;
-            }
+            projectEditedSuccessfully();
         }
-
+        labTabSyncService.projectUpdateCompleted(position);
     }
 
     private String[] getProjectCreators(ArrayList<Student> studentArrayList) {
@@ -69,7 +61,6 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
         }
         return nuggets;
     }
-
 
     private void projectUpdatedSuccessfully(EditProjectResponse projectCreated) {
         Video videoUploaded = new Video();

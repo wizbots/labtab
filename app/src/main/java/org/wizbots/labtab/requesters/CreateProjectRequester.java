@@ -94,6 +94,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
         videoUploaded.setDescription(projectCreated.getDescription());
         videoUploaded.setProject_creators(videoInDB.getProject_creators());
         videoUploaded.setNotes_to_the_family(projectCreated.getNotes());
+        videoUploaded.setEdit_sync_status(videoInDB.getEdit_sync_status());
         videoUploaded.setIs_transCoding(String.valueOf(projectCreated.is_transcoding()));
         videoUploaded.setVideo(LabTabUtil.toJson(projectCreated.getVideo()));
         videoUploaded.setVideoId(projectCreated.getId());
@@ -116,6 +117,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
         storeVideoInDB.setDescription(videoInDB.getDescription());
         storeVideoInDB.setProject_creators(videoInDB.getProject_creators());
         storeVideoInDB.setNotes_to_the_family(videoInDB.getNotes_to_the_family());
+        storeVideoInDB.setEdit_sync_status(videoInDB.getEdit_sync_status());
         storeVideoInDB.setIs_transCoding(String.valueOf(false));
         storeVideoInDB.setVideo("");
         storeVideoInDB.setVideoId("");

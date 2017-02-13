@@ -153,7 +153,7 @@ public interface LabTabConstants {
         String STUDENT_IS_DEMOTED_SUCCESSFULLY = "Student is Demoted Successfully";
         String OOPS_SOMETHING_WENT_WRONG = "Oops Something Went Wrong";
         String PROJECT_EDITED_SUCCESSFULLY = "Project Edited Successfully";
-        String VIDEO_CAN_NOT_BE_EDITED_WHEN_IT_IS_NOT_UPLOADED_TO_WIZBOTS_SERVER = "Video can't be edited when it is not uploaded to wizbots server";
+        String VIDEO_CAN_T_BE_EDITED_WHILE_UPLOADING = "Video can't be edited while uploading";
         String SELECT_STUDENT_FIRST_INCREMENT = "Please select one student to increase wizchips";
         String SELECT_STUDENT_FIRST_DECREMENT = "Please select one student to descrease wizchips";
         String YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY = "You can not select a date more than today";
@@ -165,6 +165,7 @@ public interface LabTabConstants {
         String STUDENTS_ARE_ALREADY_AT_LOWEST_LEVEL_AVAILABLE = "Students are already at lowest level (Novice)";
         String STUDENTS_ARE_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE = "Students are already at highest level (Master)";
         String NO_CHANGES_ARE_MADE = "No changes are made";
+        String VIDEO_CAN_T_BE_EDITED_WHILE_UPDATING = "Video can't be edited while updating";
     }
 
     /**
@@ -431,5 +432,10 @@ public interface LabTabConstants {
         String SEASON_YEAR = "season_year";
         String LOCATION_ID = "location_id";
         String MENTOR_ID = "mentor_id";
+    }
+
+    interface VideoEditCase {
+        String INTERNET_ON = "INTERNET_ON";
+        String INTERNET_OFF = "INTERNET_OFF";
     }
 }

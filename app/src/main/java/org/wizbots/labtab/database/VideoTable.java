@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.model.video.Video;
 
@@ -31,6 +32,7 @@ public class VideoTable extends AbstractTable {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_PROJECT_CREATORS = "project_creators";
     private static final String COLUMN_NOTES_TO_THE_FAMILY = "notes_to_the_family";
+    private static final String COLUMN_EDIT_SYNC_STATUS = "edit_sync_status";
     private static final String COLUMN_IS_TRANSCODING = "is_transcoding";
     private static final String COLUMN_VIDEO = "video";
     private static final String COLUMN_VIDEO_ID = "video_id";
@@ -70,6 +72,7 @@ public class VideoTable extends AbstractTable {
                 + COLUMN_DESCRIPTION + " text,"
                 + COLUMN_PROJECT_CREATORS + " text,"
                 + COLUMN_NOTES_TO_THE_FAMILY + " text,"
+                + COLUMN_EDIT_SYNC_STATUS + " text,"
                 + COLUMN_IS_TRANSCODING + " text,"
                 + COLUMN_VIDEO + " text,"
                 + COLUMN_VIDEO_ID + " text,"
@@ -131,6 +134,7 @@ public class VideoTable extends AbstractTable {
         values.put(COLUMN_DESCRIPTION, video.getDescription());
         values.put(COLUMN_PROJECT_CREATORS, video.getProject_creators());
         values.put(COLUMN_NOTES_TO_THE_FAMILY, video.getNotes_to_the_family());
+        values.put(COLUMN_EDIT_SYNC_STATUS, video.getEdit_sync_status());
         values.put(COLUMN_IS_TRANSCODING, video.getIs_transCoding());
         values.put(COLUMN_VIDEO, video.getVideo());
         values.put(COLUMN_VIDEO_ID, video.getVideoId());
@@ -159,6 +163,7 @@ public class VideoTable extends AbstractTable {
                         cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_EDIT_SYNC_STATUS)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_IS_TRANSCODING)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO)),
                         cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO_ID)),
@@ -198,6 +203,7 @@ public class VideoTable extends AbstractTable {
                                     cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_EDIT_SYNC_STATUS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_IS_TRANSCODING)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO_ID)),
@@ -246,6 +252,7 @@ public class VideoTable extends AbstractTable {
                 values.put(COLUMN_DESCRIPTION, video.getDescription());
                 values.put(COLUMN_PROJECT_CREATORS, video.getProject_creators());
                 values.put(COLUMN_NOTES_TO_THE_FAMILY, video.getNotes_to_the_family());
+                values.put(COLUMN_EDIT_SYNC_STATUS, video.getEdit_sync_status());
                 values.put(COLUMN_IS_TRANSCODING, video.getIs_transCoding());
                 values.put(COLUMN_VIDEO, video.getVideo());
                 values.put(COLUMN_VIDEO_ID, video.getVideoId());
@@ -269,7 +276,7 @@ public class VideoTable extends AbstractTable {
         ArrayList<Video> mentorArrayList = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME + " where " + COLUMN_MENTOR_ID + " = '" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and status < 100 ", null);
+            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME + " where " + COLUMN_MENTOR_ID + " = '" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_STATUS + " < 100  and edit_sync_status ='" + LabTabConstants.SyncStatus.SYNCED + "'", null);
             if (cursor.moveToFirst()) {
                 do {
                     mentorArrayList.add(
@@ -287,6 +294,48 @@ public class VideoTable extends AbstractTable {
                                     cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_EDIT_SYNC_STATUS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_IS_TRANSCODING)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID))
+                            )
+                    );
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get video", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return mentorArrayList;
+    }
+
+    public ArrayList<Video> getEditedVideosToBeUploaded() {
+        ArrayList<Video> mentorArrayList = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME + " where " + COLUMN_MENTOR_ID + " = '" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_EDIT_SYNC_STATUS + " ='" + LabTabConstants.SyncStatus.NOT_SYNCED + "'", null);
+            if (cursor.moveToFirst()) {
+                do {
+                    mentorArrayList.add(
+                            new Video(
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_ID)),
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_NAME)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_SKU)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_KNOWLEDGE_NUGGETS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_EDIT_SYNC_STATUS)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_IS_TRANSCODING)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO_ID)),

@@ -480,6 +480,7 @@
                             android:text="@string/upload"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
+                            android:visibility="gone"
                             app:font="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.ButtonCustom

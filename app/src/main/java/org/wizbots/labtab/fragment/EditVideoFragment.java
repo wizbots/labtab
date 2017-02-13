@@ -98,6 +98,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private ArrayList<String> knowledgeNuggets = new ArrayList<>();
     private ProgressDialog progressDialog;
     private String knowledgeNuggetsSelected = "";
+    private String editVideoCase = "";
 
     public EditVideoFragment() {
 
@@ -119,8 +120,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             video = getArguments().getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
             knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
+            editVideoCase = getArguments().getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
             fetchDataFromBundle();
         } else {
+            editVideoCase = savedInstanceState.getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
             video = savedInstanceState.getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
         }
@@ -216,7 +219,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 knowledgeNuggets.clear();
                 knowledgeNuggets.addAll(kN);
             }
-            knowledgeNuggetsSelected = bundle.getString(AddVideoFragment.NUGGETS,"");
+            knowledgeNuggetsSelected = bundle.getString(AddVideoFragment.NUGGETS, "");
         }
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
@@ -295,9 +298,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 videoRequest.setVideoId(video.getVideoId());
                 videoRequest.setProgramId(video.getProgramId());
 
-                if(LabTabUtil.compareEditedVideo(videoRequest)) {
+                if (LabTabUtil.compareEditedVideo(videoRequest)) {
                     progressDialog.show();
-                    BackgroundExecutor.getInstance().execute(new EditProjectRequester(videoRequest));
+                    BackgroundExecutor.getInstance().execute(new EditProjectRequester(videoRequest, editVideoCase));
                 } else {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CHANGES_ARE_MADE);
                 }
@@ -515,6 +518,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         outState.putParcelable(VideoListFragment.VIDEO, video);
         outState.putSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS, knowledgeNuggets);
         outState.putString(AddVideoFragment.NUGGETS, knowledgeNuggetsSelected);
+        outState.putString(VideoListFragment.VIDEO_EDIT_CASE, editVideoCase);
         super.onSaveInstanceState(outState);
     }
 
@@ -712,7 +716,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             @Override
             public void run() {
                 progressDialog.dismiss();
-                if (responseCode != 0) {
+                if (responseCode == 1000) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_EDITED_SUCCESSFULLY);
+                    homeActivityContext.clearAllTheFragmentFromStack();
+                    homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+                } else if (responseCode != 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
                 } else {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
@@ -727,7 +735,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         super.onDestroy();
     }
 
-    private Video compareChangeWithThis(){
+    private Video compareChangeWithThis() {
         Video videoRequestOnOpeningEditScreen = new Video();
         videoRequestOnOpeningEditScreen.setId(video.getId());
         videoRequestOnOpeningEditScreen.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());

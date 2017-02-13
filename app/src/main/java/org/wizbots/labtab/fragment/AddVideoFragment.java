@@ -215,7 +215,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 knowledgeNuggets.clear();
                 knowledgeNuggets.addAll(kN);
             }
-            knowledgeNuggetsSelected = bundle.getString(AddVideoFragment.NUGGETS,"");
+            knowledgeNuggetsSelected = bundle.getString(AddVideoFragment.NUGGETS, "");
         }
 
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
@@ -317,6 +317,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 video.setDescription(createProjectRequest.getDescription());
                 video.setProject_creators(LabTabUtil.toJson(createProjectRequest.getProject_creators()));
                 video.setNotes_to_the_family(createProjectRequest.getNotes_to_the_family());
+                video.setEdit_sync_status(SyncStatus.SYNCED);
                 video.setIs_transCoding(String.valueOf(false));
                 video.setVideo("");
                 video.setVideoId("");
@@ -540,7 +541,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         outState.putParcelable(URI, savedVideoUri);
         outState.putSerializable(PROJECT_CREATORS, creatorsSelected);
         outState.putSerializable(KNOWLEDGE_NUGGETS, knowledgeNuggets);
-        outState.putString(NUGGETS,knowledgeNuggetsSelected);
+        outState.putString(NUGGETS, knowledgeNuggetsSelected);
         super.onSaveInstanceState(outState);
     }
 

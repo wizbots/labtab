@@ -21,12 +21,14 @@ import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
 import org.wizbots.labtab.model.video.Video;
+import org.wizbots.labtab.util.NetworkUtils;
 
 import java.util.ArrayList;
 
 public class VideoListFragment extends ParentFragment implements VideoListAdapterClickListener {
 
     public static final String VIDEO = "VIDEO";
+    public static final String VIDEO_EDIT_CASE = "VIDEO_EDIT_CASE";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
@@ -91,9 +93,25 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         if (video.getStatus() == 100) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(VIDEO, video);
+            if (!NetworkUtils.isConnected(LabTabApplication.getInstance())) {
+                bundle.putString(VIDEO_EDIT_CASE, VideoEditCase.INTERNET_OFF);
+            } else {
+                bundle.putString(VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
+            }
             homeActivityContext.replaceFragment(Fragments.EDIT_VIDEO, bundle);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.VIDEO_CAN_NOT_BE_EDITED_WHEN_IT_IS_NOT_UPLOADED_TO_WIZBOTS_SERVER);
+            if (NetworkUtils.isConnected(LabTabApplication.getInstance())) {
+                if (video.getEdit_sync_status().equals(SyncStatus.NOT_SYNCED)) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.VIDEO_CAN_T_BE_EDITED_WHILE_UPDATING);
+                } else {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.VIDEO_CAN_T_BE_EDITED_WHILE_UPLOADING);
+                }
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(VIDEO, video);
+                bundle.putString(VIDEO_EDIT_CASE, VideoEditCase.INTERNET_OFF);
+                homeActivityContext.replaceFragment(Fragments.EDIT_VIDEO, bundle);
+            }
         }
     }
 
@@ -123,7 +141,6 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No Video Available");
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
-
         }
     }
 }
