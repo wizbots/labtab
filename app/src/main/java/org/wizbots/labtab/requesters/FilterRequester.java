@@ -56,9 +56,8 @@ public class FilterRequester implements Runnable {
             statusCode = HttpURLConnection.HTTP_OK;
             programOrLabArrayList.addAll(ProgramsOrLabsTable
                     .getInstance()
-                    .getDateWiseFilteredData(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id(), params));
+                    .getFilteredData(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id(), params));
         }
-        Log.d(TAG, String.valueOf(statusCode) + String.valueOf(programsOrLabs.getResponse()));
         for (OnFilterListener listener : LabTabApplication.getInstance().getUIListeners(OnFilterListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.OK) {
                 listener.onFilterSuccess(programOrLabArrayList);

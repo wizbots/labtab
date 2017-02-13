@@ -8,6 +8,7 @@ import android.util.Log;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
+import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -163,16 +164,11 @@ public class ProgramsOrLabsTable extends AbstractTable {
         if (params != null && params.size() > 0) {
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 if (entry.getKey().equalsIgnoreCase(LabTabConstants.FilterRequestParameter.FROM)) {
-                    String fromValue = entry.getValue();
-                    params.remove(LabTabConstants.FilterRequestParameter.FROM);
-                    params.put(COLUMN_START_TIMESTAMP, fromValue);
+                    query.append(" and (").append(COLUMN_START_TIMESTAMP).append(" >= ").append(LabTabUtil.getTimeStamp(entry.getValue(), LabTabConstants.DateFormat.YYYYMMDD));
                 }
                 if (entry.getKey().equalsIgnoreCase(LabTabConstants.FilterRequestParameter.TO)) {
-                    String toValue = entry.getValue();
-                    params.remove(LabTabConstants.FilterRequestParameter.TO);
-                    params.put(COLUMN_END_TIMESTAMP, toValue);
+                    query.append(" or ").append(COLUMN_END_TIMESTAMP).append(" <= ").append(LabTabUtil.getTimeStamp(entry.getValue(), LabTabConstants.DateFormat.YYYYMMDD)).append(")");
                 }
-                query.append(" and ").append(entry.getKey()).append(" = '").append(entry.getValue()).append("'");
             }
         }
         return query.toString();
@@ -183,7 +179,12 @@ public class ProgramsOrLabsTable extends AbstractTable {
         Cursor cursor = null;
         try {
 
-            final String query = getFilterQuery(memberId, params);
+            String query = null;
+            if(params != null && !params.isEmpty() && params.containsKey(LabTabConstants.FilterRequestParameter.FROM)){
+                query = getFilterByDateQuery(memberId, params);
+            }else {
+                query = getFilterQuery(memberId, params);
+            }
             cursor = daoManager.getReadableDatabase().rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {

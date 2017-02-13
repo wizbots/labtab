@@ -29,6 +29,7 @@ import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -417,6 +418,17 @@ public class LabTabUtil implements LabTabConstants {
         return timeStamp;
     }
 
+    public static long getTimeStamp(String dateInString, String dateFormate) {
+        long timeStamp = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormate);
+        try {
+            timeStamp = sdf.parse(dateInString).getTime() / 1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return timeStamp;
+    }
+
     public static boolean compareEditedVideo(Video videoToBeCompared) {
         boolean change = false;
 
@@ -444,5 +456,15 @@ public class LabTabUtil implements LabTabConstants {
             change = true;
         }
         return change;
+    }
+
+    //This method return todays and tomorrow date. if set to true return tomorror otherwise todays.
+    public static String getTodayDate(boolean isTomorrow){
+        Calendar cal = Calendar.getInstance();
+        if (isTomorrow)
+            cal.add(Calendar.DATE, 1);
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String formatted = format1.format(cal.getTime());
+        return formatted;
     }
 }

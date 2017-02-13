@@ -34,8 +34,12 @@ import org.wizbots.labtab.requesters.FilterRequester;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
+import org.wizbots.labtab.util.LabTabUtil;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -342,15 +346,15 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
     private Map<String, String> getTodaysDate(){
         Map<String, String> todayDate = new LinkedHashMap<>();
-        todayDate.put(FilterRequestParameter.FROM, "2012-09-25");
-        todayDate.put(FilterRequestParameter.TO, "2012-09-25");
+        todayDate.put(FilterRequestParameter.FROM, LabTabUtil.getTodayDate(false));
+        todayDate.put(FilterRequestParameter.TO, LabTabUtil.getTodayDate(false));
         return todayDate;
     }
 
     private Map<String, String> getTomorrowDate(){
         Map<String, String> todayDate = new LinkedHashMap<>();
-        todayDate.put(FilterRequestParameter.FROM, "2012-09-25");
-        todayDate.put(FilterRequestParameter.TO, "2012-09-25");
+        todayDate.put(FilterRequestParameter.FROM, LabTabUtil.getTodayDate(true));
+        todayDate.put(FilterRequestParameter.TO, LabTabUtil.getTodayDate(true));
         return todayDate;
     }
 }
