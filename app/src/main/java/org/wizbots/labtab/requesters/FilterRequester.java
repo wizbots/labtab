@@ -54,6 +54,7 @@ public class FilterRequester implements Runnable {
             //Offline data filter
             Log.d(TAG, "User is offline , filter data locally");
             statusCode = HttpURLConnection.HTTP_OK;
+            params.remove(LabTabConstants.FilterRequestParameter.MENTOR_ID);
             programOrLabArrayList.addAll(ProgramsOrLabsTable
                     .getInstance()
                     .getFilteredData(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id(), params));

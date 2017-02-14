@@ -155,6 +155,7 @@ public interface LabTabConstants {
         String PROJECT_EDITED_SUCCESSFULLY = "Project Edited Successfully";
         String VIDEO_CAN_T_BE_EDITED_WHILE_UPLOADING = "Video can't be edited while uploading";
         String SELECT_STUDENT_FIRST_INCREMENT = "Please select one student to increase wizchips";
+        String ALREADY_MINIMUM_WIZCHIPS = "Student is already having lowest wizchips";
         String SELECT_STUDENT_FIRST_DECREMENT = "Please select one student to descrease wizchips";
         String YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY = "You can not select a date more than today";
         String ALREADY_MINIMUM = "Student is already having lowest wizchips";
