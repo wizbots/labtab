@@ -35,11 +35,8 @@ import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

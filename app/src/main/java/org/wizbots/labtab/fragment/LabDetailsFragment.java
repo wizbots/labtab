@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -123,6 +124,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         objectArrayList = new ArrayList<>();
 
         labDetailsAdapter = new LabDetailsAdapter(objectArrayList, homeActivityContext, this);
+        labDetailsAdapter.registerAdapterDataObserver(observer);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewLabDetails.setLayoutManager(mLayoutManager);
         recyclerViewLabDetails.setItemAnimator(new DefaultItemAnimator());
@@ -156,6 +158,13 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         rootView.findViewById(R.id.tv_plus).setOnClickListener(this);
         rootView.findViewById(R.id.tv_minus).setOnClickListener(this);
     }
+
+    protected RecyclerView.AdapterDataObserver observer= new RecyclerView.AdapterDataObserver() {
+        @Override
+        public void onChanged() {
+            progressDialog.dismiss();
+        }
+    };
 
     @Override
     public void onActionViewClick(Student student) {
@@ -561,9 +570,9 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     private void notifyLabDetailsAdapter() {
-        progressDialog.dismiss();
         objectArrayList.clear();
         objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
         labDetailsAdapter.notifyDataSetChanged();
+        progressDialog.dismiss();
     }
 }
