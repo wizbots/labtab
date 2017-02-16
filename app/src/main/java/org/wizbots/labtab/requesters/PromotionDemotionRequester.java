@@ -32,7 +32,7 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
     @Override
     public void run() {
         boolean isHighestOrLowestCheck = true;
-        if(promoteDemote) {
+        if (promoteDemote) {
             for (Student student : studentArrayList) {
                 isHighestOrLowestCheck &= student.getLevel().toUpperCase().equals(LabLevels.MASTER);
             }
@@ -41,45 +41,45 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                 isHighestOrLowestCheck &= student.getLevel().toUpperCase().equals(LabLevels.NOVICE);
             }
         }
-        if(isHighestOrLowestCheck) {
+        if (isHighestOrLowestCheck) {
             for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
                 if (studentArrayList.size() == 1) {
-                    if(promoteDemote) {
-                        promotionDemotionListener.promotionDemotionUnSuccessful(5000);
-                    } else {
-                        promotionDemotionListener.promotionDemotionUnSuccessful(6000);
-                    }
-                }
-                else {
                     if (promoteDemote) {
-                        promotionDemotionListener.promotionDemotionUnSuccessful(7000);
+                        promotionDemotionListener.promotionDemotionUnSuccessful(5000, studentArrayList, program, promoteDemote);
                     } else {
-                        promotionDemotionListener.promotionDemotionUnSuccessful(8000);
+                        promotionDemotionListener.promotionDemotionUnSuccessful(6000, studentArrayList, program, promoteDemote);
+                    }
+                } else {
+                    if (promoteDemote) {
+                        promotionDemotionListener.promotionDemotionUnSuccessful(7000, studentArrayList, program, promoteDemote);
+                    } else {
+                        promotionDemotionListener.promotionDemotionUnSuccessful(8000, studentArrayList, program, promoteDemote);
                     }
                 }
                 break;
             }
         } else {
-        LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote);
-        if (promoteDemoteResponse != null) {
-            for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
-                if (promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
-                    promoteDemoteStudents(promoteDemoteResponse.getResponse().getStudents());
-                    promotionDemotionListener.promotionDemotionSuccessful(studentArrayList, program, promoteDemote);
-                    break;
-                } else {
+            LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote);
+            if (promoteDemoteResponse != null) {
+                for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
+                    if (promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
+                        promoteDemoteStudents(promoteDemoteResponse.getResponse().getStudents());
+                        promotionDemotionListener.promotionDemotionSuccessful(studentArrayList, program, promoteDemote);
+                        break;
+                    } else {
+                        promoteDemoteStudentsList();
+                        promotionDemotionListener.promotionDemotionUnSuccessful(promoteDemoteResponse.getResponseCode(), studentArrayList, program, promoteDemote);
+                        break;
+                    }
+                }
+            } else {
+                for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
                     promoteDemoteStudentsList();
-                    promotionDemotionListener.promotionDemotionUnSuccessful(promoteDemoteResponse.getResponseCode());
+                    promotionDemotionListener.promotionDemotionUnSuccessful(0, studentArrayList, program, promoteDemote);
                     break;
                 }
             }
-        } else {
-            for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
-                promoteDemoteStudentsList();
-                promotionDemotionListener.promotionDemotionUnSuccessful(0);
-                break;
-            }
-        }}
+        }
     }
 
     private String[] getStudents() {

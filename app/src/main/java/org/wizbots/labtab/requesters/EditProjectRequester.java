@@ -109,7 +109,11 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
         videoEdited.setDescription(video.getDescription());
         videoEdited.setProject_creators(video.getProject_creators());
         videoEdited.setNotes_to_the_family(video.getNotes_to_the_family());
-        videoEdited.setEdit_sync_status(SyncStatus.NOT_SYNCED);
+        if (video.getVideoId().equals("")) {
+            videoEdited.setEdit_sync_status(SyncStatus.SYNCED);
+        } else {
+            videoEdited.setEdit_sync_status(SyncStatus.NOT_SYNCED);
+        }
         videoEdited.setIs_transCoding(video.getIs_transCoding());
         videoEdited.setVideo(video.getVideo());
         videoEdited.setVideoId(video.getVideoId());

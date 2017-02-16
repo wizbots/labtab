@@ -9,5 +9,5 @@ import java.util.ArrayList;
 public interface PromotionDemotionListener extends BaseUIListener {
     void promotionDemotionSuccessful(ArrayList<Student> student, Program program, boolean promote);
 
-    void promotionDemotionUnSuccessful(int status);
+    void promotionDemotionUnSuccessful(int status, ArrayList<Student> student, Program program, boolean promote);
 }

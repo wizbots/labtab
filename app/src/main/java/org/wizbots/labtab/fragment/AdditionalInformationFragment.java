@@ -42,6 +42,7 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
             nameTextViewCustom, locationTextViewCustom, categoryTextViewCustom,
             roomTextViewCustom, gradesTextViewCustom, priceTextViewCustom,
             fromTextViewCustom, toTextViewCustom, timeSlotTextViewCustom, dayTextViewCustom;
+    private String labLevel = "";
 
     public AdditionalInformationFragment() {
 
@@ -58,6 +59,7 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
         rootView = inflater.inflate(R.layout.fragment_additional_information, container, false);
         homeActivityContext = (HomeActivity) context;
         program = getArguments().getParcelable(LabDetailsFragment.PROGRAM);
+        labLevel = getArguments().getString(LabDetailsFragment.LAB_LEVEL);
         initView();
         return rootView;
     }
@@ -90,6 +92,7 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+                bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
                 homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, bundle);
             }
         });
@@ -112,12 +115,14 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
         rootView.findViewById(R.id.ll_add_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()).isEmpty()) {
+                if (!objectArrayList.isEmpty()) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+                    bundle.putSerializable(LabDetailsFragment.SELECTED_STUDENTS, getSelectedStudents());
+                    bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
                     homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
                 } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_FOR_PROMOTION_FOR_THIS_LAB);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO_FOR_THIS_LAB);
                 }
             }
         });
@@ -180,13 +185,23 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
         fromTextViewCustom.setText(program.getStarts());
         toTextViewCustom.setText(program.getEnds());
         timeSlotTextViewCustom.setText(program.getTime_slot());
-        dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT,new Date()));
+        dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT, new Date()));
     }
 
     @Override
     public void onDestroy() {
         progressDialog.dismiss();
         super.onDestroy();
+    }
+
+    private ArrayList<Student> getSelectedStudents() {
+        ArrayList<Student> studentArrayList = new ArrayList<>();
+        for (Object object : objectArrayList) {
+            if (((Student) object).isCheck()) {
+                studentArrayList.add((Student) object);
+            }
+        }
+        return studentArrayList;
     }
 
 }

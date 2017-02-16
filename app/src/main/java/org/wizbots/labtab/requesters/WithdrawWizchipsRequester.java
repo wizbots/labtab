@@ -37,18 +37,18 @@ public class WithdrawWizchipsRequester implements Runnable {
             statusCode = withdrawWizchipsResponse.getResponseCode();
             WizchipsWithdrawResponse response = withdrawWizchipsResponse.getResponse();
             if (statusCode == HttpURLConnection.HTTP_OK) {
-                Log.d(TAG , "Wizchips withdraw successfully = " + response.getWizchips());
+                Log.d(TAG, "Wizchips withdraw successfully = " + response.getWizchips());
                 ProgramStudentsTable.getInstance().updateWizchips(mStudentId, response.getWizchips(), true);
-                ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, 0, false);
-            }else if(statusCode == HttpURLConnection.HTTP_NOT_FOUND){
-                Log.d(TAG , "Student Not Found with id = " + mStudentId);
+                ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, 0, true);
+            } else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                Log.d(TAG, "Student Not Found with id = " + mStudentId);
             } else {
-                Log.d(TAG , "Failed to withdraw wizchips");
+                Log.d(TAG, "Failed to withdraw wizchips");
                 Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
                 ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
             }
-        }else {
-            Log.d(TAG , "Failed to withdraw wizchips");
+        } else {
+            Log.d(TAG, "Failed to withdraw wizchips");
             Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
             ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
         }
@@ -61,7 +61,7 @@ public class WithdrawWizchipsRequester implements Runnable {
         }
     }
 
-    private int getChips(int onlineCount, int oldCount, int newCount){
+    private int getChips(int onlineCount, int oldCount, int newCount) {
         return (onlineCount + oldCount) > 0 ? (oldCount - newCount) : oldCount;
     }
 }

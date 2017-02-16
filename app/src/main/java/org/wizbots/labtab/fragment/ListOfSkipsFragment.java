@@ -19,16 +19,21 @@ import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.ProgramAbsencesTable;
-import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.interfaces.ListOfSkipsAdapterClickListener;
+import org.wizbots.labtab.interfaces.requesters.GetStudentsListener;
+import org.wizbots.labtab.interfaces.requesters.SyncListener;
 import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Program;
+import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.requesters.GetStudentsRequester;
+import org.wizbots.labtab.requesters.GetSyncingStatusRequester;
+import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAdapterClickListener {
+public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAdapterClickListener, GetStudentsListener, SyncListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -43,6 +48,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
             nameTextViewCustom, locationTextViewCustom, categoryTextViewCustom,
             roomTextViewCustom, gradesTextViewCustom, priceTextViewCustom,
             fromTextViewCustom, toTextViewCustom, timeSlotTextViewCustom, dayTextViewCustom;
+    private String labLevel = "";
 
     public ListOfSkipsFragment() {
 
@@ -59,7 +65,10 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         rootView = inflater.inflate(R.layout.fragment_list_of_skips, container, false);
         homeActivityContext = (HomeActivity) context;
         program = getArguments().getParcelable(LabDetailsFragment.PROGRAM);
+        labLevel = getArguments().getString(LabDetailsFragment.LAB_LEVEL);
         initView();
+        initListeners();
+        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.LIST_OF_SKIPS));
         return rootView;
     }
 
@@ -74,7 +83,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LIST_OF_SKIPS);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
-        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         initHeaderView();
 
         recyclerViewListOfSkips = (RecyclerView) rootView.findViewById(R.id.recycler_view_list_of_skips);
@@ -91,6 +100,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+                bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
                 homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, bundle);
             }
         });
@@ -112,12 +122,11 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         rootView.findViewById(R.id.ll_add_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()).isEmpty()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
-                    homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
+                if (!objectArrayList.isEmpty()) {
+                    progressDialog.show();
+                    BackgroundExecutor.getInstance().execute(new GetStudentsRequester(getSelectStudentsId(), program));
                 } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_FOR_PROMOTION_FOR_THIS_LAB);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO_FOR_THIS_LAB);
                 }
             }
         });
@@ -133,6 +142,11 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
     @Override
     public void onActionViewClick() {
 
+    }
+
+    @Override
+    public void onCheckChanged(int position, boolean value) {
+        ((Absence) objectArrayList.get(position)).setCheck(value);
     }
 
     public void initHeaderView() {
@@ -180,8 +194,54 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
 
     @Override
     public void onDestroy() {
+        LabTabApplication.getInstance().removeUIListener(GetStudentsListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
     }
 
+    private ArrayList<String> getSelectStudentsId() {
+        ArrayList<String> selectedStudentsIds = new ArrayList<>();
+        for (Object object : objectArrayList) {
+            if (((Absence) object).isCheck()) {
+                selectedStudentsIds.add(((Absence) object).getStudent_id());
+            }
+        }
+        return selectedStudentsIds;
+    }
+
+
+    public void initListeners() {
+        LabTabApplication.getInstance().addUIListener(GetStudentsListener.class, this);
+        LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
+    }
+
+    @Override
+    public void studentsFetched(final ArrayList<Student> studentArrayList) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+                bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
+                bundle.putSerializable(LabDetailsFragment.SELECTED_STUDENTS, studentArrayList);
+                homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
+            }
+        });
+    }
+
+    @Override
+    public void syncStatusFetchedSuccessfully(final boolean syncStatus) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (syncStatus) {
+                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+                } else {
+                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+                }
+            }
+        });
+    }
 }

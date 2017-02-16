@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.LabDetailsAdapterClickListener;
@@ -150,7 +151,14 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         labDetailsViewHolder.noOfSkippedTextViewCustom.setText(String.valueOf(student.getSkipped()));
         labDetailsViewHolder.noOfPendingTextViewCustom.setText(String.valueOf(student.getPending()));
         labDetailsViewHolder.noOfChipsTextViewCustom.setText(String.valueOf(getChips(student.getWizchips(), student.getOfflinewizchips())));
-        LabTabUtil.setLabLevelImageResource(student.getLevel().toUpperCase(), labDetailsViewHolder.labLevelImageView);
+        if (student.getPromotionDemotionSync().equals(LabTabConstants.SyncStatus.PROMOTION_DEMOTION_SYNCED)) {
+            LabTabUtil.setLabLevelImageResource(student.getLevel().toUpperCase(), labDetailsViewHolder.labLevelImageView);
+        } else if (student.getPromotionDemotionSync().equals(LabTabConstants.SyncStatus.PROMOTION_NOT_SYNCED)) {
+            LabTabUtil.setLabLevelImageResource(LabTabUtil.getPromotionDemotionLevel(student.getLevel().toUpperCase(), true), labDetailsViewHolder.labLevelImageView);
+        } else {
+            LabTabUtil.setLabLevelImageResource(LabTabUtil.getPromotionDemotionLevel(student.getLevel().toUpperCase(), false), labDetailsViewHolder.labLevelImageView);
+        }
+
         if (student.isCloseToNextLevel()) {
             labDetailsViewHolder.actionCloseToNextLevelLabLevelImageView.setVisibility(View.VISIBLE);
         } else {
@@ -158,7 +166,7 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    private int getChips(int onlineChips, int offlineChips){
+    private int getChips(int onlineChips, int offlineChips) {
         return (onlineChips + offlineChips) > 0 ? (onlineChips + offlineChips) : 0;
     }
 

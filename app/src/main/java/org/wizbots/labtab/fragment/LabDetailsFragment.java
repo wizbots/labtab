@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -32,6 +31,7 @@ import org.wizbots.labtab.interfaces.requesters.AddWizchipsListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramStudentsListener;
 import org.wizbots.labtab.interfaces.requesters.MarkStudentAbsentListener;
 import org.wizbots.labtab.interfaces.requesters.PromotionDemotionListener;
+import org.wizbots.labtab.interfaces.requesters.SyncListener;
 import org.wizbots.labtab.interfaces.requesters.WithdrawWizchipsListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Absence;
@@ -39,6 +39,7 @@ import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.program.response.ProgramResponse;
 import org.wizbots.labtab.requesters.AddWizchipsRequester;
+import org.wizbots.labtab.requesters.GetSyncingStatusRequester;
 import org.wizbots.labtab.requesters.MarkStudentAbsentRequester;
 import org.wizbots.labtab.requesters.ProgramStudentsRequester;
 import org.wizbots.labtab.requesters.PromotionDemotionRequester;
@@ -52,7 +53,7 @@ import java.util.Date;
 
 public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener,
         GetProgramStudentsListener, View.OnClickListener, MarkStudentAbsentListener, PromotionDemotionListener,
-        WithdrawWizchipsListener, AddWizchipsListener {
+        WithdrawWizchipsListener, AddWizchipsListener, SyncListener {
     public static final String PROGRAM = "PROGRAM";
     public static final String STUDENT = "STUDENT";
     public static final String SELECTED_STUDENTS = "SELECTED_STUDENTS";
@@ -94,6 +95,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         programOrLab = getArguments().getParcelable(LabListFragment.LAB);
         initView();
         initListeners();
+        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.LAB_DETAILS_LIST));
         return rootView;
     }
 
@@ -159,7 +161,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         rootView.findViewById(R.id.tv_minus).setOnClickListener(this);
     }
 
-    protected RecyclerView.AdapterDataObserver observer= new RecyclerView.AdapterDataObserver() {
+    protected RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
         @Override
         public void onChanged() {
             progressDialog.dismiss();
@@ -172,6 +174,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         bundle.putParcelable(PROGRAM, program);
         bundle.putParcelable(LabListFragment.LAB, programOrLab);
         bundle.putParcelable(STUDENT, student);
+        bundle.putString(LAB_LEVEL, programOrLab.getLevel().toUpperCase());
         homeActivityContext.replaceFragment(Fragments.STUDENT_LAB_DETAILS, bundle);
     }
 
@@ -181,6 +184,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         bundle.putParcelable(PROGRAM, program);
         bundle.putParcelable(LabListFragment.LAB, programOrLab);
         bundle.putParcelable(STUDENT, student);
+        bundle.putString(LAB_LEVEL, programOrLab.getLevel().toUpperCase());
         homeActivityContext.replaceFragment(Fragments.STUDENT_PROFILE, bundle);
     }
 
@@ -223,6 +227,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         LabTabApplication.getInstance().addUIListener(PromotionDemotionListener.class, this);
         LabTabApplication.getInstance().addUIListener(WithdrawWizchipsListener.class, this);
         LabTabApplication.getInstance().addUIListener(AddWizchipsListener.class, this);
+        LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
     }
 
     @Override
@@ -269,6 +274,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         LabTabApplication.getInstance().removeUIListener(PromotionDemotionListener.class, this);
         LabTabApplication.getInstance().removeUIListener(AddWizchipsListener.class, this);
         LabTabApplication.getInstance().removeUIListener(WithdrawWizchipsListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
     }
 
     public void initHeaderView() {
@@ -378,7 +384,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
                     bundle.putSerializable(SELECTED_STUDENTS, getSelectedStudents());
-                    bundle.putString(LAB_LEVEL, programOrLab.getLevel());
+                    bundle.putString(LAB_LEVEL, programOrLab.getLevel().toUpperCase());
                     homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
                 } else {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO_FOR_THIS_LAB);
@@ -387,11 +393,13 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             case R.id.btn_absences:
                 Bundle listOfSkipBundle = new Bundle();
                 listOfSkipBundle.putParcelable(PROGRAM, program);
+                listOfSkipBundle.putString(LAB_LEVEL, programOrLab.getLevel().toUpperCase());
                 homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, listOfSkipBundle);
                 break;
             case R.id.btn_additional:
                 Bundle additionalBundle = new Bundle();
                 additionalBundle.putParcelable(PROGRAM, program);
+                additionalBundle.putString(LAB_LEVEL, programOrLab.getLevel().toUpperCase());
                 homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, additionalBundle);
                 break;
             case R.id.iv_calendar:
@@ -417,12 +425,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_DECREMENT);
                 } else {
                     Student student = studentList.get(0);
-                    if(getChips(student.getWizchips(), student.getOfflinewizchips()) <= 0){
+                    if (getChips(student.getWizchips(), student.getOfflinewizchips()) <= 0) {
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.ALREADY_MINIMUM_WIZCHIPS);
-                    }else {
+                    } else {
                         progressDialog.show();
                     }
-                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), student.getStudent_id(),1));
+                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), student.getStudent_id(), 1));
                 }
                 break;
             default:
@@ -431,7 +439,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
     }
 
-    private int getChips(int onlineChips, int offlineChips){
+    private int getChips(int onlineChips, int offlineChips) {
         return (onlineChips + offlineChips) > 0 ? (onlineChips + offlineChips) : 0;
     }
 
@@ -507,7 +515,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     @Override
-    public void promotionDemotionUnSuccessful(final int status) {
+    public void promotionDemotionUnSuccessful(final int status, final ArrayList<Student> student, Program program, final boolean promote) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -518,12 +526,27 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_AT_LOWEST_LEVEL_AVAILABLE);
                 } else if (status == 7000) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE);
-                }  else if (status == 8000) {
+                } else if (status == 8000) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_ALREADY_AT_LOWEST_LEVEL_AVAILABLE);
-                }  else if (status != 0) {
+                }/* else if (status != 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
-                } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+                } */ else {
+//                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+                    if (promote) {
+                        if (student != null) {
+                            if (!student.isEmpty() && student.size() > 1) {
+                                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_PROMOTED_SUCCESSFULLY);
+                            } else {
+                                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_PROMOTED_SUCCESSFULLY);
+                            }
+                        }
+                    } else {
+                        if (!student.isEmpty() && student.size() > 1) {
+                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_DEMOTED_SUCCESSFULLY);
+                        } else {
+                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_DEMOTED_SUCCESSFULLY);
+                        }
+                    }
                 }
             }
         });
@@ -574,5 +597,19 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
         labDetailsAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void syncStatusFetchedSuccessfully(final boolean syncStatus) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (syncStatus) {
+                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+                } else {
+                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+                }
+            }
+        });
     }
 }

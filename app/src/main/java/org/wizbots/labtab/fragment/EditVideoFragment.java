@@ -83,8 +83,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private ArrayList<String> categoryArrayList;
     private Spinner categorySpinner;
     private ImageView videoThumbnailImageView, closeImageView;
-    private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
-    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom, componentTextViewCustom;
+    private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
+    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom, componentTextViewCustom, knowledgeNuggetsEditTextCustom;
     private ButtonCustom saveButtonCustom, cancelButtonCustom;
     private LinearLayout closeLinearLayout;
 
@@ -119,7 +119,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         if (savedInstanceState == null) {
             video = getArguments().getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
-            knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
+//            knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
             editVideoCase = getArguments().getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
             fetchDataFromBundle();
         } else {
@@ -183,7 +183,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         closeImageView = (ImageView) rootView.findViewById(R.id.iv_close);
         closeLinearLayout = (LinearLayout) rootView.findViewById(R.id.ll_close);
         titleEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_title);
-        knowledgeNuggetsEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
+        knowledgeNuggetsEditTextCustom = (TextViewCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
         descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
         notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
         saveButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_save);
@@ -199,6 +199,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         closeImageView.setOnClickListener(this);
         closeLinearLayout.setOnClickListener(this);
         componentTextViewCustom.setOnClickListener(this);
+        knowledgeNuggetsEditTextCustom.setOnClickListener(this);
 
         if (bundle != null) {
             savedVideoUri = bundle.getParcelable(URI);
@@ -317,6 +318,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             case R.id.component:
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                break;
+            case R.id.edt_knowledge_nuggets:
+                AlertDialog dialog1 = builder.create();
+                dialog1.show();
                 break;
 
         }
@@ -600,6 +605,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 }
                 knowledgeNuggets.add(kn);
             }
+            knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
         }
 
         builder.setMultiChoiceItems(components, componentSelection, new DialogInterface.OnMultiChoiceClickListener() {

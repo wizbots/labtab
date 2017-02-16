@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import org.wizbots.labtab.LabTabApplication;
@@ -43,6 +44,12 @@ public class ListOfSkipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             dateTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_date);
             notesTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_notes);
             listOfSkipsLinearLayout.setOnClickListener(this);
+            checkBoxListOfSkips.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checkState) {
+                    listOfSkipsAdapterClickListener.onCheckChanged(getAdapterPosition(), checkState);
+                }
+            });
         }
 
         @Override

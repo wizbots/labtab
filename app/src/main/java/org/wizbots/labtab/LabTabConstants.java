@@ -211,6 +211,7 @@ public interface LabTabConstants {
         String ITEM_GO_TO = "Go to www.wizbots.com";
         String ITEM_LAB_LIST = "Lab List";
         String ITEM_VIDEO_LIST = "Video List";
+        String ITEM_ADD_VIDEO = "Add Video";
         String ITEM_LOGOUT = "Logout";
     }
 

@@ -20,12 +20,15 @@ import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
+import org.wizbots.labtab.interfaces.requesters.SyncListener;
 import org.wizbots.labtab.model.video.Video;
+import org.wizbots.labtab.requesters.GetSyncingStatusRequester;
+import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.NetworkUtils;
 
 import java.util.ArrayList;
 
-public class VideoListFragment extends ParentFragment implements VideoListAdapterClickListener {
+public class VideoListFragment extends ParentFragment implements VideoListAdapterClickListener, SyncListener {
 
     public static final String VIDEO = "VIDEO";
     public static final String VIDEO_EDIT_CASE = "VIDEO_EDIT_CASE";
@@ -53,6 +56,8 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         homeActivityContext = (HomeActivity) context;
         initView();
         prepareVideoList();
+        initListeners();
+        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.VIDEO_LIST));
         return rootView;
     }
 
@@ -62,7 +67,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.VIDEO_LIST);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
-        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
 
         recyclerViewVideoList = (RecyclerView) rootView.findViewById(R.id.recycler_view_video_list);
 //        recyclerViewVideoList.setFocusable(false);
@@ -127,20 +132,34 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         if (!videoArrayList.isEmpty()) {
             objectArrayList.addAll(videoArrayList);
             videoListAdapter.notifyDataSetChanged();
-
-            boolean videoUploadTaskCompleted = true;
-            for (Video video : videoArrayList) {
-                videoUploadTaskCompleted &= (video.getStatus() == 100);
-            }
-
-            if (videoUploadTaskCompleted) {
-                labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
-            } else {
-                labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
-            }
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No Video Available");
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         }
     }
+
+    public void initListeners() {
+        LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
+    }
+
+    @Override
+    public void syncStatusFetchedSuccessfully(final boolean syncStatus) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (syncStatus) {
+                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+                } else {
+                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
+        super.onDestroy();
+    }
+
 }

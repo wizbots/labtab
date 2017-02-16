@@ -54,7 +54,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             emailTextViewCustom, gradeTextViewCustom, dateOfBirthTextViewCustom, parentsPhoneTextViewCustom,
             allergiesSpecialNeedsTextViewCustom, afterCarePhoneNameTextViewCustom, enrollmentsCountTextViewCustom,
             absencesTextViewCustom, wizchipsTextViewCustom;
-
+    private String labLevel="";
 
     public StudentProfileFragment() {
 
@@ -73,6 +73,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         programOrLab = getArguments().getParcelable(LabListFragment.LAB);
         program = getArguments().getParcelable(LabDetailsFragment.PROGRAM);
         student = getArguments().getParcelable(LabDetailsFragment.STUDENT);
+        labLevel = getArguments().getString(LabDetailsFragment.LAB_LEVEL);
         initView();
         initListeners();
 //        prepareDummyList();
@@ -94,7 +95,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.STUDENT_PROFILE);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
-        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
 
         recyclerViewStudentStats = (RecyclerView) rootView.findViewById(R.id.recycler_view_student_stats_list);
         objectArrayList = new ArrayList<>();
@@ -144,6 +145,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         bundle.putParcelable(LabListFragment.LAB, programOrLab);
         bundle.putParcelable(LabDetailsFragment.STUDENT, student);
         bundle.putString(StudentLabDetailsFragment.LEVEL, level);
+        bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
         homeActivityContext.replaceFragment(Fragments.STUDENT_STATS_DETAILS, bundle);
     }
 
