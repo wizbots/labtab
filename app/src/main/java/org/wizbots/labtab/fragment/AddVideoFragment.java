@@ -209,6 +209,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
         }
 
+        if (bundle != null) {
+            knowledgeNuggetsEditTextCustom.setText(bundle.getString(NUGGETS));
+        }
+
         videoThumbnailImageView.setOnClickListener(this);
         createButtonCustom.setOnClickListener(this);
         cancelButtonCustom.setOnClickListener(this);
@@ -463,9 +467,15 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     recyclerViewContainer.setVisibility(View.GONE);
                     recyclerViewProjectCreator.setVisibility(View.GONE);
                 } else {
-                    projectCreatorEditTextCustom.requestFocus();
-                    recyclerViewContainer.setVisibility(View.VISIBLE);
-                    recyclerViewProjectCreator.setVisibility(View.VISIBLE);
+                    if (!creatorsAvailable.isEmpty()) {
+                        projectCreatorEditTextCustom.requestFocus();
+                        recyclerViewContainer.setVisibility(View.VISIBLE);
+                        recyclerViewProjectCreator.setVisibility(View.VISIBLE);
+                    } else {
+                        projectCreatorEditTextCustom.clearFocus();
+                        LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                        Toast.makeText(homeActivityContext, "Select a lab first by tapping Lab SKU", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

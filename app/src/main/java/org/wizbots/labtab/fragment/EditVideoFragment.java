@@ -221,6 +221,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 knowledgeNuggets.addAll(kN);
             }
             knowledgeNuggetsSelected = bundle.getString(AddVideoFragment.NUGGETS, "");
+            knowledgeNuggetsEditTextCustom.setText(knowledgeNuggetsSelected);
         }
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
@@ -710,11 +711,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             public void run() {
                 progressDialog.dismiss();
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_EDITED_SUCCESSFULLY);
-                try{
+                try {
                     homeActivityContext.clearAllTheFragmentFromStack();
-                }catch (Exception e){
+                } catch (Exception e) {
                     progressDialog.dismiss();
-                }finally {
+                } finally {
                     progressDialog.dismiss();
                 }
                 homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
@@ -743,6 +744,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     @Override
     public void onDestroy() {
+        LabTabApplication.getInstance().removeUIListener(EditProjectListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
     }
