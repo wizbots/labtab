@@ -54,7 +54,7 @@ public class MentorProfileFragment extends ParentFragment implements View.OnClic
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.MENTOR_PROFILE);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
-        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         ((TextViewCustom) rootView.findViewById(R.id.tv_first_name)).setText(mentorProfile.getFirst_name());
         ((TextViewCustom) rootView.findViewById(R.id.tv_last_name)).setText(mentorProfile.getLast_name());
         ((TextViewCustom) rootView.findViewById(R.id.tv_email)).setText(mentorProfile.getEmail());

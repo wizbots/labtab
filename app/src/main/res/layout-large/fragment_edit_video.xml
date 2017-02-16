@@ -255,6 +255,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_knowledge_nuggets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/extra_extra_small_margin"
@@ -274,7 +275,7 @@
                         android:textSize="@dimen/text_size_extra_extra_small"
                         app:font="@string/font_pt_sans_narrow_bold" />
 
-                    <org.wizbots.labtab.customview.EditTextCustom
+                    <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/edt_knowledge_nuggets"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

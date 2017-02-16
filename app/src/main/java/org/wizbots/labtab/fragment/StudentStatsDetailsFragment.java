@@ -49,6 +49,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
             nameTextViewCustom, locationTextViewCustom, categoryTextViewCustom,
             roomTextViewCustom, gradesTextViewCustom, priceTextViewCustom,
             fromTextViewCustom, toTextViewCustom, timeSlotTextViewCustom, dayTextViewCustom;
+    private String labLevel = "";
 
     public StudentStatsDetailsFragment() {
 
@@ -68,6 +69,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         program = getArguments().getParcelable(LabDetailsFragment.PROGRAM);
         student = getArguments().getParcelable(LabDetailsFragment.STUDENT);
         level = getArguments().getString(StudentLabDetailsFragment.LEVEL);
+        labLevel = getArguments().getString(LabDetailsFragment.LAB_LEVEL);
         initView();
         prepareStats();
         return rootView;
@@ -89,7 +91,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.STUDENT_STATS_DETAILS);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
-        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         initHeaderView();
 
         recyclerViewStudentStatsDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_student_stats_details);
@@ -106,6 +108,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+                bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
                 homeActivityContext.replaceFragment(Fragments.LIST_OF_SKIPS, bundle);
             }
         });
@@ -114,6 +117,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(LabDetailsFragment.PROGRAM, program);
+                bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
                 homeActivityContext.replaceFragment(Fragments.ADDITIONAL_INFORMATION, bundle);
             }
         });
@@ -168,6 +172,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
     public void onViewTypeClick2() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(LabListFragment.LAB, programOrLab);
+        bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
         homeActivityContext.replaceFragment(Fragments.LAB_DETAILS_LIST, bundle);
     }
 
@@ -211,7 +216,7 @@ public class StudentStatsDetailsFragment extends ParentFragment implements View.
         fromTextViewCustom.setText(program.getStarts());
         toTextViewCustom.setText(program.getEnds());
         timeSlotTextViewCustom.setText(program.getTime_slot());
-        dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT,new Date()));
+        dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT, new Date()));
     }
 
 }

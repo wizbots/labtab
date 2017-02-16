@@ -54,9 +54,9 @@
                 android:id="@+id/video_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:gravity="center|top"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -219,6 +219,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_lab_sku"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -256,6 +257,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_knowledge_nuggets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/extra_extra_small_margin"
@@ -276,13 +278,12 @@
 
                         app:font="@string/font_pt_sans_narrow_bold" />
 
-                    <org.wizbots.labtab.customview.EditTextCustom
+                    <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/edt_knowledge_nuggets"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
-                        android:imeOptions="actionNext"
                         android:padding="@dimen/extra_extra_small_padding"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
@@ -395,8 +396,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:baselineAligned="false">
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
                         <FrameLayout
                             android:layout_width="match_parent"

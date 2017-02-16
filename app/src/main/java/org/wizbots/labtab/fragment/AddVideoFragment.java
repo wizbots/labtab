@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,14 +43,24 @@ import org.wizbots.labtab.customview.EditTextCustom;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.ProgramStudentsTable;
+import org.wizbots.labtab.database.ProgramTable;
+import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
+import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
+import org.wizbots.labtab.interfaces.requesters.GetProgramStudentsListener;
+import org.wizbots.labtab.model.ProgramOrLab;
+import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.model.program.response.ProgramResponse;
 import org.wizbots.labtab.model.video.CreateProjectRequest;
 import org.wizbots.labtab.model.video.Video;
+import org.wizbots.labtab.requesters.ProgramOrLabRequester;
+import org.wizbots.labtab.requesters.ProgramStudentsRequester;
 import org.wizbots.labtab.service.LabTabSyncService;
+import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;
@@ -59,13 +70,14 @@ import java.util.Calendar;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
-public class AddVideoFragment extends ParentFragment implements View.OnClickListener, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener {
+public class AddVideoFragment extends ParentFragment implements View.OnClickListener, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener, LabListDialogFragment.LabListClickListener, GetProgramOrLabListener, GetProgramStudentsListener {
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
     public static final String PROJECT_CREATORS = "PROJECT_CREATORS";
     public static final String KNOWLEDGE_NUGGETS = "KNOWLEDGE_NUGGETS";
     public static final String NUGGETS = "NUGGETS";
+    public static final String PROGRAM = "PROGRAM";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
@@ -85,9 +97,9 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private ArrayList<String> categoryArrayList;
     private Spinner categorySpinner;
     private ImageView videoThumbnailImageView, closeImageView;
-    private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
+    private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
     private ButtonCustom createButtonCustom, cancelButtonCustom;
-    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom, componentTextViewCustom;
+    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom, componentTextViewCustom, knowledgeNuggetsEditTextCustom;
     private LinearLayout closeLinearLayout;
 
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -128,6 +140,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             creatorsSelected.addAll(objects);
             horizontalProjectCreatorAdapter.notifyDataSetChanged();
         }
+        initListeners();
         return rootView;
     }
 
@@ -176,7 +189,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         closeImageView = (ImageView) rootView.findViewById(R.id.iv_close);
         closeLinearLayout = (LinearLayout) rootView.findViewById(R.id.ll_close);
         titleEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_title);
-        knowledgeNuggetsEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
+        knowledgeNuggetsEditTextCustom = (TextViewCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
         descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
         notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
         createButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_create);
@@ -187,7 +200,14 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         componentTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.component);
 
         mentorNameTextViewCustom.setText(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
-        labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
+        if (bundle != null) {
+            program = bundle.getParcelable(PROGRAM);
+        }
+        if (program == null) {
+            labSKUTextViewCustom.setText("");
+        } else {
+            labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
+        }
 
         videoThumbnailImageView.setOnClickListener(this);
         createButtonCustom.setOnClickListener(this);
@@ -195,6 +215,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         closeImageView.setOnClickListener(this);
         closeLinearLayout.setOnClickListener(this);
         componentTextViewCustom.setOnClickListener(this);
+        knowledgeNuggetsEditTextCustom.setOnClickListener(this);
 
         if (bundle != null) {
             savedVideoUri = bundle.getParcelable(URI);
@@ -219,13 +240,16 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
 
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
+        rootView.findViewById(R.id.ll_lab_sku).setOnClickListener(this);
     }
 
     public void prepareStudentCategoryList() {
-        creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()));
         String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
         categoryArrayList.addAll(Arrays.asList(categories));
-        projectCreatorAdapter.notifyDataSetChanged();
+        if (program != null) {
+            creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()));
+            projectCreatorAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -246,6 +270,11 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
                 break;
             case R.id.btn_create:
+                if (labSKUTextViewCustom.getText().toString().equals("")) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a lab sku first by tapping Lab SKU");
+                    break;
+                }
+
                 if (savedVideoUri == null) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Capture A Video First");
                     break;
@@ -342,6 +371,19 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             case R.id.component:
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                break;
+            case R.id.edt_knowledge_nuggets:
+                AlertDialog dialog1 = builder.create();
+                dialog1.show();
+                break;
+            case R.id.ll_lab_sku:
+                if (ProgramsOrLabsTable.getInstance().
+                        getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id()).isEmpty()) {
+                    progressDialog.show();
+                    BackgroundExecutor.getInstance().execute(new ProgramOrLabRequester());
+                } else {
+                    showLabListDialog();
+                }
                 break;
 
         }
@@ -542,6 +584,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         outState.putSerializable(PROJECT_CREATORS, creatorsSelected);
         outState.putSerializable(KNOWLEDGE_NUGGETS, knowledgeNuggets);
         outState.putString(NUGGETS, knowledgeNuggetsSelected);
+        outState.putParcelable(PROGRAM, program);
         super.onSaveInstanceState(outState);
     }
 
@@ -662,4 +705,112 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         return nuggets;
     }
 
+
+    private void initListeners() {
+        LabTabApplication.getInstance().addUIListener(GetProgramOrLabListener.class, this);
+        LabTabApplication.getInstance().addUIListener(GetProgramStudentsListener.class, this);
+    }
+
+    @Override
+    public void onDestroy() {
+        LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(GetProgramStudentsListener.class, this);
+        progressDialog.dismiss();
+        super.onDestroy();
+    }
+
+    @Override
+    public void actionViewClick(ProgramOrLab programOrLab) {
+        labSKUTextViewCustom.setText(String.valueOf(programOrLab.getSku()));
+        level = programOrLab.getLevel().toUpperCase();
+        initKnowledgeNuggets(null);
+        if (program != null) {
+            if (program.getSku() != programOrLab.getSku()) {
+                creatorsSelected.clear();
+                horizontalProjectCreatorAdapter.notifyDataSetChanged();
+            }
+        }
+        progressDialog.show();
+        if (ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()).isEmpty()) {
+            BackgroundExecutor.getInstance().execute(new ProgramStudentsRequester(programOrLab.getId()));
+        } else {
+            progressDialog.dismiss();
+            program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
+            creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
+            projectCreatorAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    @Override
+    public void programOrLabFetchedSuccessfully(ArrayList<ProgramOrLab> programOrLabs) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                showLabListDialog();
+            }
+        });
+    }
+
+    @Override
+    public void unableToFetchPrograms(int responseCode) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        });
+        if (responseCode == StatusCode.FORBIDDEN) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
+        } else {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+        }
+    }
+
+    private void showLabListDialog() {
+        FragmentManager fragmentManager = homeActivityContext.getSupportFragmentManager();
+        LabListDialogFragment labListDialogFragment = LabListDialogFragment.newInstanceLabListDialogFragment();
+        labListDialogFragment.setTargetFragment(AddVideoFragment.this, 300);
+        labListDialogFragment.show(fragmentManager, "Lab_List_Dialog_Fragment");
+    }
+
+    @Override
+    public void programStudentsFetchedSuccessfully(ProgramResponse programResponse, final Program programFetched, final ArrayList<Student> studentArrayList, ArrayList<Absence> absenceArrayList) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                program = programFetched;
+                if (studentArrayList.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_STUDENT_FOUND_FOR_THIS_LAB);
+                } else {
+                    creatorsAvailable.clear();
+                    creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()));
+                    projectCreatorAdapter.notifyDataSetChanged();
+                }
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void unableToFetchProgramStudents(int responseCode) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                creatorsAvailable.clear();
+                projectCreatorAdapter.notifyDataSetChanged();
+                recyclerViewContainer.setVisibility(View.GONE);
+                recyclerViewProjectCreator.setVisibility(View.GONE);
+                projectCreatorEditTextCustom.clearFocus();
+                LabTabUtil.hideSoftKeyboard(homeActivityContext);
+            }
+        });
+        if (responseCode == StatusCode.FORBIDDEN) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_DETAIL_FOR_THIS_LAB);
+        } else {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+        }
+    }
 }

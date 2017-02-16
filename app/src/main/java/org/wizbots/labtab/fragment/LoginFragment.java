@@ -70,7 +70,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LOGIN);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.GONE);
-        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         editTextCustomEmail = (EditTextCustom) rootView.findViewById(R.id.edt_email);
         editTextCustomPassword = (EditTextCustom) rootView.findViewById(R.id.edt_password);
         textViewCustomForgotPassword = (TextViewCustom) rootView.findViewById(R.id.tv_forgot_password);

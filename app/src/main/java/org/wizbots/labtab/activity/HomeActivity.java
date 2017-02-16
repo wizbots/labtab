@@ -86,6 +86,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         replaceFragment(Fragments.VIDEO_LIST, new Bundle());
                         break;
                     case 4:
+                        replaceFragment(Fragments.ADD_VIDEO, new Bundle());
+                        break;
+                    case 5:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
                         ActivityCompat.finishAffinity(HomeActivity.this);
                         Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
@@ -110,11 +113,12 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[4];
+        LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[5];
         leftDrawerItem[0] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, DrawerItem.ITEM_GO_TO);
         leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, DrawerItem.ITEM_LAB_LIST);
         leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, DrawerItem.ITEM_VIDEO_LIST);
-        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
+        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_upload_video, DrawerItem.ITEM_ADD_VIDEO);
+        leftDrawerItem[4] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);

@@ -23,7 +23,7 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
             for (ProgramOrLab programOrLab : programOrLabArrayList) {
                 String seasonYear[] = programOrLab.getSeason().split(" - ");
                 programOrLab.setMember_id(member_id);
-                programOrLab.setSeason(seasonYear[1]);
+                programOrLab.setSeason(seasonYear[1].toLowerCase());
                 programOrLab.setYear(seasonYear[0]);
                 programOrLab.setStartTimeStamp(LabTabUtil.getTimeStamp(programOrLab.getStarts()));
                 programOrLab.setEndTimesStamp(LabTabUtil.getTimeStamp(programOrLab.getEnds()));
