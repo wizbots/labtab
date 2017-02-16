@@ -62,10 +62,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center|left">
+                    android:gravity="center|left"
+                    android:paddingRight="@dimen/extra_extra_large_padding">
 
                     <FrameLayout
-                        android:layout_width="520dp"
+                        android:layout_width="match_parent"
                         android:layout_height="220dp"
                         android:background="@drawable/rounded_layout_for_edit_video"
                         android:padding="24dp">
