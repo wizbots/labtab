@@ -710,7 +710,13 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             public void run() {
                 progressDialog.dismiss();
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_EDITED_SUCCESSFULLY);
-                homeActivityContext.clearAllTheFragmentFromStack();
+                try{
+                    homeActivityContext.clearAllTheFragmentFromStack();
+                }catch (Exception e){
+                    progressDialog.dismiss();
+                }finally {
+                    progressDialog.dismiss();
+                }
                 homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
             }
         });
