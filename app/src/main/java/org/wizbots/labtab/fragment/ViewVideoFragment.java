@@ -54,8 +54,8 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
 
     private ImageView videoThumbnailImageView, closeImageView;
     private ButtonCustom createButtonCustom, cancelButtonCustom;
-    private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, knowledgeNuggetsEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
-    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom;
+    private EditTextCustom titleEditTextCustom, projectCreatorEditTextCustom, descriptionEditTextCustom, notesToTheFamilyEditTextCustom;
+    private TextViewCustom mentorNameTextViewCustom, labSKUTextViewCustom, knowledgeNuggetsEditTextCustom;
     private LinearLayout closeLinearLayout;
 
     private Uri savedVideoUri;
@@ -101,7 +101,7 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
 
         projectCreatorEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_project_creators);
         titleEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_title);
-        knowledgeNuggetsEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
+        knowledgeNuggetsEditTextCustom = (TextViewCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
         descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
         notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
         projectCreatorEditTextCustom.setFocusable(false);
