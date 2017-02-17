@@ -13,9 +13,6 @@ import org.wizbots.labtab.model.LocationResponse;
 
 import java.util.List;
 
-/**
- * Created by ashish on 9/2/17.
- */
 
 public class LocationAdapter extends BaseAdapter {
 

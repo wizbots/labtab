@@ -141,7 +141,6 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         LeftDrawerAdapter adapter = new LeftDrawerAdapter(this, R.layout.item_left_drawer, leftDrawerItem);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerList.setAdapter(adapter);
-//        mDrawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
 
         putFragmentInContainer(savedInstanceState);
 
@@ -269,20 +268,12 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
-    private void clearBackStack() {
-        fragmentManager = getSupportFragmentManager();
-        while (fragmentManager.getBackStackEntryCount() > 1) {
-            fragmentManager.popBackStackImmediate();
-        }
-    }
-
     public void setNameOfTheLoggedInUser(String loggedInUserName) {
         ((TextViewCustom) myHeader.findViewById(R.id.profile_name)).setText(loggedInUserName);
     }
 
     public void clearAllTheFragmentFromStack() {
         try {
-//        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager = getSupportFragmentManager();
             while (fragmentManager.getBackStackEntryCount() > 0) {
                 fragmentManager.popBackStackImmediate();

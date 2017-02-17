@@ -10,12 +10,10 @@ import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.retrofit.LabTabResponse;
-import org.wizbots.labtab.util.LabTabUtil;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.logging.Filter;
 
 /**
  * Created by ashish on 9/2/17.
@@ -50,7 +48,7 @@ public class FilterRequester implements Runnable {
                 programOrLab.setStartTimeStamp(LabTabUtil.getTimeStamp(programOrLab.getStarts()));
                 programOrLab.setEndTimesStamp(LabTabUtil.getTimeStamp(programOrLab.getEnds()));
             }*/
-        }else {
+        } else {
             //Offline data filter
             Log.d(TAG, "User is offline , filter data locally");
             statusCode = HttpURLConnection.HTTP_OK;

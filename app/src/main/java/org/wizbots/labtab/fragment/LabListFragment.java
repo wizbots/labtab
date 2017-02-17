@@ -314,7 +314,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
     @Override
     public void onFilterSuccess(final ArrayList<ProgramOrLab> programOrLabs) {
-        getActivity().runOnUiThread(new Runnable() {
+        homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (programOrLabs != null && programOrLabs.isEmpty()) {
@@ -330,7 +330,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
     @Override
     public void onFilterError(int responseCode) {
-        getActivity().runOnUiThread(new Runnable() {
+        homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();

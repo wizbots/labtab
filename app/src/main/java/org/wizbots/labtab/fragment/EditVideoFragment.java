@@ -719,6 +719,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     progressDialog.dismiss();
                 }
                 homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());
             }
         });
     }
@@ -733,6 +734,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_EDITED_SUCCESSFULLY);
                     homeActivityContext.clearAllTheFragmentFromStack();
                     homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+                    homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());
                 } else if (responseCode != 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
                 } else {

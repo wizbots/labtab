@@ -5,12 +5,11 @@ import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.LocationTable;
 import org.wizbots.labtab.interfaces.requesters.LocationListener;
 import org.wizbots.labtab.model.LocationResponse;
-import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by anurag on 9/2/17.

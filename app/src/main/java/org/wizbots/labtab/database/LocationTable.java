@@ -6,14 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import org.wizbots.labtab.model.LocationResponse;
-import org.wizbots.labtab.model.Mentor;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by ashish on 9/2/17.
- */
 
 public class LocationTable extends AbstractTable {
 

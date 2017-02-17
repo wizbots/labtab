@@ -362,6 +362,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 homeActivityContext.startService(uploadService);
                 homeActivityContext.clearAllTheFragmentFromStack();
                 homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_CREATED_SUCCESSFULLY);
                 break;
             case R.id.btn_cancel:
                 homeActivityContext.onBackPressed();

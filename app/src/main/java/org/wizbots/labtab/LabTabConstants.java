@@ -167,6 +167,7 @@ public interface LabTabConstants {
         String STUDENTS_ARE_ALREADY_AT_HIGHEST_LEVEL_AVAILABLE = "Students are already at highest level (Master)";
         String NO_CHANGES_ARE_MADE = "No changes are made";
         String VIDEO_CAN_T_BE_EDITED_WHILE_UPDATING = "Video can't be edited while updating";
+        String PROJECT_CREATED_SUCCESSFULLY = "Project Created Successfully";
     }
 
     /**
