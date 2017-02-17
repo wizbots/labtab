@@ -709,6 +709,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LabTabUtil.hideSoftKeyboard(homeActivityContext);
                 progressDialog.dismiss();
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_EDITED_SUCCESSFULLY);
                 try {
@@ -729,6 +730,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LabTabUtil.hideSoftKeyboard(homeActivityContext);
                 progressDialog.dismiss();
                 if (responseCode == 1000) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_EDITED_SUCCESSFULLY);

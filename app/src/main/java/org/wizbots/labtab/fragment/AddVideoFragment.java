@@ -357,6 +357,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 video.setProgramId(createProjectRequest.getProgram_id());
 
                 VideoTable.getInstance().insert(video);
+                LabTabUtil.hideSoftKeyboard(homeActivityContext);
                 Intent uploadService = new Intent(homeActivityContext, LabTabSyncService.class);
                 uploadService.putExtra(LabTabSyncService.EVENT, Events.ADD_VIDEO);
                 homeActivityContext.startService(uploadService);

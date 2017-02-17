@@ -352,9 +352,15 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     progressDialog.show();
                     ArrayList<Student> promoteStudents = getSelectedStudents();
                     if (!promoteStudents.isEmpty()) {
-                        BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(promoteStudents,
-                                program,
-                                true));
+                        if (promoteStudents.size() == 1 && !promoteStudents.get(0).getPromotionDemotionSync().equals(SyncStatus.PROMOTION_DEMOTION_SYNCED)) {
+                            progressDialog.dismiss();
+                            notifyLabDetailsAdapter();
+                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_PROMOTED_DEMOTED_BY_ONE_LEVEL);
+                        } else {
+                            BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(promoteStudents,
+                                    program,
+                                    true));
+                        }
                     } else {
                         progressDialog.dismiss();
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_PROMOTE);
@@ -368,9 +374,15 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     progressDialog.show();
                     ArrayList<Student> demoteStudents = getSelectedStudents();
                     if (!demoteStudents.isEmpty()) {
-                        BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(demoteStudents,
-                                program,
-                                false));
+                        if (demoteStudents.size() == 1 && !demoteStudents.get(0).getPromotionDemotionSync().equals(SyncStatus.PROMOTION_DEMOTION_SYNCED)) {
+                            progressDialog.dismiss();
+                            notifyLabDetailsAdapter();
+                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_PROMOTED_DEMOTED_BY_ONE_LEVEL);
+                        } else {
+                            BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(demoteStudents,
+                                    program,
+                                    false));
+                        }
                     } else {
                         progressDialog.dismiss();
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_DEMOTE);
