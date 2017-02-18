@@ -144,4 +144,10 @@ public class LabTabHTTPOperationController {
                 (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), params));
     }
 
+    public static LabTabResponse deleteVideo(String programId) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.deleteVideo(LabTabPreferences.getInstance
+                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), programId));
+    }
+
 }

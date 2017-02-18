@@ -1,5 +1,7 @@
 package org.wizbots.labtab.requesters;
 
+import android.net.Uri;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -11,7 +13,10 @@ import org.wizbots.labtab.model.video.response.EditProjectResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 
 public class EditProjectRequester implements Runnable, LabTabConstants {
     private Video video;
@@ -76,7 +81,9 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
         videoUploaded.setId(video.getId());
         videoUploaded.setMentor_id(video.getMentor_id());
         videoUploaded.setStatus(100);
-        videoUploaded.setPath(video.getPath());
+        String newFileName = getNewFileName(projectCreated.getTitle(), projectCreated.getSku(), LabTabUtil.convertStringToProjectCreators(video.getProject_creators()));
+        Uri uri = renameFile(video.getPath(), newFileName);
+        videoUploaded.setPath(uri.getPath());
         videoUploaded.setTitle(projectCreated.getTitle());
         videoUploaded.setCategory(projectCreated.getCategory());
         videoUploaded.setMentor_name(video.getMentor_name());
@@ -99,7 +106,9 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
         videoEdited.setId(video.getId());
         videoEdited.setMentor_id(video.getMentor_id());
         videoEdited.setStatus(0);
-        videoEdited.setPath(video.getPath());
+        String newFileName = getNewFileName(video.getTitle(), video.getLab_sku(), LabTabUtil.convertStringToProjectCreators(video.getProject_creators()));
+        Uri uri = renameFile(video.getPath(), newFileName);
+        videoEdited.setPath(uri.getPath());
         videoEdited.setTitle(video.getTitle());
         videoEdited.setCategory(video.getCategory());
         videoEdited.setMentor_name(video.getMentor_name());
@@ -119,6 +128,26 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
         videoEdited.setVideoId(video.getVideoId());
         videoEdited.setProgramId(video.getProgramId());
         VideoTable.getInstance().updateVideo(videoEdited);
+    }
+
+    private String getNewFileName(String s, String s1, ArrayList<Student> creatorsSelected) {
+        StringBuilder fileName = new StringBuilder();
+        fileName.append(s).append(".").append(s1).append(".");
+        for (Student student : creatorsSelected) {
+            fileName.append(student.getName().trim());
+        }
+        fileName.append(".").append(Calendar.getInstance().getTimeInMillis());
+        return fileName.toString().replaceAll("\\s+","");
+    }
+
+    private Uri renameFile(String uri, String newFileName){
+        File oldfile =new File(uri);
+        File newfile =new File(oldfile.getParent() + "/" + newFileName + ".mp4");
+
+        if(oldfile.renameTo(newfile)){
+        }else{
+        }
+        return Uri.fromFile(newfile);
     }
 
 }

@@ -46,9 +46,11 @@ import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.requesters.EditProjectListener;
+import org.wizbots.labtab.interfaces.requesters.OnDeleteVideoListener;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.model.video.response.EditProjectResponse;
+import org.wizbots.labtab.requesters.DeleteVideoRequester;
 import org.wizbots.labtab.requesters.EditProjectRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
@@ -59,7 +61,9 @@ import java.util.Arrays;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
-public class EditVideoFragment extends ParentFragment implements View.OnClickListener, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener, EditProjectListener {
+public class EditVideoFragment extends ParentFragment implements View.OnClickListener,
+        ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener,
+        EditProjectListener, OnDeleteVideoListener {
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
@@ -133,6 +137,12 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         addProjectCreatorEditTextListeners();
         LabTabUtil.videoRequestOnOpeningEditScreen = compareChangeWithThis();
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        rootView.findViewById(R.id.btn_delete).setOnClickListener(this);
     }
 
     @Override
@@ -323,6 +333,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             case R.id.edt_knowledge_nuggets:
                 AlertDialog dialog1 = builder.create();
                 dialog1.show();
+                break;
+            case R.id.btn_delete:
+                progressDialog.show();
+                BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
                 break;
 
         }
@@ -702,6 +716,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(EditProjectListener.class, this);
+        LabTabApplication.getInstance().addUIListener(OnDeleteVideoListener.class, this);
     }
 
     @Override
@@ -713,7 +728,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 progressDialog.dismiss();
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_EDITED_SUCCESSFULLY);
                 try {
-                    homeActivityContext.clearAllTheFragmentFromStack();
+//                    homeActivityContext.clearAllTheFragmentFromStack();
+                    homeActivityContext.getSupportFragmentManager().popBackStackImmediate();
                 } catch (Exception e) {
                     progressDialog.dismiss();
                 } finally {
@@ -749,6 +765,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(EditProjectListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(OnDeleteVideoListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
     }
@@ -773,5 +790,29 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         videoRequestOnOpeningEditScreen.setVideoId(video.getVideoId());
         videoRequestOnOpeningEditScreen.setProgramId(video.getProgramId());
         return videoRequestOnOpeningEditScreen;
+    }
+
+    @Override
+    public void onDeleteVideoSuccess() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Video Deleted Successfully");
+                homeActivityContext.getSupportFragmentManager().popBackStackImmediate();
+            }
+        });
+    }
+
+    @Override
+    public void onDeleteVideoError() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Failed to delete video");
+                homeActivityContext.getSupportFragmentManager().popBackStackImmediate();
+            }
+        });
     }
 }

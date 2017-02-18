@@ -42,6 +42,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextViewCustom videoStatusTextViewCustom;
         ImageView actionViewImageView;
         ImageView actionEditImageView;
+        TextViewCustom wonderwall;
         VideoListAdapterClickListener videoListAdapterClickListener;
 
         VideoListViewHolder(View view, VideoListAdapterClickListener videoListAdapterClickListener) {
@@ -55,6 +56,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             videoStatusTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_video_status);
             actionViewImageView = (ImageView) view.findViewById(R.id.iv_action_view);
             actionEditImageView = (ImageView) view.findViewById(R.id.iv_action_edit);
+            wonderwall = (TextViewCustom) view.findViewById(R.id.tv_wonderwall_value);
             actionEditImageView.setOnClickListener(this);
             actionViewImageView.setOnClickListener(this);
             videoThumbnailImageView.setOnClickListener(this);
@@ -156,7 +158,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.orange);
         }
-
+        videoListViewHolder.wonderwall.setText(video.getIs_transCoding());
         videoListViewHolder.videoStatusTextViewCustom.setText(video.getStatus() + "%");
         videoListViewHolder.videoStatusTextViewCustom.setTextColor(statusTextColor);
         videoListViewHolder.videoNameTextViewCustom.setText(video.getTitle());

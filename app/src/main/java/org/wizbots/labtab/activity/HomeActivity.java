@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -239,7 +240,11 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         try {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
-            fragmentTransaction.addToBackStack(fragment.getFragmentName());
+            if(fragment.getFragmentName().equalsIgnoreCase("HomeFragment") || fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")){
+                fragmentTransaction.addToBackStack(fragment.getFragmentName());
+            }else {
+                fragmentTransaction.addToBackStack(null);
+            }
             fragmentTransaction.commit();
         } catch (Exception ignored) {
 
@@ -284,4 +289,18 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
 
     }
 
+    public void clearAllTheFragmentFromStack(boolean b) {
+        try {
+            AddVideoFragment addVideofragment = (AddVideoFragment)getSupportFragmentManager().findFragmentByTag("AddVideoFragment");
+            if(addVideofragment != null && addVideofragment.isVisible()){
+                FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+                trans.remove(addVideofragment);
+                trans.commit();
+                getSupportFragmentManager().popBackStack();
+                replaceFragment(Fragments.VIDEO_LIST, new Bundle());
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
 }

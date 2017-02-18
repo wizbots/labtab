@@ -91,6 +91,7 @@
     <string name="thumbnail">Thumbnail</string>
     <string name="status">Status</string>
     <string name="video_name">Video Name</string>
+    <string name="wonderwall">Wonderwall</string>
     <string name="no_preview_available">No Preview available</string>
     <string name="project_editor">Project Editor</string>
     <string name="title">Title</string>
@@ -99,6 +100,7 @@
     <string name="description">Description</string>
     <string name="project_creators">Project Creators</string>
     <string name="cancel">CANCEL</string>
+    <string name="delete">DELETE</string>
     <string name="save">SAVE</string>
     <string name="upload">UPLOAD</string>
     <string name="delete_creator">Delete Creator</string>

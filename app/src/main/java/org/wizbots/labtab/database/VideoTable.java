@@ -37,6 +37,7 @@ public class VideoTable extends AbstractTable {
     private static final String COLUMN_VIDEO = "video";
     private static final String COLUMN_VIDEO_ID = "video_id";
     private static final String COLUMN_PROGRAM_ID = "program_id";
+    private static final String COLUMN_DELETE_SYNC_STATUS = "delete_sync_status";
 
 
     private DAOManager daoManager = null;
@@ -76,7 +77,8 @@ public class VideoTable extends AbstractTable {
                 + COLUMN_IS_TRANSCODING + " text,"
                 + COLUMN_VIDEO + " text,"
                 + COLUMN_VIDEO_ID + " text,"
-                + COLUMN_PROGRAM_ID + " text);");
+                + COLUMN_PROGRAM_ID + " text,"
+                + COLUMN_DELETE_SYNC_STATUS + " INTEGER DEFAULT 0);");
     }
 
     public synchronized void insert(Collection<Video> videos) {
@@ -142,6 +144,25 @@ public class VideoTable extends AbstractTable {
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
+    public void deleteVideoById(String id){
+        SQLiteDatabase db = null;
+        try {
+            db = daoManager.getWritableDatabase();
+            db.beginTransaction();
+            try {
+                db.delete(NAME, COLUMN_ID + "=" + id, null);
+            } catch (Exception e) {
+                Log.e(TAG, "Error while add video", e);
+            }
+
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error while insert video in Batch", e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public Video getVideoById(String id) {
         final String query = "Select * from " + NAME + " where " + COLUMN_ID + " = '" + id + "'";
         Video video = null;
@@ -185,7 +206,9 @@ public class VideoTable extends AbstractTable {
         ArrayList<Video> mentorArrayList = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME + " where " + COLUMN_MENTOR_ID + " = '" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "'", null);
+            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME + " where "
+                    + COLUMN_MENTOR_ID + " = '" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id()
+                    + "'" + " and " + COLUMN_DELETE_SYNC_STATUS + " = " + 0, null);
             if (cursor.moveToFirst()) {
                 do {
                     mentorArrayList.add(
@@ -267,6 +290,27 @@ public class VideoTable extends AbstractTable {
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.e(TAG, "Error while insert video in Batch", e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public void updateDeletedVideo(String videoId, boolean isDeleted) {
+
+        SQLiteDatabase db = null;
+        try {
+            db = daoManager.getWritableDatabase();
+            db.beginTransaction();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_DELETE_SYNC_STATUS, isDeleted ? 1 : 0);
+                db.update(NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(videoId)});
+            } catch (Exception e) {
+                Log.e(TAG, "Error while deleting video", e);
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error while delete video in Batch", e);
         } finally {
             db.endTransaction();
         }

@@ -19,6 +19,7 @@ import java.util.Map;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -125,4 +126,7 @@ public interface LabTabApiInterface {
 //    17. Filter project Data
     @GET("programs/")
     Call<ArrayList<ProgramOrLab>> getFilter(@Header("Auth-Token") String authToken, @QueryMap(encoded = true) Map<String, String> params);
+
+    @DELETE("projects/{project_id}")
+    Call<String>  deleteVideo( @Path(value="project_id") String project_id,@Header("Auth-Token") String authToken);
 }

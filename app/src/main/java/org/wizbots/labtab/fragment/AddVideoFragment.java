@@ -146,7 +146,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
     @Override
     public String getFragmentName() {
-        return LabDetailsFragment.class.getSimpleName();
+        return AddVideoFragment.class.getSimpleName();
     }
 
     public void initView(Bundle bundle) {
@@ -319,11 +319,14 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
                     break;
                 }
-
+                //Project_Name.SKU.NamesOfKidsInCamelCaseEach
                 CreateProjectRequest createProjectRequest = new CreateProjectRequest();
                 createProjectRequest.setId(Calendar.getInstance().getTimeInMillis() + "");
                 createProjectRequest.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
                 createProjectRequest.setStatus(0);
+                String newFileName = getNewFileName(titleEditTextCustom.getText().toString(), (labSKUTextViewCustom.getText().toString()).toUpperCase(), creatorsSelected);
+                savedVideoUri = renameFile(savedVideoUri, newFileName);
+                Log.d("RENAMEDFILE", savedVideoUri.getPath());
                 createProjectRequest.setPath(savedVideoUri.getPath());
                 createProjectRequest.setTitle(titleEditTextCustom.getText().toString());
                 createProjectRequest.setCategory((String) (categorySpinner.getSelectedItem()));
@@ -361,9 +364,9 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 Intent uploadService = new Intent(homeActivityContext, LabTabSyncService.class);
                 uploadService.putExtra(LabTabSyncService.EVENT, Events.ADD_VIDEO);
                 homeActivityContext.startService(uploadService);
-                homeActivityContext.clearAllTheFragmentFromStack();
-                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
-                homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());
+                homeActivityContext.clearAllTheFragmentFromStack(true);
+/*                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());*/
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_CREATED_SUCCESSFULLY);
                 break;
             case R.id.btn_cancel:
@@ -394,6 +397,26 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 break;
 
         }
+    }
+
+    private String getNewFileName(String s, String s1, ArrayList<Student> creatorsSelected) {
+        StringBuilder fileName = new StringBuilder();
+        fileName.append(s).append(".").append(s1).append(".");
+        for (Student student : creatorsSelected) {
+            fileName.append(student.getName().trim());
+        }
+        fileName.append(".").append(Calendar.getInstance().getTimeInMillis());
+        return fileName.toString().replaceAll("\\s+","");
+    }
+
+    private Uri renameFile(Uri uri, String newFileName){
+        File oldfile =new File(uri.getPath());
+        File newfile =new File(oldfile.getParent() + "/" + newFileName + ".mp4");
+
+        if(oldfile.renameTo(newfile)){
+        }else{
+        }
+        return Uri.fromFile(newfile);
     }
 
     @Override
