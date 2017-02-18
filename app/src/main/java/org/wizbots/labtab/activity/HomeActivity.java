@@ -261,7 +261,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         if (backStackCount == 1) {
             finish();
         } else if (backStackCount > 1) {
-            super.onBackPressed();
+            fragmentManager.popBackStackImmediate();
         }
     }
 
