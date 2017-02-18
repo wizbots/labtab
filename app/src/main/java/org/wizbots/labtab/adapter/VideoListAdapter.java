@@ -158,7 +158,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.orange);
         }
-        videoListViewHolder.wonderwall.setText(video.getIs_transCoding());
+        videoListViewHolder.wonderwall.setText(video.getIs_transCoding().equalsIgnoreCase("true") ? "YES" : "NO");
         videoListViewHolder.videoStatusTextViewCustom.setText(video.getStatus() + "%");
         videoListViewHolder.videoStatusTextViewCustom.setTextColor(statusTextColor);
         videoListViewHolder.videoNameTextViewCustom.setText(video.getTitle());
