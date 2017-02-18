@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -112,6 +113,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private AlertDialog.Builder builder;
     private ArrayList<String> knowledgeNuggets = new ArrayList<>();
     private String level, knowledgeNuggetsSelected = "";
+    // variable to track event time
+    private long mLastClickTime = 0;
 
     public AddVideoFragment() {
 
@@ -379,14 +382,29 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 homeActivityContext.onBackPressed();
                 break;
             case R.id.component:
+                //Double Click Fix
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 break;
             case R.id.edt_knowledge_nuggets:
+                //Double Click Fix
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 AlertDialog dialog1 = builder.create();
                 dialog1.show();
                 break;
             case R.id.ll_lab_sku:
+                //Double Click Fix
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (ProgramsOrLabsTable.getInstance().
                         getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id()).isEmpty()) {
                     progressDialog.show();
@@ -632,105 +650,108 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         } else {
             components = homeActivityContext.getResources().getStringArray(R.array.components);
         }
+        final boolean[] componentSelection;
+        if (components != null) {
+            componentSelection = new boolean[components.length];
 
-        final boolean[] componentSelection = new boolean[components.length];
-
-        if (bundle != null) {
-            ArrayList<String> kN = (ArrayList<String>) bundle.getSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS);
-            if (kN != null && !kN.isEmpty()) {
-                knowledgeNuggets.clear();
-                knowledgeNuggets.addAll(kN);
-                for (String kn : kN) {
-                    for (int i = 0; i < components.length; i++) {
-                        if (components[i].equals(kn)) {
-                            componentSelection[i] = true;
-                            break;
+            if (bundle != null) {
+                ArrayList<String> kN = (ArrayList<String>) bundle.getSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS);
+                if (kN != null && !kN.isEmpty()) {
+                    knowledgeNuggets.clear();
+                    knowledgeNuggets.addAll(kN);
+                    for (String kn : kN) {
+                        for (int i = 0; i < components.length; i++) {
+                            if (components[i].equals(kn)) {
+                                componentSelection[i] = true;
+                                break;
+                            }
                         }
                     }
                 }
             }
+            builder.setMultiChoiceItems(components, componentSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    componentSelection[which] = isChecked;
+                }
+            });
+            builder.setCancelable(false);
+            builder.setTitle("Select Knowledge Nuggets");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    knowledgeNuggets.clear();
+                    for (int i = 0; i < componentSelection.length; i++) {
+                        boolean checked = componentSelection[i];
+                        if (checked) {
+                            knowledgeNuggets.add(components[i]);
+                        }
+                    }
+                    knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
+                    knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)).replaceAll("\"", ""));
+                }
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
+                    if (knwlgngts != null) {
+                        ArrayList<Integer> integers = new ArrayList<>();
+                        for (String kn : knwlgngts) {
+                            for (int i = 0; i < components.length; i++) {
+                                if (components[i].equals(kn)) {
+                                    integers.add(i);
+                                    break;
+                                }
+                            }
+                            for (int i = 0; i < components.length; i++) {
+                                componentSelection[i] = false;
+                            }
+
+                            for (int a : integers) {
+                                componentSelection[a] = true;
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < components.length; i++) {
+                            componentSelection[i] = false;
+                        }
+                    }
+                }
+            });
+
+            builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
+                    if (knwlgngts != null) {
+                        ArrayList<Integer> integers = new ArrayList<>();
+                        for (String kn : knwlgngts) {
+                            for (int i = 0; i < components.length; i++) {
+                                if (components[i].equals(kn)) {
+                                    integers.add(i);
+                                    break;
+                                }
+                            }
+                            for (int i = 0; i < components.length; i++) {
+                                componentSelection[i] = false;
+                            }
+
+                            for (int a : integers) {
+                                componentSelection[a] = true;
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < components.length; i++) {
+                            componentSelection[i] = false;
+                        }
+                    }
+                }
+            });
+        } else {
+            initKnowledgeNuggets(null);
         }
-        builder.setMultiChoiceItems(components, componentSelection, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                componentSelection[which] = isChecked;
-            }
-        });
-        builder.setCancelable(false);
-        builder.setTitle("Select Knowledge Nuggets");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                knowledgeNuggets.clear();
-                for (int i = 0; i < componentSelection.length; i++) {
-                    boolean checked = componentSelection[i];
-                    if (checked) {
-                        knowledgeNuggets.add(components[i]);
-                    }
-                }
-                knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
-                knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)).replaceAll("\"", ""));
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
-                if (knwlgngts != null) {
-                    ArrayList<Integer> integers = new ArrayList<>();
-                    for (String kn : knwlgngts) {
-                        for (int i = 0; i < components.length; i++) {
-                            if (components[i].equals(kn)) {
-                                integers.add(i);
-                                break;
-                            }
-                        }
-                        for (int i = 0; i < components.length; i++) {
-                            componentSelection[i] = false;
-                        }
-
-                        for (int a : integers) {
-                            componentSelection[a] = true;
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < components.length; i++) {
-                        componentSelection[i] = false;
-                    }
-                }
-            }
-        });
-
-        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
-                if (knwlgngts != null) {
-                    ArrayList<Integer> integers = new ArrayList<>();
-                    for (String kn : knwlgngts) {
-                        for (int i = 0; i < components.length; i++) {
-                            if (components[i].equals(kn)) {
-                                integers.add(i);
-                                break;
-                            }
-                        }
-                        for (int i = 0; i < components.length; i++) {
-                            componentSelection[i] = false;
-                        }
-
-                        for (int a : integers) {
-                            componentSelection[a] = true;
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < components.length; i++) {
-                        componentSelection[i] = false;
-                    }
-                }
-            }
-        });
-
     }
 
     private String[] getKnowledgeNuggets(ArrayList<String> knowledgeNuggets) {

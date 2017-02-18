@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -103,6 +104,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private ProgressDialog progressDialog;
     private String knowledgeNuggetsSelected = "";
     private String editVideoCase = "";
+    // variable to track event time
+    private long mLastClickTime = 0;
 
     public EditVideoFragment() {
 
@@ -327,10 +330,20 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 homeActivityContext.onBackPressed();
                 break;
             case R.id.component:
+                //Double Click Fix
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 break;
             case R.id.edt_knowledge_nuggets:
+                //Double Click Fix
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 AlertDialog dialog1 = builder.create();
                 dialog1.show();
                 break;
