@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Collections;
 
 /**
  * Created by ashish on 18/2/17.
@@ -32,21 +33,19 @@ public class DeleteVideoRequester implements Runnable {
     @Override
     public void run() {
         int statusCode = 0;
-        LabTabResponse<String> programsOrLabs = LabTabHTTPOperationController.deleteVideo(mVideo.getProgramId());
+        LabTabResponse<String> programsOrLabs = LabTabHTTPOperationController.deleteVideo(mVideo.getVideoId());
         if (programsOrLabs != null) {
             Log.d(TAG,String.valueOf(programsOrLabs.getResponseCode()));
             statusCode = programsOrLabs.getResponseCode();
             if (statusCode == HttpURLConnection.HTTP_OK){
                 VideoTable.getInstance().deleteVideoById(mVideo.getId());
-            }else {
-                statusCode = HttpURLConnection.HTTP_OK;
-                VideoTable.getInstance().updateDeletedVideo(mVideo.getId(), true);
+                deleteVideoFileFromStorage();
             }
         } else {
             statusCode = HttpURLConnection.HTTP_OK;
             VideoTable.getInstance().updateDeletedVideo(mVideo.getId(), true);
+            deleteVideoFileFromStorage();
         }
-        deleteVideoFileFromStorage();
         for (OnDeleteVideoListener listener : LabTabApplication.getInstance().getUIListeners(OnDeleteVideoListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.OK) {
                 listener.onDeleteVideoSuccess();

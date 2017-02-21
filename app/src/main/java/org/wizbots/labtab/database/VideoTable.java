@@ -357,6 +357,47 @@ public class VideoTable extends AbstractTable {
         return mentorArrayList;
     }
 
+    public ArrayList<Video> getVideosToBeDeleted() {
+        ArrayList<Video> mentorArrayList = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = daoManager.getReadableDatabase().rawQuery("Select * from " + NAME + " where " + COLUMN_MENTOR_ID + " = '" + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id() + "' and " + COLUMN_DELETE_SYNC_STATUS + " = " + 1, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    mentorArrayList.add(
+                            new Video(
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_ID)),
+                                    cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PATH)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_MENTOR_NAME)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_SKU)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_LAB_LEVEL)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_KNOWLEDGE_NUGGETS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROJECT_CREATORS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_NOTES_TO_THE_FAMILY)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_EDIT_SYNC_STATUS)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_IS_TRANSCODING)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_VIDEO_ID)),
+                                    cursor.getString(cursor.getColumnIndex(COLUMN_PROGRAM_ID))
+                            )
+                    );
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while get video", e);
+        } finally {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return mentorArrayList;
+    }
+
     public ArrayList<Video> getEditedVideosToBeUploaded() {
         ArrayList<Video> mentorArrayList = new ArrayList<>();
         Cursor cursor = null;

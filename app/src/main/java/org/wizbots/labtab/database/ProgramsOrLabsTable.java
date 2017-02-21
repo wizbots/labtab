@@ -164,10 +164,10 @@ public class ProgramsOrLabsTable extends AbstractTable {
         if (params != null && params.size() > 0) {
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 if (entry.getKey().equalsIgnoreCase(LabTabConstants.FilterRequestParameter.FROM)) {
-                    query.append(" and (").append(COLUMN_START_TIMESTAMP).append(" >= ").append(LabTabUtil.getTimeStamp(entry.getValue(), LabTabConstants.DateFormat.YYYYMMDD));
+                    query.append(" and (").append(COLUMN_START_TIMESTAMP).append(" == ").append(LabTabUtil.getTimeStamp(entry.getValue(), LabTabConstants.DateFormat.YYYYMMDD));
                 }
                 if (entry.getKey().equalsIgnoreCase(LabTabConstants.FilterRequestParameter.TO)) {
-                    query.append(" or ").append(COLUMN_END_TIMESTAMP).append(" <= ").append(LabTabUtil.getTimeStamp(entry.getValue(), LabTabConstants.DateFormat.YYYYMMDD)).append(")");
+                    query.append(" or ").append(COLUMN_END_TIMESTAMP).append(" == ").append(LabTabUtil.getTimeStamp(entry.getValue(), LabTabConstants.DateFormat.YYYYMMDD)).append(")");
                 }
             }
         }

@@ -31,6 +31,25 @@
     <LinearLayout
         android:layout_width="@dimen/zero_dimension"
         android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_wonderwall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/wonderwall"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/zero_dimension"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">

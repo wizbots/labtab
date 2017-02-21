@@ -29,6 +29,7 @@ import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.requesters.CreateProjectRequester;
+import org.wizbots.labtab.requesters.DeleteVideoRequester;
 import org.wizbots.labtab.requesters.MarkStudentAbsentSyncRequester;
 import org.wizbots.labtab.requesters.PromotionDemotionSyncRequester;
 import org.wizbots.labtab.requesters.UpdateProjectRequester;
@@ -43,6 +44,7 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
     public static LabTabSyncService labTabSyncService = new LabTabSyncService();
     public static boolean statusOfSingleEditVideoBackgroundExecutor[];
     public static boolean statusOfSingleVideoUploadBackgroundExecutor[];
+    public static boolean statusOfDeleteVideoUploadBackgroundExecutor[];
     public static boolean statusOfSingleMarkAbsentUploadBackgroundExecutor[];
     public static boolean statusOfSinglePromotionDemotionBackgroundExecutor[];
     private boolean isUploadServiceRunning = false;
@@ -178,13 +180,16 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
         boolean videoUploadCompleted;
         boolean markAbsentCompleted;
         boolean promoteDemoteCompleted;
+        boolean deleteVideoCompleted;
+
 
         editVideoCompleted = statusOfSingleEditVideoBackgroundExecutor == null;
         videoUploadCompleted = statusOfSingleVideoUploadBackgroundExecutor == null;
         markAbsentCompleted = statusOfSingleMarkAbsentUploadBackgroundExecutor == null;
         promoteDemoteCompleted = statusOfSinglePromotionDemotionBackgroundExecutor == null;
+        deleteVideoCompleted = statusOfDeleteVideoUploadBackgroundExecutor == null;
 
-        return videoUploadCompleted && markAbsentCompleted && promoteDemoteCompleted && editVideoCompleted;
+        return videoUploadCompleted && markAbsentCompleted && promoteDemoteCompleted && editVideoCompleted && deleteVideoCompleted;
     }
 
     private void checkAndStartWhatToSync() {
@@ -192,6 +197,7 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
         syncMarkAbsent();
         syncPromoteDemote();
         syncEditVideo();
+        syncVideoToBeDeleted();
     }
 
     @Override
@@ -252,6 +258,21 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                     statusOfSingleVideoUploadBackgroundExecutor = new boolean[videoArrayList.size()];
                     for (int i = 0; i < videoArrayList.size(); i++) {
                         BackgroundExecutor.getInstance().execute(new CreateProjectRequester(labTabSyncService, videoArrayList.get(i), i));
+                    }
+                }
+            }
+        }
+    }
+
+    private void syncVideoToBeDeleted() {
+        synchronized (this) {
+            if (statusOfDeleteVideoUploadBackgroundExecutor == null) {
+                ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideosToBeDeleted();
+                if (!videoArrayList.isEmpty()) {
+                    startForegroundIntent();
+                    statusOfDeleteVideoUploadBackgroundExecutor = new boolean[videoArrayList.size()];
+                    for (int i = 0; i < videoArrayList.size(); i++) {
+                        BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(videoArrayList.get(i)));
                     }
                 }
             }

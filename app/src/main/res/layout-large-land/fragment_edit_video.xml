@@ -485,6 +485,18 @@
                             app:font="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.ButtonCustom
+                            android:id="@+id/btn_delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_layout_blue"
+                            android:paddingLeft="@dimen/large_padding"
+                            android:paddingRight="@dimen/large_padding"
+                            android:text="@string/delete"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_extra_extra_small"
+                            app:font="@string/font_pt_sans_narrow_bold" />
+
+                        <org.wizbots.labtab.customview.ButtonCustom
                             android:id="@+id/btn_save"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -507,19 +519,6 @@
                             android:text="@string/cancel"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
-                            app:font="@string/font_pt_sans_narrow_bold" />
-
-                        <org.wizbots.labtab.customview.ButtonCustom
-                            android:id="@+id/btn_delete"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_layout_blue"
-                            android:paddingLeft="@dimen/large_padding"
-                            android:paddingRight="@dimen/large_padding"
-                            android:text="@string/delete"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_extra_extra_small"
-                            android:visibility="gone"
                             app:font="@string/font_pt_sans_narrow_bold" />
                     </LinearLayout>
                 </RelativeLayout>

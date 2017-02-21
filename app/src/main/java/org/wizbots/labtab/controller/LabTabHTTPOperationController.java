@@ -79,8 +79,8 @@ public class LabTabHTTPOperationController {
                         students,
                         promoteDemote
                 ));
-    }
 
+    }
 
     public static LabTabResponse createProject(String category, String sku, String description, String title, String notes,
                                                MultipartBody.Part file, String[] components, String[] creators) {
@@ -146,8 +146,8 @@ public class LabTabHTTPOperationController {
 
     public static LabTabResponse deleteVideo(String programId) {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
-        return ConnectionUtil.execute(labTabApiInterface.deleteVideo(LabTabPreferences.getInstance
-                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), programId));
+        return ConnectionUtil.execute(labTabApiInterface.deleteVideo(programId,LabTabPreferences.getInstance
+                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken()));
     }
 
 }

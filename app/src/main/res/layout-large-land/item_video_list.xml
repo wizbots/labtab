@@ -44,115 +44,56 @@
         </FrameLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical">
-
-        <LinearLayout
-            android:id="@+id/ll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp">
-
-            <LinearLayout
-                android:layout_width="@dimen/zero_dimension"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/iv_lab_level"
-                    android:layout_width="@dimen/lab_detail_image_width"
-                    android:layout_height="@dimen/lab_detail_image_height"
-                    android:layout_margin="@dimen/extra_extra_small_margin"
-                    android:padding="@dimen/extra_extra_small_padding"
-                    android:src="@drawable/ic_level_master" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="@dimen/zero_dimension"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="3"
-                android:orientation="vertical">
-
-                <org.wizbots.labtab.customview.TextViewCustom
-                    android:id="@+id/tv_video_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/extra_small_margin"
-                    android:gravity="center|left"
-                    android:text="@string/video_name"
-                    android:textSize="@dimen/text_size_small"
-                    app:font="@string/font_pt_sans_narrow_regular" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <org.wizbots.labtab.customview.TextViewCustom
-            android:id="@+id/tv_wonderwall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll"
-            android:layout_marginLeft="@dimen/extra_small_margin"
-            android:gravity="center|left"
-            android:text="@string/wonderwall"
-            android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+    <LinearLayout
+        android:layout_width="@dimen/zero_dimension"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_wonderwall_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll"
-            android:layout_marginLeft="@dimen/extra_small_margin"
-            android:layout_toRightOf="@+id/tv_wonderwall"
-            android:gravity="center|left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <!--    <LinearLayout
-            android:layout_width="@dimen/zero_dimension"
+    <LinearLayout
+        android:layout_width="@dimen/zero_dimension"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_lab_level"
+            android:layout_width="@dimen/lab_detail_image_width"
+            android:layout_height="@dimen/lab_detail_image_height"
+            android:layout_margin="@dimen/extra_extra_small_margin"
+            android:padding="@dimen/extra_extra_small_padding"
+            android:src="@drawable/ic_level_master" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/zero_dimension"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_video_name"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_marginLeft="@dimen/extra_small_margin"
+            android:gravity="center|left"
+            android:text="@string/video_name"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
 
-            <ImageView
-                android:id="@+id/iv_lab_level"
-                android:layout_width="@dimen/lab_detail_image_width"
-                android:layout_height="@dimen/lab_detail_image_height"
-                android:layout_margin="@dimen/extra_extra_small_margin"
-                android:padding="@dimen/extra_extra_small_padding"
-                android:src="@drawable/ic_level_master" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="@dimen/zero_dimension"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:orientation="vertical">
-
-            <org.wizbots.labtab.customview.TextViewCustom
-                android:id="@+id/tv_video_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/extra_small_margin"
-                android:gravity="center|left"
-                android:text="@string/video_name"
-                android:textSize="@dimen/text_size_small"
-                app:font="@string/font_pt_sans_narrow_regular" />
-
-        </LinearLayout>-->
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="@dimen/zero_dimension"

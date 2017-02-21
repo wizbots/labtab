@@ -128,5 +128,5 @@ public interface LabTabApiInterface {
     Call<ArrayList<ProgramOrLab>> getFilter(@Header("Auth-Token") String authToken, @QueryMap(encoded = true) Map<String, String> params);
 
     @DELETE("projects/{project_id}")
-    Call<String>  deleteVideo( @Path(value="project_id") String project_id,@Header("Auth-Token") String authToken);
+    Call<String>  deleteVideo( @Path("project_id") String project_id,@Header("Auth-Token") String authToken);
 }
