@@ -197,7 +197,7 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
         syncMarkAbsent();
         syncPromoteDemote();
         syncEditVideo();
-        syncVideoToBeDeleted();
+//        syncVideoToBeDeleted();
     }
 
     @Override

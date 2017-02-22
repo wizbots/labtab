@@ -169,6 +169,8 @@ public interface LabTabConstants {
         String VIDEO_CAN_T_BE_EDITED_WHILE_UPDATING = "Video can't be edited while updating";
         String PROJECT_CREATED_SUCCESSFULLY = "Project created successfully, scheduled for uploading";
         String STUDENT_IS_ALREADY_PROMOTED_DEMOTED_BY_ONE_LEVEL = "Student is already promoted/demoted by one level";
+        String PROJECT_DELETED_SUCCESS = "Project Deleted Successfully";
+        String PROJECT_DELETED_FAILED = "Project failed to delete";
     }
 
     /**

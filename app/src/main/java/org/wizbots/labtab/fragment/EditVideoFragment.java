@@ -811,7 +811,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             @Override
             public void run() {
                 progressDialog.dismiss();
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Video Deleted Successfully");
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_DELETED_SUCCESS);
                 homeActivityContext.getSupportFragmentManager().popBackStackImmediate();
             }
         });
@@ -823,7 +823,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             @Override
             public void run() {
                 progressDialog.dismiss();
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Failed to delete video");
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_DELETED_FAILED);
                 homeActivityContext.getSupportFragmentManager().popBackStackImmediate();
             }
         });

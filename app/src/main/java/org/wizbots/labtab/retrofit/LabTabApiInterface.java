@@ -116,7 +116,7 @@ public interface LabTabApiInterface {
                                                     @Query("student_id") String studentId, @Query("wizchips") int wizchips);
 
     //   15. Get Project metadata
-    @PUT("projects/metadata")
+    @GET("programs/metadata")
     Call<MetaData[]> getProjectsMetaData();
 
 //    16. Get Location for filter?

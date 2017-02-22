@@ -489,6 +489,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/rounded_layout_blue"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
                             android:paddingLeft="@dimen/large_padding"
                             android:paddingRight="@dimen/large_padding"
                             android:text="@string/delete"

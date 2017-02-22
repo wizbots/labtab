@@ -10,12 +10,17 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.wizbots.labtab.database.ProgramStudentsTable;
+import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.requesters.AddWizchipsRequester;
+import org.wizbots.labtab.requesters.DeleteVideoRequester;
 import org.wizbots.labtab.requesters.WithdrawWizchipsRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
+
+import static org.wizbots.labtab.service.LabTabSyncService.statusOfDeleteVideoUploadBackgroundExecutor;
 
 /**
  * Created by ashish on 8/2/17.
@@ -58,6 +63,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
         Log.d("SYNC","sync is running======>>>>>>>>>>>");
         syncWizchips();
+        syncVideoToBeDeleted();
     }
 
     private void syncWizchips(){
@@ -71,6 +77,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(student.getProgram_id(),student.getStudent_id(), student.getOfflinewizchips()));
                 }
 
+            }
+        }
+    }
+
+    private void syncVideoToBeDeleted() {
+        ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideosToBeDeleted();
+        if (videoArrayList != null && !videoArrayList.isEmpty()) {
+            for (int i = 0; i < videoArrayList.size(); i++) {
+                BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(videoArrayList.get(i)));
             }
         }
     }

@@ -239,10 +239,26 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         fragment.setArguments(bundle);
         try {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
-            if(fragment.getFragmentName().equalsIgnoreCase("HomeFragment") || fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")){
+            if(fragment.getFragmentName().equalsIgnoreCase("HomeFragment")
+                    || fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")){
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(fragment.getFragmentName());
+            }else if(fragment.getFragmentName().equalsIgnoreCase("ListOfSkipsFragment")) {
+                boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate ("ListOfSkipsFragment", 0);
+                if (!fragmentPopped){
+                    fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                    fragmentTransaction.addToBackStack(fragment.getFragmentName());
+                }
+
+            }else if(fragment.getFragmentName().equalsIgnoreCase("AdditionalInformationFragment")){
+                boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate ("AdditionalInformationFragment", 0);
+                if (!fragmentPopped){
+                    fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                    fragmentTransaction.addToBackStack(fragment.getFragmentName());
+                }
+
             }else {
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
             }
             fragmentTransaction.commit();

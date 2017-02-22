@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.craterzone.logginglib.manager.LoggerManager;
 
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.interfaces.BaseManagerInterface;
 import org.wizbots.labtab.interfaces.BaseUIListener;
 import org.wizbots.labtab.interfaces.OnLoadListener;
@@ -59,6 +60,7 @@ public class LabTabApplication extends Application {
         loadManagers();
         initRetrofit();
         LoggerManager.getInstance(getApplicationContext()).init();
+        metaDatas =  LabTabPreferences.getInstance(LabTabApplication.getInstance()).getProjectsMetaData();
     }
 
     private void initManagers() {

@@ -37,17 +37,17 @@ public class DeleteVideoRequester implements Runnable {
         if (programsOrLabs != null) {
             Log.d(TAG,String.valueOf(programsOrLabs.getResponseCode()));
             statusCode = programsOrLabs.getResponseCode();
-            if (statusCode == HttpURLConnection.HTTP_OK){
+            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT || statusCode == HttpURLConnection.HTTP_NOT_FOUND){
                 VideoTable.getInstance().deleteVideoById(mVideo.getId());
                 deleteVideoFileFromStorage();
             }
         } else {
-            statusCode = HttpURLConnection.HTTP_OK;
+            statusCode = HttpURLConnection.HTTP_NO_CONTENT;
             VideoTable.getInstance().updateDeletedVideo(mVideo.getId(), true);
             deleteVideoFileFromStorage();
         }
         for (OnDeleteVideoListener listener : LabTabApplication.getInstance().getUIListeners(OnDeleteVideoListener.class)) {
-            if (statusCode == LabTabConstants.StatusCode.OK) {
+            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT || statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                 listener.onDeleteVideoSuccess();
             } else {
                 listener.onDeleteVideoError();
