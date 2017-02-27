@@ -41,7 +41,7 @@
                             android:layout_height="180dp"
                             android:background="@drawable/rounded_layout_blue_for_profile">
 
-                            <org.wizbots.labtab.customview.TextViewCustom
+<!--                            <org.wizbots.labtab.customview.TextViewCustom
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -49,7 +49,16 @@
                                 android:text="@string/avatar"
                                 android:textColor="@color/light_blue"
                                 android:textSize="@dimen/text_size_extra_small"
-                                app:font="@string/font_pt_sans_narrow_regular" />
+                                app:font="@string/font_pt_sans_narrow_regular" />-->
+                            <org.wizbots.labtab.util.CircleImageView
+                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/profile_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_placholder"
+                                android:scaleType="centerCrop"
+                                app:civ_border_width="2dp"
+                                app:civ_border_color="@color/material_light_blue_800"/>
 
                             <ImageView
                                 android:id="@+id/iv_student_lab_level"

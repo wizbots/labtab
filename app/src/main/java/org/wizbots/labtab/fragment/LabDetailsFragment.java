@@ -33,7 +33,6 @@ import org.wizbots.labtab.interfaces.requesters.AddWizchipsListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramStudentsListener;
 import org.wizbots.labtab.interfaces.requesters.MarkStudentAbsentListener;
 import org.wizbots.labtab.interfaces.requesters.PromotionDemotionListener;
-import org.wizbots.labtab.interfaces.requesters.SyncListener;
 import org.wizbots.labtab.interfaces.requesters.WithdrawWizchipsListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Absence;
@@ -41,7 +40,6 @@ import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.program.response.ProgramResponse;
 import org.wizbots.labtab.requesters.AddWizchipsRequester;
-import org.wizbots.labtab.requesters.GetSyncingStatusRequester;
 import org.wizbots.labtab.requesters.MarkStudentAbsentRequester;
 import org.wizbots.labtab.requesters.ProgramStudentsRequester;
 import org.wizbots.labtab.requesters.PromotionDemotionRequester;
@@ -56,7 +54,7 @@ import java.util.Date;
 
 public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener,
         GetProgramStudentsListener, View.OnClickListener, MarkStudentAbsentListener, PromotionDemotionListener,
-        WithdrawWizchipsListener, AddWizchipsListener, SyncListener, OnSyncDoneListener {
+        WithdrawWizchipsListener, AddWizchipsListener, OnSyncDoneListener {
     public static final String PROGRAM = "PROGRAM";
     public static final String STUDENT = "STUDENT";
     public static final String SELECTED_STUDENTS = "SELECTED_STUDENTS";
@@ -99,7 +97,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         programOrLab = getArguments().getParcelable(LabListFragment.LAB);
         initView();
         initListeners();
-//        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.LAB_DETAILS_LIST));
         return rootView;
     }
 
@@ -249,7 +246,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         LabTabApplication.getInstance().addUIListener(PromotionDemotionListener.class, this);
         LabTabApplication.getInstance().addUIListener(WithdrawWizchipsListener.class, this);
         LabTabApplication.getInstance().addUIListener(AddWizchipsListener.class, this);
-        LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
     }
 
     @Override
@@ -297,7 +293,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         LabTabApplication.getInstance().removeUIListener(PromotionDemotionListener.class, this);
         LabTabApplication.getInstance().removeUIListener(AddWizchipsListener.class, this);
         LabTabApplication.getInstance().removeUIListener(WithdrawWizchipsListener.class, this);
-        LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
     }
 
     public void initHeaderView() {
@@ -638,20 +633,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
         labDetailsAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
-    }
-
-    @Override
-    public void syncStatusFetchedSuccessfully(final boolean syncStatus) {
-        homeActivityContext.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-/*                if (syncStatus) {
-                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
-                } else {
-                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
-                }*/
-            }
-        });
     }
 
     @Override

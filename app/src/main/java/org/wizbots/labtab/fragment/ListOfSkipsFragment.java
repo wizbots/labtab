@@ -22,12 +22,10 @@ import org.wizbots.labtab.database.ProgramAbsencesTable;
 import org.wizbots.labtab.interfaces.ListOfSkipsAdapterClickListener;
 import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.requesters.GetStudentsListener;
-import org.wizbots.labtab.interfaces.requesters.SyncListener;
 import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.requesters.GetStudentsRequester;
-import org.wizbots.labtab.requesters.GetSyncingStatusRequester;
 import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
@@ -36,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAdapterClickListener,
-        GetStudentsListener, SyncListener, OnSyncDoneListener {
+        GetStudentsListener, OnSyncDoneListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -72,7 +70,6 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         labLevel = getArguments().getString(LabDetailsFragment.LAB_LEVEL);
         initView();
         initListeners();
-//        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.LIST_OF_SKIPS));
         return rootView;
     }
 
@@ -213,7 +210,6 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(GetStudentsListener.class, this);
-        LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
         LabTabApplication.getInstance().removeUIListener(OnSyncDoneListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
@@ -232,7 +228,6 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
 
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(GetStudentsListener.class, this);
-        LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
     }
 
     @Override
@@ -246,20 +241,6 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
                 bundle.putString(LabDetailsFragment.LAB_LEVEL, labLevel);
                 bundle.putSerializable(LabDetailsFragment.SELECTED_STUDENTS, studentArrayList);
                 homeActivityContext.replaceFragment(Fragments.ADD_VIDEO, bundle);
-            }
-        });
-    }
-
-    @Override
-    public void syncStatusFetchedSuccessfully(final boolean syncStatus) {
-        homeActivityContext.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-/*                if (syncStatus) {
-                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
-                } else {
-                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
-                }*/
             }
         });
     }

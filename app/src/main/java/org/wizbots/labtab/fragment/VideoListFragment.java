@@ -21,11 +21,8 @@ import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
-import org.wizbots.labtab.interfaces.requesters.SyncListener;
 import org.wizbots.labtab.model.video.Video;
-import org.wizbots.labtab.requesters.GetSyncingStatusRequester;
 import org.wizbots.labtab.service.SyncManager;
-import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.NetworkUtils;
 
 import java.util.ArrayList;
@@ -51,7 +48,6 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
-//        LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
     }
 
     @Nullable
@@ -61,7 +57,6 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         homeActivityContext = (HomeActivity) context;
         initView();
         prepareVideoList();
-//        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.VIDEO_LIST));
         return rootView;
     }
 
@@ -156,7 +151,6 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(OnSyncDoneListener.class, this);
-//        LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
         super.onDestroy();
     }
 
