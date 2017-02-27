@@ -10,6 +10,7 @@ import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.model.program.Absence;
+import org.wizbots.labtab.service.SyncManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,6 +97,7 @@ public class ProgramAbsencesTable extends AbstractTable {
             Log.e(TAG, "Error while insert absence in Batch", e);
         } finally {
             db.endTransaction();
+            SyncManager.getInstance().onRefreshData(1);
         }
     }
 
@@ -183,6 +185,7 @@ public class ProgramAbsencesTable extends AbstractTable {
         SQLiteDatabase db = daoManager.getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(updateStudentLevelQuery);
         stmt.execute();
+        SyncManager.getInstance().onRefreshData(1);
     }
 
     public ArrayList<Absence> findAbsencesForSpecificDate(String date, String studentId) {

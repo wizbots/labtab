@@ -66,7 +66,6 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
                 markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
             }
         }}
-        SyncManager.getInstance().onRefreshData(1);
     }
 
 

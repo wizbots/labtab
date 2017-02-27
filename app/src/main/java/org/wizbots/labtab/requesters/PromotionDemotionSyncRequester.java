@@ -58,6 +58,7 @@ public class PromotionDemotionSyncRequester implements Runnable, LabTabConstants
         ProgramStudentsTable.getInstance().updatePromoteDemote(student);
         StudentsProfileTable.getInstance().upDateStudentLevel(student.getStudent_id(), student.getLevel());
         ProgramStudentsTable.getInstance().upDateStudentLevel(student.getStudent_id(), student.getLevel());
+        SyncManager.getInstance().onRefreshData(1);
     }
 
 }

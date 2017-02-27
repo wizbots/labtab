@@ -119,6 +119,7 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
             Student student = getStudent(studentArrayList.get(i).getStudent_id());
             ProgramStudentsTable.getInstance().offlinePromoteDemote(student, promoteDemote);
         }
+        SyncManager.getInstance().onRefreshData(1);
     }
 
 }
