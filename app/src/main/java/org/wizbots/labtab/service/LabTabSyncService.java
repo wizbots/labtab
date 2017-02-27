@@ -28,6 +28,7 @@ import org.wizbots.labtab.interfaces.requesters.VideoUploadListener;
 import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
+import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.requesters.AddWizchipsRequester;
 import org.wizbots.labtab.requesters.CreateProjectRequester;
 import org.wizbots.labtab.requesters.DeleteVideoRequester;
@@ -285,6 +286,9 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                 if (!videoArrayList.isEmpty()) {
                     startForegroundIntent();
                     statusOfSingleVideoUploadBackgroundExecutor = new boolean[videoArrayList.size()];
+                    if(LabTabApplication.getInstance().isNetworkAvailable()){
+                        NotiManager.getInstance().showNotification(videoArrayList.size());
+                    }
                     for (int i = 0; i < videoArrayList.size(); i++) {
                         BackgroundExecutor.getInstance().execute(new CreateProjectRequester(labTabSyncService, videoArrayList.get(i), i));
                     }

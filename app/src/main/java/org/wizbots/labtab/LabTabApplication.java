@@ -13,6 +13,7 @@ import org.wizbots.labtab.interfaces.BaseManagerInterface;
 import org.wizbots.labtab.interfaces.BaseUIListener;
 import org.wizbots.labtab.interfaces.OnLoadListener;
 import org.wizbots.labtab.model.metadata.MetaData;
+import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 import java.util.ArrayList;
 import java.util.Collection;

@@ -8,6 +8,7 @@ import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.model.video.response.CreateProjectResponse;
+import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.service.SyncManager;
@@ -56,6 +57,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
         if (createProjectResponse != null) {
             if (createProjectResponse.getResponseCode() == StatusCode.CREATED) {
                 projectCreatedSuccessfully(createProjectResponse.getResponse());
+                NotiManager.getInstance().updateNotification();
             } else {
                 unableToCreateProject();
             }
