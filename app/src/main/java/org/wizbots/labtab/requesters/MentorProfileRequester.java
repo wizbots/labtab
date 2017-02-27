@@ -8,6 +8,7 @@ import org.wizbots.labtab.interfaces.requesters.GetMentorProfileListener;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.service.SyncManager;
 
 
 public class MentorProfileRequester implements Runnable, LabTabConstants {
@@ -32,6 +33,7 @@ public class MentorProfileRequester implements Runnable, LabTabConstants {
                     mentor.setToken(createTokenResponse.getToken());
                     mentor.setId(createTokenResponse.getId());
                     mentor.setMember_id(createTokenResponse.getMember_id());
+                    SyncManager.getInstance().onRefreshData(3);
                     getMentorProfileListener.mentorProfileFetchedSuccessfully(mentor, createTokenResponse);
                 } else {
                     getMentorProfileListener.unableToFetchMentor(mentorProfileResponse.getResponseCode());

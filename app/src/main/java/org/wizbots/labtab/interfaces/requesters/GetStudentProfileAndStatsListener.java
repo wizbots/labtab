@@ -11,4 +11,6 @@ public interface GetStudentProfileAndStatsListener extends BaseUIListener {
     void studentProfileFetchedSuccessfully(StudentResponse studentResponse, StudentProfile studentProfile, ArrayList<StudentStats> statsArrayList);
 
     void unableToFetchStudent(int responseCode);
+
+    void offlineNoData();
 }

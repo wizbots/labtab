@@ -130,6 +130,7 @@ public interface LabTabConstants {
         String GO_TO_WIZBOTS_COM = "http://wizbots.com";
         String FEATURE_NOT_AVAILABLE_RIGHT_NOW = "Feature Not Available Right Now";
         String NO_LAB_FOUND = "No Lab Found";
+        String NO_DATA_FOUND = "No Data Found";
         String NO_DETAIL_FOUND = "No Detail Found";
         String STUDENT_STATISTICS = "Student Statistics";
         String MENTOR_NOT_FOUND = "Mentor Not Found";
@@ -171,6 +172,9 @@ public interface LabTabConstants {
         String STUDENT_IS_ALREADY_PROMOTED_DEMOTED_BY_ONE_LEVEL = "Student is already promoted/demoted by one level";
         String PROJECT_DELETED_SUCCESS = "Project Deleted Successfully";
         String PROJECT_DELETED_FAILED = "Project failed to delete";
+        String NO_DATA_NO_CONNECTION = "No data available, please try again later with Internet connectivity";
+        String PLEASE_SELECT_DATE_FIRST = "Please select date first";
+        String FAILED_TO_FETCH_FILTER = "Failed to fetch filter";
     }
 
     /**

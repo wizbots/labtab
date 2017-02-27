@@ -30,7 +30,7 @@ public class GetSyncingStatusRequester implements Runnable, LabTabConstants {
         ArrayList<Absence> absenceArrayList = ProgramAbsencesTable.getInstance().getStudentToBeMarkedAbsent();
         ArrayList<Student> studentsToBePromotedOrDemoted = ProgramStudentsTable.getInstance().getStudentsToBePromotedOrDemoted();
         ArrayList<Video> editVideoArrayList = VideoTable.getInstance().getEditedVideosToBeUploaded();
-        ArrayList<Student> studentWizChipsToBeSynced = ProgramStudentsTable.getInstance().getUnSyncData();
+//        ArrayList<Student> studentWizChipsToBeSynced = ProgramStudentsTable.getInstance().getUnSyncData();
 
         switch (fragment) {
             case Fragments.LAB_DETAILS_LIST:
@@ -38,7 +38,7 @@ public class GetSyncingStatusRequester implements Runnable, LabTabConstants {
                 syncStatus = syncStatus && absenceArrayList.isEmpty();
                 syncStatus = syncStatus && studentsToBePromotedOrDemoted.isEmpty();
                 syncStatus = syncStatus && editVideoArrayList.isEmpty();
-                syncStatus = syncStatus && studentWizChipsToBeSynced.isEmpty();
+//                syncStatus = syncStatus && studentWizChipsToBeSynced.isEmpty();
                 break;
             case Fragments.LIST_OF_SKIPS:
                 syncStatus = syncStatus && absenceArrayList.isEmpty();

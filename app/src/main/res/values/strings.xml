@@ -152,6 +152,7 @@
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>
+        <item>org.wizbots.labtab.service.SyncManager</item>
     </string-array>
 
     <string-array name="labtabtables">

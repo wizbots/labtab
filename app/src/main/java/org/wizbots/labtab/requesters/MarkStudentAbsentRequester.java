@@ -12,6 +12,7 @@ import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.service.SyncManager;
 
 import java.util.ArrayList;
 
@@ -65,6 +66,7 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
                 markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
             }
         }}
+        SyncManager.getInstance().onRefreshData(1);
     }
 
 

@@ -8,6 +8,7 @@ import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.promotedemote.PromotionDemotionResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.service.LabTabSyncService;
+import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.LabTabUtil;
 
 public class PromotionDemotionSyncRequester implements Runnable, LabTabConstants {
@@ -42,6 +43,7 @@ public class PromotionDemotionSyncRequester implements Runnable, LabTabConstants
             promoteDemoteStudents();
         }
         labTabSyncService.promoteDemoteCompleted(position);
+        SyncManager.getInstance().onRefreshData(1);
     }
 
     private String[] getStudents() {

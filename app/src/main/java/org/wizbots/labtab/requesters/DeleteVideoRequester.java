@@ -10,6 +10,8 @@ import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.requesters.OnDeleteVideoListener;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.service.SyncManager;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,6 +48,7 @@ public class DeleteVideoRequester implements Runnable {
             VideoTable.getInstance().updateDeletedVideo(mVideo.getId(), true);
             deleteVideoFileFromStorage();
         }
+        SyncManager.getInstance().onRefreshData(2);
         for (OnDeleteVideoListener listener : LabTabApplication.getInstance().getUIListeners(OnDeleteVideoListener.class)) {
             if (statusCode == HttpURLConnection.HTTP_NO_CONTENT || statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                 listener.onDeleteVideoSuccess();

@@ -103,6 +103,8 @@ public class AdditionalInformationFragment extends ParentFragment implements Add
             if (!studentArrayList.isEmpty()) {
                 objectArrayList.addAll(studentArrayList);
                 additionalInformationAdapter.notifyDataSetChanged();
+            }else if(LabTabApplication.getInstance().isNetworkAvailable() && studentArrayList.isEmpty()){
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
             } else {
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_ADDITIONAL_INFO_FOUND_FOR_THIS_LAB);
             }

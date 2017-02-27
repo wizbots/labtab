@@ -10,6 +10,7 @@ import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.model.video.response.CreateProjectResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.service.LabTabSyncService;
+import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;
@@ -59,6 +60,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
                 unableToCreateProject();
             }
         }
+        SyncManager.getInstance().onRefreshData(2);
         labTabSyncService.videoUploadCompleted(videoInDB, position);
     }
 

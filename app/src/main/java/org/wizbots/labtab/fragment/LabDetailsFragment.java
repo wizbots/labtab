@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.ProgramTable;
 import org.wizbots.labtab.interfaces.LabDetailsAdapterClickListener;
+import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.requesters.AddWizchipsListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramStudentsListener;
 import org.wizbots.labtab.interfaces.requesters.MarkStudentAbsentListener;
@@ -44,6 +46,7 @@ import org.wizbots.labtab.requesters.MarkStudentAbsentRequester;
 import org.wizbots.labtab.requesters.ProgramStudentsRequester;
 import org.wizbots.labtab.requesters.PromotionDemotionRequester;
 import org.wizbots.labtab.requesters.WithdrawWizchipsRequester;
+import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
@@ -53,7 +56,7 @@ import java.util.Date;
 
 public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener,
         GetProgramStudentsListener, View.OnClickListener, MarkStudentAbsentListener, PromotionDemotionListener,
-        WithdrawWizchipsListener, AddWizchipsListener, SyncListener {
+        WithdrawWizchipsListener, AddWizchipsListener, SyncListener, OnSyncDoneListener {
     public static final String PROGRAM = "PROGRAM";
     public static final String STUDENT = "STUDENT";
     public static final String SELECTED_STUDENTS = "SELECTED_STUDENTS";
@@ -85,6 +88,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
     }
 
     @Nullable
@@ -95,8 +99,20 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         programOrLab = getArguments().getParcelable(LabListFragment.LAB);
         initView();
         initListeners();
-        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.LAB_DETAILS_LIST));
+//        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.LAB_DETAILS_LIST));
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SyncManager.getInstance().onRefreshData(1);
+        boolean isSync = SyncManager.getInstance().isLabDetailSynced();
+        if(isSync){
+            updateSyncStatus(true);
+        }else {
+            updateSyncStatus(false);
+        }
     }
 
     @Override
@@ -118,7 +134,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_DETAILS);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
-        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         initHeaderView();
 
         recyclerViewLabDetails = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_details);
@@ -138,11 +153,18 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         calendarImageView = (ImageView) rootView.findViewById(R.id.iv_calendar);
 
         calendarImageView.setOnClickListener(this);
+        boolean isNetwork = LabTabApplication.getInstance().isNetworkAvailable();
         program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
-        if (program != null) {
+        if(!isNetwork && program == null){
+            progressDialog.dismiss();
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
+        }else if (program != null) {
             setHeaderView(program);
             ArrayList<Student> studentArrayList = ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId());
-            if (!studentArrayList.isEmpty()) {
+            if(!isNetwork && (studentArrayList == null || studentArrayList.isEmpty())){
+                progressDialog.dismiss();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
+            }else if (!studentArrayList.isEmpty()) {
                 objectArrayList.addAll(studentArrayList);
                 labDetailsAdapter.notifyDataSetChanged();
             } else {
@@ -263,6 +285,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     @Override
     public void onDestroy() {
         progressDialog.dismiss();
+        LabTabApplication.getInstance().removeUIListener(OnSyncDoneListener.class, this);
         super.onDestroy();
     }
 
@@ -324,6 +347,10 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     public void onClick(View v) {
         switch ((v.getId())) {
             case R.id.tv_mark_absent:
+                if(dateSelected == null){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_DATE_FIRST);
+                    return;
+                }
                 if (!objectArrayList.isEmpty()) {
                     progressDialog.show();
                     ArrayList<Student> studentArrayList = getSelectedStudents();
@@ -470,6 +497,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                dateSelected = null;
                 notifyLabDetailsAdapter();
                 if (studentArrayList != null) {
                     if (!studentArrayList.isEmpty() && studentArrayList.size() > 1) {
@@ -487,6 +515,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                dateSelected = null;
                 notifyLabDetailsAdapter();
                 if (status == 1001) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE);
@@ -616,12 +645,32 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (syncStatus) {
+/*                if (syncStatus) {
                     labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
                 } else {
                     labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
-                }
+                }*/
             }
         });
+    }
+
+    @Override
+    public void onSyncDone() {
+        LabTabApplication.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean syncStatus = SyncManager.getInstance().isLabDetailSynced();
+                Log.d("LabDetailsFragment", "onSyncDone " + syncStatus);
+                updateSyncStatus(syncStatus);
+            }
+        });
+    }
+
+    private void updateSyncStatus(boolean isSync){
+        if (isSync) {
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+        } else {
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        }
     }
 }

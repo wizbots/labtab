@@ -20,10 +20,14 @@ import org.wizbots.labtab.model.student.response.WizardResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class StudentProfileAndStatsRequester implements Runnable, LabTabConstants {
     private String student_id;
+    StudentResponse studentProfileAndStatsResponse;
+    StudentProfile studentProfile;
+    ArrayList<StudentStats> statsArrayList;
 
     public StudentProfileAndStatsRequester() {
     }
@@ -34,8 +38,9 @@ public class StudentProfileAndStatsRequester implements Runnable, LabTabConstant
 
     @Override
     public void run() {
+        int statusCode = 0;
         LabTabResponse<StudentResponse> studentResponse = LabTabHTTPOperationController.getStudentStatsAndProfile(student_id);
-        if (studentResponse != null) {
+/*        if (studentResponse != null) {
             StudentResponse studentProfileAndStatsResponse = studentResponse.getResponse();
             StudentProfile studentProfile = getStudentProfile(studentProfileAndStatsResponse);
             ArrayList<StudentStats> statsArrayList = getStudentStats(studentProfileAndStatsResponse);
@@ -52,6 +57,25 @@ public class StudentProfileAndStatsRequester implements Runnable, LabTabConstant
         } else {
             for (GetStudentProfileAndStatsListener getStudentProfileAndStatsListener : LabTabApplication.getInstance().getUIListeners(GetStudentProfileAndStatsListener.class)) {
                 getStudentProfileAndStatsListener.unableToFetchStudent(0);
+            }
+        }*/
+
+        if (studentResponse != null) {
+            statusCode = studentResponse.getResponseCode();
+            if(statusCode == HttpURLConnection.HTTP_OK){
+                studentProfileAndStatsResponse = studentResponse.getResponse();
+                studentProfile = getStudentProfile(studentProfileAndStatsResponse);
+                statsArrayList = getStudentStats(studentProfileAndStatsResponse);
+            }
+        }
+
+        for (GetStudentProfileAndStatsListener getProgramStudentsListener : LabTabApplication.getInstance().getUIListeners(GetStudentProfileAndStatsListener.class)) {
+            if (statusCode == StatusCode.OK && studentProfileAndStatsResponse != null && studentProfile != null && statsArrayList != null) {
+                getProgramStudentsListener.studentProfileFetchedSuccessfully(studentProfileAndStatsResponse, studentProfile, statsArrayList);
+            }else if(!LabTabApplication.getInstance().isNetworkAvailable() && studentProfileAndStatsResponse == null && studentProfile == null && statsArrayList == null){
+                getProgramStudentsListener.offlineNoData();
+            } else {
+                getProgramStudentsListener.unableToFetchStudent(statusCode);
             }
         }
     }

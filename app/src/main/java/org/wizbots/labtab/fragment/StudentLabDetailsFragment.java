@@ -248,6 +248,17 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
         }
     }
 
+    @Override
+    public void offlineNoData() {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
+            }
+        });
+    }
+
     private void prepareStudentStats(ArrayList<StudentStats> studentStatsArrayList, StudentProfile studentProfile) {
         StudentStats studentStats = null;
         for (StudentStats studentStat : studentStatsArrayList) {

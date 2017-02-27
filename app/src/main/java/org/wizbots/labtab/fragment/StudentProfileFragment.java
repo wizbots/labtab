@@ -82,7 +82,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 
     @Override
     public String getFragmentName() {
-        return LabDetailsFragment.class.getSimpleName();
+        return StudentProfileFragment.class.getSimpleName();
     }
 
     public void initView() {
@@ -184,6 +184,17 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
+    }
+
+    @Override
+    public void offlineNoData() {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
+            }
+        });
     }
 
     private void setProfileDetails(StudentProfile studentProfile) {

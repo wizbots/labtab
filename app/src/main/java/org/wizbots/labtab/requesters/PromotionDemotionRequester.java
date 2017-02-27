@@ -10,6 +10,7 @@ import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.promotedemote.PromotionDemotionResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
@@ -97,6 +98,7 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                 StudentsProfileTable.getInstance().upDateStudentLevel(student.getStudent_id(), student.getLevel());
                 ProgramStudentsTable.getInstance().upDateStudentLevel(student.getStudent_id(), student.getLevel());
             }
+            SyncManager.getInstance().onRefreshData(1);
         }
     }
 

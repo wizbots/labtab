@@ -150,7 +150,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     @Override
     public String getFragmentName() {
-        return LabDetailsFragment.class.getSimpleName();
+        return EditVideoFragment.class.getSimpleName();
     }
 
     public void initView(Bundle bundle) {
@@ -590,11 +590,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     public void initKnowledgeNuggets(Bundle bundle) {
         builder = new AlertDialog.Builder(homeActivityContext);
         final String[] components;
-        if (video.getLab_level() != null) {
+/*        if (video.getLab_level() != null) {
             components = LabTabApplication.getInstance().getKnowledgeNuggets(video.getLab_level());
-        } else {
+        } else {*/
             components = homeActivityContext.getResources().getStringArray(R.array.components);
-        }
+//        }
         final boolean[] componentSelection = new boolean[components.length];
 
         if (bundle != null) {

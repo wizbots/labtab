@@ -10,37 +10,52 @@ import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+
+import static org.wizbots.labtab.util.LabListComparator.CHAT_COMPARATOR;
 
 public class ProgramOrLabRequester implements Runnable, LabTabConstants {
 
+    private ArrayList<ProgramOrLab> programOrLabArrayList;
+
     @Override
     public void run() {
+        int statusCode = 0;
         LabTabResponse<ArrayList<ProgramOrLab>> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
         if (programsOrLabs != null) {
-            ArrayList<ProgramOrLab> programOrLabArrayList = programsOrLabs.getResponse();
+            statusCode = programsOrLabs.getResponseCode();
+            programOrLabArrayList = programsOrLabs.getResponse();
             String member_id = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id();
-            for (ProgramOrLab programOrLab : programOrLabArrayList) {
-                String seasonYear[] = programOrLab.getSeason().split(" - ");
-                programOrLab.setMember_id(member_id);
-                programOrLab.setSeason(seasonYear[1].toLowerCase());
-                programOrLab.setYear(seasonYear[0]);
-                programOrLab.setStartTimeStamp(LabTabUtil.getTimeStamp(programOrLab.getStarts()));
-                programOrLab.setEndTimesStamp(LabTabUtil.getTimeStamp(programOrLab.getEnds()));
-            }
-            for (GetProgramOrLabListener getProgramOrLabListener : LabTabApplication.getInstance().getUIListeners(GetProgramOrLabListener.class)) {
-                if (programsOrLabs.getResponseCode() == StatusCode.OK) {
+            if (statusCode == StatusCode.OK) {
+                if (programOrLabArrayList != null && !programOrLabArrayList.isEmpty()) {
+                    for (ProgramOrLab programOrLab : programOrLabArrayList) {
+                        String seasonYear[] = programOrLab.getSeason().split(" - ");
+                        programOrLab.setMember_id(member_id);
+                        programOrLab.setSeason(seasonYear[1].toLowerCase());
+                        programOrLab.setYear(seasonYear[0]);
+                        programOrLab.setStartTimeStamp(LabTabUtil.getTimeStamp(programOrLab.getStarts()));
+                        programOrLab.setEndTimesStamp(LabTabUtil.getTimeStamp(programOrLab.getEnds()));
+                    }
                     ProgramsOrLabsTable.getInstance().insert(programOrLabArrayList);
-                    getProgramOrLabListener.programOrLabFetchedSuccessfully(programOrLabArrayList);
-                } else {
-                    getProgramOrLabListener.unableToFetchPrograms(programsOrLabs.getResponseCode());
                 }
             }
-        } else {
-            for (GetProgramOrLabListener getProgramOrLabListener : LabTabApplication.getInstance().getUIListeners(GetProgramOrLabListener.class)) {
-                getProgramOrLabListener.unableToFetchPrograms(0);
+        }else {
+            statusCode = HttpURLConnection.HTTP_OK;
+            programOrLabArrayList = ProgramsOrLabsTable
+                    .getInstance()
+                    .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
+        }
+        if(programOrLabArrayList != null){
+            Collections.sort(programOrLabArrayList, CHAT_COMPARATOR);
+        }
+        for (GetProgramOrLabListener getProgramOrLabListener : LabTabApplication.getInstance().getUIListeners(GetProgramOrLabListener.class)) {
+            if (statusCode == StatusCode.OK) {
+                getProgramOrLabListener.programOrLabFetchedSuccessfully(programOrLabArrayList);
+            } else {
+                getProgramOrLabListener.unableToFetchPrograms(statusCode);
             }
         }
     }
-
 }

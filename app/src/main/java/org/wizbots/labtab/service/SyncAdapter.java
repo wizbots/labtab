@@ -9,6 +9,8 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.model.program.Student;
@@ -20,13 +22,13 @@ import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
 
-import static org.wizbots.labtab.service.LabTabSyncService.statusOfDeleteVideoUploadBackgroundExecutor;
-
 /**
  * Created by ashish on 8/2/17.
  */
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
+
+    public static final String TAG = SyncAdapter.class.getName();
 
     // Global variables
     // Define a variable to contain a content resolver instance
@@ -61,12 +63,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        Log.d("SYNC","sync is running======>>>>>>>>>>>");
-        syncWizchips();
-        syncVideoToBeDeleted();
+        Log.d(TAG,"sync is running======>>>>>>>>>>>");
+/*        syncWizchips();
+        syncVideoToBeDeleted();*/
     }
 
     private void syncWizchips(){
+        if(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null){
+            return;
+        }
         ArrayList<Student> list = ProgramStudentsTable.getInstance().getUnSyncData();
         if(list != null && !list.isEmpty()){
             for (Student student: list) {
@@ -82,6 +87,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncVideoToBeDeleted() {
+        if(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null){
+            return;
+        }
         ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideosToBeDeleted();
         if (videoArrayList != null && !videoArrayList.isEmpty()) {
             for (int i = 0; i < videoArrayList.size(); i++) {

@@ -11,6 +11,7 @@ import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.model.video.response.EditProjectResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;
@@ -56,7 +57,7 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
                 break;
             }
         }
-
+        SyncManager.getInstance().onRefreshData(2);
     }
 
     private String[] getProjectCreators(ArrayList<Student> studentArrayList) {

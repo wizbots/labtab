@@ -645,11 +645,11 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     public void initKnowledgeNuggets(Bundle bundle) {
         builder = new AlertDialog.Builder(homeActivityContext);
         final String[] components;
-        if (level != null) {
-            components = LabTabApplication.getInstance().getKnowledgeNuggets(level);
-        } else {
+//        if (level != null) {
+//            components = LabTabApplication.getInstance().getKnowledgeNuggets(level);
+//        } else {
             components = homeActivityContext.getResources().getStringArray(R.array.components);
-        }
+//        }
         final boolean[] componentSelection;
         if (components != null) {
             componentSelection = new boolean[components.length];

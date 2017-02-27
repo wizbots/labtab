@@ -19,16 +19,19 @@ import org.wizbots.labtab.adapter.VideoListAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.VideoTable;
+import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
 import org.wizbots.labtab.interfaces.requesters.SyncListener;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.requesters.GetSyncingStatusRequester;
+import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.NetworkUtils;
 
 import java.util.ArrayList;
 
-public class VideoListFragment extends ParentFragment implements VideoListAdapterClickListener, SyncListener {
+public class VideoListFragment extends ParentFragment implements VideoListAdapterClickListener,
+        OnSyncDoneListener {
 
     public static final String VIDEO = "VIDEO";
     public static final String VIDEO_EDIT_CASE = "VIDEO_EDIT_CASE";
@@ -47,6 +50,8 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
+//        LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
     }
 
     @Nullable
@@ -56,8 +61,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         homeActivityContext = (HomeActivity) context;
         initView();
         prepareVideoList();
-        initListeners();
-        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.VIDEO_LIST));
+//        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.VIDEO_LIST));
         return rootView;
     }
 
@@ -79,6 +83,17 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         recyclerViewVideoList.setItemAnimator(new DefaultItemAnimator());
         recyclerViewVideoList.setAdapter(videoListAdapter);
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        boolean isSync = SyncManager.getInstance().isVideoListSynced();
+        if(isSync){
+            updateSyncStatus(true);
+        }else {
+            updateSyncStatus(false);
+        }
     }
 
     @Override
@@ -138,7 +153,33 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         }
     }
 
-    public void initListeners() {
+    @Override
+    public void onDestroy() {
+        LabTabApplication.getInstance().removeUIListener(OnSyncDoneListener.class, this);
+//        LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onSyncDone() {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean syncStatus = SyncManager.getInstance().isVideoListSynced();
+                updateSyncStatus(syncStatus);
+            }
+        });
+    }
+
+    private void updateSyncStatus(boolean isSync){
+        if (isSync) {
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+        } else {
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        }
+    }
+
+/*    public void initListeners() {
         LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
     }
 
@@ -154,12 +195,5 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
                 }
             }
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
-        super.onDestroy();
-    }
-
+    }*/
 }

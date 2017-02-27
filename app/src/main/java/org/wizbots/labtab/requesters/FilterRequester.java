@@ -13,7 +13,10 @@ import org.wizbots.labtab.retrofit.LabTabResponse;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
+
+import static org.wizbots.labtab.util.LabListComparator.CHAT_COMPARATOR;
 
 /**
  * Created by ashish on 9/2/17.
@@ -56,6 +59,9 @@ public class FilterRequester implements Runnable {
             programOrLabArrayList.addAll(ProgramsOrLabsTable
                     .getInstance()
                     .getFilteredData(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id(), params));
+        }
+        if (programOrLabArrayList != null){
+            Collections.sort(programOrLabArrayList, CHAT_COMPARATOR);
         }
         for (OnFilterListener listener : LabTabApplication.getInstance().getUIListeners(OnFilterListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.OK) {

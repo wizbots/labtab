@@ -10,6 +10,7 @@ import org.wizbots.labtab.interfaces.requesters.WithdrawWizchipsListener;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.wizchips.WizchipsWithdrawResponse;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+import org.wizbots.labtab.service.SyncManager;
 
 import java.net.HttpURLConnection;
 
@@ -52,6 +53,7 @@ public class WithdrawWizchipsRequester implements Runnable {
             Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
             ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
         }
+        SyncManager.getInstance().onRefreshData(1);
         for (WithdrawWizchipsListener listener : LabTabApplication.getInstance().getUIListeners(WithdrawWizchipsListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.OK) {
                 listener.onWithdrawWizchipsSuccess();

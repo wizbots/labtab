@@ -1,6 +1,10 @@
 package org.wizbots.labtab.fragment;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,6 +32,7 @@ import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.LocationTable;
 import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
+import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
 import org.wizbots.labtab.model.LocationResponse;
@@ -34,15 +40,20 @@ import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.requesters.FilterRequester;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
+import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class LabListFragment extends ParentFragment implements LabListAdapterClickListener, LabTabConstants, OnFilterListener, GetProgramOrLabListener, View.OnClickListener {
+public class LabListFragment extends ParentFragment implements LabListAdapterClickListener,
+        LabTabConstants, OnFilterListener, GetProgramOrLabListener, View.OnClickListener, OnSyncDoneListener {
 
     private static final String TAG = LabListFragment.class.getSimpleName();
     public static final String LAB = "LAB";
@@ -57,6 +68,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private ProgramOrLabRequester programOrLabRequester;
     private Spinner spinnerLocation, spinnerYear, spinnerSeason;
     private Map<String, String> filterMap;
+    private Date dateSelected;
 
     public LabListFragment() {
 
@@ -65,6 +77,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
     }
 
     @Nullable
@@ -139,11 +152,49 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     @Override
     public void onResume() {
         super.onResume();
+        SyncManager.getInstance().onRefreshData(1);
+        boolean isSync = SyncManager.getInstance().isLabDetailSynced();
+        if(isSync){
+            updateSyncStatus(true);
+        }else {
+            updateSyncStatus(false);
+        }
         rootView.findViewById(R.id.iv_search).setOnClickListener(this);
         rootView.findViewById(R.id.iv_cancel).setOnClickListener(this);
         rootView.findViewById(R.id.btn_today).setOnClickListener(this);
         rootView.findViewById(R.id.btn_tomorrow).setOnClickListener(this);
+        rootView.findViewById(R.id.calendar).setOnClickListener(this);
         initAdapterListener();
+    }
+
+    private void showCalendar() {
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dateSelected = calendar.getTime();
+                if (dateSelected != null){
+                    filterMap.clear();
+                    filterMap.putAll(getDateByCalendar(dateSelected));
+                    callFilterApi();
+                }
+/*                if (LabTabUtil.isValidDateSelection(calendar.getTime())) {
+                    dateSelected = calendar.getTime();
+
+                } else {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY);
+                }*/
+            }
+
+        };
+        new DatePickerDialog(homeActivityContext,
+                date, myCalendar.get(Calendar.YEAR),
+                myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     private void initAdapterListener() {
@@ -231,6 +282,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(OnFilterListener.class, this);
         LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(OnSyncDoneListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
     }
@@ -246,7 +298,15 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                resetOriginalData();
+                if (!LabTabApplication.getInstance().isNetworkAvailable() && (programOrLabs == null || programOrLabs.isEmpty())){
+                    progressDialog.dismiss();
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No data available, please try again later with Internet connectivity");
+                }else {
+                    objectArrayList.clear();
+                    objectArrayList.addAll(programOrLabs);
+                    labListAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                }
             }
         });
     }
@@ -290,6 +350,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             case R.id.iv_search:
                 callFilterApi();
                 break;
+            case R.id.calendar:
+                showCalendar();
+                break;
             case R.id.btn_today:
                 Log.d(TAG, "TODAY BUTTON CLICKED");
                 filterMap.clear();
@@ -317,9 +380,12 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (programOrLabs != null && programOrLabs.isEmpty()) {
-                    Toast.makeText(homeActivityContext, "No Data Found", Toast.LENGTH_SHORT).show();
+                if (!LabTabApplication.getInstance().isNetworkAvailable() && (programOrLabs == null || programOrLabs.isEmpty())){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
+                }else if (programOrLabs != null && programOrLabs.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_FOUND);
                 }
+                removeTodayTomorrowFilterKey();
                 objectArrayList.clear();
                 objectArrayList.addAll(programOrLabs);
                 labListAdapter.notifyDataSetChanged();
@@ -333,11 +399,20 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                removeTodayTomorrowFilterKey();
                 progressDialog.dismiss();
-                Toast.makeText(homeActivityContext, "Failed to fetch filter", Toast.LENGTH_SHORT).show();
-
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.FAILED_TO_FETCH_FILTER);
             }
         });
+    }
+
+    private Map<String, String> getDateByCalendar(Date date) {
+        Map<String, String> todayDate = new LinkedHashMap<>();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String formatted = format1.format(date);
+        todayDate.put(FilterRequestParameter.FROM, formatted);
+        todayDate.put(FilterRequestParameter.TO, formatted);
+        return todayDate;
     }
 
     private Map<String, String> getTodaysDate() {
@@ -352,5 +427,24 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         todayDate.put(FilterRequestParameter.FROM, LabTabUtil.getTodayDate(true));
         todayDate.put(FilterRequestParameter.TO, LabTabUtil.getTodayDate(true));
         return todayDate;
+    }
+
+    @Override
+    public void onSyncDone() {
+        LabTabApplication.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean syncStatus = SyncManager.getInstance().isLabDetailSynced();
+                updateSyncStatus(syncStatus);
+            }
+        });
+    }
+
+    private void updateSyncStatus(boolean isSync){
+        if (isSync) {
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+        } else {
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        }
     }
 }

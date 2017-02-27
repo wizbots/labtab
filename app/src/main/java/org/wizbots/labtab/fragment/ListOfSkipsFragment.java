@@ -20,6 +20,7 @@ import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.ProgramAbsencesTable;
 import org.wizbots.labtab.interfaces.ListOfSkipsAdapterClickListener;
+import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.requesters.GetStudentsListener;
 import org.wizbots.labtab.interfaces.requesters.SyncListener;
 import org.wizbots.labtab.model.program.Absence;
@@ -27,13 +28,15 @@ import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.requesters.GetStudentsRequester;
 import org.wizbots.labtab.requesters.GetSyncingStatusRequester;
+import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAdapterClickListener, GetStudentsListener, SyncListener {
+public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAdapterClickListener,
+        GetStudentsListener, SyncListener, OnSyncDoneListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -57,6 +60,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
     }
 
     @Nullable
@@ -68,7 +72,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         labLevel = getArguments().getString(LabDetailsFragment.LAB_LEVEL);
         initView();
         initListeners();
-        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.LIST_OF_SKIPS));
+//        BackgroundExecutor.getInstance().execute(new GetSyncingStatusRequester(Fragments.LIST_OF_SKIPS));
         return rootView;
     }
 
@@ -111,6 +115,8 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
             if (!absenceArrayList.isEmpty()) {
                 objectArrayList.addAll(absenceArrayList);
                 listOfSkipsAdapter.notifyDataSetChanged();
+            }else if(!LabTabApplication.getInstance().isNetworkAvailable() && absenceArrayList.isEmpty()){
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
             } else {
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LIST_OF_SKIPS_FOUND_FOR_THIS_LAB);
             }
@@ -131,6 +137,18 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SyncManager.getInstance().onRefreshData(1);
+        boolean isSync = SyncManager.getInstance().isMarkAbsentSync();
+        if(isSync){
+            updateSyncStatus(true);
+        }else {
+            updateSyncStatus(false);
+        }
     }
 
     @Override
@@ -196,6 +214,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(GetStudentsListener.class, this);
         LabTabApplication.getInstance().removeUIListener(SyncListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(OnSyncDoneListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
     }
@@ -236,12 +255,31 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (syncStatus) {
+/*                if (syncStatus) {
                     labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
                 } else {
                     labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
-                }
+                }*/
             }
         });
+    }
+
+    @Override
+    public void onSyncDone() {
+        LabTabApplication.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean syncStatus = SyncManager.getInstance().isMarkAbsentSync();
+                updateSyncStatus(syncStatus);
+            }
+        });
+    }
+
+    private void updateSyncStatus(boolean isSync){
+        if (isSync) {
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+        } else {
+            labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        }
     }
 }
