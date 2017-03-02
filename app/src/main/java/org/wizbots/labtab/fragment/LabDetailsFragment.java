@@ -102,6 +102,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
     @Override
     public void onResume() {
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_DETAILS);
         super.onResume();
         SyncManager.getInstance().onRefreshData(1);
         boolean isSync = SyncManager.getInstance().isLabDetailSynced();

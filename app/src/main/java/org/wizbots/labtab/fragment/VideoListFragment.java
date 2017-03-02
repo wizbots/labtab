@@ -21,6 +21,7 @@ import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
+import org.wizbots.labtab.interfaces.requesters.OnVideoUploadListener;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.NetworkUtils;
@@ -28,7 +29,7 @@ import org.wizbots.labtab.util.NetworkUtils;
 import java.util.ArrayList;
 
 public class VideoListFragment extends ParentFragment implements VideoListAdapterClickListener,
-        OnSyncDoneListener {
+        OnSyncDoneListener, OnVideoUploadListener {
 
     public static final String VIDEO = "VIDEO";
     public static final String VIDEO_EDIT_CASE = "VIDEO_EDIT_CASE";
@@ -48,6 +49,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
+        LabTabApplication.getInstance().addUIListener(OnVideoUploadListener.class, this);
     }
 
     @Nullable
@@ -82,6 +84,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
 
     @Override
     public void onResume() {
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.VIDEO_LIST);
         super.onResume();
         boolean isSync = SyncManager.getInstance().isVideoListSynced();
         if(isSync){
@@ -140,6 +143,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     public void prepareVideoList() {
         ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideoList();
         if (!videoArrayList.isEmpty()) {
+            objectArrayList.clear();
             objectArrayList.addAll(videoArrayList);
             videoListAdapter.notifyDataSetChanged();
         } else {
@@ -151,6 +155,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(OnSyncDoneListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(OnVideoUploadListener.class, this);
         super.onDestroy();
     }
 
@@ -159,6 +164,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                prepareVideoList();
                 boolean syncStatus = SyncManager.getInstance().isVideoListSynced();
                 updateSyncStatus(syncStatus);
             }
@@ -173,21 +179,23 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         }
     }
 
-/*    public void initListeners() {
-        LabTabApplication.getInstance().addUIListener(SyncListener.class, this);
-    }
-
     @Override
-    public void syncStatusFetchedSuccessfully(final boolean syncStatus) {
+    public void onVideoUploadSussess() {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (syncStatus) {
-                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
-                } else {
-                    labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
-                }
+                prepareVideoList();
             }
         });
-    }*/
+    }
+
+    @Override
+    public void onVideoUploadError(int statusCode) {
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                prepareVideoList();
+            }
+        });
+    }
 }

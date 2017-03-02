@@ -2,9 +2,12 @@ package org.wizbots.labtab.requesters;
 
 import android.net.Uri;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.VideoTable;
+import org.wizbots.labtab.interfaces.requesters.AddWizchipsListener;
+import org.wizbots.labtab.interfaces.requesters.OnVideoUploadListener;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.model.video.response.CreateProjectResponse;
@@ -37,6 +40,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+        int statusCode = 0;
         Uri fileUri = Uri.parse(videoInDB.getPath());
 
         File file = new File(videoInDB.getPath());
@@ -55,15 +59,23 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
                 getProjectCreators(LabTabUtil.convertStringToProjectCreators(videoInDB.getProject_creators())));
 
         if (createProjectResponse != null) {
+            statusCode = createProjectResponse.getResponseCode();
             if (createProjectResponse.getResponseCode() == StatusCode.CREATED) {
+                NotiManager.getInstance().updateNotification(position, false);
                 projectCreatedSuccessfully(createProjectResponse.getResponse());
-                NotiManager.getInstance().updateNotification();
             } else {
                 unableToCreateProject();
             }
         }
         SyncManager.getInstance().onRefreshData(2);
         labTabSyncService.videoUploadCompleted(videoInDB, position);
+        for (OnVideoUploadListener listener : LabTabApplication.getInstance().getUIListeners(OnVideoUploadListener.class)) {
+            if (statusCode == LabTabConstants.StatusCode.CREATED) {
+                listener.onVideoUploadSussess();
+            } else {
+                listener.onVideoUploadError(statusCode);
+            }
+        }
     }
 
     private String[] getProjectCreators(ArrayList<Student> studentArrayList) {

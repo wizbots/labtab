@@ -22,7 +22,6 @@ public class NotiManager {
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(LabTabApplication.getInstance());
     private static NotiManager _instance;
     private static int totalCount;
-    private static int count;
 
     static {
         _instance = new NotiManager();
@@ -58,14 +57,24 @@ public class NotiManager {
         mNotificationManager.notify(0, builder.build());
     }
 
-    public void updateNotification(){
-        if(count == totalCount){
+    public void updateNotification(int c, boolean isDone){
+        builder.setContentText(++c + " out of " + totalCount);
+        builder.setProgress(totalCount, c, true);
+        mNotificationManager.notify(0, builder.build());
+        if(c == totalCount){
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
             builder.setContentText("Upload Complete").setProgress(0,0,false);
             mNotificationManager.notify(0, builder.build());
-            return;
         }
-        builder.setContentText(++count + " out of " + count);
-        builder.setProgress(totalCount, count, true);
-        mNotificationManager.notify(0, builder.build());
     }
 }

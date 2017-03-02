@@ -121,6 +121,9 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
             progressDialog.dismiss();
         } else {
             progressDialog.dismiss();
+            if(!LabTabApplication.getInstance().isNetworkAvailable() && program == null){
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
+            }
         }
         rootView.findViewById(R.id.ll_add_video).setOnClickListener(new View.OnClickListener() {
             @Override

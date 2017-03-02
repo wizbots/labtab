@@ -59,6 +59,8 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
@@ -339,6 +341,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 dialog.show();
                 break;
             case R.id.edt_knowledge_nuggets:
+                if (creatorsSelected == null  || creatorsSelected.isEmpty()){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    return;
+                }
                 //Double Click Fix
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                     return;
@@ -388,6 +394,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "This student is already in the list");
                     }
                 }
+                initKnowledgeNuggets(null);
             }
         });
     }
@@ -443,6 +450,14 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             @Override
             public void run() {
                 creatorsSelected.remove(student);
+                if (creatorsSelected != null  && creatorsSelected.isEmpty()){
+                    knowledgeNuggets.clear();
+                    video.setKnowledge_nuggets("");
+                    knowledgeNuggetsSelected = "";
+                    if(knowledgeNuggetsEditTextCustom != null)
+                        knowledgeNuggetsEditTextCustom.setText("");
+                }
+                initKnowledgeNuggets(null);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
             }
         });
@@ -588,14 +603,42 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     public void initKnowledgeNuggets(Bundle bundle) {
+        if (creatorsSelected == null || creatorsSelected.size() == 0)
+            return;
         builder = new AlertDialog.Builder(homeActivityContext);
         final String[] components;
+        components = LabTabApplication.getInstance().getKnowledgeNuggetsByStudent(creatorsSelected);
+        final boolean[] componentSelection = new boolean[components.length];
+        if(components != null){
+            String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
+            if (knwlgngts != null  && knwlgngts.length > 0) {
+                List<String> result = new LinkedList();
+                for(int i=0; i < components.length; i++){
+                    for(int j=0; j < knwlgngts.length; j++){
+                        if(components[i].equals(knwlgngts[j])){
+                            result.add(knwlgngts[j]);
+                        }
+                    }
+                }
+                if(result.size() > 0){
+                    knwlgngts = result.toArray(new String[result.size()]);
+                }
+                knowledgeNuggets.clear();
+                knowledgeNuggets.addAll(Arrays.asList(knwlgngts));
+                knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
+                knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)).replaceAll("\"", ""));
+                for(int i=0; i < components.length; i++){
+                    for(int j=0; j < knwlgngts.length; j++){
+                        if(components[i].equals(knwlgngts[j])){
+                            componentSelection[i] = true;
+                        }
+                    }
+                }
+            }
+        }
 /*        if (video.getLab_level() != null) {
             components = LabTabApplication.getInstance().getKnowledgeNuggets(video.getLab_level());
-        } else {*/
-            components = homeActivityContext.getResources().getStringArray(R.array.components);
-//        }
-        final boolean[] componentSelection = new boolean[components.length];
+        }*/
 
         if (bundle != null) {
             ArrayList<String> kN = (ArrayList<String>) bundle.getSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS);
@@ -612,28 +655,32 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 }
             }
             String[] knwlgngts = (String[]) LabTabUtil.fromJson(video.getKnowledge_nuggets(), String[].class);
-            for (String kn : knwlgngts) {
-                for (int i = 0; i < components.length; i++) {
-                    if (components[i].equals(kn)) {
-                        componentSelection[i] = true;
-                        break;
+            if(knwlgngts != null && knwlgngts.length > 0){
+                for (String kn : knwlgngts) {
+                    for (int i = 0; i < components.length; i++) {
+                        if (components[i].equals(kn)) {
+                            componentSelection[i] = true;
+                            break;
+                        }
                     }
+                    knowledgeNuggets.add(kn);
                 }
-                knowledgeNuggets.add(kn);
             }
 
         } else {
             String[] knwlgngts = (String[]) LabTabUtil.fromJson(video.getKnowledge_nuggets(), String[].class);
-            for (String kn : knwlgngts) {
-                for (int i = 0; i < components.length; i++) {
-                    if (components[i].equals(kn)) {
-                        componentSelection[i] = true;
-                        break;
+            if(knwlgngts != null && knwlgngts.length > 0){
+                for (String kn : knwlgngts) {
+                    for (int i = 0; i < components.length; i++) {
+                        if (components[i].equals(kn)) {
+                            componentSelection[i] = true;
+                            break;
+                        }
                     }
+                    knowledgeNuggets.add(kn);
                 }
-                knowledgeNuggets.add(kn);
+                knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
             }
-            knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
         }
 
         builder.setMultiChoiceItems(components, componentSelection, new DialogInterface.OnMultiChoiceClickListener() {

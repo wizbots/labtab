@@ -165,6 +165,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         rootView.findViewById(R.id.btn_tomorrow).setOnClickListener(this);
         rootView.findViewById(R.id.calendar).setOnClickListener(this);
         initAdapterListener();
+        resetFilter();
     }
 
     private void showCalendar() {
@@ -366,6 +367,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 callFilterApi();
                 break;
             case R.id.iv_cancel:
+                progressDialog.show();
                 filterMap.clear();
                 spinnerLocation.setSelection(0);
                 spinnerYear.setSelection(0);
@@ -373,6 +375,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 resetOriginalData();
                 break;
         }
+    }
+
+    private void resetFilter(){
+        filterMap.clear();
+        spinnerLocation.setSelection(0);
+        spinnerYear.setSelection(0);
+        spinnerSeason.setSelection(0);
     }
 
     @Override

@@ -257,7 +257,6 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                     fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                     fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 }
-
             }else {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
@@ -272,6 +271,14 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
             mDrawerLayout.closeDrawer(mDrawerList);
+        }
+        try {
+            LabDetailsFragment labDetailsfragment = (LabDetailsFragment)getSupportFragmentManager().findFragmentByTag("LabDetailsFragment");
+            if(labDetailsfragment != null && labDetailsfragment.isVisible()){
+                labTabHeaderLayout.setDynamicText(Title.LAB_DETAILS);
+            }
+        } catch (Exception ignored) {
+
         }
         fragmentManager = getSupportFragmentManager();
         int backStackCount = fragmentManager.getBackStackEntryCount();
