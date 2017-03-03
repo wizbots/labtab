@@ -132,6 +132,7 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
             videoUploadTaskCompleted &= all;
         }
         if (videoUploadTaskCompleted) {
+            SyncManager.getInstance().onRefreshData(2);
             statusOfSingleVideoUploadBackgroundExecutor = null;
             if (isServiceToBeStopped()) {
                 stopForeground(true);

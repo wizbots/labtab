@@ -67,7 +67,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
                 unableToCreateProject();
             }
         }
-        SyncManager.getInstance().onRefreshData(2);
+//        SyncManager.getInstance().onRefreshData(2);
         labTabSyncService.videoUploadCompleted(videoInDB, position);
         for (OnVideoUploadListener listener : LabTabApplication.getInstance().getUIListeners(OnVideoUploadListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.CREATED) {
