@@ -277,6 +277,14 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             if(labDetailsfragment != null && labDetailsfragment.isVisible()){
                 labTabHeaderLayout.setDynamicText(Title.LAB_DETAILS);
             }
+            ListOfSkipsFragment listofskipfragment = (ListOfSkipsFragment)getSupportFragmentManager().findFragmentByTag("ListOfSkipsFragment");
+            if(listofskipfragment != null && listofskipfragment.isVisible()){
+                labTabHeaderLayout.setDynamicText(Title.LIST_OF_SKIPS);
+            }
+            AdditionalInformationFragment additionalfragment = (AdditionalInformationFragment)getSupportFragmentManager().findFragmentByTag("AdditionalInformationFragment");
+            if(additionalfragment != null && additionalfragment.isVisible()){
+                labTabHeaderLayout.setDynamicText(Title.ADDITIONAL_INFORMATION);
+            }
         } catch (Exception ignored) {
 
         }

@@ -34,19 +34,28 @@ public class DeleteVideoRequester implements Runnable {
 
     @Override
     public void run() {
+        Video vd  = VideoTable.getInstance().getVideoById(mVideo.getId());
         int statusCode = 0;
         LabTabResponse<String> programsOrLabs = LabTabHTTPOperationController.deleteVideo(mVideo.getVideoId());
         if (programsOrLabs != null) {
             Log.d(TAG,String.valueOf(programsOrLabs.getResponseCode()));
             statusCode = programsOrLabs.getResponseCode();
-            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT || statusCode == HttpURLConnection.HTTP_NOT_FOUND){
+            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT){
+                VideoTable.getInstance().deleteVideoById(mVideo.getId());
+                deleteVideoFileFromStorage();
+            }else if(statusCode == HttpURLConnection.HTTP_NOT_FOUND){
                 VideoTable.getInstance().deleteVideoById(mVideo.getId());
                 deleteVideoFileFromStorage();
             }
         } else {
-            statusCode = HttpURLConnection.HTTP_NO_CONTENT;
-            VideoTable.getInstance().updateDeletedVideo(mVideo.getId(), true);
+            if(vd.getVideoId() == null || vd.getVideoId().isEmpty()){
+                VideoTable.getInstance().deleteVideoById(mVideo.getId());
+            }else{
+                VideoTable.getInstance().updateDeletedVideo(mVideo.getId(), true);
+            }
             deleteVideoFileFromStorage();
+            statusCode = HttpURLConnection.HTTP_NO_CONTENT;
+
         }
         SyncManager.getInstance().onRefreshData(2);
         for (OnDeleteVideoListener listener : LabTabApplication.getInstance().getUIListeners(OnDeleteVideoListener.class)) {
