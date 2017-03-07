@@ -79,6 +79,10 @@ public interface LabTabConstants {
         int LIST_OF_SKIPS = 12;
         int ADDITIONAL_INFORMATION = 13;
         int VIEW_VIDEO = 14;
+
+        int LAB_LIST_DRAWER = 15;
+        int VIDEO_LIST_DRAWER = 16;
+        int ADD_VIDEO_DRAWER = 16;
     }
 
     //Lab Levels

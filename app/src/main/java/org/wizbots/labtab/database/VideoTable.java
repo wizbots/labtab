@@ -293,7 +293,7 @@ public class VideoTable extends AbstractTable {
             Log.e(TAG, "Error while insert video in Batch", e);
         } finally {
             db.endTransaction();
-//            SyncManager.getInstance().onRefreshData(2);
+            SyncManager.getInstance().onRefreshData(2);
         }
     }
 

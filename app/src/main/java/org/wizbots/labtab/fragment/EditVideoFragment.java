@@ -334,6 +334,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 homeActivityContext.onBackPressed();
                 break;
             case R.id.component:
+                if (creatorsSelected == null  || creatorsSelected.isEmpty()){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    return;
+                }
                 //Double Click Fix
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                     return;
@@ -610,7 +614,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             return;
         builder = new AlertDialog.Builder(homeActivityContext);
         Set<String> noug = new HashSet<>();
-        noug.addAll(Arrays.asList(LabTabApplication.getInstance().getKnowledgeNuggetsByStudent(creatorsSelected)));
+        String[] temp = LabTabApplication.getInstance().getKnowledgeNuggetsByStudent(creatorsSelected);
+        if (temp != null && temp.length > 0)
+        noug.addAll(Arrays.asList(temp));
 
 /*        if (bundle != null) {
             HashSet<String> kN = (HashSet<String>) bundle.getSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS);
@@ -643,21 +649,34 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 }
             }
         }else if(video != null){
+            knowledgeNuggets.clear();
             String[] knwlgngts = (String[]) LabTabUtil.fromJson(video.getKnowledge_nuggets(), String[].class);
             if(knwlgngts != null && knwlgngts.length > 0){
                 for (String kn : knwlgngts) {
                     for (int i = 0; i < components.length; i++) {
                         if (components[i].equals(kn)) {
                             componentSelection[i] = true;
+                            knowledgeNuggets.add(kn);
                             break;
                         }
                     }
-                    knowledgeNuggets.add(kn);
                 }
             }
         }
 
-        knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
+            knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
+
+
+            String[] tmp = getKnowledgeNuggets(knowledgeNuggets);
+            if(tmp != null && tmp.length > 0){
+                String tempStr = LabTabUtil.toJson(tmp).replaceAll("\"", "");
+                video.setKnowledge_nuggets(knowledgeNuggetsSelected);
+                knowledgeNuggetsEditTextCustom.setText((tempStr != null && !tempStr.isEmpty()) ? tempStr : "");
+            }else {
+                video.setKnowledge_nuggets(knowledgeNuggetsSelected);
+                knowledgeNuggetsEditTextCustom.setText("");
+            }
+
 
         if(components != null){
             String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
@@ -706,7 +725,13 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     }
                 }
                 knowledgeNuggetsSelected = (LabTabUtil.toJson(knowledgeNuggets));
-                knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)).replaceAll("\"", ""));
+                video.setKnowledge_nuggets(knowledgeNuggetsSelected);
+                String[] tmp = getKnowledgeNuggets(knowledgeNuggets);
+                if(tmp != null && tmp.length > 0){
+                    knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(tmp).replaceAll("\"", ""));
+                }else {
+                    knowledgeNuggetsEditTextCustom.setText("");
+                }
             }
         });
 
@@ -768,6 +793,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             }
         });
 
+        if (components != null && components.length <= 0)
+        builder.setMessage("No knowledge nuggets for selected student");
     }
 
     private String[] getKnowledgeNuggets(HashSet<String> knowledgeNuggets) {

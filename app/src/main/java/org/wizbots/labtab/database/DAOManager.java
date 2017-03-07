@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class DAOManager extends SQLiteOpenHelper implements OnLoadListener {
 
     public static final String TAG = DAOManager.class.getName();
-//    public static final String CLIENT_DATABASE_NAME = "labtab.db";
-        public static final String CLIENT_DATABASE_NAME = "/sdcard/LABTAB/labtab.db";
+    public static final String CLIENT_DATABASE_NAME = "labtab.db";
+//        public static final String CLIENT_DATABASE_NAME = "/sdcard/LABTAB/labtab.db";
     public static final int DATABASE_VERSION = 1;
 
     private static DAOManager _instance = null;

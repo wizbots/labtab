@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +135,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             videoListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
         }
         videoListViewHolder.videoListLinearLayout.setBackgroundColor(videoListLinearLayoutColor);
+        Log.d("VideoListAdapter", video.getLab_level());
         LabTabUtil.setLabLevelImageResource(video.getLab_level(), videoListViewHolder.labLevelImageView);
         videoListViewHolder.thumbnailTextViewCustom.setVisibility(View.VISIBLE);
         videoListViewHolder.videoThumbnailImageView.setVisibility(View.GONE);

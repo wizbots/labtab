@@ -57,7 +57,6 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
                 break;
             }
         }
-        SyncManager.getInstance().onRefreshData(2);
     }
 
     private String[] getProjectCreators(ArrayList<Student> studentArrayList) {

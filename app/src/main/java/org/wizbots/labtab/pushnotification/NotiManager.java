@@ -9,6 +9,10 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
+import org.wizbots.labtab.database.VideoTable;
+import org.wizbots.labtab.model.video.Video;
+
+import java.util.ArrayList;
 
 /**
  * Created by ashish on 27/2/17.
@@ -22,6 +26,7 @@ public class NotiManager {
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(LabTabApplication.getInstance());
     private static NotiManager _instance;
     private static int totalCount;
+    private static int mCount = 0;
 
     static {
         _instance = new NotiManager();
@@ -51,30 +56,27 @@ public class NotiManager {
                 .setContentTitle("Uploading video")
                 .setAutoCancel(false)
                 .setContentIntent(notifyPendingIntent)
+                .setOngoing(true)
                 .build();
-        builder.setContentText(0 + " out of " + totalCount);
-        builder.setProgress(totalCount, 0, true);
+        builder.setContentText(mCount + " out of " + totalCount);
+        builder.setProgress(totalCount, mCount, true);
         mNotificationManager.notify(0, builder.build());
     }
 
-    public void updateNotification(int c, boolean isDone){
-        builder.setContentText(++c + " out of " + totalCount);
-        builder.setProgress(totalCount, c, true);
+    public void updateNotification(){
+        mCount += 1;
+        builder.setContentText(mCount + " out of " + totalCount);
+        builder.setProgress(totalCount, mCount, true);
         mNotificationManager.notify(0, builder.build());
-        if(c == totalCount){
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+        if(mCount == totalCount){
+            mCount = 0;
             builder.setContentText("Upload Complete").setProgress(0,0,false);
+            builder.setOngoing(false);
             mNotificationManager.notify(0, builder.build());
         }
+    }
+
+    public void cancelNotificatio(){
+
     }
 }

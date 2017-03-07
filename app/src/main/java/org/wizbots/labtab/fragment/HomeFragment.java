@@ -63,6 +63,14 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
     }
 
+    @Override
+    public void onResume() {
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(
+                String.format(homeActivityContext.getString(R.string.welcome_dynamic_mentor_name),
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
+        super.onResume();
+    }
+
     public void initListeners() {
         rootView.findViewById(R.id.cv_lab_list).setOnClickListener(this);
         rootView.findViewById(R.id.cv_go_to).setOnClickListener(this);

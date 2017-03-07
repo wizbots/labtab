@@ -73,12 +73,17 @@ import java.util.List;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
-public class AddVideoFragment extends ParentFragment implements View.OnClickListener, ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener, LabListDialogFragment.LabListClickListener, GetProgramOrLabListener, GetProgramStudentsListener {
+public class AddVideoFragment extends ParentFragment implements View.OnClickListener,
+        ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener,
+        LabListDialogFragment.LabListClickListener, GetProgramOrLabListener, GetProgramStudentsListener {
+
+    public static final String TAG = AddVideoFragment.class.getSimpleName();
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
     public static final String PROJECT_CREATORS = "PROJECT_CREATORS";
     public static final String KNOWLEDGE_NUGGETS = "KNOWLEDGE_NUGGETS";
+    public static final String LEVEL = "lab_level";
     public static final String NUGGETS = "NUGGETS";
     public static final String PROGRAM = "PROGRAM";
     private LabTabHeaderLayout labTabHeaderLayout;
@@ -235,6 +240,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                         .load(Uri.fromFile(new File(savedVideoUri.getPath())))
                         .into(videoThumbnailImageView);
             }
+            level = bundle.getString(LEVEL);
             ArrayList<Student> objects = (ArrayList<Student>) bundle.getSerializable(PROJECT_CREATORS);
             if (objects != null && !objects.isEmpty()) {
                 creatorsSelected.clear();
@@ -332,12 +338,12 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 createProjectRequest.setStatus(0);
                 String newFileName = getNewFileName(titleEditTextCustom.getText().toString(), (labSKUTextViewCustom.getText().toString()).toUpperCase(), creatorsSelected);
                 savedVideoUri = renameFile(savedVideoUri, newFileName);
-                Log.d("RENAMEDFILE", savedVideoUri.getPath());
                 createProjectRequest.setPath(savedVideoUri.getPath());
                 createProjectRequest.setTitle(titleEditTextCustom.getText().toString());
                 createProjectRequest.setCategory((String) (categorySpinner.getSelectedItem()));
                 createProjectRequest.setMentor_name(mentorNameTextViewCustom.getText().toString());
                 createProjectRequest.setLab_sku(labSKUTextViewCustom.getText().toString());
+                Log.d("AddVideoFragment", level);
                 createProjectRequest.setLab_level(level);
                 createProjectRequest.setKnowledge_nuggets(knowledgeNuggets);
                 createProjectRequest.setDescription(descriptionEditTextCustom.getText().toString());
@@ -354,6 +360,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 video.setCategory(createProjectRequest.getCategory());
                 video.setMentor_name(createProjectRequest.getMentor_name());
                 video.setLab_sku(createProjectRequest.getLab_sku());
+                Log.d("AddVideoFragment", createProjectRequest.getLab_level());
                 video.setLab_level(createProjectRequest.getLab_level());
                 video.setKnowledge_nuggets(LabTabUtil.toJson(getKnowledgeNuggets(createProjectRequest.getKnowledge_nuggets())));
                 video.setDescription(createProjectRequest.getDescription());
@@ -385,6 +392,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 homeActivityContext.onBackPressed();
                 break;
             case R.id.component:
+                if (creatorsSelected == null  || creatorsSelected.isEmpty()){
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    return;
+                }
                 //Double Click Fix
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                     return;
@@ -653,6 +664,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         outState.putSerializable(PROJECT_CREATORS, creatorsSelected);
         outState.putSerializable(KNOWLEDGE_NUGGETS, knowledgeNuggets);
         outState.putString(NUGGETS, knowledgeNuggetsSelected);
+        outState.putString(LEVEL, level);
         outState.putParcelable(PROGRAM, program);
         super.onSaveInstanceState(outState);
     }
@@ -822,6 +834,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             if (program.getSku() != programOrLab.getSku()) {
                 creatorsSelected.clear();
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                knowledgeNuggets.clear();
+                knowledgeNuggetsSelected = "";
+                if(knowledgeNuggetsEditTextCustom != null)
+                    knowledgeNuggetsEditTextCustom.setText("");
             }
         }
         progressDialog.show();

@@ -162,7 +162,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragment = new LoginFragment();
                 fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.add(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 fragmentTransaction.commit();
                 lockDrawerLayout();
@@ -171,7 +171,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragment = new HomeFragment();
                 fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.add(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 fragmentTransaction.commit();
             }
@@ -240,23 +240,31 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         fragment.setArguments(bundle);
         try {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if(fragment.getFragmentName().equalsIgnoreCase("HomeFragment")
-                    || fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")){
+            if(fragment.getFragmentName().equalsIgnoreCase("HomeFragment")){
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(fragment.getFragmentName());
             }else if(fragment.getFragmentName().equalsIgnoreCase("ListOfSkipsFragment")) {
-                boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate ("ListOfSkipsFragment", 0);
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("ListOfSkipsFragment", 0);
                 if (!fragmentPopped){
                     fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                     fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 }
 
             }else if(fragment.getFragmentName().equalsIgnoreCase("AdditionalInformationFragment")){
-                boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate ("AdditionalInformationFragment", 0);
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("AdditionalInformationFragment", 0);
                 if (!fragmentPopped){
                     fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                     fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 }
+            }else if(fragment.getFragmentName().equalsIgnoreCase("VideoListFragment")){
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("VideoListFragment", 0);
+                if (!fragmentPopped){
+                    fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                    fragmentTransaction.addToBackStack("HomeFragment");
+                }
+            }else if(fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")){
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.addToBackStack(null);
             }else {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
@@ -272,6 +280,13 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
             mDrawerLayout.closeDrawer(mDrawerList);
         }
+        fragmentManager = getSupportFragmentManager();
+        int backStackCount = fragmentManager.getBackStackEntryCount();
+        if (backStackCount == 1) {
+            finish();
+        } else if (backStackCount > 1) {
+            fragmentManager.popBackStackImmediate();
+        }
         try {
             LabDetailsFragment labDetailsfragment = (LabDetailsFragment)getSupportFragmentManager().findFragmentByTag("LabDetailsFragment");
             if(labDetailsfragment != null && labDetailsfragment.isVisible()){
@@ -285,15 +300,13 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             if(additionalfragment != null && additionalfragment.isVisible()){
                 labTabHeaderLayout.setDynamicText(Title.ADDITIONAL_INFORMATION);
             }
+            HomeFragment homefragment = (HomeFragment)getSupportFragmentManager().findFragmentByTag("HomeFragment");
+            if(homefragment != null && homefragment.isVisible()){
+                labTabHeaderLayout.setDynamicText(String.format(getString(R.string.welcome_dynamic_mentor_name),
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
+            }
         } catch (Exception ignored) {
 
-        }
-        fragmentManager = getSupportFragmentManager();
-        int backStackCount = fragmentManager.getBackStackEntryCount();
-        if (backStackCount == 1) {
-            finish();
-        } else if (backStackCount > 1) {
-            fragmentManager.popBackStackImmediate();
         }
     }
 
@@ -324,7 +337,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     public void clearAllTheFragmentFromStack(boolean b) {
         try {
             AddVideoFragment addVideofragment = (AddVideoFragment)getSupportFragmentManager().findFragmentByTag("AddVideoFragment");
-            if(addVideofragment != null && addVideofragment.isVisible()){
+            if((addVideofragment != null && addVideofragment.isVisible())) {
                 FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
                 trans.remove(addVideofragment);
                 trans.commit();

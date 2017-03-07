@@ -61,13 +61,14 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
         if (createProjectResponse != null) {
             statusCode = createProjectResponse.getResponseCode();
             if (createProjectResponse.getResponseCode() == StatusCode.CREATED) {
-                NotiManager.getInstance().updateNotification(position, false);
                 projectCreatedSuccessfully(createProjectResponse.getResponse());
+                NotiManager.getInstance().updateNotification();
             } else {
                 unableToCreateProject();
             }
+        }else {
+            SyncManager.getInstance().onRefreshData(2);
         }
-//        SyncManager.getInstance().onRefreshData(2);
         labTabSyncService.videoUploadCompleted(videoInDB, position);
         for (OnVideoUploadListener listener : LabTabApplication.getInstance().getUIListeners(OnVideoUploadListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.CREATED) {
