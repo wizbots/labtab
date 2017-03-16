@@ -197,10 +197,10 @@
 
     <string-array name="array_season">
         <item>All Seasons</item>
-        <item>fall</item>
-        <item>spring</item>
-        <item>summer</item>
-        <item>winter</item>
+        <item>Fall</item>
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Winter</item>
     </string-array>
 
     <string-array name="components">

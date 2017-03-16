@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -188,7 +189,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
-        RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(),2);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
@@ -218,6 +219,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             labSKUTextViewCustom.setText("");
         } else {
             labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
+            labSKUTextViewCustom.setEnabled(false);
         }
 
         if (bundle != null) {
@@ -230,6 +232,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         closeImageView.setOnClickListener(this);
         closeLinearLayout.setOnClickListener(this);
         componentTextViewCustom.setOnClickListener(this);
+        labSKUTextViewCustom.setOnClickListener(this);
         knowledgeNuggetsEditTextCustom.setOnClickListener(this);
 
         if (bundle != null) {
@@ -256,7 +259,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
 
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
-        rootView.findViewById(R.id.ll_lab_sku).setOnClickListener(this);
+        //rootView.findViewById(R.id.ll_lab_sku).setOnClickListener(this);
     }
 
     public void prepareStudentCategoryList() {
@@ -417,7 +420,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 AlertDialog dialog1 = builder.create();
                 dialog1.show();
                 break;
-            case R.id.ll_lab_sku:
+            case R.id.tv_lab_sku:
                 //Double Click Fix
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                     return;
@@ -846,6 +849,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         } else {
             progressDialog.dismiss();
             program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
+            creatorsAvailable.clear();
             creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
             projectCreatorAdapter.notifyDataSetChanged();
         }
