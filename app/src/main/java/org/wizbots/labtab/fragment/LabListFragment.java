@@ -225,7 +225,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 if (position == 0) {
                     filterMap.remove(FilterRequestParameter.SEASON);
                 } else {
-                    filterMap.put(FilterRequestParameter.SEASON, season);
+                    filterMap.put(FilterRequestParameter.SEASON, season != null ? season.toLowerCase() : "");
                 }
             }
 

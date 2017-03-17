@@ -212,19 +212,6 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         componentTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.component);
 
         mentorNameTextViewCustom.setText(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
-        if (bundle != null) {
-            program = bundle.getParcelable(PROGRAM);
-        }
-        if (program == null) {
-            labSKUTextViewCustom.setText("");
-        } else {
-            labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
-            labSKUTextViewCustom.setEnabled(false);
-        }
-
-        if (bundle != null) {
-            knowledgeNuggetsEditTextCustom.setText(bundle.getString(NUGGETS));
-        }
 
         videoThumbnailImageView.setOnClickListener(this);
         createButtonCustom.setOnClickListener(this);
@@ -234,6 +221,20 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         componentTextViewCustom.setOnClickListener(this);
         labSKUTextViewCustom.setOnClickListener(this);
         knowledgeNuggetsEditTextCustom.setOnClickListener(this);
+
+        if (bundle != null) {
+            program = bundle.getParcelable(PROGRAM);
+        }
+        if (program == null) {
+            labSKUTextViewCustom.setText("");
+        } else {
+            labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
+            labSKUTextViewCustom.setClickable(false);
+        }
+
+        if (bundle != null) {
+            knowledgeNuggetsEditTextCustom.setText(bundle.getString(NUGGETS));
+        }
 
         if (bundle != null) {
             savedVideoUri = bundle.getParcelable(URI);

@@ -83,6 +83,12 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                     Log.d("Service Starter Event", event);
                     checkAndStartWhatToSync();
                     break;
+                case Events.DEVICE_DISCONNECTED_TO_INTERNET:
+                    Log.d("Service Starter Event", event);
+                    if(!NotiManager.isAllSyncCompleted){
+                        NotiManager.getInstance().cancelNotification();
+                    }
+                    break;
                 case Events.NO_EVENT:
                     Log.d("Service Starter Event", event);
                     checkAndStartWhatToSync();

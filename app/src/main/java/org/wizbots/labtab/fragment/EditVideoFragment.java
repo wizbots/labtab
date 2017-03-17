@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -125,19 +126,23 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_edit_video, container, false);
         homeActivityContext = (HomeActivity) context;
-        initListeners();
-        initView(savedInstanceState);
         if (savedInstanceState == null) {
             video = getArguments().getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
 //            knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
             editVideoCase = getArguments().getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
+            initListeners();
+            initView(savedInstanceState);
             fetchDataFromBundle();
+
         } else {
             editVideoCase = savedInstanceState.getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
             video = savedInstanceState.getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
+            initListeners();
+            initView(savedInstanceState);
         }
+
         prepareStudentsCategoryList();
         initCategory();
         addProjectCreatorEditTextListeners();
@@ -187,7 +192,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
-        RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(),2);
+       // RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
