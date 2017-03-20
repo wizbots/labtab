@@ -1,11 +1,15 @@
 package org.wizbots.labtab.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -68,8 +72,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
@@ -272,7 +280,12 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_video_thumbnail:
-                Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissions()){
+                    openCamera();
+                }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                    openCamera();
+                }
+/*                Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                 // create a file to save the video
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
                 // set the image file name
@@ -283,104 +296,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
                 intent.putExtra("android.intent.extra.durationLimit", 300);
                 // start the Video Capture Intent
-                startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);*/
                 break;
             case R.id.btn_create:
-                if (labSKUTextViewCustom.getText().toString().equals("")) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a lab sku first by tapping Lab SKU");
-                    break;
-                }
-
-                if (savedVideoUri == null) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Capture A Video First");
-                    break;
-                }
-
-
-                if (titleEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 words");
-                    break;
-                }
-
-                if (categorySpinner.getSelectedItemPosition() == 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select Category");
-                    break;
-                }
-
-                if (titleEditTextCustom.getText().toString().length() == 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
-                    break;
-                }
-
-                if (knowledgeNuggets.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select At Least One Knowledge Nugget");
-                    break;
-                }
-
-                if (descriptionEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 words");
-                    break;
-                }
-
-                if (creatorsSelected.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
-                    break;
-                }
-
-                if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
-                    break;
-                }
-                //Project_Name.SKU.NamesOfKidsInCamelCaseEach
-                CreateProjectRequest createProjectRequest = new CreateProjectRequest();
-                createProjectRequest.setId(Calendar.getInstance().getTimeInMillis() + "");
-                createProjectRequest.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
-                createProjectRequest.setStatus(0);
-                String newFileName = getNewFileName(titleEditTextCustom.getText().toString(), (labSKUTextViewCustom.getText().toString()).toUpperCase(), creatorsSelected);
-                savedVideoUri = renameFile(savedVideoUri, newFileName);
-                createProjectRequest.setPath(savedVideoUri.getPath());
-                createProjectRequest.setTitle(titleEditTextCustom.getText().toString());
-                createProjectRequest.setCategory((String) (categorySpinner.getSelectedItem()));
-                createProjectRequest.setMentor_name(mentorNameTextViewCustom.getText().toString());
-                createProjectRequest.setLab_sku(labSKUTextViewCustom.getText().toString());
-                Log.d("AddVideoFragment", level);
-                createProjectRequest.setLab_level(level);
-                createProjectRequest.setKnowledge_nuggets(knowledgeNuggets);
-                createProjectRequest.setDescription(descriptionEditTextCustom.getText().toString());
-                createProjectRequest.setProject_creators(creatorsSelected);
-                createProjectRequest.setNotes_to_the_family(notesToTheFamilyEditTextCustom.getText().toString());
-                createProjectRequest.setProgram_id(program.getId());
-
-                Video video = new Video();
-                video.setId(createProjectRequest.getId());
-                video.setMentor_id(createProjectRequest.getMentor_id());
-                video.setStatus(0);
-                video.setPath(createProjectRequest.getPath());
-                video.setTitle(createProjectRequest.getTitle());
-                video.setCategory(createProjectRequest.getCategory());
-                video.setMentor_name(createProjectRequest.getMentor_name());
-                video.setLab_sku(createProjectRequest.getLab_sku());
-                Log.d("AddVideoFragment", createProjectRequest.getLab_level());
-                video.setLab_level(createProjectRequest.getLab_level());
-                video.setKnowledge_nuggets(LabTabUtil.toJson(getKnowledgeNuggets(createProjectRequest.getKnowledge_nuggets())));
-                video.setDescription(createProjectRequest.getDescription());
-                video.setProject_creators(LabTabUtil.toJson(createProjectRequest.getProject_creators()));
-                video.setNotes_to_the_family(createProjectRequest.getNotes_to_the_family());
-                video.setEdit_sync_status(SyncStatus.SYNCED);
-                video.setIs_transCoding(String.valueOf(false));
-                video.setVideo("");
-                video.setVideoId("");
-                video.setProgramId(createProjectRequest.getProgram_id());
-
-                VideoTable.getInstance().insert(video);
-                LabTabUtil.hideSoftKeyboard(homeActivityContext);
-                Intent uploadService = new Intent(homeActivityContext, LabTabSyncService.class);
-                uploadService.putExtra(LabTabSyncService.EVENT, Events.ADD_VIDEO);
-                homeActivityContext.startService(uploadService);
-                homeActivityContext.clearAllTheFragmentFromStack(true);
-/*                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
-                homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());*/
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_CREATED_SUCCESSFULLY);
+                    saveVideoData();
                 break;
             case R.id.btn_cancel:
                 homeActivityContext.onBackPressed();
@@ -433,6 +352,123 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 break;
 
         }
+    }
+
+    private void saveVideoData() {
+        if (labSKUTextViewCustom.getText().toString().equals("")) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a lab sku first by tapping Lab SKU");
+            return;
+        }
+
+        if (savedVideoUri == null) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Capture A Video First");
+            return;
+        }
+
+
+        if (titleEditTextCustom.getText().toString().length() < 5) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 words");
+            return;
+        }
+
+        if (categorySpinner.getSelectedItemPosition() == 0) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select Category");
+            return;
+        }
+
+        if (titleEditTextCustom.getText().toString().length() == 0) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
+            return;
+        }
+
+        if (knowledgeNuggets.isEmpty()) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select At Least One Knowledge Nugget");
+            return;
+        }
+
+        if (descriptionEditTextCustom.getText().toString().length() < 5) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 words");
+            return;
+        }
+
+        if (creatorsSelected.isEmpty()) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
+            return;
+        }
+
+        if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
+            return;
+        }
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkAndRequestPermissionsSingle()){
+            return;
+        }
+        //Project_Name.SKU.NamesOfKidsInCamelCaseEach
+        CreateProjectRequest createProjectRequest = new CreateProjectRequest();
+        createProjectRequest.setId(Calendar.getInstance().getTimeInMillis() + "");
+        createProjectRequest.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
+        createProjectRequest.setStatus(0);
+        String newFileName = getNewFileName(titleEditTextCustom.getText().toString(), (labSKUTextViewCustom.getText().toString()).toUpperCase(), creatorsSelected);
+        savedVideoUri = renameFile(savedVideoUri, newFileName);
+        createProjectRequest.setPath(savedVideoUri.getPath());
+        createProjectRequest.setTitle(titleEditTextCustom.getText().toString());
+        createProjectRequest.setCategory((String) (categorySpinner.getSelectedItem()));
+        createProjectRequest.setMentor_name(mentorNameTextViewCustom.getText().toString());
+        createProjectRequest.setLab_sku(labSKUTextViewCustom.getText().toString());
+        Log.d("AddVideoFragment", level);
+        createProjectRequest.setLab_level(level);
+        createProjectRequest.setKnowledge_nuggets(knowledgeNuggets);
+        createProjectRequest.setDescription(descriptionEditTextCustom.getText().toString());
+        createProjectRequest.setProject_creators(creatorsSelected);
+        createProjectRequest.setNotes_to_the_family(notesToTheFamilyEditTextCustom.getText().toString());
+        createProjectRequest.setProgram_id(program.getId());
+
+        Video video = new Video();
+        video.setId(createProjectRequest.getId());
+        video.setMentor_id(createProjectRequest.getMentor_id());
+        video.setStatus(0);
+        video.setPath(createProjectRequest.getPath());
+        video.setTitle(createProjectRequest.getTitle());
+        video.setCategory(createProjectRequest.getCategory());
+        video.setMentor_name(createProjectRequest.getMentor_name());
+        video.setLab_sku(createProjectRequest.getLab_sku());
+        Log.d("AddVideoFragment", createProjectRequest.getLab_level());
+        video.setLab_level(createProjectRequest.getLab_level());
+        video.setKnowledge_nuggets(LabTabUtil.toJson(getKnowledgeNuggets(createProjectRequest.getKnowledge_nuggets())));
+        video.setDescription(createProjectRequest.getDescription());
+        video.setProject_creators(LabTabUtil.toJson(createProjectRequest.getProject_creators()));
+        video.setNotes_to_the_family(createProjectRequest.getNotes_to_the_family());
+        video.setEdit_sync_status(SyncStatus.SYNCED);
+        video.setIs_transCoding(String.valueOf(false));
+        video.setVideo("");
+        video.setVideoId("");
+        video.setProgramId(createProjectRequest.getProgram_id());
+
+        VideoTable.getInstance().insert(video);
+        LabTabUtil.hideSoftKeyboard(homeActivityContext);
+        Intent uploadService = new Intent(homeActivityContext, LabTabSyncService.class);
+        uploadService.putExtra(LabTabSyncService.EVENT, Events.ADD_VIDEO);
+        homeActivityContext.startService(uploadService);
+        homeActivityContext.clearAllTheFragmentFromStack(true);
+/*                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
+                homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());*/
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_CREATED_SUCCESSFULLY);
+    }
+
+    private void openCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        // create a file to save the video
+        fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+        // set the image file name
+        if (fileUri != null) {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        }
+        // set the video image quality to high
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+        intent.putExtra("android.intent.extra.durationLimit", 300);
+        // start the Video Capture Intent
+        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
     }
 
     private String getNewFileName(String s, String s1, ArrayList<Student> creatorsSelected) {
@@ -922,5 +958,135 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case Constants.PERMISSION_REQUEST_CODE:
+                final Map<String, Integer> perms = new HashMap<String, Integer>();
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                if(grantResults.length > 0){
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==  PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        openCamera();
+                    }else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    || shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                                showMessageOKCancel("You need to allow access to all the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    switch (which){
+                                                        case DialogInterface.BUTTON_POSITIVE:
+                                                            Set<String> pendingPermission = new HashSet();
+                                                            for (String key : perms.keySet()) {
+                                                                if(perms.get(key) != PackageManager.PERMISSION_GRANTED){
+                                                                    pendingPermission.add(key);
+                                                                }
+                                                            }
+                                                            requestPermissions(pendingPermission.toArray(new String[pendingPermission.size()]), Constants.PERMISSION_REQUEST_CODE);
+                                                            break;
+                                                        case DialogInterface.BUTTON_NEGATIVE:
+                                                            Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        });
+                            }else {
+                                Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                }
+                break;
+            case Constants.PERMISSION_REQUEST_CODE_STORAGE:
+                final Map<String, Integer> perms1 = new HashMap<String, Integer>();
+                perms1.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                if(grantResults.length > 0){
+                    for (int i = 0; i < permissions.length; i++)
+                        perms1.put(permissions[i], grantResults[i]);
+                    if (perms1.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==  PackageManager.PERMISSION_GRANTED) {
+//                        saveVideoData();
+                    }else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                showMessageOKCancel("You need to allow access to all the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    switch (which){
+                                                        case DialogInterface.BUTTON_POSITIVE:
+                                                            Set<String> pendingPermission = new HashSet();
+                                                            for (String key : perms1.keySet()) {
+                                                                if(perms1.get(key) != PackageManager.PERMISSION_GRANTED){
+                                                                    pendingPermission.add(key);
+                                                                }
+                                                            }
+                                                            requestPermissions(pendingPermission.toArray(new String[pendingPermission.size()]), Constants.PERMISSION_REQUEST_CODE);
+                                                            break;
+                                                        case DialogInterface.BUTTON_NEGATIVE:
+                                                            Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        });
+                            }else {
+                                Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener listener) {
+        new android.support.v7.app.AlertDialog.Builder(homeActivityContext)
+                .setMessage(message)
+                .setPositiveButton("OK", listener)
+                .setNegativeButton("Cancel", listener)
+                .create()
+                .show();
+    }
+
+    @SuppressLint("NewApi")
+    public boolean checkAndRequestPermissions() {
+        int storage = homeActivityContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int camera = homeActivityContext.checkSelfPermission(Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<String>();
+        if (storage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (camera != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),Constants.PERMISSION_REQUEST_CODE);
+            return false;
+        }
+        return true;
+    }
+
+    @SuppressLint("NewApi")
+    public boolean checkAndRequestPermissionsSingle() {
+        int storage = homeActivityContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<String>();
+        if (storage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),Constants.PERMISSION_REQUEST_CODE_STORAGE);
+            return false;
+        }
+        return true;
     }
 }

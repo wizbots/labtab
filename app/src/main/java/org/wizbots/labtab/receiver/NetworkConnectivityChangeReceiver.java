@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
+import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.NetworkUtils;
 

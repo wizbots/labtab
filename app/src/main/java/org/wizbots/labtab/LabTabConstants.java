@@ -209,6 +209,8 @@ public interface LabTabConstants {
 
     interface Constants {
         String FINISH = "finish";
+        int PERMISSION_REQUEST_CODE = 100;
+        int PERMISSION_REQUEST_CODE_STORAGE = 101;
     }
 
     interface Action {

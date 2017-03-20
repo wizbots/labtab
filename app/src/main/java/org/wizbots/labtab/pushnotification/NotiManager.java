@@ -76,7 +76,12 @@ public class NotiManager {
         }
     }
 
-    public void cancelNotificatio(){
-
+    public void cancelNotification(){
+        builder.setProgress(totalCount, mCount, true);
+        mNotificationManager.notify(0, builder.build());
+            mCount = 0;
+            builder.setContentText("Uploading failed").setProgress(0,0,false);
+            builder.setOngoing(false);
+            mNotificationManager.notify(0, builder.build());
     }
 }
