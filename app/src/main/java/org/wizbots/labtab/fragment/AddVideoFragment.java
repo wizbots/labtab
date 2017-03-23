@@ -19,6 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -196,7 +197,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
-        RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(),2);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
@@ -219,18 +220,6 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         componentTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.component);
 
         mentorNameTextViewCustom.setText(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
-        if (bundle != null) {
-            program = bundle.getParcelable(PROGRAM);
-        }
-        if (program == null) {
-            labSKUTextViewCustom.setText("");
-        } else {
-            labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
-        }
-
-        if (bundle != null) {
-            knowledgeNuggetsEditTextCustom.setText(bundle.getString(NUGGETS));
-        }
 
         videoThumbnailImageView.setOnClickListener(this);
         createButtonCustom.setOnClickListener(this);
@@ -238,7 +227,22 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         closeImageView.setOnClickListener(this);
         closeLinearLayout.setOnClickListener(this);
         componentTextViewCustom.setOnClickListener(this);
+        labSKUTextViewCustom.setOnClickListener(this);
         knowledgeNuggetsEditTextCustom.setOnClickListener(this);
+
+        if (bundle != null) {
+            program = bundle.getParcelable(PROGRAM);
+        }
+        if (program == null) {
+            labSKUTextViewCustom.setText("");
+        } else {
+            labSKUTextViewCustom.setText(String.valueOf(program.getSku()));
+            labSKUTextViewCustom.setClickable(false);
+        }
+
+        if (bundle != null) {
+            knowledgeNuggetsEditTextCustom.setText(bundle.getString(NUGGETS));
+        }
 
         if (bundle != null) {
             savedVideoUri = bundle.getParcelable(URI);
@@ -264,7 +268,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
 
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
-        rootView.findViewById(R.id.ll_lab_sku).setOnClickListener(this);
+        //rootView.findViewById(R.id.ll_lab_sku).setOnClickListener(this);
     }
 
     public void prepareStudentCategoryList() {
@@ -365,9 +369,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             return;
         }
 
-
         if (titleEditTextCustom.getText().toString().length() < 5) {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 words");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 characters");
             return;
         }
 
@@ -379,6 +382,15 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         if (titleEditTextCustom.getText().toString().length() == 0) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
             return;
+                }
+
+                if (savedVideoUri == null) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Capture A Video First");
+                    break;
+                }
+
+                if (creatorsSelected.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
         }
 
         if (knowledgeNuggets.isEmpty()) {
@@ -387,7 +399,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
 
         if (descriptionEditTextCustom.getText().toString().length() < 5) {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 words");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 characters");
             return;
         }
 
@@ -397,6 +409,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
 
         if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
+/*                if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
             return;
         }
@@ -525,6 +538,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     }
                 }
                 initKnowledgeNuggets(null);
+                projectCreatorEditTextCustom.setText("");
             }
         });
     }
@@ -594,6 +608,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 }
                 initKnowledgeNuggets(null);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                projectCreatorEditTextCustom.setText("");
             }
         });
     }
@@ -882,6 +897,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         } else {
             progressDialog.dismiss();
             program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
+            creatorsAvailable.clear();
             creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
             projectCreatorAdapter.notifyDataSetChanged();
         }
@@ -910,6 +926,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         if (responseCode == StatusCode.FORBIDDEN) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {
+            labSKUTextViewCustom.setText("");
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
     }
@@ -956,6 +973,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         if (responseCode == StatusCode.FORBIDDEN) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_DETAIL_FOR_THIS_LAB);
         } else {
+            labSKUTextViewCustom.setText("");
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
     }

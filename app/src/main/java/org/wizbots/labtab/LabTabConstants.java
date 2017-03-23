@@ -198,6 +198,7 @@ public interface LabTabConstants {
     //Events for LabTab Upload Service
     interface Events {
         String DEVICE_CONNECTED_TO_INTERNET = "DEVICE_CONNECTED_TO_INTERNET";
+        String DEVICE_DISCONNECTED_TO_INTERNET = "DEVICE_DISCONNECTED_TO_INTERNET";
         String ADD_VIDEO = "ADD_VIDEO";
         String DEVICE_REBOOTED = "DEVICE_REBOOTED";
         String USER_LOGGED_IN = "USER_LOGGED_IN";

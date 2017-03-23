@@ -27,6 +27,7 @@ public class NotiManager {
     private static NotiManager _instance;
     private static int totalCount;
     private static int mCount = 0;
+    public static boolean isAllSyncCompleted = true;
 
     static {
         _instance = new NotiManager();
@@ -43,10 +44,11 @@ public class NotiManager {
 
     public void showNotification(int count) {
         totalCount = count;
+        isAllSyncCompleted = false;
         Intent notifyIntent = new Intent();
         PendingIntent notifyPendingIntent = PendingIntent.getActivity(
                         LabTabApplication.getInstance(),
-                        0,
+                        101,
                         notifyIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
@@ -60,28 +62,36 @@ public class NotiManager {
                 .build();
         builder.setContentText(mCount + " out of " + totalCount);
         builder.setProgress(totalCount, mCount, true);
-        mNotificationManager.notify(0, builder.build());
+        mNotificationManager.notify(101, builder.build());
     }
 
     public void updateNotification(){
         mCount += 1;
+        isAllSyncCompleted = false;
         builder.setContentText(mCount + " out of " + totalCount);
         builder.setProgress(totalCount, mCount, true);
-        mNotificationManager.notify(0, builder.build());
-        if(mCount == totalCount){
+        mNotificationManager.notify(101, builder.build());
+        if(mCount >= totalCount ){
             mCount = 0;
+            isAllSyncCompleted = true;
             builder.setContentText("Upload Complete").setProgress(0,0,false);
             builder.setOngoing(false);
-            mNotificationManager.notify(0, builder.build());
+            mNotificationManager.notify(101, builder.build());
         }
     }
 
     public void cancelNotification(){
-        builder.setProgress(totalCount, mCount, true);
-        mNotificationManager.notify(0, builder.build());
-            mCount = 0;
-            builder.setContentText("Uploading failed").setProgress(0,0,false);
+        if(isNotificationVisible()){
+            builder.setContentText("Upload Failed").setProgress(0,0,false);
             builder.setOngoing(false);
-            mNotificationManager.notify(0, builder.build());
+            builder.setAutoCancel(true);
+            mNotificationManager.notify(101, builder.build());
+        }
+
+    }
+    private boolean isNotificationVisible() {
+        Intent notificationIntent = new Intent();
+        PendingIntent test = PendingIntent.getActivity( LabTabApplication.getInstance(),101, notificationIntent, PendingIntent.FLAG_NO_CREATE);
+        return test != null;
     }
 }

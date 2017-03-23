@@ -28,6 +28,9 @@ public class NetworkConnectivityChangeReceiver extends BroadcastReceiver impleme
         mAccount = CreateSyncAccount(context);
         boolean isConnected = NetworkUtils.isConnected(LabTabApplication.getInstance());
         if (!isConnected) {
+            Intent uploadService = new Intent(context, LabTabSyncService.class);
+            uploadService.putExtra(LabTabSyncService.EVENT, Events.DEVICE_DISCONNECTED_TO_INTERNET);
+            context.startService(uploadService);
             //Device Is Not Connected To Internet
 //            Toast.makeText(context, "Not Connected To Internet", Toast.LENGTH_SHORT).show();
         } else {

@@ -147,7 +147,9 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
             objectArrayList.addAll(videoArrayList);
             videoListAdapter.notifyDataSetChanged();
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No Video Available");
+            if(isAdded()) {
+                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No Video Available");
+            }
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         }
     }

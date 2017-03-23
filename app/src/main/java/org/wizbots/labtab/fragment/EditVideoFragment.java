@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -131,19 +132,23 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_edit_video, container, false);
         homeActivityContext = (HomeActivity) context;
-        initListeners();
-        initView(savedInstanceState);
         if (savedInstanceState == null) {
             video = getArguments().getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
 //            knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
             editVideoCase = getArguments().getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
+            initListeners();
+            initView(savedInstanceState);
             fetchDataFromBundle();
+
         } else {
             editVideoCase = savedInstanceState.getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
             video = savedInstanceState.getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
+            initListeners();
+            initView(savedInstanceState);
         }
+
         prepareStudentsCategoryList();
         initCategory();
         addProjectCreatorEditTextListeners();
@@ -193,7 +198,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
-        RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(),2);
+       // RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
@@ -320,7 +326,6 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             return;
         }
 
-
         if (titleEditTextCustom.getText().toString().length() < 5) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 words");
             return;
@@ -334,6 +339,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         if (titleEditTextCustom.getText().toString().length() == 0) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
             return;
+                }
+
+                if (creatorsSelected.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
         }
 
         if (knowledgeNuggets.isEmpty()) {
@@ -385,6 +394,21 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CHANGES_ARE_MADE);
         }
+                showConfirmDialog("Are you sure you want to delete this project",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        progressDialog.show();
+                                        BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
+                                        break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        break;
+                                }
+                            }
+                        });
+                break;
     }
 
     @Override
@@ -421,6 +445,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     }
                 }
                 initKnowledgeNuggets(null);
+                projectCreatorEditTextCustom.setText("");
             }
         });
     }
@@ -485,6 +510,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 }
                 initKnowledgeNuggets(null);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                projectCreatorEditTextCustom.setText("");
             }
         });
     }
@@ -1030,6 +1056,15 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 }
                 break;
         }
+    }
+
+    private void showConfirmDialog(String message, DialogInterface.OnClickListener listener) {
+        new android.support.v7.app.AlertDialog.Builder(homeActivityContext)
+                .setMessage(message)
+                .setPositiveButton("OK", listener)
+                .setNegativeButton("Cancel", listener)
+                .create()
+                .show();
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener listener) {
