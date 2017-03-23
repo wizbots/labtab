@@ -343,20 +343,22 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     public void onClick(View v) {
         switch ((v.getId())) {
             case R.id.tv_mark_absent:
-                if(dateSelected == null){
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_DATE_FIRST);
-                    return;
-                }
                 if (!objectArrayList.isEmpty()) {
-                    progressDialog.show();
+
                     ArrayList<Student> studentArrayList = getSelectedStudents();
                     if (!studentArrayList.isEmpty()) {
+                        if(dateSelected == null){
+                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_DATE_FIRST);
+                            return;
+                        }
                         if (dateSelected != null) {
+                            progressDialog.show();
                             BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
                                     LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, dateSelected),
                                     program,
                                     checkBoxSendNotification.isChecked()));
                         } else {
+                            progressDialog.show();
                             BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
                                     LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, new Date()),
                                     program,

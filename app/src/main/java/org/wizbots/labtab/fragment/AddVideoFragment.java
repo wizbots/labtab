@@ -290,6 +290,22 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
                 break;
             case R.id.btn_create:
+
+                if (titleEditTextCustom.getText().toString().length() == 0) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
+                    break;
+                }
+
+                if (titleEditTextCustom.getText().toString().length() < 5) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 characters");
+                    break;
+                }
+
+                if (categorySpinner.getSelectedItemPosition() == 0) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select Category");
+                    break;
+                }
+
                 if (labSKUTextViewCustom.getText().toString().equals("")) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a lab sku first by tapping Lab SKU");
                     break;
@@ -300,19 +316,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     break;
                 }
 
-
-                if (titleEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 words");
-                    break;
-                }
-
-                if (categorySpinner.getSelectedItemPosition() == 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select Category");
-                    break;
-                }
-
-                if (titleEditTextCustom.getText().toString().length() == 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
+                if (creatorsSelected.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
                     break;
                 }
 
@@ -322,19 +327,16 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 }
 
                 if (descriptionEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 words");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 characters");
                     break;
                 }
 
-                if (creatorsSelected.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
-                    break;
-                }
 
-                if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
+
+/*                if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
                     break;
-                }
+                }*/
                 //Project_Name.SKU.NamesOfKidsInCamelCaseEach
                 CreateProjectRequest createProjectRequest = new CreateProjectRequest();
                 createProjectRequest.setId(Calendar.getInstance().getTimeInMillis() + "");
@@ -493,6 +495,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     }
                 }
                 initKnowledgeNuggets(null);
+                projectCreatorEditTextCustom.setText("");
             }
         });
     }
@@ -562,6 +565,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 }
                 initKnowledgeNuggets(null);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                projectCreatorEditTextCustom.setText("");
             }
         });
     }
@@ -879,6 +883,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         if (responseCode == StatusCode.FORBIDDEN) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {
+            labSKUTextViewCustom.setText("");
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
     }
@@ -925,6 +930,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         if (responseCode == StatusCode.FORBIDDEN) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_DETAIL_FOR_THIS_LAB);
         } else {
+            labSKUTextViewCustom.setText("");
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
     }

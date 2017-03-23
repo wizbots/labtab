@@ -263,14 +263,14 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 startActivity(intent);
                 break;
             case R.id.btn_save:
-                if (savedVideoUri == null) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Capture A Video First");
+
+                if (titleEditTextCustom.getText().toString().length() == 0) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
                     break;
                 }
 
-
                 if (titleEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 words");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Title must consist at least 5 characters");
                     break;
                 }
 
@@ -279,8 +279,13 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     break;
                 }
 
-                if (titleEditTextCustom.getText().toString().length() == 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
+                if (savedVideoUri == null) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Capture A Video First");
+                    break;
+                }
+
+                if (creatorsSelected.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
                     break;
                 }
 
@@ -290,19 +295,16 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 }
 
                 if (descriptionEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 words");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 characters");
                     break;
                 }
 
-                if (creatorsSelected.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
-                    break;
-                }
 
-                if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
+
+/*                if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 characters");
                     break;
-                }
+                }*/
 
                 Video videoRequest = new Video();
                 videoRequest.setId(video.getId());
@@ -366,8 +368,20 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 dialog1.show();
                 break;
             case R.id.btn_delete:
-                progressDialog.show();
-                BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
+                showConfirmDialog("Are you sure you want to delete this project",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        progressDialog.show();
+                                        BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
+                                        break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        break;
+                                }
+                            }
+                        });
                 break;
 
         }
@@ -407,6 +421,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     }
                 }
                 initKnowledgeNuggets(null);
+                projectCreatorEditTextCustom.setText("");
             }
         });
     }
@@ -471,6 +486,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 }
                 initKnowledgeNuggets(null);
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
+                projectCreatorEditTextCustom.setText("");
             }
         });
     }
@@ -909,5 +925,14 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 homeActivityContext.getSupportFragmentManager().popBackStackImmediate();
             }
         });
+    }
+
+    private void showConfirmDialog(String message, DialogInterface.OnClickListener listener) {
+        new android.support.v7.app.AlertDialog.Builder(homeActivityContext)
+                .setMessage(message)
+                .setPositiveButton("OK", listener)
+                .setNegativeButton("Cancel", listener)
+                .create()
+                .show();
     }
 }

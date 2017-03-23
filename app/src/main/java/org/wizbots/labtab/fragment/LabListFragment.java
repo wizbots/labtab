@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LabListFragment extends ParentFragment implements LabListAdapterClickListener,
@@ -368,11 +369,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 break;
             case R.id.iv_cancel:
                 progressDialog.show();
-                filterMap.clear();
                 spinnerLocation.setSelection(0);
-                spinnerYear.setSelection(0);
-                spinnerSeason.setSelection(0);
-                resetOriginalData();
+                spinnerYear.setSelection(getYearPosition(LabTabUtil.getCurrentYear()));
+                spinnerSeason.setSelection(getSeasonPosition(LabTabUtil.getSeason()));
+                filterMap.clear();
+                filterMap.put(FilterRequestParameter.SEASON_YEAR, String.valueOf(LabTabUtil.getCurrentYear()));
+                filterMap.put(FilterRequestParameter.SEASON, String.valueOf(LabTabUtil.getSeason()).toLowerCase());
+                callFilterApi();
                 break;
         }
     }
@@ -455,5 +458,15 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         } else {
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
         }
+    }
+
+    private int getSeasonPosition(String season){
+        List list = Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season));
+        return list.indexOf(season);
+    }
+
+    private int getYearPosition(int year){
+        List list =  Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year));
+        return list.indexOf(String.valueOf(year));
     }
 }
