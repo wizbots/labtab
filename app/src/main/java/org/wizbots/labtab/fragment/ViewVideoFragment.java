@@ -179,6 +179,9 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
             }
         }
 
+      //  categorySpinner.getSelectedView().setEnabled(false);
+        categorySpinner.setEnabled(false);
+
         titleEditTextCustom.setText(video.getTitle());
         mentorNameTextViewCustom.setText(video.getMentor_name());
         labSKUTextViewCustom.setText(video.getLab_sku());

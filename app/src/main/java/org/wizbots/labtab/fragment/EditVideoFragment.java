@@ -343,7 +343,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 break;
             case R.id.component:
                 if (creatorsSelected == null  || creatorsSelected.isEmpty()){
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
                     return;
                 }
                 //Double Click Fix
@@ -356,9 +356,15 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 break;
             case R.id.edt_knowledge_nuggets:
                 if (creatorsSelected == null  || creatorsSelected.isEmpty()){
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
                     return;
                 }
+
+                if (!checkNotNoviceCreator()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one not Novice creator");
+                    return;
+                }
+
                 //Double Click Fix
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                     return;
@@ -385,6 +391,15 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 break;
 
         }
+    }
+
+    private boolean checkNotNoviceCreator() {
+        for (Student student : creatorsSelected) {
+            if (!student.getLevel().toUpperCase().equals(LabLevels.NOVICE)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

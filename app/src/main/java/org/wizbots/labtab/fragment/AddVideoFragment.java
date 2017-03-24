@@ -189,7 +189,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
-        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(),2);
+        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(), 2);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
@@ -398,7 +398,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 homeActivityContext.onBackPressed();
                 break;
             case R.id.component:
-                if (creatorsSelected == null  || creatorsSelected.isEmpty()){
+                if (creatorsSelected == null || creatorsSelected.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
                     return;
                 }
@@ -411,8 +411,17 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 dialog.show();
                 break;
             case R.id.edt_knowledge_nuggets:
-                if (creatorsSelected == null  || creatorsSelected.isEmpty()){
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                if (labSKUTextViewCustom.getText().toString().equals("")) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a lab sku first by tapping Lab SKU");
+                    return;
+                }
+                if (creatorsSelected == null || creatorsSelected.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
+                    return;
+                }
+
+                if (!checkNotNoviceCreator()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one not Novice creator");
                     return;
                 }
                 //Double Click Fix
@@ -441,6 +450,15 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
     }
 
+    private boolean checkNotNoviceCreator() {
+        for (Student student : creatorsSelected) {
+            if (!student.getLevel().toUpperCase().equals(LabLevels.NOVICE)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private String getNewFileName(String s, String s1, ArrayList<Student> creatorsSelected) {
         StringBuilder fileName = new StringBuilder();
         fileName.append(s).append(".").append(s1).append(".");
@@ -448,15 +466,15 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             fileName.append(student.getName().trim());
         }
         fileName.append(".").append(Calendar.getInstance().getTimeInMillis());
-        return fileName.toString().replaceAll("\\s+","");
+        return fileName.toString().replaceAll("\\s+", "");
     }
 
-    private Uri renameFile(Uri uri, String newFileName){
-        File oldfile =new File(uri.getPath());
-        File newfile =new File(oldfile.getParent() + "/" + newFileName + ".mp4");
+    private Uri renameFile(Uri uri, String newFileName) {
+        File oldfile = new File(uri.getPath());
+        File newfile = new File(oldfile.getParent() + "/" + newFileName + ".mp4");
 
-        if(oldfile.renameTo(newfile)){
-        }else{
+        if (oldfile.renameTo(newfile)) {
+        } else {
         }
         return Uri.fromFile(newfile);
     }
@@ -544,7 +562,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     } else {
                         projectCreatorEditTextCustom.clearFocus();
                         LabTabUtil.hideSoftKeyboard(homeActivityContext);
-                        Toast.makeText(homeActivityContext, "Select a lab first by tapping Lab SKU", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(homeActivityContext, "Please Select a lab first by tapping Lab SKU", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -557,10 +575,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             @Override
             public void run() {
                 creatorsSelected.remove(student);
-                if (creatorsSelected != null  && creatorsSelected.isEmpty()){
+                if (creatorsSelected != null && creatorsSelected.isEmpty()) {
                     knowledgeNuggets.clear();
                     knowledgeNuggetsSelected = "";
-                    if(knowledgeNuggetsEditTextCustom != null)
+                    if (knowledgeNuggetsEditTextCustom != null)
                         knowledgeNuggetsEditTextCustom.setText("");
                 }
                 initKnowledgeNuggets(null);
@@ -687,25 +705,25 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         if (components != null) {
             componentSelection = new boolean[components.length];
             String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
-            if (knwlgngts != null  && knwlgngts.length > 0) {
+            if (knwlgngts != null && knwlgngts.length > 0) {
                 List<String> result = new LinkedList();
-                for(int i=0; i < components.length; i++){
-                    for(int j=0; j < knwlgngts.length; j++){
-                        if(components[i].equals(knwlgngts[j])){
+                for (int i = 0; i < components.length; i++) {
+                    for (int j = 0; j < knwlgngts.length; j++) {
+                        if (components[i].equals(knwlgngts[j])) {
                             result.add(knwlgngts[j]);
                         }
                     }
                 }
-                if(result.size() > 0){
+                if (result.size() > 0) {
                     knwlgngts = result.toArray(new String[result.size()]);
                 }
                 knowledgeNuggets.clear();
                 knowledgeNuggets.addAll(Arrays.asList(knwlgngts));
                 knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
                 knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)).replaceAll("\"", ""));
-                for(int i=0; i < components.length; i++){
-                    for(int j=0; j < knwlgngts.length; j++){
-                        if(components[i].equals(knwlgngts[j])){
+                for (int i = 0; i < components.length; i++) {
+                    for (int j = 0; j < knwlgngts.length; j++) {
+                        if (components[i].equals(knwlgngts[j])) {
                             componentSelection[i] = true;
                         }
                     }
@@ -844,7 +862,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 horizontalProjectCreatorAdapter.notifyDataSetChanged();
                 knowledgeNuggets.clear();
                 knowledgeNuggetsSelected = "";
-                if(knowledgeNuggetsEditTextCustom != null)
+                if (knowledgeNuggetsEditTextCustom != null)
                     knowledgeNuggetsEditTextCustom.setText("");
             }
         }
