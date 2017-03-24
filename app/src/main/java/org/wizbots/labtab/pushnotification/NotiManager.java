@@ -47,11 +47,11 @@ public class NotiManager {
         isAllSyncCompleted = false;
         Intent notifyIntent = new Intent();
         PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                        LabTabApplication.getInstance(),
-                        101,
-                        notifyIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+                LabTabApplication.getInstance(),
+                101,
+                notifyIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
         builder.setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker("TabLab")
                 .setWhen(System.currentTimeMillis())
@@ -89,6 +89,7 @@ public class NotiManager {
         }
 
     }
+
     private boolean isNotificationVisible() {
         Intent notificationIntent = new Intent();
         PendingIntent test = PendingIntent.getActivity( LabTabApplication.getInstance(),101, notificationIntent, PendingIntent.FLAG_NO_CREATE);

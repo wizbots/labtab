@@ -199,7 +199,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
         RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(),2);
-       // RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        // RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
@@ -313,8 +313,20 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 dialog1.show();
                 break;
             case R.id.btn_delete:
-                progressDialog.show();
-                BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
+                showConfirmDialog("Are you sure you want to delete this project",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        progressDialog.show();
+                                        BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
+                                        break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        break;
+                                }
+                            }
+                        });
                 break;
 
         }
@@ -339,10 +351,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         if (titleEditTextCustom.getText().toString().length() == 0) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
             return;
-                }
+        }
 
-                if (creatorsSelected.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
+        if (creatorsSelected.isEmpty()) {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Select at least one creator");
         }
 
         if (knowledgeNuggets.isEmpty()) {
@@ -394,21 +406,20 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CHANGES_ARE_MADE);
         }
-                showConfirmDialog("Are you sure you want to delete this project",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        progressDialog.show();
-                                        BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
-                                        break;
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        break;
-                                }
-                            }
-                        });
-                break;
+        showConfirmDialog("Are you sure you want to delete this project",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                progressDialog.show();
+                                BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                });
     }
 
     @Override
@@ -674,7 +685,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         Set<String> noug = new HashSet<>();
         String[] temp = LabTabApplication.getInstance().getKnowledgeNuggetsByStudent(creatorsSelected);
         if (temp != null && temp.length > 0)
-        noug.addAll(Arrays.asList(temp));
+            noug.addAll(Arrays.asList(temp));
 
 /*        if (bundle != null) {
             HashSet<String> kN = (HashSet<String>) bundle.getSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS);
@@ -722,18 +733,18 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             }
         }
 
-            knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
+        knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
 
 
-            String[] tmp = getKnowledgeNuggets(knowledgeNuggets);
-            if(tmp != null && tmp.length > 0){
-                String tempStr = LabTabUtil.toJson(tmp).replaceAll("\"", "");
-                video.setKnowledge_nuggets(knowledgeNuggetsSelected);
-                knowledgeNuggetsEditTextCustom.setText((tempStr != null && !tempStr.isEmpty()) ? tempStr : "");
-            }else {
-                video.setKnowledge_nuggets(knowledgeNuggetsSelected);
-                knowledgeNuggetsEditTextCustom.setText("");
-            }
+        String[] tmp = getKnowledgeNuggets(knowledgeNuggets);
+        if(tmp != null && tmp.length > 0){
+            String tempStr = LabTabUtil.toJson(tmp).replaceAll("\"", "");
+            video.setKnowledge_nuggets(knowledgeNuggetsSelected);
+            knowledgeNuggetsEditTextCustom.setText((tempStr != null && !tempStr.isEmpty()) ? tempStr : "");
+        }else {
+            video.setKnowledge_nuggets(knowledgeNuggetsSelected);
+            knowledgeNuggetsEditTextCustom.setText("");
+        }
 
 
         if(components != null){
@@ -852,7 +863,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         });
 
         if (components != null && components.length <= 0)
-        builder.setMessage("No knowledge nuggets for selected student");
+            builder.setMessage("No knowledge nuggets for selected student");
     }
 
     private String[] getKnowledgeNuggets(HashSet<String> knowledgeNuggets) {
