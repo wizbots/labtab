@@ -23,6 +23,7 @@ import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.VideoListAdapterClickListener;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.util.LabTabUtil;
+import org.wizbots.labtab.util.NetworkUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -160,12 +161,20 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.orange);
         }
+
+        if(NetworkUtils.isConnected(context) && video.getStatus() == 0){
+            videoListViewHolder.videoStatusTextViewCustom.setText("Uploading");
+            videoListViewHolder.videoStatusTextViewCustom.setTextColor(ContextCompat.getColor(LabTabApplication.getInstance(), R.color.red));
+        }else {
+            videoListViewHolder.videoStatusTextViewCustom.setText(video.getStatus() + "%");
+            videoListViewHolder.videoStatusTextViewCustom.setTextColor(statusTextColor);
+        }
         videoListViewHolder.wonderwall.setText(video.getIs_transCoding().equalsIgnoreCase("true") ? "NO" : "YES");
-        videoListViewHolder.videoStatusTextViewCustom.setText(video.getStatus() + "%");
-        videoListViewHolder.videoStatusTextViewCustom.setTextColor(statusTextColor);
         videoListViewHolder.videoNameTextViewCustom.setText(video.getTitle());
 
     }
+
+
 
     @Override
     public int getItemCount() {

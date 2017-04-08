@@ -7,9 +7,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
+import org.wizbots.labtab.interfaces.OnNetworkConnectedListener;
+import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.NetworkUtils;
@@ -27,6 +30,9 @@ public class NetworkConnectivityChangeReceiver extends BroadcastReceiver impleme
     public void onReceive(final Context context, Intent intent) {
         mAccount = CreateSyncAccount(context);
         boolean isConnected = NetworkUtils.isConnected(LabTabApplication.getInstance());
+        for (OnNetworkConnectedListener listener : LabTabApplication.getInstance().getUIListeners(OnNetworkConnectedListener.class)) {
+            listener.onNetworkConnected();
+        }
         if (!isConnected) {
             Intent uploadService = new Intent(context, LabTabSyncService.class);
             uploadService.putExtra(LabTabSyncService.EVENT, Events.DEVICE_DISCONNECTED_TO_INTERNET);

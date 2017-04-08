@@ -406,20 +406,6 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CHANGES_ARE_MADE);
         }
-        showConfirmDialog("Are you sure you want to delete this project",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                progressDialog.show();
-                                BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                break;
-                        }
-                    }
-                });
     }
 
     @Override

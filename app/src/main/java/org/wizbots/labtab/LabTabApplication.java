@@ -215,9 +215,9 @@ public class LabTabApplication extends Application {
         } else {
             for (int i = 0; i < metaDatas.length; i++) {
                 for (int j = 0; j < studentList.size(); j++) {
-                    if (metaDatas[i].getName().toUpperCase().equalsIgnoreCase(studentList.get(j).getLevel())){
+//                    if (metaDatas[i].getName().toUpperCase().equalsIgnoreCase(studentList.get(j).getLevel())){
                         kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
-                    }
+//                    }
                 }
             }
             if(!kn.isEmpty()){
