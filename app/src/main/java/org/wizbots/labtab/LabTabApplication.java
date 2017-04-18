@@ -125,9 +125,11 @@ public class LabTabApplication extends Application {
 
     public void initRetrofit() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(5, TimeUnit.MINUTES)
-                .writeTimeout(5, TimeUnit.MINUTES)
-                .readTimeout(5, TimeUnit.MINUTES);
+        builder.connectTimeout(7, TimeUnit.MINUTES)
+                .writeTimeout(7, TimeUnit.MINUTES)
+                .retryOnConnectionFailure(true)
+
+                .readTimeout(7, TimeUnit.MINUTES);
         OkHttpClient client = builder.build();
 
         Retrofit retrofit = new Retrofit.Builder()
