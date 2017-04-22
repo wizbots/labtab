@@ -272,7 +272,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 }
                 // set the video image quality to high
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-                intent.putExtra("android.intent.extra.durationLimit", 300);
+                //intent.putExtra("android.intent.extra.durationLimit", 300);
                 // start the Video Capture Intent
                 startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
                 break;
