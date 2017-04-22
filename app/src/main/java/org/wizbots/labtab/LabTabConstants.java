@@ -79,6 +79,10 @@ public interface LabTabConstants {
         int LIST_OF_SKIPS = 12;
         int ADDITIONAL_INFORMATION = 13;
         int VIEW_VIDEO = 14;
+
+        int LAB_LIST_DRAWER = 15;
+        int VIDEO_LIST_DRAWER = 16;
+        int ADD_VIDEO_DRAWER = 16;
     }
 
     //Lab Levels
@@ -194,6 +198,7 @@ public interface LabTabConstants {
     //Events for LabTab Upload Service
     interface Events {
         String DEVICE_CONNECTED_TO_INTERNET = "DEVICE_CONNECTED_TO_INTERNET";
+        String DEVICE_DISCONNECTED_TO_INTERNET = "DEVICE_DISCONNECTED_TO_INTERNET";
         String ADD_VIDEO = "ADD_VIDEO";
         String DEVICE_REBOOTED = "DEVICE_REBOOTED";
         String USER_LOGGED_IN = "USER_LOGGED_IN";
@@ -205,6 +210,8 @@ public interface LabTabConstants {
 
     interface Constants {
         String FINISH = "finish";
+        int PERMISSION_REQUEST_CODE = 100;
+        int PERMISSION_REQUEST_CODE_STORAGE = 101;
     }
 
     interface Action {

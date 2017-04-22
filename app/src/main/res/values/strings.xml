@@ -91,7 +91,8 @@
     <string name="thumbnail">Thumbnail</string>
     <string name="status">Status</string>
     <string name="video_name">Video Name</string>
-    <string name="wonderwall">Trans\ncoded</string>Transcoded
+    <string name="wonderwall">Wonderwall</string>
+    <string name="wonderwall_next_line">Wonder\nwall</string>
     <string name="no_preview_available">No Preview available</string>
     <string name="project_editor">Project Editor</string>
     <string name="title">Title</string>
@@ -197,10 +198,10 @@
 
     <string-array name="array_season">
         <item>All Seasons</item>
-        <item>fall</item>
-        <item>spring</item>
-        <item>summer</item>
-        <item>winter</item>
+        <item>Fall</item>
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Winter</item>
     </string-array>
 
     <string-array name="components">

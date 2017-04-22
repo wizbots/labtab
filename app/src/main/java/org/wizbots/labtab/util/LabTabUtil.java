@@ -467,4 +467,47 @@ public class LabTabUtil implements LabTabConstants {
         String formatted = format1.format(cal.getTime());
         return formatted;
     }
+
+    public static int getCurrentMonth(){
+        java.util.Date date= new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.MONTH);
+    }
+
+    public static int getCurrentYear(){
+        java.util.Date date= new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR);
+    }
+
+    public static String getSeason(){
+        String season = null;
+        switch (getCurrentMonth()){
+            case 1:
+            case 2:
+            case 12:
+                season = "Summer";
+                break;
+            case 3:
+            case 4:
+            case 5:
+                season = "Fall";
+                break;
+            case 6:
+            case 7:
+            case 8:
+                season = "Winter";
+                break;
+            case 9:
+            case 10:
+            case 11:
+                season = "Spring";
+                break;
+            default:
+                break;
+        }
+        return season;
+    }
 }

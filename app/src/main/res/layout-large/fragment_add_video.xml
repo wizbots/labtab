@@ -241,7 +241,6 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/rounded_layout_light_gray"
                                 android:padding="@dimen/extra_extra_small_margin"
-                                android:text="5998"
                                 android:textSize="@dimen/text_size_extra_extra_small" />
 
                         </LinearLayout>
@@ -376,7 +375,7 @@
                                 android:id="@+id/recycler_view_horizontal_project_creators"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:scrollbars="vertical" />
+                                android:numColumns="auto_fit"/>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -424,7 +423,6 @@
                                     android:id="@+id/recycler_view_project_creators"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:scrollbars="vertical"
                                     android:visibility="gone" />
 
                             </LinearLayout>

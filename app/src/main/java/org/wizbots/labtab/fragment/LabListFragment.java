@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LabListFragment extends ParentFragment implements LabListAdapterClickListener,
@@ -165,6 +166,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         rootView.findViewById(R.id.btn_tomorrow).setOnClickListener(this);
         rootView.findViewById(R.id.calendar).setOnClickListener(this);
         initAdapterListener();
+        resetFilter();
     }
 
     private void showCalendar() {
@@ -224,7 +226,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 if (position == 0) {
                     filterMap.remove(FilterRequestParameter.SEASON);
                 } else {
-                    filterMap.put(FilterRequestParameter.SEASON, season);
+                    filterMap.put(FilterRequestParameter.SEASON, season != null ? season.toLowerCase() : "");
                 }
             }
 
@@ -366,13 +368,23 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 callFilterApi();
                 break;
             case R.id.iv_cancel:
-                filterMap.clear();
+                progressDialog.show();
                 spinnerLocation.setSelection(0);
-                spinnerYear.setSelection(0);
-                spinnerSeason.setSelection(0);
-                resetOriginalData();
+                spinnerYear.setSelection(getYearPosition(LabTabUtil.getCurrentYear()));
+                spinnerSeason.setSelection(getSeasonPosition(LabTabUtil.getSeason()));
+                filterMap.clear();
+                filterMap.put(FilterRequestParameter.SEASON_YEAR, String.valueOf(LabTabUtil.getCurrentYear()));
+                filterMap.put(FilterRequestParameter.SEASON, String.valueOf(LabTabUtil.getSeason()).toLowerCase());
+                callFilterApi();
                 break;
         }
+    }
+
+    private void resetFilter(){
+        filterMap.clear();
+        spinnerLocation.setSelection(0);
+        spinnerYear.setSelection(0);
+        spinnerSeason.setSelection(0);
     }
 
     @Override
@@ -446,5 +458,15 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         } else {
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
         }
+    }
+
+    private int getSeasonPosition(String season){
+        List list = Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season));
+        return list.indexOf(season);
+    }
+
+    private int getYearPosition(int year){
+        List list =  Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year));
+        return list.indexOf(String.valueOf(year));
     }
 }

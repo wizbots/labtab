@@ -39,6 +39,7 @@ import org.wizbots.labtab.fragment.StudentStatsDetailsFragment;
 import org.wizbots.labtab.fragment.VideoListFragment;
 import org.wizbots.labtab.fragment.ViewVideoFragment;
 import org.wizbots.labtab.model.LeftDrawerItem;
+import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.service.LabTabSyncService;
 
 public class HomeActivity extends ParentActivity implements View.OnClickListener {
@@ -161,7 +162,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragment = new LoginFragment();
                 fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.add(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 fragmentTransaction.commit();
                 lockDrawerLayout();
@@ -170,7 +171,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragment = new HomeFragment();
                 fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.add(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 fragmentTransaction.commit();
             }
@@ -239,24 +240,31 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         fragment.setArguments(bundle);
         try {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if(fragment.getFragmentName().equalsIgnoreCase("HomeFragment")
-                    || fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")){
+            if(fragment.getFragmentName().equalsIgnoreCase("HomeFragment")){
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(fragment.getFragmentName());
             }else if(fragment.getFragmentName().equalsIgnoreCase("ListOfSkipsFragment")) {
-                boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate ("ListOfSkipsFragment", 0);
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("ListOfSkipsFragment", 0);
                 if (!fragmentPopped){
                     fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                     fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 }
 
             }else if(fragment.getFragmentName().equalsIgnoreCase("AdditionalInformationFragment")){
-                boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate ("AdditionalInformationFragment", 0);
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("AdditionalInformationFragment", 0);
                 if (!fragmentPopped){
                     fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                     fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 }
-
+            }else if(fragment.getFragmentName().equalsIgnoreCase("VideoListFragment")){
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("VideoListFragment", 0);
+                if (!fragmentPopped){
+                    fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                    fragmentTransaction.addToBackStack("HomeFragment");
+                }
+            }else if(fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")){
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.addToBackStack(null);
             }else {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
@@ -278,6 +286,27 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             finish();
         } else if (backStackCount > 1) {
             fragmentManager.popBackStackImmediate();
+        }
+        try {
+            LabDetailsFragment labDetailsfragment = (LabDetailsFragment)getSupportFragmentManager().findFragmentByTag("LabDetailsFragment");
+            if(labDetailsfragment != null && labDetailsfragment.isVisible()){
+                labTabHeaderLayout.setDynamicText(Title.LAB_DETAILS);
+            }
+            ListOfSkipsFragment listofskipfragment = (ListOfSkipsFragment)getSupportFragmentManager().findFragmentByTag("ListOfSkipsFragment");
+            if(listofskipfragment != null && listofskipfragment.isVisible()){
+                labTabHeaderLayout.setDynamicText(Title.LIST_OF_SKIPS);
+            }
+            AdditionalInformationFragment additionalfragment = (AdditionalInformationFragment)getSupportFragmentManager().findFragmentByTag("AdditionalInformationFragment");
+            if(additionalfragment != null && additionalfragment.isVisible()){
+                labTabHeaderLayout.setDynamicText(Title.ADDITIONAL_INFORMATION);
+            }
+            HomeFragment homefragment = (HomeFragment)getSupportFragmentManager().findFragmentByTag("HomeFragment");
+            if(homefragment != null && homefragment.isVisible()){
+                labTabHeaderLayout.setDynamicText(String.format(getString(R.string.welcome_dynamic_mentor_name),
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
+            }
+        } catch (Exception ignored) {
+
         }
     }
 
@@ -308,7 +337,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     public void clearAllTheFragmentFromStack(boolean b) {
         try {
             AddVideoFragment addVideofragment = (AddVideoFragment)getSupportFragmentManager().findFragmentByTag("AddVideoFragment");
-            if(addVideofragment != null && addVideofragment.isVisible()){
+            if((addVideofragment != null && addVideofragment.isVisible())) {
                 FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
                 trans.remove(addVideofragment);
                 trans.commit();

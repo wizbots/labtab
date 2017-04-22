@@ -13,12 +13,17 @@ import org.wizbots.labtab.interfaces.BaseManagerInterface;
 import org.wizbots.labtab.interfaces.BaseUIListener;
 import org.wizbots.labtab.interfaces.OnLoadListener;
 import org.wizbots.labtab.model.metadata.MetaData;
+import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -26,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LabTabApplication extends Application {
 
-    private static String TAG = LabTabApplication.class.getName();
+    private static final String TAG = LabTabApplication.class.getName();
     private static LabTabApplication _instance;
     private LabTabApiInterface labTabApiInterface;
     private boolean closed;
@@ -120,9 +125,11 @@ public class LabTabApplication extends Application {
 
     public void initRetrofit() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(5, TimeUnit.MINUTES)
-                .writeTimeout(5, TimeUnit.MINUTES)
-                .readTimeout(5, TimeUnit.MINUTES);
+        builder.connectTimeout(7, TimeUnit.MINUTES)
+                .writeTimeout(7, TimeUnit.MINUTES)
+                .retryOnConnectionFailure(true)
+
+                .readTimeout(7, TimeUnit.MINUTES);
         OkHttpClient client = builder.build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -184,14 +191,39 @@ public class LabTabApplication extends Application {
             labLevel = LabTabConstants.LabLevels.LAB_CERTIFIED;
         }*/
         String[] knowledgeNuggets = null;
+        ArrayList<String> kn = new ArrayList<>();
         if (metaDatas == null) {
             return null;
         } else {
             for (int i = 0; i < metaDatas.length; i++) {
 //                if (labLevel.toUpperCase().equals(metaDatas[i].getName().toUpperCase())) {
-                    knowledgeNuggets = metaDatas[i].getNuggets();
+                kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
 /*                    break;
                 }*/
+            }
+            if(!kn.isEmpty()){
+                knowledgeNuggets = kn.toArray(new String[kn.size()]);
+            }
+        }
+        return knowledgeNuggets;
+    }
+
+    public String[] getKnowledgeNuggetsByStudent(ArrayList<Student> studentList) {
+        String[] knowledgeNuggets = null;
+        Set<String> kn = new HashSet<>();
+        ArrayList<String> knStudent = new ArrayList<>();
+        if (metaDatas == null || studentList == null || studentList.isEmpty()) {
+            return null;
+        } else {
+            for (int i = 0; i < metaDatas.length; i++) {
+                for (int j = 0; j < studentList.size(); j++) {
+//                    if (metaDatas[i].getName().toUpperCase().equalsIgnoreCase(studentList.get(j).getLevel())){
+                        kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
+//                    }
+                }
+            }
+            if(!kn.isEmpty()){
+                knowledgeNuggets = kn.toArray(new String[kn.size()]);
             }
         }
         return knowledgeNuggets;

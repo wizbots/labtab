@@ -28,6 +28,7 @@ import org.wizbots.labtab.interfaces.requesters.VideoUploadListener;
 import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
+import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.requesters.AddWizchipsRequester;
 import org.wizbots.labtab.requesters.CreateProjectRequester;
 import org.wizbots.labtab.requesters.DeleteVideoRequester;
@@ -82,6 +83,12 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                     Log.d("Service Starter Event", event);
                     checkAndStartWhatToSync();
                     break;
+                case Events.DEVICE_DISCONNECTED_TO_INTERNET:
+                    Log.d("Service Starter Event", event);
+                    if(!NotiManager.isAllSyncCompleted){
+                        NotiManager.getInstance().cancelNotification();
+                    }
+                    break;
                 case Events.NO_EVENT:
                     Log.d("Service Starter Event", event);
                     checkAndStartWhatToSync();
@@ -131,6 +138,7 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
             videoUploadTaskCompleted &= all;
         }
         if (videoUploadTaskCompleted) {
+            SyncManager.getInstance().onRefreshData(2);
             statusOfSingleVideoUploadBackgroundExecutor = null;
             if (isServiceToBeStopped()) {
                 stopForeground(true);
@@ -285,6 +293,9 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                 if (!videoArrayList.isEmpty()) {
                     startForegroundIntent();
                     statusOfSingleVideoUploadBackgroundExecutor = new boolean[videoArrayList.size()];
+                    if(LabTabApplication.getInstance().isNetworkAvailable()){
+                        NotiManager.getInstance().showNotification(videoArrayList.size());
+                    }
                     for (int i = 0; i < videoArrayList.size(); i++) {
                         BackgroundExecutor.getInstance().execute(new CreateProjectRequester(labTabSyncService, videoArrayList.get(i), i));
                     }

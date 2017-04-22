@@ -1,10 +1,17 @@
 package org.wizbots.labtab.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -36,6 +44,11 @@ import org.wizbots.labtab.model.video.Video;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ViewVideoFragment extends ParentFragment implements View.OnClickListener, HorizontalProjectCreatorAdapterClickListener {
 
@@ -117,7 +130,8 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
         creatorsSelected = new ArrayList<>();
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
 
-        RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(),2);
+       // RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
@@ -188,8 +202,152 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
         }.getType());
         creatorsSelected.addAll(objectArrayList);
         horizontalProjectCreatorAdapter.notifyDataSetChanged();
-        Glide.with(context)
-                .load(Uri.fromFile(new File(video.getPath())))
-                .into(videoThumbnailImageView);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissionsSingle()){
+            Glide.with(context)
+                    .load(Uri.fromFile(new File(video.getPath())))
+                    .into(videoThumbnailImageView);
+        }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            Glide.with(context)
+                    .load(Uri.fromFile(new File(video.getPath())))
+                    .into(videoThumbnailImageView);
+        }
+    }
+
+        /*
+    * Permission Code Start Here
+    * * */
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case Constants.PERMISSION_REQUEST_CODE:
+                final Map<String, Integer> perms = new HashMap<String, Integer>();
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                if(grantResults.length > 0){
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==  PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        Glide.with(context)
+                                .load(Uri.fromFile(new File(video.getPath())))
+                                .into(videoThumbnailImageView);
+                    }else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    || shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                                showMessageOKCancel("You need to allow access to all the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    switch (which){
+                                                        case DialogInterface.BUTTON_POSITIVE:
+                                                            Set<String> pendingPermission = new HashSet();
+                                                            for (String key : perms.keySet()) {
+                                                                if(perms.get(key) != PackageManager.PERMISSION_GRANTED){
+                                                                    pendingPermission.add(key);
+                                                                }
+                                                            }
+                                                            requestPermissions(pendingPermission.toArray(new String[pendingPermission.size()]), Constants.PERMISSION_REQUEST_CODE);
+                                                            break;
+                                                        case DialogInterface.BUTTON_NEGATIVE:
+                                                            Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        });
+                            }else {
+                                Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                }
+                break;
+            case Constants.PERMISSION_REQUEST_CODE_STORAGE:
+                final Map<String, Integer> perms1 = new HashMap<String, Integer>();
+                perms1.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                if(grantResults.length > 0){
+                    for (int i = 0; i < permissions.length; i++)
+                        perms1.put(permissions[i], grantResults[i]);
+                    if (perms1.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==  PackageManager.PERMISSION_GRANTED) {
+                        Glide.with(context)
+                                .load(Uri.fromFile(new File(video.getPath())))
+                                .into(videoThumbnailImageView);
+                    }else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                showMessageOKCancel("You need to allow access to all the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    switch (which){
+                                                        case DialogInterface.BUTTON_POSITIVE:
+                                                            Set<String> pendingPermission = new HashSet();
+                                                            for (String key : perms1.keySet()) {
+                                                                if(perms1.get(key) != PackageManager.PERMISSION_GRANTED){
+                                                                    pendingPermission.add(key);
+                                                                }
+                                                            }
+                                                            requestPermissions(pendingPermission.toArray(new String[pendingPermission.size()]), Constants.PERMISSION_REQUEST_CODE);
+                                                            break;
+                                                        case DialogInterface.BUTTON_NEGATIVE:
+                                                            Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        });
+                            }else {
+                                Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener listener) {
+        new android.support.v7.app.AlertDialog.Builder(homeActivityContext)
+                .setMessage(message)
+                .setPositiveButton("OK", listener)
+                .setNegativeButton("Cancel", listener)
+                .create()
+                .show();
+    }
+
+    @SuppressLint("NewApi")
+    public boolean checkAndRequestPermissions() {
+        int storage = homeActivityContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int camera = homeActivityContext.checkSelfPermission(Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<String>();
+        if (storage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (camera != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),Constants.PERMISSION_REQUEST_CODE);
+            return false;
+        }
+        return true;
+    }
+
+    @SuppressLint("NewApi")
+    public boolean checkAndRequestPermissionsSingle() {
+        int storage = homeActivityContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<String>();
+        if (storage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),Constants.PERMISSION_REQUEST_CODE_STORAGE);
+            return false;
+        }
+        return true;
     }
 }
