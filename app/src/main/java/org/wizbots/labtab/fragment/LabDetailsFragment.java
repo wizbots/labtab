@@ -78,6 +78,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     private TextView markAbsentTextView, promoteTextView, demoteTextView;
     private CheckBox checkBoxSendNotification;
     private Date dateSelected;
+    boolean status[];
 
     public LabDetailsFragment() {
 
@@ -106,9 +107,9 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         super.onResume();
         SyncManager.getInstance().onRefreshData(1);
         boolean isSync = SyncManager.getInstance().isLabDetailSynced();
-        if(isSync){
+        if (isSync) {
             updateSyncStatus(true);
-        }else {
+        } else {
             updateSyncStatus(false);
         }
     }
@@ -153,17 +154,18 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         calendarImageView.setOnClickListener(this);
         boolean isNetwork = LabTabApplication.getInstance().isNetworkAvailable();
         program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
-        if(!isNetwork && program == null){
+        if (!isNetwork && program == null) {
             progressDialog.dismiss();
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
-        }else if (program != null) {
+        } else if (program != null) {
             setHeaderView(program);
             ArrayList<Student> studentArrayList = ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId());
-            if(!isNetwork && (studentArrayList == null || studentArrayList.isEmpty())){
+            if (!isNetwork && (studentArrayList == null || studentArrayList.isEmpty())) {
                 progressDialog.dismiss();
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
-            }else if (!studentArrayList.isEmpty()) {
+            } else if (!studentArrayList.isEmpty()) {
                 objectArrayList.addAll(studentArrayList);
+                maintnedCheckedStudentsStatus();
                 labDetailsAdapter.notifyDataSetChanged();
             } else {
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_STUDENT_FOUND_FOR_THIS_LAB);
@@ -216,6 +218,9 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     @Override
     public void onCheckChanged(int position, boolean value) {
         ((Student) objectArrayList.get(position)).setCheck(value);
+        status[position] = value;
+
+
     }
 
     private void showCalendar() {
@@ -347,7 +352,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
                     ArrayList<Student> studentArrayList = getSelectedStudents();
                     if (!studentArrayList.isEmpty()) {
-                        if(dateSelected == null){
+                        if (dateSelected == null) {
                             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_DATE_FIRST);
                             return;
                         }
@@ -633,7 +638,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
     private void notifyLabDetailsAdapter() {
         objectArrayList.clear();
-        objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
+        preservePreviousCheckStatus();
         labDetailsAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
     }
@@ -650,11 +655,32 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         });
     }
 
-    private void updateSyncStatus(boolean isSync){
+    private void updateSyncStatus(boolean isSync) {
         if (isSync) {
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         } else {
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
+        }
+    }
+
+    private void maintnedCheckedStudentsStatus() {
+        status = new boolean[objectArrayList.size()];
+        for (int i = 0; i < objectArrayList.size(); i++) {
+            status[i] = false;
+        }
+    }
+
+    private void preservePreviousCheckStatus() {
+
+        objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
+        if(status==null){
+            maintnedCheckedStudentsStatus();
+        }
+        for (int i = 0; i < status.length; i++) {
+            if (status[i]) {
+                ((Student) objectArrayList.get(i)).setCheck(status[i]);
+            }
+
         }
     }
 }
