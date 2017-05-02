@@ -1,6 +1,8 @@
 package org.wizbots.labtab.model.student;
 
-public class StudentLabDetailsType2 {
+import org.wizbots.labtab.interfaces.StudentTypeInterface;
+
+public class StudentLabDetailsType2 implements StudentTypeInterface {
     private String studentName;
     private String labLevel;
     private String noOfProjects;

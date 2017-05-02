@@ -14,6 +14,7 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.StudentLabDetailsAdapterClickListener;
+import org.wizbots.labtab.interfaces.StudentTypeInterface;
 import org.wizbots.labtab.model.student.StudentLabDetailsType1;
 import org.wizbots.labtab.model.student.StudentLabDetailsType2;
 import org.wizbots.labtab.util.LabTabUtil;
@@ -24,7 +25,7 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private final int VIEW_ITEM_DATA_TYPE_1 = 1;
     private final int VIEW_ITEM_DATA_TYPE_2 = 2;
-    private ArrayList<Object> objectArrayList;
+    private ArrayList<StudentTypeInterface> objectArrayList;
     private Context context;
     private StudentLabDetailsAdapterClickListener studentLabDetailsAdapterClickListener;
 
@@ -106,7 +107,7 @@ public class StudentLabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }
 
-    public StudentLabDetailsAdapter(ArrayList<Object> objectArrayList, Context context, StudentLabDetailsAdapterClickListener studentLabDetailsAdapterClickListener) {
+    public StudentLabDetailsAdapter(ArrayList<StudentTypeInterface> objectArrayList, Context context, StudentLabDetailsAdapterClickListener studentLabDetailsAdapterClickListener) {
         this.objectArrayList = objectArrayList;
         this.context = context;
         this.studentLabDetailsAdapterClickListener = studentLabDetailsAdapterClickListener;

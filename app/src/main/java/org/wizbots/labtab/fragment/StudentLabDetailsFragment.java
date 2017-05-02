@@ -21,6 +21,7 @@ import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.StudentStatsTable;
 import org.wizbots.labtab.database.StudentsProfileTable;
 import org.wizbots.labtab.interfaces.StudentLabDetailsAdapterClickListener;
+import org.wizbots.labtab.interfaces.StudentTypeInterface;
 import org.wizbots.labtab.interfaces.requesters.GetStudentProfileAndStatsListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Program;
@@ -33,8 +34,10 @@ import org.wizbots.labtab.model.student.response.StudentResponse;
 import org.wizbots.labtab.requesters.StudentProfileAndStatsRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
+import org.wizbots.labtab.util.LevelComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class StudentLabDetailsFragment extends ParentFragment implements View.OnClickListener, StudentLabDetailsAdapterClickListener, GetStudentProfileAndStatsListener {
@@ -45,7 +48,7 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
     private View rootView;
     private StudentLabDetailsAdapter studentLabDetailsAdapter;
     private RecyclerView recyclerViewStudentLabDetails;
-    private ArrayList<Object> objectArrayList = new ArrayList<>();
+    private ArrayList<StudentTypeInterface> objectArrayList = new ArrayList<>();
     private HomeActivity homeActivityContext;
     private Program program;
     private Student student;
@@ -271,14 +274,7 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
                 break;
             }
         }
-        StudentLabDetailsType1 studentLabDetailsType1 = new StudentLabDetailsType1(studentProfile.getFullName(),
-                studentProfile.getLevel(),
-                String.valueOf(studentStats.getProject_count()),
-                studentStats.getLab_time_count().replaceAll("\"", ""),
-                String.valueOf(studentStats.getDone_count()),
-                String.valueOf(studentStats.getSkipped_count()),
-                String.valueOf(studentStats.getPending_count()));
-        objectArrayList.add(studentLabDetailsType1);
+
 
         for (StudentStats studentStat : studentStatsArrayList) {
             StudentLabDetailsType2 studentLabDetailsType2 = new StudentLabDetailsType2("",
@@ -290,6 +286,15 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
                     String.valueOf(studentStat.getPending_count()));
             objectArrayList.add(studentLabDetailsType2);
         }
+        Collections.sort(objectArrayList, LevelComparator.getCompByName());
+        StudentLabDetailsType1 studentLabDetailsType1 = new StudentLabDetailsType1(studentProfile.getFullName(),
+                studentProfile.getLevel(),
+                String.valueOf(studentStats.getProject_count()),
+                studentStats.getLab_time_count().replaceAll("\"", ""),
+                String.valueOf(studentStats.getDone_count()),
+                String.valueOf(studentStats.getSkipped_count()),
+                String.valueOf(studentStats.getPending_count()));
+        objectArrayList.add(0, studentLabDetailsType1);
         studentLabDetailsAdapter.notifyDataSetChanged();
     }
 }
