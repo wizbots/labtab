@@ -279,9 +279,13 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
 
 
         for (StudentStats studentStat : studentStatsArrayList) {
+            boolean isShow = true;
+            if (studentStat.getDone_count() == 0 && studentStat.getPending_count() == 0 && studentStat.getSkipped_count() == 0) {
+                isShow = false;
+            }
             StudentLabDetailsType2 studentLabDetailsType2 = new StudentLabDetailsType2("",
                     studentStat.getLevel(),
-                    String.valueOf(studentStat.getProject_count()),
+                    String.valueOf(isShow ? studentStat.getProject_count() : 0),
                     studentStat.getLab_time_count().replaceAll("\"", ""),
                     String.valueOf(studentStat.getDone_count()),
                     String.valueOf(studentStat.getSkipped_count()),
