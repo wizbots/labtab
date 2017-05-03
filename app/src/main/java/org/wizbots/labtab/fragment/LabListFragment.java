@@ -155,9 +155,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         super.onResume();
         SyncManager.getInstance().onRefreshData(1);
         boolean isSync = SyncManager.getInstance().isLabDetailSynced();
-        if(isSync){
+        if (isSync) {
             updateSyncStatus(true);
-        }else {
+        } else {
             updateSyncStatus(false);
         }
         rootView.findViewById(R.id.iv_search).setOnClickListener(this);
@@ -179,7 +179,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 dateSelected = calendar.getTime();
-                if (dateSelected != null){
+                if (dateSelected != null) {
                     filterMap.clear();
                     filterMap.putAll(getDateByCalendar(dateSelected));
                     callFilterApi();
@@ -300,10 +300,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (!LabTabApplication.getInstance().isNetworkAvailable() && (programOrLabs == null || programOrLabs.isEmpty())){
+                if (!LabTabApplication.getInstance().isNetworkAvailable() && (programOrLabs == null || programOrLabs.isEmpty())) {
                     progressDialog.dismiss();
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No data available, please try again later with Internet connectivity");
-                }else {
+                } else {
                     objectArrayList.clear();
                     objectArrayList.addAll(programOrLabs);
                     labListAdapter.notifyDataSetChanged();
@@ -370,17 +370,21 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             case R.id.iv_cancel:
                 progressDialog.show();
                 spinnerLocation.setSelection(0);
-                spinnerYear.setSelection(getYearPosition(LabTabUtil.getCurrentYear()));
-                spinnerSeason.setSelection(getSeasonPosition(LabTabUtil.getSeason()));
-                filterMap.clear();
-                filterMap.put(FilterRequestParameter.SEASON_YEAR, String.valueOf(LabTabUtil.getCurrentYear()));
-                filterMap.put(FilterRequestParameter.SEASON, String.valueOf(LabTabUtil.getSeason()).toLowerCase());
-                callFilterApi();
+                spinnerYear.setSelection(0);
+                spinnerSeason.setSelection(0);
+               /* filterMap.clear();
+                filterMap.put(FilterRequestParameter.SEASON_YEAR, String.valueOf(spinnerYear.getAdapter().getItem(0)));
+                filterMap.put(FilterRequestParameter.SEASON, String.valueOf(spinnerSeason.getAdapter().getItem(0)));
+                callFilterApi();*/
+                if (programOrLabRequester == null) {
+                    programOrLabRequester = new ProgramOrLabRequester();
+                }
+                BackgroundExecutor.getInstance().execute(programOrLabRequester);
                 break;
         }
     }
 
-    private void resetFilter(){
+    private void resetFilter() {
         filterMap.clear();
         spinnerLocation.setSelection(0);
         spinnerYear.setSelection(0);
@@ -392,9 +396,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (!LabTabApplication.getInstance().isNetworkAvailable() && (programOrLabs == null || programOrLabs.isEmpty())){
+                if (!LabTabApplication.getInstance().isNetworkAvailable() && (programOrLabs == null || programOrLabs.isEmpty())) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
-                }else if (programOrLabs != null && programOrLabs.isEmpty()) {
+                } else if (programOrLabs != null && programOrLabs.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_FOUND);
                 }
                 removeTodayTomorrowFilterKey();
@@ -452,7 +456,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         });
     }
 
-    private void updateSyncStatus(boolean isSync){
+    private void updateSyncStatus(boolean isSync) {
         if (isSync) {
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         } else {
@@ -460,13 +464,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         }
     }
 
-    private int getSeasonPosition(String season){
+    private int getSeasonPosition(String season) {
         List list = Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season));
         return list.indexOf(season);
     }
 
-    private int getYearPosition(int year){
-        List list =  Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year));
+    private int getYearPosition(int year) {
+        List list = Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year));
         return list.indexOf(String.valueOf(year));
     }
 }

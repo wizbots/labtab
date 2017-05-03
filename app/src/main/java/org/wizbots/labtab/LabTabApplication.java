@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.util.Log;
+
 import com.craterzone.logginglib.manager.LoggerManager;
+
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.interfaces.BaseManagerInterface;
 import org.wizbots.labtab.interfaces.BaseUIListener;
@@ -16,6 +18,7 @@ import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,6 +28,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -40,6 +44,11 @@ public class LabTabApplication extends Application {
     private Map<Class<? extends BaseUIListener>, Collection<? extends BaseUIListener>> uiListeners;
     private MetaData[] metaDatas;
     private final Handler handler;
+    protected int totalProjects;
+    protected int labTime;
+    protected int countCompletedProjects;
+    protected int countSkippedProjects;
+    protected int countPendingProjects;
 
 
     public LabTabApplication() {
@@ -67,7 +76,7 @@ public class LabTabApplication extends Application {
         loadManagers();
         initRetrofit();
         LoggerManager.getInstance(getApplicationContext()).init();
-        metaDatas =  LabTabPreferences.getInstance(LabTabApplication.getInstance()).getProjectsMetaData();
+        metaDatas = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getProjectsMetaData();
     }
 
     private void initManagers() {
@@ -201,7 +210,7 @@ public class LabTabApplication extends Application {
 /*                    break;
                 }*/
             }
-            if(!kn.isEmpty()){
+            if (!kn.isEmpty()) {
                 knowledgeNuggets = kn.toArray(new String[kn.size()]);
             }
         }
@@ -218,11 +227,11 @@ public class LabTabApplication extends Application {
             for (int i = 0; i < metaDatas.length; i++) {
                 for (int j = 0; j < studentList.size(); j++) {
 //                    if (metaDatas[i].getName().toUpperCase().equalsIgnoreCase(studentList.get(j).getLevel())){
-                        kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
+                    kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
 //                    }
                 }
             }
-            if(!kn.isEmpty()){
+            if (!kn.isEmpty()) {
                 knowledgeNuggets = kn.toArray(new String[kn.size()]);
             }
         }
@@ -231,5 +240,42 @@ public class LabTabApplication extends Application {
 
     public void runOnUiThread(final Runnable runnable) {
         handler.post(runnable);
+    }
+
+    public void setCount(int countCompletedProjects, int countPendingProjects, int countSkippedProjects, int totalProjects, int noLab) {
+        this.totalProjects += totalProjects;
+        this.countCompletedProjects += countCompletedProjects;
+        this.countSkippedProjects += countSkippedProjects;
+        this.countPendingProjects += countPendingProjects;
+        this.labTime += noLab;
+
+    }
+
+    public void setCountToZero() {
+        this.totalProjects = 0;
+        this.countCompletedProjects = 0;
+        this.countSkippedProjects = 0;
+        this.countPendingProjects = 0;
+        this.labTime = 0;
+    }
+
+    public int getLabTime() {
+        return labTime;
+    }
+
+    public int getTotalProjects() {
+        return totalProjects;
+    }
+
+    public int getCompletedProjects() {
+        return countCompletedProjects;
+    }
+
+    public int getPendingProjects() {
+        return countPendingProjects;
+    }
+
+    public int getSkippedProjects() {
+        return countSkippedProjects;
     }
 }

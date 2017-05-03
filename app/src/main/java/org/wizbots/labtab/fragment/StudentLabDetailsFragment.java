@@ -67,6 +67,8 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Nullable
@@ -93,7 +95,6 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
         progressDialog.setMessage("processing");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
-
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.STUDENT_LAB_DETAILS);
@@ -263,6 +264,7 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
     }
 
     private void prepareStudentStats(ArrayList<StudentStats> studentStatsArrayList, StudentProfile studentProfile) {
+        LabTabApplication.getInstance().setCountToZero();
         StudentStats studentStats = null;
         for (StudentStats studentStat : studentStatsArrayList) {
             if (studentProfile.getLevel().equalsIgnoreCase("NOVICE")) {
@@ -289,11 +291,11 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
         Collections.sort(objectArrayList, LevelComparator.getCompByName());
         StudentLabDetailsType1 studentLabDetailsType1 = new StudentLabDetailsType1(studentProfile.getFullName(),
                 studentProfile.getLevel(),
-                String.valueOf(studentStats.getProject_count()),
-                studentStats.getLab_time_count().replaceAll("\"", ""),
-                String.valueOf(studentStats.getDone_count()),
-                String.valueOf(studentStats.getSkipped_count()),
-                String.valueOf(studentStats.getPending_count()));
+                String.valueOf(LabTabApplication.getInstance().getTotalProjects()),
+                LabTabApplication.getInstance().getLabTime() + "".replaceAll("\"", ""),
+                String.valueOf(LabTabApplication.getInstance().getCompletedProjects()),
+                String.valueOf(LabTabApplication.getInstance().getSkippedProjects()),
+                String.valueOf(LabTabApplication.getInstance().getPendingProjects()));
         objectArrayList.add(0, studentLabDetailsType1);
         studentLabDetailsAdapter.notifyDataSetChanged();
     }

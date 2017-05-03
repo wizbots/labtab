@@ -1,5 +1,6 @@
 package org.wizbots.labtab.model.student;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.interfaces.StudentTypeInterface;
 
 public class StudentLabDetailsType2 implements StudentTypeInterface {
@@ -22,6 +23,17 @@ public class StudentLabDetailsType2 implements StudentTypeInterface {
         this.noOfDone = noOfDone;
         this.noOfSkipped = noOfSkipped;
         this.noOfPending = noOfPending;
+        setCount();
+    }
+
+    private void setCount() {
+      /* LabTabApplication.getInstance().getCompletedProjects() += Integer.parseInt(noOfDone);
+        countSkippedProjects += Integer.parseInt(noOfSkipped);
+        countPendingProjects += Integer.parseInt(noOfPending);
+        totalProjects += Integer.parseInt(noOfProjects);
+        labTime += Integer.parseInt(noOfLabTime);*/
+        LabTabApplication.getInstance().setCount(Integer.parseInt(noOfDone), Integer.parseInt(noOfPending), Integer.parseInt(noOfSkipped), Integer.parseInt(noOfProjects), Integer.parseInt(noOfLabTime));
+
     }
 
     public String getStudentName() {

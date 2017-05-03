@@ -240,32 +240,32 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         fragment.setArguments(bundle);
         try {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if(fragment.getFragmentName().equalsIgnoreCase("HomeFragment")){
+            if (fragment.getFragmentName().equalsIgnoreCase("HomeFragment")) {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(fragment.getFragmentName());
-            }else if(fragment.getFragmentName().equalsIgnoreCase("ListOfSkipsFragment")) {
-                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("ListOfSkipsFragment", 0);
-                if (!fragmentPopped){
+            } else if (fragment.getFragmentName().equalsIgnoreCase("ListOfSkipsFragment")) {
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate("ListOfSkipsFragment", 0);
+                if (!fragmentPopped) {
                     fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                     fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 }
 
-            }else if(fragment.getFragmentName().equalsIgnoreCase("AdditionalInformationFragment")){
-                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("AdditionalInformationFragment", 0);
-                if (!fragmentPopped){
+            } else if (fragment.getFragmentName().equalsIgnoreCase("AdditionalInformationFragment")) {
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate("AdditionalInformationFragment", 0);
+                if (!fragmentPopped) {
                     fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                     fragmentTransaction.addToBackStack(fragment.getFragmentName());
                 }
-            }else if(fragment.getFragmentName().equalsIgnoreCase("VideoListFragment")){
-                boolean fragmentPopped = fragmentManager.popBackStackImmediate ("VideoListFragment", 0);
-                if (!fragmentPopped){
+            } else if (fragment.getFragmentName().equalsIgnoreCase("VideoListFragment")) {
+                boolean fragmentPopped = fragmentManager.popBackStackImmediate("VideoListFragment", 0);
+                if (!fragmentPopped) {
                     fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                     fragmentTransaction.addToBackStack("HomeFragment");
                 }
-            }else if(fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")){
+            } else if (fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")) {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
-            }else {
+            } else {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
             }
@@ -288,20 +288,20 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             fragmentManager.popBackStackImmediate();
         }
         try {
-            LabDetailsFragment labDetailsfragment = (LabDetailsFragment)getSupportFragmentManager().findFragmentByTag("LabDetailsFragment");
-            if(labDetailsfragment != null && labDetailsfragment.isVisible()){
+            LabDetailsFragment labDetailsfragment = (LabDetailsFragment) getSupportFragmentManager().findFragmentByTag("LabDetailsFragment");
+            if (labDetailsfragment != null && labDetailsfragment.isVisible()) {
                 labTabHeaderLayout.setDynamicText(Title.LAB_DETAILS);
             }
-            ListOfSkipsFragment listofskipfragment = (ListOfSkipsFragment)getSupportFragmentManager().findFragmentByTag("ListOfSkipsFragment");
-            if(listofskipfragment != null && listofskipfragment.isVisible()){
+            ListOfSkipsFragment listofskipfragment = (ListOfSkipsFragment) getSupportFragmentManager().findFragmentByTag("ListOfSkipsFragment");
+            if (listofskipfragment != null && listofskipfragment.isVisible()) {
                 labTabHeaderLayout.setDynamicText(Title.LIST_OF_SKIPS);
             }
-            AdditionalInformationFragment additionalfragment = (AdditionalInformationFragment)getSupportFragmentManager().findFragmentByTag("AdditionalInformationFragment");
-            if(additionalfragment != null && additionalfragment.isVisible()){
+            AdditionalInformationFragment additionalfragment = (AdditionalInformationFragment) getSupportFragmentManager().findFragmentByTag("AdditionalInformationFragment");
+            if (additionalfragment != null && additionalfragment.isVisible()) {
                 labTabHeaderLayout.setDynamicText(Title.ADDITIONAL_INFORMATION);
             }
-            HomeFragment homefragment = (HomeFragment)getSupportFragmentManager().findFragmentByTag("HomeFragment");
-            if(homefragment != null && homefragment.isVisible()){
+            HomeFragment homefragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("HomeFragment");
+            if (homefragment != null && homefragment.isVisible()) {
                 labTabHeaderLayout.setDynamicText(String.format(getString(R.string.welcome_dynamic_mentor_name),
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
             }
@@ -336,8 +336,8 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
 
     public void clearAllTheFragmentFromStack(boolean b) {
         try {
-            AddVideoFragment addVideofragment = (AddVideoFragment)getSupportFragmentManager().findFragmentByTag("AddVideoFragment");
-            if((addVideofragment != null && addVideofragment.isVisible())) {
+            AddVideoFragment addVideofragment = (AddVideoFragment) getSupportFragmentManager().findFragmentByTag("AddVideoFragment");
+            if ((addVideofragment != null && addVideofragment.isVisible())) {
                 FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
                 trans.remove(addVideofragment);
                 trans.commit();

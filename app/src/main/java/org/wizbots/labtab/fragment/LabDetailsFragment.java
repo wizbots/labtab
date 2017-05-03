@@ -673,7 +673,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     private void preservePreviousCheckStatus() {
 
         objectArrayList.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
-        if(status==null){
+        if (status == null) {
             maintnedCheckedStudentsStatus();
         }
         for (int i = 0; i < status.length; i++) {
