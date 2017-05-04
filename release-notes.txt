@@ -1,21 +1,26 @@
 ---------------------------------------------------------------------
-Release 0.0
+Release 1.0.0 - 2017/05/04
 ---------------------------------------------------------------------
 NEW FEATURES:
-* Lorem Ipsum
+* Moved to production server
 
 
 NOTES:
-* Lorem Ipsum
+* First official live release
 
 CHANGES:
 * INTERNAL API CHANGES:
-  - Lorem Ipsum
+  - Nothing special
 
 
 BUG FIXES:
-* ticket-20	Lorem Ipsum
+* Have to select students each time we want to increase / decrease Wizchips
+  https://github.com/wizbots/labtab/issues/42
+
+* Level numbers not adding correctly when selecting student using Binoculars
+  https://github.com/wizbots/labtab/issues/40
 
 KNOWN ISSUES:
-* Lorem Ipsum
-* Lorem Ipsum
+* Knowledge nuggets don't seem to match the ones in Wizbots
+* Have to improve the way Nuggets are shown
+* Students selected in video form are not aligned correctly
