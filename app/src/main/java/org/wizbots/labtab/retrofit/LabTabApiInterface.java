@@ -15,6 +15,7 @@ import org.wizbots.labtab.model.wizchips.WizchipsAddResponse;
 import org.wizbots.labtab.model.wizchips.WizchipsWithdrawResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -36,7 +37,7 @@ import retrofit2.http.QueryMap;
 public interface LabTabApiInterface {
     //"https://wizbots.com/api/" production url
     //"http://test.wizbots.com/api/"; // testing url
-    String BASE_URL = "https://wizbots.com/api/";
+    String BASE_URL = "http://test.wizbots.com/api/";
 
 
     //    Operations related to deal with tokens
@@ -110,7 +111,7 @@ public interface LabTabApiInterface {
     //    13. Add wizchips
     @POST("students/wizchips/add")
     Call<WizchipsAddResponse> addWizchips(@Header("Auth-Token") String authToken,
-                                          @Query("student_id") String studentId, @Query("wizchips") int wizchip);
+                                          @Query("student_id") List<String> studentIds, @Query("wizchips") int whizchip);
 
     //    14. withdraw wizchips
     @POST("students/wizchips/withdraw")

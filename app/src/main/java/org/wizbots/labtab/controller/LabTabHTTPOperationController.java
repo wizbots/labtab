@@ -6,6 +6,9 @@ import org.wizbots.labtab.retrofit.ConnectionUtil;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -115,7 +118,7 @@ public class LabTabHTTPOperationController {
                 ));
     }
 
-    public static LabTabResponse addWizchips(String studentId, int count) {
+    public static LabTabResponse addWizchips(List<String> studentId, int count) {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
         return ConnectionUtil.execute(labTabApiInterface.addWizchips(LabTabPreferences.getInstance
                 (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), studentId, count));
@@ -146,7 +149,7 @@ public class LabTabHTTPOperationController {
 
     public static LabTabResponse deleteVideo(String programId) {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
-        return ConnectionUtil.execute(labTabApiInterface.deleteVideo(programId,LabTabPreferences.getInstance
+        return ConnectionUtil.execute(labTabApiInterface.deleteVideo(programId, LabTabPreferences.getInstance
                 (LabTabApplication.getInstance()).getCreateTokenResponse().getToken()));
     }
 

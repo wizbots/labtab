@@ -13,45 +13,62 @@ import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.service.SyncManager;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class AddWizchipsRequester implements Runnable {
 
     private static String TAG = AddWizchipsRequester.class.getSimpleName();
 
-    private String mStudentId;
+    private List<String> mStudentId;
     private String mProgramOrLab;
     private int mCount;
 
-    public AddWizchipsRequester(String programOrLab, String mStudentId, int mCount) {
+
+    public AddWizchipsRequester(String programOrLab, List<String> mStudentId, int mCount) {
         this.mProgramOrLab = programOrLab;
         this.mStudentId = mStudentId;
+        this.mCount = mCount;
+    }
+
+    public AddWizchipsRequester(String programOrLab, String mStudentId, int mCount) {
+        this.mProgramOrLab = programOrLab;
+        this.mStudentId = new ArrayList<String>();
+        this.mStudentId.add(mStudentId);
         this.mCount = mCount;
     }
 
     @Override
     public void run() {
         int statusCode = 0;
-        LabTabResponse<WizchipsAddResponse> addWizchipsResponse = LabTabHTTPOperationController.addWizchips(mStudentId, mCount);
+
+        LabTabResponse<ArrayList<WizchipsAddResponse>> addWizchipsResponse = LabTabHTTPOperationController.addWizchips(mStudentId, mCount);
 
         if (addWizchipsResponse != null) {
             statusCode = addWizchipsResponse.getResponseCode();
-            WizchipsAddResponse response = addWizchipsResponse.getResponse();
-            if (statusCode == HttpURLConnection.HTTP_OK) {
-                Log.d(TAG, "Wizchips added successfully = " + response.getWizchips());
-                ProgramStudentsTable.getInstance().updateWizchips(mStudentId, response.getWizchips(), true);
-                ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, 0, true);
-            } else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                Log.d(TAG, "Student Not Found with id = " + mStudentId);
-            } else {
-                Log.d(TAG, "Failed to add wizchips");
-                Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
-                ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, (student.getOfflinewizchips() + mCount), false);
+            //WizchipsAddResponse response = addWizchipsResponse.getResponse();
+            for (WizchipsAddResponse wizchipsAddResponse : addWizchipsResponse.getResponse()) {
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    Log.d(TAG, "Wizchips added successfully = " + wizchipsAddResponse.getWizchips());
+                    ProgramStudentsTable.getInstance().updateWizchips(wizchipsAddResponse.getStudent_id(), wizchipsAddResponse.getWizchips(), true);
+                    ProgramStudentsTable.getInstance().updateWizchipsOffline(wizchipsAddResponse.getStudent_id(), 0, true);
+                } else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                    Log.d(TAG, "Student Not Found with id = " + mStudentId);
+                } else {
+                    Log.d(TAG, "Failed to add wizchips");
+                    Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, wizchipsAddResponse.getStudent_id());
+                    ProgramStudentsTable.getInstance().updateWizchipsOffline(wizchipsAddResponse.getStudent_id(), (student.getOfflinewizchips() + mCount), false);
+                }
             }
         } else {
             Log.d(TAG, "Failed to add wizchips");
-            Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, mStudentId);
-            ProgramStudentsTable.getInstance().updateWizchipsOffline(mStudentId, (student.getOfflinewizchips() + mCount), false);
+            for (String id : mStudentId) {
+                Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, id);
+                ProgramStudentsTable.getInstance().updateWizchipsOffline(id, (student.getOfflinewizchips() + mCount), false);
+            }
         }
         SyncManager.getInstance().onRefreshData(1);
         for (AddWizchipsListener listener : LabTabApplication.getInstance().getUIListeners(AddWizchipsListener.class)) {

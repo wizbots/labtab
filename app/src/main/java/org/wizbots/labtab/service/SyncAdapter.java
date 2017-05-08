@@ -80,6 +80,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(student.getProgram_id(),student.getStudent_id(), (-(student.getOfflinewizchips()))));
                 }else {
                     BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(student.getProgram_id(),student.getStudent_id(), student.getOfflinewizchips()));
+                //!=@todo
                 }
 
             }

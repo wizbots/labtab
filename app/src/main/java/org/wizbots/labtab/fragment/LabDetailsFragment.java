@@ -51,6 +51,8 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener,
         GetProgramStudentsListener, View.OnClickListener, MarkStudentAbsentListener, PromotionDemotionListener,
@@ -451,12 +453,16 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 ArrayList<Student> studentList = getSelectedStudents();
                 if (studentList.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
-                } else if (studentList.size() > 1) {
+                } /*else if (studentList.size() > 1) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
-                } else {
+                }*/ else {
                     Student student = studentList.get(0);
+                    List<String> selectted = new ArrayList<>();
+                    for (Student student1 : studentList) {
+                        selectted.add(student1.getStudent_id());
+                    }
                     progressDialog.show();
-                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), student.getStudent_id(), 1));
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
                 }
                 break;
             case R.id.tv_minus:
