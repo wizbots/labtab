@@ -375,7 +375,7 @@
                                 android:id="@+id/recycler_view_horizontal_project_creators"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:numColumns="auto_fit"/>
+                                android:numColumns="2"/>
 
                         </LinearLayout>
                     </LinearLayout>

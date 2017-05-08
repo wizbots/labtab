@@ -34,8 +34,10 @@ import retrofit2.http.QueryMap;
 
 
 public interface LabTabApiInterface {
-
+    //"https://wizbots.com/api/" production url
+    //"http://test.wizbots.com/api/"; // testing url
     String BASE_URL = "https://wizbots.com/api/";
+
 
     //    Operations related to deal with tokens
 
@@ -119,14 +121,14 @@ public interface LabTabApiInterface {
     @GET("programs/metadata")
     Call<MetaData[]> getProjectsMetaData();
 
-//    16. Get Location for filter?
+    //    16. Get Location for filter?
     @GET("locations/")
     Call<LocationResponse[]> location(@Header("Auth-Token") String authToken);
 
-//    17. Filter project Data
+    //    17. Filter project Data
     @GET("programs/")
     Call<ArrayList<ProgramOrLab>> getFilter(@Header("Auth-Token") String authToken, @QueryMap(encoded = true) Map<String, String> params);
 
     @DELETE("projects/{project_id}")
-    Call<String>  deleteVideo( @Path("project_id") String project_id,@Header("Auth-Token") String authToken);
+    Call<String> deleteVideo(@Path("project_id") String project_id, @Header("Auth-Token") String authToken);
 }

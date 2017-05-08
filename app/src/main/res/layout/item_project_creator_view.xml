@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/extra_extra_small_padding"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:background="@drawable/rounded_layout_orange"
-        android:gravity="center"
+        android:gravity="start"
         android:orientation="horizontal"
         android:padding="@dimen/extra_extra_small_padding">
 
@@ -20,16 +21,16 @@
             android:layout_height="20dp"
             android:layout_margin="@dimen/extra_extra_small_margin"
             android:background="@drawable/rounded_layout_white"
+            android:contentDescription="@string/creato_lab_level"
             android:padding="3dp"
-            android:src="@drawable/ic_level_explorer"
-            android:contentDescription="@string/creato_lab_level" />
+            android:src="@drawable/ic_level_explorer" />
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_project_creator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/extra_extra_small_margin"
-            android:gravity="center"
+            android:gravity="left"
             android:text="@string/project_creators"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_extra_extra_small"
