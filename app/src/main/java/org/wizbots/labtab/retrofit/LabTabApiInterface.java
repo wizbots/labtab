@@ -37,7 +37,7 @@ import retrofit2.http.QueryMap;
 public interface LabTabApiInterface {
     //"https://wizbots.com/api/" production url
     //"http://test.wizbots.com/api/"; // testing url
-    String BASE_URL = "http://test.wizbots.com/api/";
+    String BASE_URL = "https://wizbots.com/api/";
 
 
     //    Operations related to deal with tokens
@@ -116,7 +116,7 @@ public interface LabTabApiInterface {
     //    14. withdraw wizchips
     @POST("students/wizchips/withdraw")
     Call<WizchipsWithdrawResponse> withdrawWizchips(@Header("Auth-Token") String authToken,
-                                                    @Query("student_id")  List<String> studentId, @Query("wizchips") int wizchips);
+                                                    @Query("student_id") List<String> studentId, @Query("wizchips") int wizchips);
 
     //   15. Get Project metadata
     @GET("programs/metadata")

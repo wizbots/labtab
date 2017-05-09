@@ -698,7 +698,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         final boolean[] componentSelection = new boolean[components.length];
 
         if (bundle != null) {
-            HashSet<String> kN = (HashSet<String>) bundle.getSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS);
+            ArrayList<String> kN = (ArrayList<String>) bundle.getSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS);
             if (kN != null && !kN.isEmpty()) {
                 knowledgeNuggets.clear();
                 knowledgeNuggets.addAll(kN);
@@ -1115,6 +1115,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     public void showDialogForKnowledgeNuggets() {
         final Dialog dialog1 = new Dialog(context);
+
         dialog1.setContentView(R.layout.knowledgenuggets_expand_layout);
         dialog1.setTitle("Select Knowledge Nuggets");
         HashMap<String, ArrayList<Nuggests>> list;
