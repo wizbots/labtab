@@ -124,7 +124,7 @@ public class LabTabHTTPOperationController {
                 (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), studentId, count));
     }
 
-    public static LabTabResponse withdrawWizchips(String studentId, int count) {
+    public static LabTabResponse withdrawWizchips(List<String> studentId, int count) {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
         return ConnectionUtil.execute(labTabApiInterface.withdrawWizchips(LabTabPreferences.getInstance
                 (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), studentId, count));

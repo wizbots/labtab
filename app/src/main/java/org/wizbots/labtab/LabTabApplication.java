@@ -14,6 +14,7 @@ import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.interfaces.BaseManagerInterface;
 import org.wizbots.labtab.interfaces.BaseUIListener;
 import org.wizbots.labtab.interfaces.OnLoadListener;
+import org.wizbots.labtab.model.Nuggests;
 import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.pushnotification.NotiManager;
@@ -25,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -236,6 +238,45 @@ public class LabTabApplication extends Application {
             }
         }
         return knowledgeNuggets;
+    }
+
+    public HashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList) {
+//        String[] knowledgeNuggets = null;
+        //      Set<String> kn = new HashSet<>();
+        HashMap<String, ArrayList<Nuggests>> list = new HashMap<>();
+        ArrayList<Nuggests> knStudent = new ArrayList<>();
+        if (metaDatas == null || studentList == null || studentList.isEmpty()) {
+            return null;
+        } else {
+            for (int i = 0; i < metaDatas.length; i++) {
+                // for (int j = 0; j < studentList.size(); j++) {
+//                    if (metaDatas[i].getName().toUpperCase().equalsIgnoreCase(studentList.get(j).getLevel())){
+                //   kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
+                if (list.containsKey(metaDatas[i].getName())) {
+                    knStudent = list.get(metaDatas[i].getName());
+
+                    knStudent.addAll(getNuggets(Arrays.asList(metaDatas[i].getNuggets())));
+                } else {
+                    knStudent = new ArrayList<>();
+                    knStudent.addAll(getNuggets(Arrays.asList(metaDatas[i].getNuggets())));
+                }
+//                    }
+                list.put(metaDatas[i].getName(), knStudent);
+                //}
+            }
+           /* if (!kn.isEmpty()) {
+                knowledgeNuggets = kn.toArray(new String[kn.size()]);
+            }*/
+        }
+        return list;
+    }
+
+    private ArrayList<Nuggests> getNuggets(List<String> nuggrst) {
+        ArrayList<Nuggests> nuggestses = new ArrayList<>();
+        for (String string : nuggrst) {
+            nuggestses.add(new Nuggests(string, false));
+        }
+        return nuggestses;
     }
 
     public void runOnUiThread(final Runnable runnable) {

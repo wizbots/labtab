@@ -467,18 +467,25 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 break;
             case R.id.tv_minus:
                 studentList = getSelectedStudents();
+                List<String> selectted = new ArrayList<>();
+
                 if (studentList.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_DECREMENT);
-                } else if (studentList.size() > 1) {
+                } /*else if (studentList.size() > 1) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_DECREMENT);
-                } else {
+                }*/ else {
                     Student student = studentList.get(0);
                     if (getChips(student.getWizchips(), student.getOfflinewizchips()) <= 0) {
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.ALREADY_MINIMUM_WIZCHIPS);
                     } else {
                         progressDialog.show();
                     }
-                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), student.getStudent_id(), 1));
+                    for (Student student1 : studentList) {
+                        selectted.add(student1.getStudent_id());
+                    }
+                    progressDialog.show();
+                 //   BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
+                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), selectted, 1));
                 }
                 break;
             default:

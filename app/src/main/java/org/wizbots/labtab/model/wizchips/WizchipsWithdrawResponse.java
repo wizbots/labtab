@@ -2,7 +2,7 @@ package org.wizbots.labtab.model.wizchips;
 
 
 public class WizchipsWithdrawResponse {
-
+    String student_id;
     int wizchips;
     boolean success;
 
@@ -20,5 +20,13 @@ public class WizchipsWithdrawResponse {
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public String getStudent_id() {
+        return student_id;
+    }
+
+    public void setStudent_id(String student_id) {
+        this.student_id = student_id;
     }
 }

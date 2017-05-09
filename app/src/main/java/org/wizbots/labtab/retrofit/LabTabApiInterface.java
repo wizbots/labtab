@@ -116,7 +116,7 @@ public interface LabTabApiInterface {
     //    14. withdraw wizchips
     @POST("students/wizchips/withdraw")
     Call<WizchipsWithdrawResponse> withdrawWizchips(@Header("Auth-Token") String authToken,
-                                                    @Query("student_id") String studentId, @Query("wizchips") int wizchips);
+                                                    @Query("student_id")  List<String> studentId, @Query("wizchips") int wizchips);
 
     //   15. Get Project metadata
     @GET("programs/metadata")

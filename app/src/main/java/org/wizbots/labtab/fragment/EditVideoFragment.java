@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -42,6 +44,7 @@ import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.activity.TrimmerActivity;
 import org.wizbots.labtab.adapter.HorizontalProjectCreatorAdapter;
+import org.wizbots.labtab.adapter.KnowledgeNuggetExpand;
 import org.wizbots.labtab.adapter.ProjectCreatorAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.ButtonCustom;
@@ -53,6 +56,7 @@ import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListene
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.requesters.EditProjectListener;
 import org.wizbots.labtab.interfaces.requesters.OnDeleteVideoListener;
+import org.wizbots.labtab.model.Nuggests;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.model.video.response.EditProjectResponse;
@@ -64,6 +68,8 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -111,7 +117,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private Uri savedVideoUri;
     private Video video;
     private AlertDialog.Builder builder;
-    private HashSet<String> knowledgeNuggets = new HashSet<>();
+    private ArrayList<String> knowledgeNuggets = new ArrayList<>();
     private ProgressDialog progressDialog;
     private String knowledgeNuggetsSelected = "";
     private String editVideoCase = "";
@@ -198,7 +204,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
-        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(),2);
+        RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(), 2);
         // RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
@@ -232,12 +238,12 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         if (bundle != null) {
             savedVideoUri = bundle.getParcelable(URI);
             if (savedVideoUri != null) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissionsSingle()){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissionsSingle()) {
                     Glide
                             .with(homeActivityContext)
                             .load(Uri.fromFile(new File(savedVideoUri.getPath())))
                             .into(videoThumbnailImageView);
-                }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                     Glide.with(context)
                             .load(Uri.fromFile(new File(video.getPath())))
                             .into(videoThumbnailImageView);
@@ -287,7 +293,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 homeActivityContext.onBackPressed();
                 break;
             case R.id.component:
-                if (creatorsSelected == null  || creatorsSelected.isEmpty()){
+                if (creatorsSelected == null || creatorsSelected.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
                     return;
                 }
@@ -300,7 +306,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 dialog.show();
                 break;
             case R.id.edt_knowledge_nuggets:
-                if (creatorsSelected == null  || creatorsSelected.isEmpty()){
+                if (creatorsSelected == null || creatorsSelected.isEmpty()) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
                     return;
                 }
@@ -309,15 +315,17 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                AlertDialog dialog1 = builder.create();
-                dialog1.show();
+                showDialogForKnowledgeNuggets();
+
+               /* AlertDialog dialog1 = builder.create();
+                dialog1.show();*/
                 break;
             case R.id.btn_delete:
                 showConfirmDialog("Are you sure you want to delete this project",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
+                                switch (which) {
                                     case DialogInterface.BUTTON_POSITIVE:
                                         progressDialog.show();
                                         BackgroundExecutor.getInstance().execute(new DeleteVideoRequester(video));
@@ -377,7 +385,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             return;
         }
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkAndRequestPermissionsSingle()){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkAndRequestPermissionsSingle()) {
             return;
         }
 
@@ -498,11 +506,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             @Override
             public void run() {
                 creatorsSelected.remove(student);
-                if (creatorsSelected != null  && creatorsSelected.isEmpty()){
+                if (creatorsSelected != null && creatorsSelected.isEmpty()) {
                     knowledgeNuggets.clear();
                     video.setKnowledge_nuggets("");
                     knowledgeNuggetsSelected = "";
-                    if(knowledgeNuggetsEditTextCustom != null)
+                    if (knowledgeNuggetsEditTextCustom != null)
                         knowledgeNuggetsEditTextCustom.setText("");
                 }
                 initKnowledgeNuggets(null);
@@ -591,12 +599,12 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getParcelableExtra("URI");
                 savedVideoUri = uri;
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissionsSingle()){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissionsSingle()) {
                     Glide
                             .with(homeActivityContext)
                             .load(Uri.fromFile(new File(savedVideoUri.getPath())))
                             .into(videoThumbnailImageView);
-                }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                     Glide.with(context)
                             .load(Uri.fromFile(new File(video.getPath())))
                             .into(videoThumbnailImageView);
@@ -639,11 +647,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         creatorsSelected.addAll(objectArrayList);
         initKnowledgeNuggets(null);
         horizontalProjectCreatorAdapter.notifyDataSetChanged();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissionsSingle()){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissionsSingle()) {
             Glide.with(context)
                     .load(Uri.fromFile(new File(video.getPath())))
                     .into(videoThumbnailImageView);
-        }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Glide.with(context)
                     .load(Uri.fromFile(new File(video.getPath())))
                     .into(videoThumbnailImageView);
@@ -685,7 +693,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             }
         }*/
 
-        final String[] components =  noug.toArray(new String[noug.size()]);
+        final String[] components = noug.toArray(new String[noug.size()]);
 
         final boolean[] componentSelection = new boolean[components.length];
 
@@ -703,10 +711,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     }
                 }
             }
-        }else if(video != null){
+        } else if (video != null) {
             knowledgeNuggets.clear();
             String[] knwlgngts = (String[]) LabTabUtil.fromJson(video.getKnowledge_nuggets(), String[].class);
-            if(knwlgngts != null && knwlgngts.length > 0){
+            if (knwlgngts != null && knwlgngts.length > 0) {
                 for (String kn : knwlgngts) {
                     for (int i = 0; i < components.length; i++) {
                         if (components[i].equals(kn)) {
@@ -723,37 +731,37 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
 
         String[] tmp = getKnowledgeNuggets(knowledgeNuggets);
-        if(tmp != null && tmp.length > 0){
+        if (tmp != null && tmp.length > 0) {
             String tempStr = LabTabUtil.toJson(tmp).replaceAll("\"", "");
             video.setKnowledge_nuggets(knowledgeNuggetsSelected);
             knowledgeNuggetsEditTextCustom.setText((tempStr != null && !tempStr.isEmpty()) ? tempStr : "");
-        }else {
+        } else {
             video.setKnowledge_nuggets(knowledgeNuggetsSelected);
             knowledgeNuggetsEditTextCustom.setText("");
         }
 
 
-        if(components != null){
+        if (components != null) {
             String[] knwlgngts = (String[]) LabTabUtil.fromJson(knowledgeNuggetsSelected, String[].class);
-            if (knwlgngts != null  && knwlgngts.length > 0) {
+            if (knwlgngts != null && knwlgngts.length > 0) {
                 List<String> result = new LinkedList();
-                for(int i=0; i < components.length; i++){
-                    for(int j=0; j < knwlgngts.length; j++){
-                        if(components[i].equals(knwlgngts[j])){
+                for (int i = 0; i < components.length; i++) {
+                    for (int j = 0; j < knwlgngts.length; j++) {
+                        if (components[i].equals(knwlgngts[j])) {
                             result.add(knwlgngts[j]);
                         }
                     }
                 }
-                if(result.size() > 0){
+                if (result.size() > 0) {
                     knwlgngts = result.toArray(new String[result.size()]);
                 }
                 knowledgeNuggets.clear();
                 knowledgeNuggets.addAll(Arrays.asList(knwlgngts));
                 knowledgeNuggetsSelected = LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets));
                 knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)).replaceAll("\"", ""));
-                for(int i=0; i < components.length; i++){
-                    for(int j=0; j < knwlgngts.length; j++){
-                        if(components[i].equals(knwlgngts[j])){
+                for (int i = 0; i < components.length; i++) {
+                    for (int j = 0; j < knwlgngts.length; j++) {
+                        if (components[i].equals(knwlgngts[j])) {
                             componentSelection[i] = true;
                         }
                     }
@@ -782,9 +790,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 knowledgeNuggetsSelected = (LabTabUtil.toJson(knowledgeNuggets));
                 video.setKnowledge_nuggets(knowledgeNuggetsSelected);
                 String[] tmp = getKnowledgeNuggets(knowledgeNuggets);
-                if(tmp != null && tmp.length > 0){
+                if (tmp != null && tmp.length > 0) {
                     knowledgeNuggetsEditTextCustom.setText(LabTabUtil.toJson(tmp).replaceAll("\"", ""));
-                }else {
+                } else {
                     knowledgeNuggetsEditTextCustom.setText("");
                 }
             }
@@ -852,7 +860,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             builder.setMessage("No knowledge nuggets for selected student");
     }
 
-    private String[] getKnowledgeNuggets(HashSet<String> knowledgeNuggets) {
+    private String[] getKnowledgeNuggets(ArrayList<String> knowledgeNuggets) {
         String[] nuggets;
         nuggets = knowledgeNuggets.toArray(new String[knowledgeNuggets.size()]);
         return nuggets;
@@ -966,18 +974,18 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case Constants.PERMISSION_REQUEST_CODE:
                 final Map<String, Integer> perms = new HashMap<String, Integer>();
                 perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
-                if(grantResults.length > 0){
+                if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++)
                         perms.put(permissions[i], grantResults[i]);
-                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==  PackageManager.PERMISSION_GRANTED
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 //                        openCamera();
-                    }else {
+                    } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                     || shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
@@ -986,11 +994,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    switch (which){
+                                                    switch (which) {
                                                         case DialogInterface.BUTTON_POSITIVE:
                                                             Set<String> pendingPermission = new HashSet();
                                                             for (String key : perms.keySet()) {
-                                                                if(perms.get(key) != PackageManager.PERMISSION_GRANTED){
+                                                                if (perms.get(key) != PackageManager.PERMISSION_GRANTED) {
                                                                     pendingPermission.add(key);
                                                                 }
                                                             }
@@ -1003,7 +1011,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                                                 }
                                             }
                                         });
-                            }else {
+                            } else {
                                 Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -1013,14 +1021,14 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             case Constants.PERMISSION_REQUEST_CODE_STORAGE:
                 final Map<String, Integer> perms1 = new HashMap<String, Integer>();
                 perms1.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                if(grantResults.length > 0){
+                if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++)
                         perms1.put(permissions[i], grantResults[i]);
-                    if (perms1.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==  PackageManager.PERMISSION_GRANTED) {
-                            Glide.with(context)
-                                    .load(Uri.fromFile(new File(video.getPath())))
-                                    .into(videoThumbnailImageView);
-                    }else {
+                    if (perms1.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        Glide.with(context)
+                                .load(Uri.fromFile(new File(video.getPath())))
+                                .into(videoThumbnailImageView);
+                    } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                                 showMessageOKCancel("You need to allow access to all the permissions",
@@ -1028,11 +1036,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    switch (which){
+                                                    switch (which) {
                                                         case DialogInterface.BUTTON_POSITIVE:
                                                             Set<String> pendingPermission = new HashSet();
                                                             for (String key : perms1.keySet()) {
-                                                                if(perms1.get(key) != PackageManager.PERMISSION_GRANTED){
+                                                                if (perms1.get(key) != PackageManager.PERMISSION_GRANTED) {
                                                                     pendingPermission.add(key);
                                                                 }
                                                             }
@@ -1045,7 +1053,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                                                 }
                                             }
                                         });
-                            }else {
+                            } else {
                                 Toast.makeText(homeActivityContext, "Go to settings and enable permissions", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -1085,7 +1093,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
         if (!listPermissionsNeeded.isEmpty()) {
-            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),Constants.PERMISSION_REQUEST_CODE);
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), Constants.PERMISSION_REQUEST_CODE);
             return false;
         }
         return true;
@@ -1099,9 +1107,56 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if (!listPermissionsNeeded.isEmpty()) {
-            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),Constants.PERMISSION_REQUEST_CODE_STORAGE);
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), Constants.PERMISSION_REQUEST_CODE_STORAGE);
             return false;
         }
         return true;
     }
+
+    public void showDialogForKnowledgeNuggets() {
+        final Dialog dialog1 = new Dialog(context);
+        dialog1.setContentView(R.layout.knowledgenuggets_expand_layout);
+        dialog1.setTitle("Select Knowledge Nuggets");
+        HashMap<String, ArrayList<Nuggests>> list;
+        list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected);
+        sortHashMapValueList(list);  // Syadav
+        ArrayList<String> keys = new ArrayList(list.keySet());
+        ExpandableListView expandableListView = (ExpandableListView) dialog1.findViewById(R.id.lvExp);
+        final KnowledgeNuggetExpand knowledgeNuggetExpand = new KnowledgeNuggetExpand(getActivity(), keys, list);
+        expandableListView.setAdapter(knowledgeNuggetExpand);
+        dialog1.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                knowledgeNuggets = knowledgeNuggetExpand.getSelectedNuggest();
+                knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
+                dialog1.dismiss();
+
+            }
+        });
+        dialog1.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog1.dismiss();
+            }
+        });
+        dialog1.show();
+    }
+
+    // ========================================SYADAV=======================================================
+    private void sortHashMapValueList(HashMap<String, ArrayList<Nuggests>> list) {
+        for (Map.Entry<String, ArrayList<Nuggests>> entry : list.entrySet()) {
+            entry.getValue();
+            Collections.sort(entry.getValue(), comparator);
+        }
+
+    }
+
+    // placed inline for the demonstration, but doesn't have to be an anonymous class
+    Comparator<Nuggests> comparator = new Comparator<Nuggests>() {
+        public int compare(Nuggests o1, Nuggests o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
+    };
+    // ===============================================================================================
+
 }
