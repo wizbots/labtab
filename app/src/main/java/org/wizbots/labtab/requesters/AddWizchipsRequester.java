@@ -52,7 +52,7 @@ public class AddWizchipsRequester implements Runnable {
             //WizchipsAddResponse response = addWizchipsResponse.getResponse();
             for (WizchipsAddResponse wizchipsAddResponse : addWizchipsResponse.getResponse()) {
                 if (statusCode == HttpURLConnection.HTTP_OK) {
-                    Log.d(TAG, "Wizchips added successfully = " + wizchipsAddResponse.getWizchips());
+                    Log.d(TAG, "Wizchips aazadded successfully = " + wizchipsAddResponse.getWizchips());
                     ProgramStudentsTable.getInstance().updateWizchips(wizchipsAddResponse.getStudent_id(), wizchipsAddResponse.getWizchips(), true);
                     ProgramStudentsTable.getInstance().updateWizchipsOffline(wizchipsAddResponse.getStudent_id(), 0, true);
                 } else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {

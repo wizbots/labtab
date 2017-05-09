@@ -1129,6 +1129,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 knowledgeNuggets = knowledgeNuggetExpand.getSelectedNuggest();
+                knowledgeNuggetsSelected = knowledgeNuggets.toString();
                 knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
                 dialog1.dismiss();
 
