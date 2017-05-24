@@ -110,13 +110,13 @@ public interface LabTabApiInterface {
 
     //    13. Add wizchips
     @POST("students/wizchips/add")
-    Call<ArrayList<WizchipsAddResponse>> addWizchips(@Header("Auth-Token") String authToken,
-                                                     @Query("student_id") List<String> studentIds, @Query("wizchips") int whizchip);
+    Call<WizchipsAddResponse> addWizchips(@Header("Auth-Token") String authToken,
+                                          @Query("students") List<String> studentIds, @Query("wizchips") int whizchip);
 
     //    14. withdraw wizchips
     @POST("students/wizchips/withdraw")
-    Call<ArrayList<WizchipsWithdrawResponse>> withdrawWizchips(@Header("Auth-Token") String authToken,
-                                                               @Query("student_id") List<String> studentId, @Query("wizchips") int wizchips);
+    Call<WizchipsWithdrawResponse> withdrawWizchips(@Header("Auth-Token") String authToken,
+                                                    @Query("students") List<String> studentId, @Query("wizchips") int wizchips);
 
     //   15. Get Project metadata
     @GET("programs/metadata")
