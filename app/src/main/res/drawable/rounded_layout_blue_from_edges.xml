@@ -4,10 +4,10 @@
         android:width="@dimen/stroke_extra_small"
         android:color="@color/material_light_blue_800" />
     <corners
-        android:bottomLeftRadius="@dimen/radius_normal"
-        android:bottomRightRadius="@dimen/radius_normal"
-        android:topLeftRadius="@dimen/radius_normal"
-        android:topRightRadius="@dimen/radius_normal" />
+        android:bottomLeftRadius="@dimen/radius_extra_small"
+        android:bottomRightRadius="@dimen/radius_extra_small"
+        android:topLeftRadius="@dimen/radius_extra_small"
+        android:topRightRadius="@dimen/radius_extra_small" />
     <padding
         android:bottom="@dimen/zero_dimension"
         android:left="@dimen/zero_dimension"

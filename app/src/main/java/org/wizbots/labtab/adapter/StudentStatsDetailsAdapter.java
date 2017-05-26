@@ -14,17 +14,14 @@ import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.StudentStatsDetailsAdapterClickListener;
-import org.wizbots.labtab.model.LabListHeader;
-import org.wizbots.labtab.model.StudentStatisticsDetail;
-import org.wizbots.labtab.model.StudentStatisticsDetailProjects;
-import org.wizbots.labtab.model.StudentStatisticsDetailsListHeader;
+import org.wizbots.labtab.model.student.StudentStatisticsDetail;
+import org.wizbots.labtab.model.student.response.ProjectResponse;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 
 public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
 
-    private final int VIEW_ITEM_HEADER = 0;
     private final int VIEW_ITEM_DATA_TYPE_1 = 1;
     private final int VIEW_ITEM_DATA_TYPE_2 = 2;
     private ArrayList<Object> objectArrayList;
@@ -88,33 +85,10 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
         @Override
         public void onClick(View view) {
-            StudentStatisticsDetailProjects studentStatisticsDetailProjects = (StudentStatisticsDetailProjects) objectArrayList.get(getAdapterPosition());
+            ProjectResponse projectResponse = (ProjectResponse) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.student_stats_details_root_layout_type_2:
                     studentStatsDetailsAdapterClickListener.onViewTypeClick2();
-                    break;
-            }
-        }
-    }
-
-    private class StudentStatsDetailsHeaderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        LinearLayout studentStatsDetailsHeaderLinearLayout;
-
-        StudentStatsDetailsAdapterClickListener studentStatsDetailsAdapterClickListener;
-
-        StudentStatsDetailsHeaderHolder(View view, StudentStatsDetailsAdapterClickListener studentStatsDetailsAdapterClickListener) {
-            super(view);
-            this.studentStatsDetailsAdapterClickListener = studentStatsDetailsAdapterClickListener;
-            studentStatsDetailsHeaderLinearLayout = (LinearLayout) view.findViewById(R.id.student_stats_details_root_layout);
-            studentStatsDetailsHeaderLinearLayout.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            StudentStatisticsDetailsListHeader studentStatisticsDetailsListHeader = (StudentStatisticsDetailsListHeader) objectArrayList.get(getAdapterPosition());
-            switch (view.getId()) {
-                case R.id.student_stats_details_root_layout:
-                    studentStatsDetailsAdapterClickListener.onViewTypeClick1();
                     break;
             }
         }
@@ -132,10 +106,6 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 
         switch (viewType) {
-            case VIEW_ITEM_HEADER:
-                View headerView = inflater.inflate(R.layout.item_student_stats, viewGroup, false);
-                viewHolder = new StudentStatsDetailsHeaderHolder(headerView, studentStatsDetailsAdapterClickListener);
-                break;
             case VIEW_ITEM_DATA_TYPE_1:
                 View dataView1 = inflater.inflate(R.layout.item_student_stats_details_type_1, viewGroup, false);
                 viewHolder = new StudentStatsDetailsType1ViewHolder(dataView1, studentStatsDetailsAdapterClickListener);
@@ -145,8 +115,8 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                 viewHolder = new StudentStatsDetailsType2ViewHolder(dataView2, studentStatsDetailsAdapterClickListener);
                 break;
             default:
-                View defaultView = inflater.inflate(R.layout.item_student_stats, viewGroup, false);
-                viewHolder = new StudentStatsDetailsHeaderHolder(defaultView, studentStatsDetailsAdapterClickListener);
+                View defaultView = inflater.inflate(R.layout.item_student_stats_details_type_1, viewGroup, false);
+                viewHolder = new StudentStatsDetailsType1ViewHolder(defaultView, studentStatsDetailsAdapterClickListener);
                 break;
         }
         return viewHolder;
@@ -156,10 +126,8 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     public int getItemViewType(int position) {
         if (objectArrayList.get(position) instanceof StudentStatisticsDetail) {
             return VIEW_ITEM_DATA_TYPE_1;
-        } else if (objectArrayList.get(position) instanceof StudentStatisticsDetailProjects) {
+        } else if (objectArrayList.get(position) instanceof ProjectResponse) {
             return VIEW_ITEM_DATA_TYPE_2;
-        } else if (objectArrayList.get(position) instanceof StudentStatsDetailsHeaderHolder) {
-            return VIEW_ITEM_HEADER;
         }
         return -1;
     }
@@ -167,10 +135,6 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
-            case VIEW_ITEM_HEADER:
-                StudentStatsDetailsHeaderHolder studentStatsDetailsHeaderHolder = (StudentStatsDetailsHeaderHolder) viewHolder;
-                configureStudentStatsDetailHeaderHolder(studentStatsDetailsHeaderHolder, position);
-                break;
             case VIEW_ITEM_DATA_TYPE_1:
                 StudentStatsDetailsType1ViewHolder studentStatsDetailsType1ViewHolder = (StudentStatsDetailsType1ViewHolder) viewHolder;
                 configureStudentStatsDetailListType1ViewHolder(studentStatsDetailsType1ViewHolder, position);
@@ -180,21 +144,14 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                 configureStudentStatsDetailListType2ViewHolder(studentStatsDetailsType2ViewHolder, position);
                 break;
             default:
-                StudentStatsDetailsHeaderHolder defaultHeaderHolder = (StudentStatsDetailsHeaderHolder) viewHolder;
-                configureStudentStatsDetailHeaderHolder(defaultHeaderHolder, position);
+                StudentStatsDetailsType1ViewHolder defaultViewHolder = (StudentStatsDetailsType1ViewHolder) viewHolder;
+                configureStudentStatsDetailListType1ViewHolder(defaultViewHolder, position);
                 break;
         }
     }
 
     private void configureStudentStatsDetailListType1ViewHolder(StudentStatsDetailsType1ViewHolder studentStatsDetailsType1ViewHolder, int position) {
         StudentStatisticsDetail studentStatisticsDetail = (StudentStatisticsDetail) objectArrayList.get(position);
-//        int studentsStatsDetailListLinearLayoutColor;
-//        if (position % 2 == 0) {
-//            studentsStatsDetailListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.white);
-//        } else {
-//            studentsStatsDetailListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
-//        }
-//        studentStatsDetailsType1ViewHolder.studentStatsDetailsType1LinearLayout.setBackgroundColor(studentsStatsDetailListLinearLayoutColor);
         LabTabUtil.setLabLevelImageResource(studentStatisticsDetail.getLabLevel(), studentStatsDetailsType1ViewHolder.labLevelImageView);
         studentStatsDetailsType1ViewHolder.studentNameTextViewCustom.setText(studentStatisticsDetail.getStudentName());
         studentStatsDetailsType1ViewHolder.noOfProjectsTextViewCustom.setText(studentStatisticsDetail.getNoOfProjects());
@@ -205,7 +162,7 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private void configureStudentStatsDetailListType2ViewHolder(StudentStatsDetailsType2ViewHolder studentStatsDetailsType2ViewHolder, int position) {
-        StudentStatisticsDetailProjects studentStatisticsDetailProjects = (StudentStatisticsDetailProjects) objectArrayList.get(position);
+        ProjectResponse projectResponse = (ProjectResponse) objectArrayList.get(position);
         int studentsStatsDetailListLinearLayoutColor;
         int projectCategoryColor;
         if (position % 2 == 0) {
@@ -216,15 +173,11 @@ public class StudentStatsDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             projectCategoryColor = ContextCompat.getColor(LabTabApplication.getInstance(), android.R.color.black);
         }
         studentStatsDetailsType2ViewHolder.studentStatsDetailsType2LinearLayout.setBackgroundColor(studentsStatsDetailListLinearLayoutColor);
-        LabTabUtil.setLabStepImageResource(studentStatisticsDetailProjects.getLabStep(), studentStatsDetailsType2ViewHolder.labStepImageView);
-        studentStatsDetailsType2ViewHolder.projectCategoryTextViewCustom.setText(studentStatisticsDetailProjects.getProjectCategory());
+        LabTabUtil.setLabStepImageResource(Steps.LAB_STEP_2, studentStatsDetailsType2ViewHolder.labStepImageView);
+        studentStatsDetailsType2ViewHolder.projectCategoryTextViewCustom.setText(projectResponse.getProjectName());
         studentStatsDetailsType2ViewHolder.projectCategoryTextViewCustom.setTextColor(projectCategoryColor);
-        LabTabUtil.setProjectStatusImageResource(studentStatisticsDetailProjects.getProjectStatus(), studentStatsDetailsType2ViewHolder.projectStatusImageView);
-    }
-
-    private void configureStudentStatsDetailHeaderHolder(StudentStatsDetailsHeaderHolder studentStatsDetailsHeaderHolder, int position) {
-        LabListHeader labListHeader = (LabListHeader) objectArrayList.get(position);
-        int labListLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
+        LabTabUtil.setProjectStatusImageResource(projectResponse.getProjectStatus(), studentStatsDetailsType2ViewHolder.projectStatusImageView);
+//        studentStatsDetailsType2ViewHolder.labStepImageView.setVisibility(View.INVISIBLE);
     }
 
     @Override

@@ -1,0 +1,517 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/extra_large_padding"
+    android:paddingRight="@dimen/extra_large_padding">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll_view_edit_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/extra_large_margin"
+        android:layout_marginTop="@dimen/extra_large_margin"
+        android:background="@drawable/rounded_layout_blue_from_edges">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/small_padding">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="@dimen/extra_small_margin"
+                android:orientation="horizontal">
+
+                <org.wizbots.labtab.customview.TextViewCustom
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/project_editor"
+                    android:textColor="@color/purple"
+                    android:textSize="@dimen/text_size_large"
+                    app:font="@string/font_pt_sans_narrow_regular" />
+
+                <LinearLayout
+                    android:id="@+id/ll_close"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right">
+
+                    <ImageView
+                        android:id="@+id/iv_close"
+                        android:layout_width="@dimen/password_reminder_close_image_width"
+                        android:layout_height="@dimen/password_reminder_close_image_height"
+                        android:src="@drawable/ic_close" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/video_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:gravity="center|top"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:paddingRight="@dimen/extra_extra_large_padding">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:background="@drawable/rounded_layout_for_edit_video"
+                        android:padding="24dp">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_thumbnail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/no_preview_available"
+                            android:textColor="@color/light_blue"
+                            android:textSize="@dimen/text_size_extra_large"
+                            android:visibility="visible"
+                            app:font="@string/font_pt_sans_narrow_regular" />
+
+                        <ImageView
+                            android:id="@+id/iv_video_thumbnail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="@dimen/small_margin"
+                            android:layout_marginTop="@dimen/extra_extra_small_margin"
+                            android:text="@string/title"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_extra_extra_small"
+
+                            app:font="@string/font_pt_sans_narrow_bold" />
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/textViewCustom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="-5dp"
+                            android:text="*"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_extra_extra_small"
+
+                            app:font="@string/font_pt_sans_narrow_bold" />
+
+                        <org.wizbots.labtab.customview.EditTextCustom
+                            android:id="@+id/edt_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/extra_extra_small_margin"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="@dimen/extra_large_margin"
+                            android:background="@drawable/rounded_layout_white"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:padding="@dimen/extra_extra_small_padding"
+                            android:text="@string/lab_tab_video"
+                            android:textSize="@dimen/text_size_extra_extra_small" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="@dimen/small_margin"
+                            android:layout_marginTop="@dimen/extra_extra_small_margin"
+                            android:text="@string/category"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_extra_extra_small"
+
+                            app:font="@string/font_pt_sans_narrow_bold" />
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="-5dp"
+                            android:text="*"
+                            android:textColor="@color/white"
+                            android:textSize="36sp"
+                            app:font="@string/font_pt_sans_narrow_bold" />
+
+                        <Spinner
+                            android:id="@+id/spinner_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="@dimen/extra_large_padding"
+                            android:background="@drawable/rounded_layout_white"
+                            android:padding="@dimen/extra_extra_small_padding"
+                            android:textSize="@dimen/text_size_extra_extra_small" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/extra_small_padding">
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:text="Mentor"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_extra_extra_small"
+
+                                app:font="@string/font_pt_sans_narrow_bold" />
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:id="@+id/tv_mentor_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/rounded_layout_light_gray"
+                                android:padding="@dimen/extra_extra_small_padding"
+                                android:text="Conor Mcgaan"
+                                android:textSize="@dimen/text_size_extra_extra_small" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_lab_sku"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/extra_small_padding">
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:text="Lab SKU:"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_extra_extra_small"
+
+                                app:font="@string/font_pt_sans_narrow_bold" />
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:id="@+id/tv_lab_sku"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/rounded_layout_light_gray"
+                                android:padding="@dimen/extra_extra_small_padding"
+                                android:text="5998"
+                                android:textSize="@dimen/text_size_extra_extra_small" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_knowledge_nuggets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_extra_small_margin"
+                    android:background="@drawable/rounded_layout_blue"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/extra_small_padding">
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:id="@+id/component"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/extra_extra_small_margin"
+                        android:layout_weight="2"
+                        android:gravity="center|end"
+                        android:text="@string/knowledge_nuggets"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_extra_extra_small"
+
+                        app:font="@string/font_pt_sans_narrow_bold" />
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:id="@+id/edt_knowledge_nuggets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_layout_white"
+                        android:padding="@dimen/extra_extra_small_padding"
+                        android:textSize="@dimen/text_size_extra_extra_small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_extra_small_margin"
+                    android:background="@drawable/rounded_layout_blue"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/extra_small_padding">
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/extra_extra_small_margin"
+                        android:layout_weight="2"
+                        android:gravity="center|end"
+                        android:text="@string/description"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_extra_extra_small"
+
+                        app:font="@string/font_pt_sans_narrow_bold" />
+
+                    <org.wizbots.labtab.customview.EditTextCustom
+                        android:id="@+id/edt_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_layout_white"
+                        android:imeOptions="actionNext"
+                        android:padding="@dimen/extra_extra_small_padding"
+                        android:textSize="@dimen/text_size_extra_extra_small" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_extra_small_margin"
+                    android:background="@drawable/rounded_layout_blue"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/extra_small_padding">
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/extra_extra_small_margin"
+                                android:layout_weight="2"
+                                android:gravity="center|end"
+                                android:text="@string/project_creators"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_extra_extra_small"
+
+                                app:font="@string/font_pt_sans_narrow_bold" />
+
+                            <org.wizbots.labtab.customview.EditTextCustom
+                                android:id="@+id/edt_project_creators"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/rounded_layout_white"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:padding="@dimen/extra_extra_small_padding"
+                                android:textSize="@dimen/text_size_extra_extra_small" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/project_creators"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/extra_small_padding"
+                            android:background="@drawable/rounded_layout_material_blue_200"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/extra_extra_small_padding">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_view_horizontal_project_creators"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:scrollbars="vertical" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="-5dp"
+                        android:text="*"
+                        android:textColor="@color/white"
+                        android:textSize="36sp"
+                        app:font="@string/font_pt_sans_narrow_bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="40dp"
+                            android:layout_weight="1"
+                            android:paddingBottom="@dimen/extra_extra_small_padding"
+                            android:paddingLeft="@dimen/extra_extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
+                            android:paddingTop="@dimen/extra_extra_small_padding">
+
+                            <LinearLayout
+                                android:id="@+id/recycler_view_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:background="@drawable/rounded_layout_white"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/recycler_view_project_creators"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scrollbars="vertical"
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+                        </FrameLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_extra_small_margin"
+                    android:background="@drawable/rounded_layout_blue"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/extra_small_padding">
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/extra_extra_small_margin"
+                        android:layout_weight="2"
+                        android:gravity="center|end"
+                        android:text="@string/notes_to_the_family"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_extra_extra_small"
+
+                        app:font="@string/font_pt_sans_narrow_bold" />
+
+                    <org.wizbots.labtab.customview.EditTextCustom
+                        android:id="@+id/edt_notes_to_the_family"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_layout_white"
+                        android:imeOptions="actionDone"
+                        android:padding="@dimen/extra_extra_small_padding"
+                        android:textSize="@dimen/text_size_extra_extra_small" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_extra_small_padding">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true">
+
+                        <org.wizbots.labtab.customview.ButtonCustom
+                            android:id="@+id/btn_create"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:background="@drawable/rounded_layout_blue"
+                            android:paddingLeft="@dimen/large_padding"
+                            android:paddingRight="@dimen/large_padding"
+                            android:text="@string/create"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_extra_extra_small"
+
+                            app:font="@string/font_pt_sans_narrow_bold" />
+
+                        <org.wizbots.labtab.customview.ButtonCustom
+                            android:id="@+id/btn_cancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_layout_blue"
+                            android:paddingLeft="@dimen/large_padding"
+                            android:paddingRight="@dimen/large_padding"
+                            android:text="@string/cancel"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_extra_extra_small"
+
+                            app:font="@string/font_pt_sans_narrow_bold" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

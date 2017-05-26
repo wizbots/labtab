@@ -1,0 +1,52 @@
+---------------------------------------------------------------------
+Release 1.1.0 - 2017/05/25
+---------------------------------------------------------------------
+NEW FEATURES:
+* Can increase / decrease Wizchips to several students at the same time
+  now
+* Knowledge nuggets are categorized by level and then ordered alphabetically
+  when selecting them for making a video
+
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - Changed students_id to students for API /api/wizchips/[add]|[withdraw] so
+    it matches other endpoints that accept several students
+
+BUG FIXES:
+* None
+
+KNOWN ISSUES:
+* Knowledge nuggets don't seem to match the ones in Wizbots
+* Students selected in video form are not aligned correctly
+
+
+---------------------------------------------------------------------
+Release 1.0.0 - 2017/05/04
+---------------------------------------------------------------------
+NEW FEATURES:
+* Moved to production server
+
+
+NOTES:
+* First official live release
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - Nothing special
+
+
+BUG FIXES:
+* Have to select students each time we want to increase / decrease Wizchips
+  https://github.com/wizbots/labtab/issues/42
+
+* Level numbers not adding correctly when selecting student using Binoculars
+  https://github.com/wizbots/labtab/issues/40
+
+KNOWN ISSUES:
+* Knowledge nuggets don't seem to match the ones in Wizbots
+* Have to improve the way Nuggets are shown
+* Students selected in video form are not aligned correctly

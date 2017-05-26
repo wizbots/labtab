@@ -1,21 +1,34 @@
 package org.wizbots.labtab;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Handler;
 import android.util.Log;
 
 import com.craterzone.logginglib.manager.LoggerManager;
 
+import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.interfaces.BaseManagerInterface;
 import org.wizbots.labtab.interfaces.BaseUIListener;
 import org.wizbots.labtab.interfaces.OnLoadListener;
+import org.wizbots.labtab.model.Nuggests;
+import org.wizbots.labtab.model.metadata.MetaData;
+import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -24,13 +37,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LabTabApplication extends Application {
 
-    private static String TAG = LabTabApplication.class.getName();
+    private static final String TAG = LabTabApplication.class.getName();
     private static LabTabApplication _instance;
     private LabTabApiInterface labTabApiInterface;
     private boolean closed;
     private ArrayList registeredManagers;
     private Map<Class<? extends BaseManagerInterface>, Collection<? extends BaseManagerInterface>> managerInterfaces;
     private Map<Class<? extends BaseUIListener>, Collection<? extends BaseUIListener>> uiListeners;
+    private MetaData[] metaDatas;
+    private final Handler handler;
+    protected int totalProjects;
+    protected int labTime;
+    protected int countCompletedProjects;
+    protected int countSkippedProjects;
+    protected int countPendingProjects;
 
 
     public LabTabApplication() {
@@ -39,6 +59,7 @@ public class LabTabApplication extends Application {
         registeredManagers = new ArrayList<>();
         managerInterfaces = new HashMap<>();
         uiListeners = new HashMap<>();
+        handler = new Handler();
     }
 
     public static LabTabApplication getInstance() {
@@ -57,6 +78,7 @@ public class LabTabApplication extends Application {
         loadManagers();
         initRetrofit();
         LoggerManager.getInstance(getApplicationContext()).init();
+        metaDatas = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getProjectsMetaData();
     }
 
     private void initManagers() {
@@ -114,9 +136,11 @@ public class LabTabApplication extends Application {
 
     public void initRetrofit() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(5, TimeUnit.MINUTES)
-                .writeTimeout(5, TimeUnit.MINUTES)
-                .readTimeout(5, TimeUnit.MINUTES);
+        builder.connectTimeout(7, TimeUnit.MINUTES)
+                .writeTimeout(7, TimeUnit.MINUTES)
+                .retryOnConnectionFailure(true)
+
+                .readTimeout(7, TimeUnit.MINUTES);
         OkHttpClient client = builder.build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -158,4 +182,141 @@ public class LabTabApplication extends Application {
         getOrCreateUIListeners(cls).remove(listener);
     }
 
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void setMetaDatas(MetaData[] metaDatas) {
+        this.metaDatas = metaDatas;
+    }
+
+    public MetaData[] getMetaDatas() {
+        return metaDatas;
+    }
+
+    public String[] getKnowledgeNuggets(String labLevel) {
+/*        if (labLevel.toUpperCase().equals(LabTabConstants.LabLevels.NOVICE)) {
+            labLevel = LabTabConstants.LabLevels.LAB_CERTIFIED;
+        }*/
+        String[] knowledgeNuggets = null;
+        ArrayList<String> kn = new ArrayList<>();
+        if (metaDatas == null) {
+            return null;
+        } else {
+            for (int i = 0; i < metaDatas.length; i++) {
+//                if (labLevel.toUpperCase().equals(metaDatas[i].getName().toUpperCase())) {
+                kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
+/*                    break;
+                }*/
+            }
+            if (!kn.isEmpty()) {
+                knowledgeNuggets = kn.toArray(new String[kn.size()]);
+            }
+        }
+        return knowledgeNuggets;
+    }
+
+    public String[] getKnowledgeNuggetsByStudent(ArrayList<Student> studentList) {
+        String[] knowledgeNuggets = null;
+        Set<String> kn = new HashSet<>();
+        ArrayList<String> knStudent = new ArrayList<>();
+        if (metaDatas == null || studentList == null || studentList.isEmpty()) {
+            return null;
+        } else {
+            for (int i = 0; i < metaDatas.length; i++) {
+                for (int j = 0; j < studentList.size(); j++) {
+//                    if (metaDatas[i].getName().toUpperCase().equalsIgnoreCase(studentList.get(j).getLevel())){
+                    kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
+//                    }
+                }
+            }
+            if (!kn.isEmpty()) {
+                knowledgeNuggets = kn.toArray(new String[kn.size()]);
+            }
+        }
+        return knowledgeNuggets;
+    }
+
+    public HashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList) {
+//        String[] knowledgeNuggets = null;
+        //      Set<String> kn = new HashSet<>();
+        HashMap<String, ArrayList<Nuggests>> list = new HashMap<>();
+        ArrayList<Nuggests> knStudent = new ArrayList<>();
+        if (metaDatas == null || studentList == null || studentList.isEmpty()) {
+            return null;
+        } else {
+            for (int i = 0; i < metaDatas.length; i++) {
+                // for (int j = 0; j < studentList.size(); j++) {
+//                    if (metaDatas[i].getName().toUpperCase().equalsIgnoreCase(studentList.get(j).getLevel())){
+                //   kn.addAll(Arrays.asList(metaDatas[i].getNuggets()));
+                if (list.containsKey(metaDatas[i].getName())) {
+                    knStudent = list.get(metaDatas[i].getName());
+
+                    knStudent.addAll(getNuggets(Arrays.asList(metaDatas[i].getNuggets())));
+                } else {
+                    knStudent = new ArrayList<>();
+                    knStudent.addAll(getNuggets(Arrays.asList(metaDatas[i].getNuggets())));
+                }
+//                    }
+                list.put(metaDatas[i].getName(), knStudent);
+                //}
+            }
+           /* if (!kn.isEmpty()) {
+                knowledgeNuggets = kn.toArray(new String[kn.size()]);
+            }*/
+        }
+        return list;
+    }
+
+    private ArrayList<Nuggests> getNuggets(List<String> nuggrst) {
+        ArrayList<Nuggests> nuggestses = new ArrayList<>();
+        for (String string : nuggrst) {
+            nuggestses.add(new Nuggests(string, false));
+        }
+        return nuggestses;
+    }
+
+    public void runOnUiThread(final Runnable runnable) {
+        handler.post(runnable);
+    }
+
+    public void setCount(int countCompletedProjects, int countPendingProjects, int countSkippedProjects, int totalProjects, int noLab) {
+        this.totalProjects += totalProjects;
+        this.countCompletedProjects += countCompletedProjects;
+        this.countSkippedProjects += countSkippedProjects;
+        this.countPendingProjects += countPendingProjects;
+        this.labTime += noLab;
+
+    }
+
+    public void setCountToZero() {
+        this.totalProjects = 0;
+        this.countCompletedProjects = 0;
+        this.countSkippedProjects = 0;
+        this.countPendingProjects = 0;
+        this.labTime = 0;
+    }
+
+    public int getLabTime() {
+        return labTime;
+    }
+
+    public int getTotalProjects() {
+        return totalProjects;
+    }
+
+    public int getCompletedProjects() {
+        return countCompletedProjects;
+    }
+
+    public int getPendingProjects() {
+        return countPendingProjects;
+    }
+
+    public int getSkippedProjects() {
+        return countSkippedProjects;
+    }
 }

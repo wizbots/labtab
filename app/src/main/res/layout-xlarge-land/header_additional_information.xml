@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lab_list_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_of_skips_header_height"
+    android:background="@color/light_gray"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_add_video"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_add_video"
+            android:contentDescription="@string/add_video" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/name"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/textViewCustom4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/self_checkout"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/pickup_instructions"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/textViewCustom5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="In-out_times"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/notes"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

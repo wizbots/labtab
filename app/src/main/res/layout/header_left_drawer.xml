@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/header_left_drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/large_padding"
+    android:paddingTop="@dimen/large_padding">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_home_button_my_profile"
+            android:contentDescription="@string/my_profile" />
+    </LinearLayout>
+
+    <org.wizbots.labtab.customview.TextViewCustom
+        android:id="@+id/profile_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/my_profile"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_extra_extra_large"
+        app:font="@string/font_pt_sans_narrow_regular" />
+
+</LinearLayout>

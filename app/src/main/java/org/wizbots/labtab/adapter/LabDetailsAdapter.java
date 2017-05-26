@@ -12,17 +12,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.interfaces.LabDetailsAdapterClickListener;
-import org.wizbots.labtab.model.LabDetails;
-import org.wizbots.labtab.model.LabDetailsListHeader;
+import org.wizbots.labtab.model.program.Student;
+import org.wizbots.labtab.util.LabTabUtil;
 
 import java.util.ArrayList;
 
 public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final int VIEW_ITEM_HEADER = 0;
     private final int VIEW_ITEM_DATA = 1;
     private ArrayList<Object> objectArrayList;
     private Context context;
@@ -38,9 +38,10 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TextViewCustom noOfDoneTextViewCustom;
         TextViewCustom noOfSkippedTextViewCustom;
         TextViewCustom noOfPendingTextViewCustom;
+        TextViewCustom noOfChipsTextViewCustom;
         ImageView actionViewImageView;
         ImageView actionEditLabLevelImageView;
-        ImageView actionCloseToNextLevellabLevelImageView;
+        ImageView actionCloseToNextLevelLabLevelImageView;
         LabDetailsAdapterClickListener labDetailsAdapterClickListener;
 
         LabDetailsViewHolder(View view, final LabDetailsAdapterClickListener labDetailsAdapterClickListener) {
@@ -55,12 +56,13 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             noOfDoneTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_done);
             noOfSkippedTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_skipped);
             noOfPendingTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_pending);
+            noOfChipsTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_no_of_chips);
             actionViewImageView = (ImageView) view.findViewById(R.id.iv_action_view);
             actionEditLabLevelImageView = (ImageView) view.findViewById(R.id.iv_action_edit);
-            actionCloseToNextLevellabLevelImageView = (ImageView) view.findViewById(R.id.iv_action_close_to_next_level);
+            actionCloseToNextLevelLabLevelImageView = (ImageView) view.findViewById(R.id.iv_action_close_to_next_level);
             actionViewImageView.setOnClickListener(this);
             actionEditLabLevelImageView.setOnClickListener(this);
-            actionCloseToNextLevellabLevelImageView.setOnClickListener(this);
+            actionCloseToNextLevelLabLevelImageView.setOnClickListener(this);
             checkBoxLabDetail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean checkState) {
@@ -71,47 +73,18 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         @Override
         public void onClick(View view) {
-            LabDetails labDetails = (LabDetails) objectArrayList.get(getAdapterPosition());
+            Student student = (Student) objectArrayList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.iv_action_view:
-                    labDetailsAdapterClickListener.onActionViewClick(labDetails);
+                    labDetailsAdapterClickListener.onActionViewClick(student);
                     break;
                 case R.id.iv_action_edit:
-                    labDetailsAdapterClickListener.onActionEditClick(labDetails);
+                    labDetailsAdapterClickListener.onActionEditClick(student);
                     break;
                 case R.id.iv_action_close_to_next_level:
-                    labDetailsAdapterClickListener.onActionCloseToNextLevelClick(labDetails);
+                    labDetailsAdapterClickListener.onActionCloseToNextLevelClick(student);
                     break;
             }
-        }
-    }
-
-    private class LabDetailsHeaderHolder extends RecyclerView.ViewHolder {
-        LinearLayout labDetailsLinearLayout;
-        TextViewCustom checkTextViewCustom;
-        TextViewCustom nameTextViewCustom;
-        TextViewCustom levelTextViewCustom;
-        TextViewCustom projectsTextViewCustom;
-        TextViewCustom labTimeTextViewCustom;
-        ImageView doneImageView;
-        ImageView skippedImageView;
-        ImageView pendingImageView;
-        TextViewCustom actionsTextViewCustom;
-        LabDetailsAdapterClickListener labDetailsAdapterClickListener;
-
-        LabDetailsHeaderHolder(View view, LabDetailsAdapterClickListener labDetailsAdapterClickListener) {
-            super(view);
-            this.labDetailsAdapterClickListener = labDetailsAdapterClickListener;
-            labDetailsLinearLayout = (LinearLayout) view.findViewById(R.id.lab_details_root_layout);
-            checkTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_check);
-            nameTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_name);
-            levelTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_level);
-            projectsTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_projects);
-            labTimeTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_lab_time);
-            doneImageView = (ImageView) view.findViewById(R.id.iv_done);
-            skippedImageView = (ImageView) view.findViewById(R.id.iv_skipped);
-            pendingImageView = (ImageView) view.findViewById(R.id.iv_pending);
-            actionsTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_action);
         }
     }
 
@@ -127,17 +100,13 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 
         switch (viewType) {
-            case VIEW_ITEM_HEADER:
-                View headerView = inflater.inflate(R.layout.item_lab_details_list, viewGroup, false);
-                viewHolder = new LabDetailsHeaderHolder(headerView, labDetailsAdapterClickListener);
-                break;
             case VIEW_ITEM_DATA:
                 View dataView = inflater.inflate(R.layout.item_lab_details_list, viewGroup, false);
                 viewHolder = new LabDetailsViewHolder(dataView, labDetailsAdapterClickListener);
                 break;
             default:
-                View defaultView = inflater.inflate(R.layout.item_lab_list, viewGroup, false);
-                viewHolder = new LabDetailsHeaderHolder(defaultView, labDetailsAdapterClickListener);
+                View defaultView = inflater.inflate(R.layout.item_lab_details_list, viewGroup, false);
+                viewHolder = new LabDetailsViewHolder(defaultView, labDetailsAdapterClickListener);
                 break;
         }
         return viewHolder;
@@ -145,10 +114,8 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-        if (objectArrayList.get(position) instanceof LabDetails) {
+        if (objectArrayList.get(position) instanceof Student) {
             return VIEW_ITEM_DATA;
-        } else if (objectArrayList.get(position) instanceof LabDetailsListHeader) {
-            return VIEW_ITEM_HEADER;
         }
         return -1;
     }
@@ -156,23 +123,19 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
-            case VIEW_ITEM_HEADER:
-                LabDetailsHeaderHolder labDetailsHeaderHolder = (LabDetailsHeaderHolder) viewHolder;
-                configureLabDetailsHeaderHolder(labDetailsHeaderHolder, position);
-                break;
             case VIEW_ITEM_DATA:
                 LabDetailsViewHolder labDetailsViewHolder = (LabDetailsViewHolder) viewHolder;
                 configureLabListViewHolder(labDetailsViewHolder, position);
                 break;
             default:
-                LabDetailsHeaderHolder defaultlabDetailsHeaderHolder = (LabDetailsHeaderHolder) viewHolder;
-                configureLabDetailsHeaderHolder(defaultlabDetailsHeaderHolder, position);
+                LabDetailsViewHolder defaultViewHolder = (LabDetailsViewHolder) viewHolder;
+                configureLabListViewHolder(defaultViewHolder, position);
                 break;
         }
     }
 
     private void configureLabListViewHolder(LabDetailsViewHolder labDetailsViewHolder, int position) {
-        LabDetails labDetails = (LabDetails) objectArrayList.get(position);
+        Student student = (Student) objectArrayList.get(position);
         int labDetailsLinearLayoutColor;
         if (position % 2 == 0) {
             labDetailsLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.white);
@@ -180,25 +143,31 @@ public class LabDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             labDetailsLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
         }
         labDetailsViewHolder.labDetailsLinearLayout.setBackgroundColor(labDetailsLinearLayoutColor);
-        labDetailsViewHolder.checkBoxLabDetail.setChecked(labDetails.isCheck());
-        labDetailsViewHolder.studentNameTextViewCustom.setText(labDetails.getStudentName());
-        labDetailsViewHolder.labLevelImageView.setImageResource(labDetails.getLevel());
-        labDetailsViewHolder.noOfProjectsTextViewCustom.setText(labDetails.getNo_of_projects());
-        labDetailsViewHolder.noOfLabTimeTextViewCustom.setText(labDetails.getNo_of_lab_time());
-        labDetailsViewHolder.noOfDoneTextViewCustom.setText(labDetails.getNo_of_done());
-        labDetailsViewHolder.noOfSkippedTextViewCustom.setText(labDetails.getNo_of_skipped());
-        labDetailsViewHolder.noOfPendingTextViewCustom.setText(labDetails.getNo_of_pending());
-        if (labDetails.isCloseToNextLevel()) {
-            labDetailsViewHolder.actionCloseToNextLevellabLevelImageView.setVisibility(View.VISIBLE);
+        labDetailsViewHolder.checkBoxLabDetail.setChecked(student.isCheck());
+        labDetailsViewHolder.studentNameTextViewCustom.setText(student.getName());
+        labDetailsViewHolder.noOfProjectsTextViewCustom.setText(String.valueOf(student.getProjects()));
+        labDetailsViewHolder.noOfLabTimeTextViewCustom.setText(String.valueOf(student.getLab_time()));
+        labDetailsViewHolder.noOfDoneTextViewCustom.setText(String.valueOf(student.getCompleted()));
+        labDetailsViewHolder.noOfSkippedTextViewCustom.setText(String.valueOf(student.getSkipped()));
+        labDetailsViewHolder.noOfPendingTextViewCustom.setText(String.valueOf(student.getPending()));
+        labDetailsViewHolder.noOfChipsTextViewCustom.setText(String.valueOf(getChips(student.getWizchips(), student.getOfflinewizchips())));
+        if (student.getPromotionDemotionSync().equals(LabTabConstants.SyncStatus.PROMOTION_DEMOTION_SYNCED)) {
+            LabTabUtil.setLabLevelImageResource(student.getLevel().toUpperCase(), labDetailsViewHolder.labLevelImageView);
+        } else if (student.getPromotionDemotionSync().equals(LabTabConstants.SyncStatus.PROMOTION_NOT_SYNCED)) {
+            LabTabUtil.setLabLevelImageResource(LabTabUtil.getPromotionDemotionLevel(student.getLevel().toUpperCase(), true), labDetailsViewHolder.labLevelImageView);
         } else {
-            labDetailsViewHolder.actionCloseToNextLevellabLevelImageView.setVisibility(View.INVISIBLE);
+            LabTabUtil.setLabLevelImageResource(LabTabUtil.getPromotionDemotionLevel(student.getLevel().toUpperCase(), false), labDetailsViewHolder.labLevelImageView);
+        }
+
+        if (student.isCloseToNextLevel()) {
+            labDetailsViewHolder.actionCloseToNextLevelLabLevelImageView.setVisibility(View.VISIBLE);
+        } else {
+            labDetailsViewHolder.actionCloseToNextLevelLabLevelImageView.setVisibility(View.GONE);
         }
     }
 
-    private void configureLabDetailsHeaderHolder(LabDetailsHeaderHolder labDetailsHeaderHolder, int position) {
-        LabDetailsListHeader labDetailsListHeader = (LabDetailsListHeader) objectArrayList.get(position);
-        int labDetailsLinearLayoutColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_gray);
-        labDetailsHeaderHolder.labDetailsLinearLayout.setBackgroundColor(labDetailsLinearLayoutColor);
+    private int getChips(int onlineChips, int offlineChips) {
+        return (onlineChips + offlineChips) > 0 ? (onlineChips + offlineChips) : 0;
     }
 
     @Override

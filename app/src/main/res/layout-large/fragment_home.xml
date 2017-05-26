@@ -39,7 +39,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/go_to_image"
                         android:padding="@dimen/large_padding"
-                        android:src="@drawable/home_button_go_to_web" />
+                        android:src="@drawable/ic_home_button_go_to_web" />
                 </LinearLayout>
 
                 <org.wizbots.labtab.customview.TextViewCustom
@@ -81,7 +81,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/lab_list_image"
                         android:padding="@dimen/large_padding"
-                        android:src="@drawable/home_button_lab_list" />
+                        android:src="@drawable/ic_home_button_lab_list" />
                 </LinearLayout>
 
                 <org.wizbots.labtab.customview.TextViewCustom
@@ -131,7 +131,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/video_list_image"
                         android:padding="@dimen/large_padding"
-                        android:src="@drawable/home_button_video_list" />
+                        android:src="@drawable/ic_home_button_video_list" />
                 </LinearLayout>
 
                 <org.wizbots.labtab.customview.TextViewCustom
@@ -173,7 +173,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/my_profile_image"
                         android:padding="@dimen/large_padding"
-                        android:src="@drawable/home_button_my_profile" />
+                        android:src="@drawable/ic_home_button_my_profile" />
                 </LinearLayout>
 
                 <org.wizbots.labtab.customview.TextViewCustom

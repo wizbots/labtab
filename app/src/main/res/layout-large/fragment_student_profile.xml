@@ -36,22 +36,37 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <FrameLayout
                             android:layout_width="180dp"
                             android:layout_height="180dp"
-                            android:background="@drawable/rounded_layout_blue_for_profile"
-                            android:gravity="center">
+                            android:background="@drawable/rounded_layout_blue_for_profile">
 
-                            <org.wizbots.labtab.customview.TextViewCustom
+<!--                            <org.wizbots.labtab.customview.TextViewCustom
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_marginRight="@dimen/extra_extra_small_margin"
-                                android:gravity="center"
                                 android:text="@string/avatar"
                                 android:textColor="@color/light_blue"
                                 android:textSize="@dimen/text_size_extra_small"
-                                app:font="@string/font_pt_sans_narrow_regular" />
-                        </LinearLayout>
+                                app:font="@string/font_pt_sans_narrow_regular" />-->
+                            <org.wizbots.labtab.util.CircleImageView
+                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/profile_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_placholder"
+                                android:scaleType="centerCrop"
+                                app:civ_border_width="2dp"
+                                app:civ_border_color="@color/material_light_blue_800"/>
+
+                            <ImageView
+                                android:id="@+id/iv_student_lab_level"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@drawable/ic_filter_apprentice"
+                                android:contentDescription="@string/student_lab_level" />
+                        </FrameLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -87,11 +102,11 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
-                                android:inputType="textEmailAddress"
-                                android:paddingLeft="@dimen/extra_extra_small_padding"
-                                android:paddingRight="@dimen/extra_extra_small_padding"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
                                 android:text="@string/dummy_text"
-                                android:textColor="@android:color/black"
+
                                 android:textSize="@dimen/text_size_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -124,11 +139,11 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
-                                android:inputType="textEmailAddress"
-                                android:paddingLeft="@dimen/extra_extra_small_padding"
-                                android:paddingRight="@dimen/extra_extra_small_padding"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
                                 android:text="@string/dummy_text"
-                                android:textColor="@android:color/black"
+
                                 android:textSize="@dimen/text_size_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -161,11 +176,11 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
-                                android:inputType="textEmailAddress"
-                                android:paddingLeft="@dimen/extra_extra_small_padding"
-                                android:paddingRight="@dimen/extra_extra_small_padding"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
                                 android:text="@string/dummy_text"
-                                android:textColor="@android:color/black"
+
                                 android:textSize="@dimen/text_size_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -198,11 +213,11 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
-                                android:inputType="textEmailAddress"
-                                android:paddingLeft="@dimen/extra_extra_small_padding"
-                                android:paddingRight="@dimen/extra_extra_small_padding"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
                                 android:text="@string/dummy_text"
-                                android:textColor="@android:color/black"
+
                                 android:textSize="@dimen/text_size_small"
                                 app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -242,11 +257,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -279,11 +294,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -316,11 +331,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -353,11 +368,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -390,11 +405,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -427,11 +442,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -464,11 +479,11 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="@dimen/extra_extra_small_padding"
-                            android:paddingRight="@dimen/extra_extra_small_padding"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
                             android:text="@string/dummy_text"
-                            android:textColor="@android:color/black"
+
                             android:textSize="@dimen/text_size_small"
                             app:font="@string/font_pt_sans_narrow_regular" />
 

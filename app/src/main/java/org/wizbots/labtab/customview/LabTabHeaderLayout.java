@@ -12,9 +12,10 @@ import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
 
 public class LabTabHeaderLayout extends FrameLayout {
-    ImageView menuImageView;
-    ImageView labTabTitleImageView;
-    TextViewCustom dynamicTextViewCustom;
+    private ImageView menuImageView;
+    private ImageView labTabTitleImageView;
+    private ImageView syncImageView;
+    private TextViewCustom dynamicTextViewCustom;
 
     public LabTabHeaderLayout(Context context) {
         super(context);
@@ -30,12 +31,12 @@ public class LabTabHeaderLayout extends FrameLayout {
         }
     }
 
-
     public void initViewWithId(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.header_layout_for_lab_tab, this);
         menuImageView = (ImageView) findViewById(R.id.iv_menu);
         labTabTitleImageView = (ImageView) findViewById(R.id.iv_lab_tab_title);
+        syncImageView = (ImageView) findViewById(R.id.iv_sync);
         dynamicTextViewCustom = (TextViewCustom) findViewById(R.id.tv_dynamic);
     }
 
@@ -46,11 +47,13 @@ public class LabTabHeaderLayout extends FrameLayout {
         boolean imageViewMenuVisibility = obtainStyledAttributes.getBoolean(R.styleable.LabTabHeaderLayout_menuIconVisibility, false);
         Drawable imageMenuDrawable = obtainStyledAttributes.getDrawable(R.styleable.LabTabHeaderLayout_menuIconSrc);
         Drawable labTabTitleDrawable = obtainStyledAttributes.getDrawable(R.styleable.LabTabHeaderLayout_labTitleSrc);
+        Drawable syncDrawable = obtainStyledAttributes.getDrawable(R.styleable.LabTabHeaderLayout_syncSrc);
         String dynamicText = obtainStyledAttributes.getString(R.styleable.LabTabHeaderLayout_dynamicText);
         obtainStyledAttributes.recycle();
         setVisibilityForMenuImageView(imageViewMenuVisibility);
         setImageDrawableForImageView(menuImageView, imageMenuDrawable);
         setImageDrawableForImageView(labTabTitleImageView, labTabTitleDrawable);
+        setImageDrawableForImageView(syncImageView, syncDrawable);
         setDynamicText(dynamicText);
     }
 
@@ -80,6 +83,10 @@ public class LabTabHeaderLayout extends FrameLayout {
 
     public ImageView getLabTabTitleImageView() {
         return labTabTitleImageView;
+    }
+
+    public ImageView getSyncImageView() {
+        return syncImageView;
     }
 
     public TextViewCustom getDynamicTextViewCustom() {

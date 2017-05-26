@@ -29,7 +29,7 @@
     <string name="go_to_www_wizbots_com">go to\nwww.wizbots.com</string>
     <string name="lab_list">lab list</string>
     <string name="video_list">video list</string>
-    <string name="my_profile">my profile</string>
+    <string name="my_profile">My Profile</string>
     <string name="filter_lab_certified_image">Filter Lab Certified Image</string>
     <string name="filter_explorer_image">Filter Explorer Image</string>
     <string name="filter_apprentice_image">Filter Apprentice Image</string>
@@ -72,7 +72,7 @@
     <string name="zip_code">Zip Code</string>
     <string name="phone_1">Phone 1</string>
     <string name="phone_2">Phone 2</string>
-    <string name="dummy_text">Dummy Text</string>
+    <string name="dummy_text"></string>
     <string name="avatar">avatar</string>
     <string name="email_parent_s">Email (parent\'s)</string>
     <string name="grade">Grade</string>
@@ -88,15 +88,348 @@
     <string name="skipped">Skipped</string>
     <string name="pending">Pending</string>
     <string name="project_name">Project Name</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="status">Status</string>
+    <string name="video_name">Video Name</string>
+    <string name="wonderwall">Wonderwall</string>
+    <string name="wonderwall_next_line">Wonder\nwall</string>
+    <string name="no_preview_available">No Preview available</string>
+    <string name="project_editor">Project Editor</string>
+    <string name="title">Title</string>
+    <string name="category">Category</string>
+    <string name="knowledge_nuggets">Knowledge Nuggets</string>
+    <string name="description">Description</string>
+    <string name="project_creators">Project Creators</string>
+    <string name="cancel">CANCEL</string>
+    <string name="delete">DELETE</string>
+    <string name="save">SAVE</string>
+    <string name="upload">UPLOAD</string>
+    <string name="delete_creator">Delete Creator</string>
+    <string name="create">CREATE</string>
+    <string name="student_lab_level">Student Lab Level</string>
+    <string name="welcome_dynamic_mentor_name">Welcome, %1$s</string>
+    <string name="notes_to_the_family">Notes to the family</string>
+    <string name="location">Location</string>
+    <string name="year">Year</string>
+    <string name="season">Season</string>
+    <string name="today">TODAY</string>
+    <string name="tomorrow">TOMORROW</string>
+    <string name="hours">Hours</string>
+    <string name="general">General</string>
+    <string name="notes">Notes</string>
+    <string name="lab_tab_video">Lab Tab Video</string>
+    <string name="self_ncheckout">Self\ncheckout</string>
+    <string name="self_checkout">Self checkout</string>
+    <string name="pickup_ninstructions">Pickup\nInstructions</string>
+    <string name="pickup_instructions">Pickup Instructions</string>
+    <string name="in_out_ntimes">In-out\ntimes</string>
+    <string name="additional">Additional</string>
+    <string name="absences">Absences</string>
+    <string name="creato_lab_level">Creato Lab level</string>
+    <string name="upload_video">Upload Video</string>
+    <string name="syncing_image">Syncing Image</string>
+    <string name="select">Select</string>
+    <string name="promote">PROMOTE</string>
+    <string name="demote">DEMOTE</string>
+    <string name="mark_absent">MARK ABSENT</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="send_absent_notification">Send Absent Notification</string>
+    <string name="date">Date</string>
+    <string name="_12_12_2016">12/12/2016</string>
+    <string name="add_video">Add Video</string>
+    <string name="drawer_item_image">Drawer Item Image</string>
+    <string name="yes">YES</string>
+
+    <string-array name="fruit_array">
+        <item>Apple</item>
+        <item>Banana</item>
+        <item>Orange</item>
+        <item>Mango</item>
+        <item>Pineapple</item>
+        <item>Strawberry</item>
+        <item>Cranberry</item>
+    </string-array>
 
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>
+        <item>org.wizbots.labtab.service.SyncManager</item>
     </string-array>
 
     <string-array name="labtabtables">
         <item>org.wizbots.labtab.database.MentorsTable</item>
         <item>org.wizbots.labtab.database.ProgramsOrLabsTable</item>
         <item>org.wizbots.labtab.database.ProgramStudentsTable</item>
-        <item>org.wizbots.labtab.database.StudentsTable</item>
+        <item>org.wizbots.labtab.database.ProgramAbsencesTable</item>
+        <item>org.wizbots.labtab.database.ProgramTable</item>
+        <item>org.wizbots.labtab.database.StudentsProfileTable</item>
+        <item>org.wizbots.labtab.database.StudentStatsTable</item>
+        <item>org.wizbots.labtab.database.VideoTable</item>
+        <item>org.wizbots.labtab.database.LocationTable</item>
     </string-array>
+
+
+    <string-array name="array_category">
+        <item>Select Category</item>
+        <item>challenge</item>
+        <item>contraption</item>
+        <item>game</item>
+    </string-array>
+
+    <string-array name="array_location">
+        <item>All Locations</item>
+        <item>Addison Elementary</item>
+        <item>Almond Elementary</item>
+        <item>Bubb Elementary</item>
+        <item>Roy Cloud</item>
+        <item>South School</item>
+    </string-array>
+
+    <string-array name="array_year">
+        <item>All Years</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+    </string-array>
+
+    <string-array name="array_season">
+        <item>All Seasons</item>
+        <item>Fall</item>
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Winter</item>
+    </string-array>
+
+    <string-array name="components">
+        <item>Pantograph</item>
+        <item>Brainstorming</item>
+        <item>Planning</item>
+        <item>Crafts</item>
+        <item>Promotions</item>
+        <item>Logic Switch</item>
+        <item>Ready To Teach - Lab Certfied</item>
+        <item>Tracking Absences</item>
+        <item>Cantilever</item>
+        <item>Understand Apprentice Nuggets</item>
+        <item>Light Sensor</item>
+        <item>Play Station Control - 2</item>
+        <item>Run a WizQuiz</item>
+        <item>Generate a Roster</item>
+        <item>Line Following</item>
+        <item>Browse Nuggets Online</item>
+        <item>Projects by level</item>
+        <item>Rhythm of the Lab</item>
+        <item>Lab Cleanup Algorithm</item>
+        <item>Understand Explorer Nuggets</item>
+        <item>WizbitsWizbits  </item>
+        <item>Differential Drive Vehicle</item>
+        <item>Record and Play</item>
+        <item>Sign-ins and -outs</item>
+        <item>Calling attention</item>
+        <item>Distance Sensor</item>
+        <item>Video Capture</item>
+        <item>Display Block</item>
+        <item>Screw</item>
+        <item>Browse Projects Online</item>
+        <item>Understand EPIC</item>
+        <item>PVC Pipe Structure</item>
+        <item>Ackerman Steering</item>
+        <item>Wizbrick</item>
+        <item>Lead Brainstorming</item>
+        <item>4-bar Linkage</item>
+        <item>Video Upload</item>
+        <item>Camera Sensor Control</item>
+        <item>Troubleshooting</item>
+        <item>Slider Crank</item>
+        <item>Prototyping</item>
+        <item>Cube</item>
+        <item>Color Sensor</item>
+        <item>Gearing up</item>
+        <item>A-Frame</item>
+        <item>Rigid Beam</item>
+        <item>Gearing down</item>
+        <item>Feedback Control</item>
+        <item>Comments</item>
+        <item>Pulley</item>
+        <item>postaentest</item>
+        <item>Nested Switches</item>
+        <item>Random Block</item>
+        <item>Wait Block</item>
+        <item>Tool Chain - 3</item>
+        <item>Arithmetic Relations</item>
+        <item>Loops</item>
+        <item>Compare Block</item>
+        <item>Block Import</item>
+        <item>MyBlocks</item>
+        <item>Sound Block</item>
+        <item>Block Export</item>
+        <item>Compass Sensor</item>
+        <item>Math Block</item>
+        <item>Move Block</item>
+        <item>Viewing Sensors</item>
+        <item>Send and Receive Message</item>
+        <item>Parallel Programming</item>
+        <item>Data Hubs</item>
+        <item>Optical Distance Sensor Control</item>
+        <item>Switch</item>
+        <item>Sound Editor</item>
+        <item>Sound Sensor</item>
+        <item>Touch Sensor</item>
+        <item>Remote Control</item>
+        <item>Download Programs</item>
+        <item>Rotation Sensor</item>
+        <item>Acceleration Sensor</item>
+        <item>Variables</item>
+        <item>Rotation Sensor Control</item>
+        <item>Gyroscope Sensor Control</item>
+        <item>Compass Sensor Control</item>
+        <item>Magnetic Sensor Control</item>
+        <item>Wait Commands</item>
+        <item>Flow Control - 1</item>
+        <item>Speaker Control</item>
+        <item>Display Control</item>
+        <item>Tool Chain - 2</item>
+        <item>Flow Control - 3</item>
+        <item>Boolean Operators</item>
+        <item>Accelerometer Sensor Control</item>
+        <item>File Input and Output</item>
+        <item>Math Functions</item>
+        <item>String manipulation</item>
+        <item>Advanced Data Structures</item>
+        <item>Basic Object Oriented Progamming</item>
+        <item>Behavior-based Control</item>
+        <item>PID Control</item>
+        <item>Tool Chain - 1</item>
+        <item>Motor Control</item>
+        <item>NXT Button Control</item>
+        <item>Touch Sensor Control</item>
+        <item>Parallel Programming</item>
+        <item>Flow Control - 2</item>
+        <item>Line Following</item>
+        <item>Play Station Control - 1</item>
+        <item>Distance Sensor Control</item>
+        <item>Sound Sensor Control</item>
+        <item>Light Sensor Control</item>
+        <item>LED Wand</item>
+        <item>Color Sensor Control</item>
+        <item>Zoob Blocks</item>
+        <item>pantograph</item>
+        <item>brainstorming</item>
+        <item>planning</item>
+        <item>crafts</item>
+        <item>promotions</item>
+        <item>logic switch</item>
+        <item>ready to teach - lab certfied</item>
+        <item>tracking absences</item>
+        <item>cantilever</item>
+        <item>understand apprentice nuggets</item>
+        <item>light sensor</item>
+        <item>play station control - 2</item>
+        <item>run a wizquiz</item>
+        <item>generate a roster</item>
+        <item>line following</item>
+        <item>browse nuggets online</item>
+        <item>projects by level</item>
+        <item>rhythm of the lab</item>
+        <item>lab cleanup algorithm</item>
+        <item>understand explorer nuggets</item>
+        <item>wizbits</item>
+        <item>differential drive vehicle</item>
+        <item>record and play</item>
+        <item>sign-ins and -outs</item>
+        <item>calling attention</item>
+        <item>distance sensor</item>
+        <item>video capture</item>
+        <item>display block</item>
+        <item>screw</item>
+        <item>browse projects online</item>
+        <item>understand epic</item>
+        <item>pvc pipe structure</item>
+        <item>ackerman steering</item>
+        <item>wizbrick</item>
+        <item>lead brainstorming</item>
+        <item>4-bar linkage</item>
+        <item>video upload</item>
+        <item>camera sensor control</item>
+        <item>troubleshooting</item>
+        <item>slider crank</item>
+        <item>prototyping</item>
+        <item>cube</item>
+        <item>color sensor</item>
+        <item>gearing up</item>
+        <item>a-frame</item>
+        <item>rigid beam</item>
+        <item>gearing down</item>
+        <item>feedback control</item>
+        <item>comments</item>
+        <item>pulley</item>
+        <item>postaentest</item>
+        <item>nested switches</item>
+        <item>random block</item>
+        <item>wait block</item>
+        <item>tool chain - 3</item>
+        <item>arithmetic relations</item>
+        <item>loops</item>
+        <item>compare block</item>
+        <item>block import</item>
+        <item>myblocks</item>
+        <item>sound block</item>
+        <item>block export</item>
+        <item>compass sensor</item>
+        <item>math block</item>
+        <item>move block</item>
+        <item>viewing sensors</item>
+        <item>send and receive message</item>
+        <item>parallel programming</item>
+        <item>data hubs</item>
+        <item>optical distance sensor control</item>
+        <item>switch</item>
+        <item>sound editor</item>
+        <item>sound sensor</item>
+        <item>touch sensor</item>
+        <item>remote control</item>
+        <item>download programs</item>
+        <item>rotation sensor</item>
+        <item>acceleration sensor</item>
+        <item>variables</item>
+        <item>rotation sensor control</item>
+        <item>gyroscope sensor control</item>
+        <item>compass sensor control</item>
+        <item>magnetic sensor control</item>
+        <item>wait commands</item>
+        <item>flow control - 1</item>
+        <item>speaker control</item>
+        <item>display control</item>
+        <item>tool chain - 2</item>
+        <item>flow control - 3</item>
+        <item>boolean operators</item>
+        <item>accelerometer sensor control</item>
+        <item>file input and output</item>
+        <item>math functions</item>
+        <item>string manipulation</item>
+        <item>advanced data structures</item>
+        <item>basic object oriented progamming</item>
+        <item>behavior-based control</item>
+        <item>pid control</item>
+        <item>tool chain - 1</item>
+        <item>motor control</item>
+        <item>nxt button control</item>
+        <item>touch sensor control</item>
+        <item>parallel programming</item>
+        <item>flow control - 2</item>
+        <item>line following</item>
+        <item>play station control - 1</item>
+        <item>distance sensor control</item>
+        <item>sound sensor control</item>
+        <item>light sensor control</item>
+        <item>led wand</item>
+        <item>color sensor control</item>
+        <item>zoob blocks</item>
+    </string-array>
+
+
 </resources>

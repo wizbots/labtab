@@ -14,6 +14,8 @@ import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
+import org.wizbots.labtab.util.BackgroundExecutor;
 
 public class HomeFragment extends ParentFragment implements View.OnClickListener {
 
@@ -36,6 +38,9 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         homeActivityContext = (HomeActivity) context;
+        if (LabTabApplication.getInstance().getMetaDatas() == null) {
+            BackgroundExecutor.getInstance().execute(new ProjectsMetaDataRequester());
+        }
         initView();
         initListeners();
         return rootView;
@@ -49,15 +54,21 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
     public void initView() {
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
-        labTabHeaderLayout.getDynamicTextViewCustom().setText("Welcome, " + LabTabPreferences.getInstance(LabTabApplication.getInstance()).getEmailId());
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(
+                String.format(homeActivityContext.getString(R.string.welcome_dynamic_mentor_name),
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
+        homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
-        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.menu);
-        labTabHeaderLayout.getMenuImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                baseActivityContext.replaceFragment(BaseActivity.FRAGMENT_LOGIN);
-            }
-        });
+        labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
+        labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+    }
+
+    @Override
+    public void onResume() {
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(
+                String.format(homeActivityContext.getString(R.string.welcome_dynamic_mentor_name),
+                        LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName()));
+        super.onResume();
     }
 
     public void initListeners() {
@@ -71,19 +82,19 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cv_lab_list:
-                homeActivityContext.replaceFragment(FRAGMENT_LAB_LIST);
+                homeActivityContext.replaceFragment(Fragments.LAB_LIST, new Bundle());
                 break;
             case R.id.cv_go_to:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GO_TO_WIZBOTS_COM));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ToastTexts.GO_TO_WIZBOTS_COM));
                 if (browserIntent.resolveActivity(homeActivityContext.getPackageManager()) != null) {
                     startActivity(browserIntent);
                 }
                 break;
             case R.id.cv_video_list:
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, FEATURE_NOT_AVAILABLE_RIGHT_NOW);
+                homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());
                 break;
             case R.id.cv_my_profile:
-                homeActivityContext.replaceFragment(FRAGMENT_MENTOR_PROFILE);
+                homeActivityContext.replaceFragment(Fragments.MENTOR_PROFILE, new Bundle());
                 break;
         }
     }

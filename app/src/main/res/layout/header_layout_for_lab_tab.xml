@@ -22,7 +22,17 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/margin_left_for_menu"
                 android:contentDescription="@string/menu_image"
-                android:src="@drawable/menu" />
+                android:src="@drawable/ic_menu" />
+
+            <ImageView
+                android:id="@+id/iv_sync"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="25dp"
+                android:contentDescription="@string/syncing_image"
+                android:src="@drawable/ic_synced" />
 
         </RelativeLayout>
 
@@ -40,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_left_for_lab_title"
                 android:contentDescription="@string/lab_tab_title_image"
-                android:src="@drawable/title" />
+                android:src="@drawable/ic_title" />
         </LinearLayout>
 
         <RelativeLayout
@@ -55,7 +65,11 @@
                 android:id="@+id/tv_dynamic"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/margin_left_for_dynamic_text"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="57dp"
+                android:layout_marginStart="57dp"
                 android:gravity="center"
                 android:text="@string/please_enter_your_name_and_password"
                 android:textColor="@color/white"
@@ -73,5 +87,5 @@
         android:layout_gravity="right"
         android:contentDescription="@string/labtab_image"
         android:padding="@dimen/extra_extra_small_padding"
-        android:src="@drawable/app_logo" />
+        android:src="@drawable/ic_app_logo" />
 </FrameLayout>
