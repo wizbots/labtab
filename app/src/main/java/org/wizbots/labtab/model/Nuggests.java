@@ -8,6 +8,7 @@ public class Nuggests {
     String name;
     boolean isCheck;
 
+
     public Nuggests(String name, boolean isCheck) {
         this.name = name;
         this.isCheck = isCheck;

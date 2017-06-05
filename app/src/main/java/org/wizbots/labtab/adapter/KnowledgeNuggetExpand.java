@@ -28,6 +28,7 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, ArrayList<Nuggests>> _listDataChild;
     private ArrayList<String> selectedNuggests;
+    private boolean isSelectedByName = false;
 
 
     public KnowledgeNuggetExpand(Context context, ArrayList<String> listDataHeader,
@@ -67,6 +68,19 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
 
         txtListChild.setText(childText.getName());
         checkBox.setChecked(childText.isCheck());
+        txtListChild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBox.setChecked(!childText.isCheck());
+                childText.setCheck(checkBox.isChecked());
+                if (checkBox.isChecked()) {
+                    selectedNuggests.add(childText.getName());
+                } else {
+                    selectedNuggests.remove(childText.getName());
+                }
+
+            }
+        });
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
