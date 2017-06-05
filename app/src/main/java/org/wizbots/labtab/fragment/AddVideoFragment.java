@@ -410,7 +410,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 break;
             case R.id.component:
                 if (creatorsSelected == null || creatorsSelected.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a creator first");
                     return;
                 }
                 //Double Click Fix
@@ -423,7 +423,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 break;
             case R.id.edt_knowledge_nuggets:
                 if (creatorsSelected == null || creatorsSelected.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a creator first");
                     return;
                 }
                 //Double Click Fix
