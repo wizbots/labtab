@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,10 +28,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -1118,7 +1121,15 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
     public void showDialogForKnowledgeNuggets() {
         final Dialog dialog1 = new Dialog(context);
+
         dialog1.setContentView(R.layout.knowledgenuggets_expand_layout);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog1.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = getResources().getDimensionPixelOffset(R.dimen.login_container_width);
+        lp.gravity = Gravity.CENTER;
+
+        dialog1.getWindow().setAttributes(lp);
         dialog1.setTitle("Select Knowledge Nuggets");
         HashMap<String, ArrayList<Nuggests>> list;
         list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected);

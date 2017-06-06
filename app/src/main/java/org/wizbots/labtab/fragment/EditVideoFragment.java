@@ -25,9 +25,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -1115,7 +1117,14 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     public void showDialogForKnowledgeNuggets() {
         final Dialog dialog1 = new Dialog(context);
+        dialog1.setContentView(R.layout.knowledgenuggets_expand_layout);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog1.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = getResources().getDimensionPixelOffset(R.dimen.login_container_width);
+        lp.gravity = Gravity.CENTER;
 
+        dialog1.getWindow().setAttributes(lp);
         dialog1.setContentView(R.layout.knowledgenuggets_expand_layout);
         dialog1.setTitle("Select Knowledge Nuggets");
         HashMap<String, ArrayList<Nuggests>> list;
