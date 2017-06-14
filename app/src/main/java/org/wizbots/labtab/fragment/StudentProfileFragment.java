@@ -54,7 +54,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             emailTextViewCustom, gradeTextViewCustom, dateOfBirthTextViewCustom, parentsPhoneTextViewCustom,
             allergiesSpecialNeedsTextViewCustom, afterCarePhoneNameTextViewCustom, enrollmentsCountTextViewCustom,
             absencesTextViewCustom, wizchipsTextViewCustom;
-    private String labLevel="";
+    private String labLevel = "";
 
     public StudentProfileFragment() {
 
@@ -200,6 +200,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
     private void setProfileDetails(StudentProfile studentProfile) {
         LabTabUtil.setBackGroundImageResource(student.getLevel(), labLevelImageView);
         CreatorResponse creatorResponse = (CreatorResponse) LabTabUtil.fromJson(studentProfile.getCreator(), CreatorResponse.class);
+        labTabHeaderLayout.getDynamicTextViewCustom().setText(studentProfile.getFirst_name() + " " + studentProfile.getLast_name());
 
         firstNameTextViewCustom.setText(studentProfile.getFirst_name());
         lastNameTextViewCustom.setText(studentProfile.getLast_name());
