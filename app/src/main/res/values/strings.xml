@@ -26,10 +26,10 @@
     <string name="lab_list_image">Lab List Image</string>
     <string name="video_list_image">Video List Image</string>
     <string name="my_profile_image">My Profile Image</string>
-    <string name="go_to_www_wizbots_com">go to\nwww.wizbots.com</string>
-    <string name="lab_list">lab list</string>
-    <string name="video_list">video list</string>
-    <string name="my_profile">My Profile</string>
+    <string name="go_to_www_wizbots_com">GO TO WIZBOTS</string>
+    <string name="lab_list">LAB LIST</string>
+    <string name="video_list">VIDEO LIST</string>
+    <string name="my_profile">MY PROFILE</string>
     <string name="filter_lab_certified_image">Filter Lab Certified Image</string>
     <string name="filter_explorer_image">Filter Explorer Image</string>
     <string name="filter_apprentice_image">Filter Apprentice Image</string>
@@ -44,6 +44,10 @@
     <string name="font_pt_sans_narrow_regular">PT_Sans_Narrow_Regular.ttf</string>
     <string name="font_pt_sans_narrow_bold">PT_Sans_Narrow_Bold.ttf</string>
     <string name="lab_name">Lab Name</string>
+
+    <string name="completed">COMPLETED</string>
+    <string name="skipped_status">SKIPPED</string>
+    <string name="pending_status">PENDING</string>
     <string name="lab_level_image">Lab Level Image</string>
     <string name="action_image">Action Image</string>
     <string name="level">Level</string>
