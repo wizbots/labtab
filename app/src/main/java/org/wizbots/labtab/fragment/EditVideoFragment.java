@@ -382,10 +382,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             return;
         }
 
-        if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
+      /*  if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
             return;
-        }
+        }*/
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkAndRequestPermissionsSingle()) {
             return;

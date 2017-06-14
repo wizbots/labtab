@@ -146,7 +146,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private ArrayList<LocationResponse> getLocation(ArrayList<LocationResponse> list) {
         ArrayList<LocationResponse> locationList = new ArrayList<LocationResponse>();
         locationList.addAll(list);
-        locationList.add(0, new LocationResponse("", "All Location"));
+        locationList.add(0, new LocationResponse("", "All Locations"));
         return locationList;
     }
 
