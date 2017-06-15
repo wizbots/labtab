@@ -1134,11 +1134,13 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         dialog1.getWindow().setAttributes(lp);
         dialog1.setTitle("Select Knowledge Nuggets");
         HashMap<String, ArrayList<Nuggests>> list;
-        list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected);
+        String[] a = convertTextToModel();
+
+        list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected, a);
         sortHashMapValueList(list);  // Syadav
+
         ArrayList<String> keys = new ArrayList(list.keySet());
         ExpandableListView expandableListView = (ExpandableListView) dialog1.findViewById(R.id.lvExp);
-        convertTextToModel(list);
         knowledgeNuggetExpand = new KnowledgeNuggetExpand(getActivity(), keys, list);
         expandableListView.setAdapter(knowledgeNuggetExpand);
         dialog1.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
@@ -1146,7 +1148,11 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             public void onClick(View v) {
                 knowledgeNuggets = knowledgeNuggetExpand.getSelectedNuggest();
                 knowledgeNuggetsSelected = knowledgeNuggets.toString();
-                knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
+                if (knowledgeNuggetsSelected.length() > 2) {
+                    knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
+                } else {
+                    knowledgeNuggetsEditTextCustom.setText("");
+                }
                 dialog1.dismiss();
 
             }
@@ -1160,27 +1166,15 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         dialog1.show();
     }
 
-    private void convertTextToModel(HashMap<String, ArrayList<Nuggests>> availableNuggets) {
+    private String[] convertTextToModel() {
         String selectedNuggets = knowledgeNuggetsEditTextCustom.getText().toString();
         if (selectedNuggets != null && selectedNuggets.length() > 2) {
             String originalNuggets = selectedNuggets.substring(1, selectedNuggets.length() - 1);
             String[] nuggets = originalNuggets.split(",");
-            ArrayList<Nuggests> nuggestses = new ArrayList<>();
-            for (int i = 0; i < nuggets.length; i++) {
-                nuggestses.add(new Nuggests(nuggets[i], true));
-            }
-            for (Map.Entry map : availableNuggets.entrySet()) {
-                ArrayList<Nuggests> nuggestses1 = (ArrayList<Nuggests>) map.getValue();
-
-                for (Nuggests nuggest : nuggestses) {
-                    if (nuggestses1.contains(nuggest)) {
-                        nuggestses1.add(nuggest);
-                    }
-
-                }
-                map.setValue(nuggestses1);
-            }
-            knowledgeNuggetExpand.notifyDataSetChanged();
+            return nuggets;
         }
+        return null;
     }
+
+
 }

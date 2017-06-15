@@ -1128,7 +1128,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         dialog1.setContentView(R.layout.knowledgenuggets_expand_layout);
         dialog1.setTitle("Select Knowledge Nuggets");
         HashMap<String, ArrayList<Nuggests>> list;
-        list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected);
+        String[] a = convertTextToModel();
+
+        list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected, a);
         sortHashMapValueList(list);  // Syadav
         ArrayList<String> keys = new ArrayList(list.keySet());
         ExpandableListView expandableListView = (ExpandableListView) dialog1.findViewById(R.id.lvExp);
@@ -1139,7 +1141,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             public void onClick(View v) {
                 knowledgeNuggets = knowledgeNuggetExpand.getSelectedNuggest();
                 knowledgeNuggetsSelected = knowledgeNuggets.toString();
-                knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
+                if (knowledgeNuggetsSelected.length() > 2) {
+                    knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
+                } else {
+                    knowledgeNuggetsEditTextCustom.setText("");
+                }
                 dialog1.dismiss();
 
             }
@@ -1169,5 +1175,15 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         }
     };
     // ===============================================================================================
+
+    private String[] convertTextToModel() {
+        String selectedNuggets = knowledgeNuggetsEditTextCustom.getText().toString();
+        if (selectedNuggets != null && selectedNuggets.length() > 2) {
+            String originalNuggets = selectedNuggets.substring(1, selectedNuggets.length() - 1);
+            String[] nuggets = originalNuggets.split(",");
+            return nuggets;
+        }
+        return null;
+    }
 
 }
