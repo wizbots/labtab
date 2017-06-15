@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,11 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
     public Object getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition))
                 .get(childPosititon);
+    }
+
+    @Override
+    public void registerDataSetObserver(DataSetObserver observer) {
+        super.registerDataSetObserver(observer);
     }
 
     @Override
@@ -149,4 +155,12 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
     public ArrayList<String> getSelectedNuggest() {
         return selectedNuggests;
     }
+
+    public void updateNuggets(HashMap<String, ArrayList<Nuggests>> listChildData) {
+        this._listDataChild = listChildData;
+        notifyDataSetChanged();
+
+    }
+
+
 }

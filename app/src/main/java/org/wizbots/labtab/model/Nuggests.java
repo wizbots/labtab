@@ -29,4 +29,13 @@ public class Nuggests {
     public void setCheck(boolean check) {
         isCheck = check;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        String name = ((Nuggests) obj).getName();
+        return this.name.trim().equalsIgnoreCase(name);
+    }
+
+
 }

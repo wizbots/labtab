@@ -101,6 +101,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     public static final String TAG = AddVideoFragment.class.getSimpleName();
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
+    KnowledgeNuggetExpand knowledgeNuggetExpand;
     public static final String URI = "URI";
     public static final String PROJECT_CREATORS = "PROJECT_CREATORS";
     public static final String KNOWLEDGE_NUGGETS = "KNOWLEDGE_NUGGETS";
@@ -110,6 +111,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
+    private ExpandableListView expandableListView;
 
     private ProjectCreatorAdapter projectCreatorAdapter;
     private HorizontalProjectCreatorAdapter horizontalProjectCreatorAdapter;
@@ -1136,7 +1138,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         sortHashMapValueList(list);  // Syadav
         ArrayList<String> keys = new ArrayList(list.keySet());
         ExpandableListView expandableListView = (ExpandableListView) dialog1.findViewById(R.id.lvExp);
-        final KnowledgeNuggetExpand knowledgeNuggetExpand = new KnowledgeNuggetExpand(getActivity(), keys, list);
+        convertTextToModel(list);
+        knowledgeNuggetExpand = new KnowledgeNuggetExpand(getActivity(), keys, list);
         expandableListView.setAdapter(knowledgeNuggetExpand);
         dialog1.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1155,5 +1158,29 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             }
         });
         dialog1.show();
+    }
+
+    private void convertTextToModel(HashMap<String, ArrayList<Nuggests>> availableNuggets) {
+        String selectedNuggets = knowledgeNuggetsEditTextCustom.getText().toString();
+        if (selectedNuggets != null && selectedNuggets.length() > 2) {
+            String originalNuggets = selectedNuggets.substring(1, selectedNuggets.length() - 1);
+            String[] nuggets = originalNuggets.split(",");
+            ArrayList<Nuggests> nuggestses = new ArrayList<>();
+            for (int i = 0; i < nuggets.length; i++) {
+                nuggestses.add(new Nuggests(nuggets[i], true));
+            }
+            for (Map.Entry map : availableNuggets.entrySet()) {
+                ArrayList<Nuggests> nuggestses1 = (ArrayList<Nuggests>) map.getValue();
+
+                for (Nuggests nuggest : nuggestses) {
+                    if (nuggestses1.contains(nuggest)) {
+                        nuggestses1.add(nuggest);
+                    }
+
+                }
+                map.setValue(nuggestses1);
+            }
+            knowledgeNuggetExpand.notifyDataSetChanged();
+        }
     }
 }
