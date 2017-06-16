@@ -33,8 +33,11 @@ import org.wizbots.labtab.model.student.response.StudentResponse;
 import org.wizbots.labtab.requesters.StudentProfileAndStatsRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
+import org.wizbots.labtab.util.StudentStatsComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class StudentProfileFragment extends ParentFragment implements View.OnClickListener, StudentStatsAdapterClickListener, GetStudentProfileAndStatsListener {
 
@@ -43,7 +46,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
     private View rootView;
     private StudentStatsAdapter studentStatsAdapter;
     private RecyclerView recyclerViewStudentStats;
-    private ArrayList<Object> objectArrayList = new ArrayList<>();
+    private ArrayList<StudentStats> objectArrayList = new ArrayList<>();
     private HomeActivity homeActivityContext;
     private Program program;
     private Student student;
@@ -225,7 +228,9 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
     }
 
     private void prepareStudentStats(ArrayList<StudentStats> studentStatsArrayList) {
+
         objectArrayList.addAll(studentStatsArrayList);
+        Collections.sort(objectArrayList, StudentStatsComparator.getCompByName());
         studentStatsAdapter.notifyDataSetChanged();
     }
 }
