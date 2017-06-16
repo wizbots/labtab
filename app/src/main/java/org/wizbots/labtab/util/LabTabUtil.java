@@ -288,7 +288,7 @@ public class LabTabUtil implements LabTabConstants {
                 imageView.setBackgroundResource(R.drawable.ic_filter_wizard);
                 break;
             case LabLevels.NOVICE:
-                imageView.setBackgroundResource(R.drawable.ic_filter_wizard);
+                imageView.setBackgroundResource(R.drawable.ic_filter_novice);
                 break;
             default:
                 imageView.setBackgroundResource(R.drawable.ic_filter_apprentice);
@@ -459,7 +459,7 @@ public class LabTabUtil implements LabTabConstants {
     }
 
     //This method return todays and tomorrow date. if set to true return tomorror otherwise todays.
-    public static String getTodayDate(boolean isTomorrow){
+    public static String getTodayDate(boolean isTomorrow) {
         Calendar cal = Calendar.getInstance();
         if (isTomorrow)
             cal.add(Calendar.DATE, 1);
@@ -468,23 +468,23 @@ public class LabTabUtil implements LabTabConstants {
         return formatted;
     }
 
-    public static int getCurrentMonth(){
-        java.util.Date date= new Date();
+    public static int getCurrentMonth() {
+        java.util.Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.MONTH);
     }
 
-    public static int getCurrentYear(){
-        java.util.Date date= new Date();
+    public static int getCurrentYear() {
+        java.util.Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.YEAR);
     }
 
-    public static String getSeason(){
+    public static String getSeason() {
         String season = null;
-        switch (getCurrentMonth()){
+        switch (getCurrentMonth()) {
             case 1:
             case 2:
             case 12:

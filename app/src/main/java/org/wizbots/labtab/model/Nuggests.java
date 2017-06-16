@@ -8,6 +8,7 @@ public class Nuggests {
     String name;
     boolean isCheck;
 
+
     public Nuggests(String name, boolean isCheck) {
         this.name = name;
         this.isCheck = isCheck;
@@ -28,4 +29,13 @@ public class Nuggests {
     public void setCheck(boolean check) {
         isCheck = check;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        String name = ((Nuggests) obj).getName();
+        return this.name.trim().equalsIgnoreCase(name);
+    }
+
+
 }

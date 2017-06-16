@@ -240,7 +240,7 @@ public class LabTabApplication extends Application {
         return knowledgeNuggets;
     }
 
-    public HashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList) {
+    public HashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList, String[] selected) {
 //        String[] knowledgeNuggets = null;
         //      Set<String> kn = new HashSet<>();
         HashMap<String, ArrayList<Nuggests>> list = new HashMap<>();
@@ -255,10 +255,10 @@ public class LabTabApplication extends Application {
                 if (list.containsKey(metaDatas[i].getName())) {
                     knStudent = list.get(metaDatas[i].getName());
 
-                    knStudent.addAll(getNuggets(Arrays.asList(metaDatas[i].getNuggets())));
+                    knStudent.addAll(getNuggets(Arrays.asList(metaDatas[i].getNuggets()), selected == null ? null : Arrays.asList(selected)));
                 } else {
                     knStudent = new ArrayList<>();
-                    knStudent.addAll(getNuggets(Arrays.asList(metaDatas[i].getNuggets())));
+                    knStudent.addAll(getNuggets(Arrays.asList(metaDatas[i].getNuggets()), selected == null ? null : Arrays.asList(selected)));
                 }
 //                    }
                 list.put(metaDatas[i].getName(), knStudent);
@@ -271,10 +271,20 @@ public class LabTabApplication extends Application {
         return list;
     }
 
-    private ArrayList<Nuggests> getNuggets(List<String> nuggrst) {
+    private ArrayList<Nuggests> getNuggets(List<String> nuggrst, List<String> selected) {
         ArrayList<Nuggests> nuggestses = new ArrayList<>();
         for (String string : nuggrst) {
-            nuggestses.add(new Nuggests(string, false));
+            boolean isAlreadySelected = false;
+
+            if (selected != null) {
+                for (String select : selected) {
+                    if (select.trim().equalsIgnoreCase(string.trim())) {
+                        isAlreadySelected = true;
+                        break;
+                    }
+                }
+            }
+            nuggestses.add(new Nuggests(string, isAlreadySelected));
         }
         return nuggestses;
     }

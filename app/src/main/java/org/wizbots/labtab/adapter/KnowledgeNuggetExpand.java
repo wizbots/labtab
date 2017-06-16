@@ -7,8 +7,10 @@ package org.wizbots.labtab.adapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, ArrayList<Nuggests>> _listDataChild;
     private ArrayList<String> selectedNuggests;
+    private boolean isSelectedByName = false;
 
 
     public KnowledgeNuggetExpand(Context context, ArrayList<String> listDataHeader,
@@ -42,6 +45,11 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
     public Object getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition))
                 .get(childPosititon);
+    }
+
+    @Override
+    public void registerDataSetObserver(DataSetObserver observer) {
+        super.registerDataSetObserver(observer);
     }
 
     @Override
@@ -67,16 +75,34 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
 
         txtListChild.setText(childText.getName());
         checkBox.setChecked(childText.isCheck());
+        /*if (checkBox.isChecked()) {
+            selectedNuggests.add(childText.getName());
+        } else {
+            selectedNuggests.remove(childText.getName());
+        }*/
+        txtListChild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBox.setChecked(!childText.isCheck());
+                childText.setCheck(checkBox.isChecked());
+              /*  if (checkBox.isChecked()) {
+                    selectedNuggests.add(childText.getName());
+                } else {
+                    selectedNuggests.remove(childText.getName());
+                }*/
+
+            }
+        });
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (buttonView.isPressed()) {
                     childText.setCheck(isChecked);
-                    if (isChecked) {
+                    /*if (isChecked) {
                         selectedNuggests.add(childText.getName());
                     } else {
                         selectedNuggests.remove(childText.getName());
-                    }
+                    }*/
                 }
             }
         });
@@ -133,6 +159,22 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
     }
 
     public ArrayList<String> getSelectedNuggest() {
+        for (Map.Entry map : _listDataChild.entrySet()) {
+            ArrayList<Nuggests> nuggestses = (ArrayList<Nuggests>) map.getValue();
+            for (Nuggests n : nuggestses) {
+                if (n.isCheck()) {
+                    selectedNuggests.add(n.getName());
+                }
+            }
+        }
         return selectedNuggests;
     }
+
+    public void updateNuggets(HashMap<String, ArrayList<Nuggests>> listChildData) {
+        this._listDataChild = listChildData;
+        notifyDataSetChanged();
+
+    }
+
+
 }

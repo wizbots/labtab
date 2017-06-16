@@ -25,9 +25,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -294,7 +296,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 break;
             case R.id.component:
                 if (creatorsSelected == null || creatorsSelected.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a creator first");
                     return;
                 }
                 //Double Click Fix
@@ -307,7 +309,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 break;
             case R.id.edt_knowledge_nuggets:
                 if (creatorsSelected == null || creatorsSelected.isEmpty()) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Select Creater first");
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please select a creator first");
                     return;
                 }
                 //Double Click Fix
@@ -380,10 +382,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             return;
         }
 
-        if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
+      /*  if (notesToTheFamilyEditTextCustom.getText().toString().length() < 5) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Notes must consist 5 words");
             return;
-        }
+        }*/
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkAndRequestPermissionsSingle()) {
             return;
@@ -1115,11 +1117,20 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     public void showDialogForKnowledgeNuggets() {
         final Dialog dialog1 = new Dialog(context);
+        dialog1.setContentView(R.layout.knowledgenuggets_expand_layout);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog1.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = getResources().getDimensionPixelOffset(R.dimen.login_container_width);
+        lp.gravity = Gravity.CENTER;
 
+        dialog1.getWindow().setAttributes(lp);
         dialog1.setContentView(R.layout.knowledgenuggets_expand_layout);
         dialog1.setTitle("Select Knowledge Nuggets");
         HashMap<String, ArrayList<Nuggests>> list;
-        list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected);
+        String[] a = convertTextToModel();
+
+        list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected, a);
         sortHashMapValueList(list);  // Syadav
         ArrayList<String> keys = new ArrayList(list.keySet());
         ExpandableListView expandableListView = (ExpandableListView) dialog1.findViewById(R.id.lvExp);
@@ -1130,7 +1141,11 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             public void onClick(View v) {
                 knowledgeNuggets = knowledgeNuggetExpand.getSelectedNuggest();
                 knowledgeNuggetsSelected = knowledgeNuggets.toString();
-                knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
+                if (knowledgeNuggetsSelected.length() > 2) {
+                    knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
+                } else {
+                    knowledgeNuggetsEditTextCustom.setText("");
+                }
                 dialog1.dismiss();
 
             }
@@ -1160,5 +1175,15 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         }
     };
     // ===============================================================================================
+
+    private String[] convertTextToModel() {
+        String selectedNuggets = knowledgeNuggetsEditTextCustom.getText().toString();
+        if (selectedNuggets != null && selectedNuggets.length() > 2) {
+            String originalNuggets = selectedNuggets.substring(1, selectedNuggets.length() - 1);
+            String[] nuggets = originalNuggets.split(",");
+            return nuggets;
+        }
+        return null;
+    }
 
 }

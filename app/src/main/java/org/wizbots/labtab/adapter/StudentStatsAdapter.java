@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class StudentStatsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
 
     private final int VIEW_ITEM_DATA = 1;
-    private ArrayList<Object> objectArrayList;
+    private ArrayList<StudentStats> objectArrayList;
     private Context context;
     private StudentStatsAdapterClickListener studentStatsAdapterClickListener;
 
@@ -69,7 +69,7 @@ public class StudentStatsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public StudentStatsAdapter(ArrayList<Object> objectArrayList, Context context, StudentStatsAdapterClickListener studentStatsAdapterClickListener) {
+    public StudentStatsAdapter(ArrayList<StudentStats> objectArrayList, Context context, StudentStatsAdapterClickListener studentStatsAdapterClickListener) {
         this.objectArrayList = objectArrayList;
         this.context = context;
         this.studentStatsAdapterClickListener = studentStatsAdapterClickListener;

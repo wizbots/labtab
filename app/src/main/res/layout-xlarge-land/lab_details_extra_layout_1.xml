@@ -120,6 +120,46 @@
         android:textColor="@color/white"
         android:textSize="25sp" />
 
+    <TextView
+        android:id="@+id/complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/extra_large_margin"
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_toRightOf="@+id/tv_plus"
+        android:drawableLeft="@drawable/ic_marks_done_legend"
+        android:text="@string/completed"
+        android:textAlignment="center"
+        android:textColor="@color/dark_blue"
+
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/skipped"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/extra_small_margin"
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_toRightOf="@+id/complete"
+        android:drawableLeft="@drawable/ic_marks_skipped_legend"
+        android:text="@string/skipped_status"
+        android:textColor="@color/dark_blue"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/pending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/extra_small_margin"
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_toRightOf="@+id/skipped"
+        android:drawableLeft="@drawable/ic_marks_pending_legend"
+
+        android:text="@string/pending_status"
+
+        android:textColor="@color/dark_blue"
+        android:textSize="15sp" />
+
     <ImageView
         android:id="@+id/iv_calendar"
         android:layout_width="40dp"
