@@ -48,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -146,7 +147,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private ArrayList<LocationResponse> getLocation(ArrayList<LocationResponse> list) {
         ArrayList<LocationResponse> locationList = new ArrayList<LocationResponse>();
         locationList.addAll(list);
+
+        Collections.sort(locationList, LocationResponse.locationResponseComparator);
         locationList.add(0, new LocationResponse("", "All Locations"));
+
         return locationList;
     }
 
