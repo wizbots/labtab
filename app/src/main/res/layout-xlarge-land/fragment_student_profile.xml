@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll_view_student_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -41,25 +41,24 @@
                             android:layout_height="200dp"
                             android:background="@drawable/rounded_layout_blue_for_profile">
 
-<!--                            <org.wizbots.labtab.customview.TextViewCustom
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginRight="@dimen/extra_extra_small_margin"
-                                android:text="@string/avatar"
-                                android:textColor="@color/light_blue"
-                                android:textSize="@dimen/text_size_extra_small"
-                                app:font="@string/font_pt_sans_narrow_regular" />-->
+                            <!--                            <org.wizbots.labtab.customview.TextViewCustom
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_gravity="center"
+                                                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                                                            android:text="@string/avatar"
+                                                            android:textColor="@color/light_blue"
+                                                            android:textSize="@dimen/text_size_extra_small"
+                                                            app:font="@string/font_pt_sans_narrow_regular" />-->
 
-                            <org.wizbots.labtab.util.CircleImageView
-                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                            <org.wizbots.labtab.util.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                                 android:id="@+id/profile_image"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_placholder"
                                 android:scaleType="centerCrop"
-                                app:civ_border_width="2dp"
-                                app:civ_border_color="@color/material_light_blue_800"/>
+                                android:src="@drawable/ic_placholder"
+                                app:civ_border_color="@color/material_light_blue_800"
+                                app:civ_border_width="2dp" />
 
                             <ImageView
                                 android:id="@+id/iv_student_lab_level"
@@ -522,6 +521,7 @@
                         android:id="@+id/recycler_view_student_stats_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         android:scrollbars="vertical"
                         android:visibility="visible" />
                 </LinearLayout>
@@ -530,5 +530,5 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

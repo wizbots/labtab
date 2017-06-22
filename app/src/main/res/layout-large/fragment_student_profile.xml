@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll_view_student_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -509,7 +510,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/extra_small_margin"
                     android:background="@drawable/rounded_layout_blue_from_edges"
                     android:orientation="vertical"
@@ -521,6 +522,7 @@
                         android:id="@+id/recycler_view_student_stats_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         android:scrollbars="vertical"
                         android:visibility="visible" />
                 </LinearLayout>
@@ -529,5 +531,5 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

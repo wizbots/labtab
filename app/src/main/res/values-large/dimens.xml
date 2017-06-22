@@ -44,7 +44,7 @@
 
     <!--Splash Screen Dimensions-->
     <dimen name="splash_image_width">400dp</dimen>
-    <dimen name="splash_image_height">400dp</dimen>
+    <dimen name="splash_image_height">420dp</dimen>
 
     <!--Login Screen Dimensions-->
     <dimen name="login_container_width">500dp</dimen>
