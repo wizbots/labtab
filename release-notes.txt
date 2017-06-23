@@ -1,4 +1,51 @@
 ---------------------------------------------------------------------
+Release 1.2.0 - 2017/06/17
+---------------------------------------------------------------------
+NEW FEATURES:
+* Several issues fixed
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+* Can edit Knowlege Nuggets for existing created project and video
+* Notes are not mandatory at project edition
+* Changed Font to Capital letter for Main menu options
+* Can select Knowledge Nuggets
+
+KNOWN ISSUES:
+* Video uploading for videos longer than 5 minutes still to be checked, since in some
+  devices seems to be still happening
+* Statistics in student details still not being displayed correctly in portrait mode
+* Splash screen still not shown correctly when booting up in portrait mode
+
+
+---------------------------------------------------------------------
+Release 1.1.4 - 2017/06/06
+---------------------------------------------------------------------
+NEW FEATURES:
+* Just minor bug fixing
+
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+* None
+
+KNOWN ISSUES:
+* Reset button working correctly
+
+
+---------------------------------------------------------------------
 Release 1.1.0 - 2017/05/25
 ---------------------------------------------------------------------
 NEW FEATURES:
