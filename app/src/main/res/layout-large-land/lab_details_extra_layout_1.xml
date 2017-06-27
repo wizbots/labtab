@@ -12,7 +12,7 @@
 
     <ImageView
         android:id="@+id/iv_add_video"
-        android:layout_width="40dp"
+        android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/add_video"
@@ -63,27 +63,29 @@
         android:id="@+id/cb_send_absent_notification"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/tv_mark_absent"
         android:button="@drawable/check_box_small_selector" />
 
     <TextView
         android:id="@+id/tv_send_absent_notification"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="30dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
         android:layout_toRightOf="@id/cb_send_absent_notification"
         android:gravity="center"
+        android:lines="2"
+        android:maxLines="3"
         android:text="@string/send_absent_notification"
         android:textColor="@color/material_light_blue_800"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tv_minus"
-        android:layout_width="30dp"
+        android:layout_width="25dp"
         android:layout_height="35dp"
-        android:layout_marginLeft="@dimen/extra_extra_small_margin"
+        android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/tv_send_absent_notification"
         android:background="@drawable/rounded_layout"
         android:gravity="center"
@@ -91,24 +93,24 @@
         android:paddingRight="@dimen/extra_small_padding"
         android:text="@string/minus"
         android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textSize="15sp" />
 
     <org.wizbots.labtab.customview.TextViewCustom
         android:id="@+id/tv_wizchips"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/tv_minus"
         android:gravity="center"
         android:text="@string/wizchips"
         android:textAllCaps="true"
         android:textColor="@color/purple"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:font="@string/font_pt_sans_narrow_regular" />
 
     <TextView
         android:id="@+id/tv_plus"
-        android:layout_width="30dp"
+        android:layout_width="25dp"
         android:layout_height="35dp"
         android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/tv_wizchips"
@@ -118,39 +120,83 @@
         android:paddingRight="@dimen/extra_small_padding"
         android:text="@string/plus"
         android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textSize="15sp" />
+
+
+    <TextView
+        android:id="@+id/no_projects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_toRightOf="@+id/tv_plus"
+        android:drawableLeft="@drawable/ic_project_legend"
+        android:text="@string/projects_status"
+        android:textAlignment="center"
+        android:textColor="@color/dark_blue"
+
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/wizchips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/extra_extra_small_margin"
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_toRightOf="@+id/no_projects"
+        android:drawableLeft="@drawable/ic_chip_legend"
+        android:text="@string/wizchip_status"
+        android:textAlignment="center"
+        android:textColor="@color/dark_blue"
+
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/labtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/extra_extra_small_margin"
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_toRightOf="@+id/wizchips"
+        android:drawableLeft="@drawable/ic_time_legend"
+        android:text="@string/lab_time_status"
+        android:textAlignment="center"
+        android:textColor="@color/dark_blue"
+
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/extra_large_margin"
+        android:layout_marginLeft="2dp"
         android:layout_marginTop="@dimen/extra_small_margin"
-        android:layout_toRightOf="@+id/tv_plus"
-        android:drawableLeft="@drawable/ic_marks_done_legend"
+        android:layout_toRightOf="@+id/labtime"
+        android:drawableLeft="@drawable/ic_marks_done__legend"
         android:text="@string/completed"
         android:textAlignment="center"
         android:textColor="@color/dark_blue"
 
-        android:textSize="15sp" />
+        android:textSize="12sp" />
+
 
     <TextView
         android:id="@+id/skipped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/extra_small_margin"
+        android:layout_marginLeft="@dimen/extra_extra_small_margin"
         android:layout_marginTop="@dimen/extra_small_margin"
         android:layout_toRightOf="@+id/complete"
         android:drawableLeft="@drawable/ic_marks_skipped_legend"
         android:text="@string/skipped_status"
         android:textColor="@color/dark_blue"
-        android:textSize="15sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/pending"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/extra_small_margin"
+        android:layout_marginLeft="@dimen/extra_extra_small_margin"
         android:layout_marginTop="@dimen/extra_small_margin"
         android:layout_toRightOf="@+id/skipped"
         android:drawableLeft="@drawable/ic_marks_pending_legend"
@@ -158,7 +204,7 @@
         android:text="@string/pending_status"
 
         android:textColor="@color/dark_blue"
-        android:textSize="15sp" />
+        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/iv_calendar"

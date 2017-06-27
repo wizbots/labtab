@@ -48,6 +48,9 @@
     <string name="completed">COMPLETED</string>
     <string name="skipped_status">SKIPPED</string>
     <string name="pending_status">PENDING</string>
+    <string name="projects_status">PROJECTS</string>
+    <string name="wizchip_status">WIZCHIPS</string>
+    <string name="lab_time_status">LAB TIME</string>
     <string name="lab_level_image">Lab Level Image</string>
     <string name="action_image">Action Image</string>
     <string name="level">Level</string>
