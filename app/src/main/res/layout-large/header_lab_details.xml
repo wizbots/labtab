@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
 
         android:orientation="vertical">
 
@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
 
         android:orientation="vertical">
         <org.wizbots.labtab.customview.TextViewCustom
@@ -129,10 +129,10 @@
 
     <LinearLayout
         android:id="@+id/lab_time_container"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
 
         android:orientation="vertical">
         <org.wizbots.labtab.customview.TextViewCustom
@@ -160,7 +160,7 @@
         android:id="@+id/done_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
 
         android:gravity="center"
         android:orientation="vertical">
@@ -190,7 +190,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
 
         android:orientation="vertical"
         >
@@ -220,7 +220,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
 
         android:orientation="vertical">
         <org.wizbots.labtab.customview.TextViewCustom
