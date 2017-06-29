@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -63,8 +64,8 @@ public interface LabTabApiInterface {
 
     //    5. Returns list of programs using member_id,from and to
     @GET("programs/")
-    Call<ArrayList<ProgramOrLab>> returnPrograms(@Header("Auth-Token") String authToken, @Query("mentor_id") String mentor_id,
-                                                 @Query("from") String from, @Query("to") String to);
+    Call<ResponseBody> returnPrograms(@Header("Auth-Token") String authToken, @Query("mentor_id") String mentor_id,
+                                       @Query("from") String from, @Query("to") String to);
 
     //    6. Returns a mentor
     @GET("mentors/")
