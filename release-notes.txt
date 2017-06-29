@@ -1,5 +1,30 @@
 ---------------------------------------------------------------------
-Release 1.2.0 - 2017/06/17
+Release 1.5.3 - 2017/06/25
+---------------------------------------------------------------------
+NEW FEATURES:
+* Several issues fixed
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+* Splash screen is wrong when starting app in portrait mode
+* Statistics not displaying correctly in many programs
+* Fix typo at creator selection
+
+KNOWN ISSUES:
+* Video uploading for videos longer than 5 minutes still to be checked, since in some
+  devices seems to be still happening
+* Add legend on top of student list
+* API statistics returned still not fine, need to check intrumentals
+
+
+---------------------------------------------------------------------
+Release 1.5.0 - 2017/06/17
 ---------------------------------------------------------------------
 NEW FEATURES:
 * Several issues fixed
