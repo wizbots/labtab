@@ -31,7 +31,7 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
     private ArrayList<ProgramOrLab> programOrLabArrayList;
 
     @Override
-    public void run()  {
+    public void run() {
         int statusCode = 0;
         LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
         try {
@@ -67,18 +67,20 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
                         .getInstance()
                         .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
-            if (programOrLabArrayList != null) {
-                Collections.sort(programOrLabArrayList, CHAT_COMPARATOR);
-            }
-            for (GetProgramOrLabListener getProgramOrLabListener : LabTabApplication.getInstance().getUIListeners(GetProgramOrLabListener.class)) {
-                if (statusCode == StatusCode.OK) {
-                    getProgramOrLabListener.programOrLabFetchedSuccessfully(programOrLabArrayList);
-                } else {
-                    getProgramOrLabListener.unableToFetchPrograms(statusCode);
-                }
+        }
+
+        if (programOrLabArrayList != null) {
+            Collections.sort(programOrLabArrayList, CHAT_COMPARATOR);
+        }
+        for (GetProgramOrLabListener getProgramOrLabListener : LabTabApplication.getInstance().getUIListeners(GetProgramOrLabListener.class)) {
+            if (statusCode == StatusCode.OK) {
+                getProgramOrLabListener.programOrLabFetchedSuccessfully(programOrLabArrayList);
+            } else {
+                getProgramOrLabListener.unableToFetchPrograms(statusCode);
             }
         }
+
     }
 }

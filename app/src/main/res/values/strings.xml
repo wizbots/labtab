@@ -45,7 +45,7 @@
     <string name="font_pt_sans_narrow_bold">PT_Sans_Narrow_Bold.ttf</string>
     <string name="lab_name">Lab Name</string>
 
-    <string name="completed">COMPLETED</string>
+    <string name="completed">COMPL</string>
     <string name="skipped_status">SKIPPED</string>
     <string name="pending_status">PENDING</string>
     <string name="projects_status">PROJECTS</string>
