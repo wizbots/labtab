@@ -50,6 +50,9 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
                         int i = 0;
                         for (ProgramOrLab programOrLab : programOrLabArrayList) {
                             Log.d("issue", programOrLab.toString() + " pos " + i++);
+                            // skip program whose season is null
+                            if (programOrLab.getSeason() == null)
+                                continue;
 
                             String seasonYear[] = programOrLab.getSeason().split(" - ");
                             programOrLab.setMember_id(member_id);
