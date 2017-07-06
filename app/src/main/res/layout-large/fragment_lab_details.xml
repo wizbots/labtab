@@ -5,7 +5,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/extra_large_padding">
+    android:layout_margin="@dimen/extra_extra_small_padding"
+  >
 
     <include
         android:id="@+id/lab_details_extra_layout"

@@ -80,19 +80,26 @@ public class KnowledgeNuggetExpand extends BaseExpandableListAdapter {
         } else {
             selectedNuggests.remove(childText.getName());
         }*/
-        txtListChild.setOnClickListener(new View.OnClickListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkBox.setChecked(!childText.isCheck());
                 childText.setCheck(checkBox.isChecked());
-              /*  if (checkBox.isChecked()) {
+            }
+        });
+       /* txtListChild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBox.setChecked(!childText.isCheck());
+                childText.setCheck(checkBox.isChecked());
+              *//*  if (checkBox.isChecked()) {
                     selectedNuggests.add(childText.getName());
                 } else {
                     selectedNuggests.remove(childText.getName());
-                }*/
+                }*//*
 
             }
-        });
+        });*/
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

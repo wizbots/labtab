@@ -30,6 +30,9 @@
     <dimen name="text_size_large">26sp</dimen>
     <dimen name="text_size_extra_large">28sp</dimen>
     <dimen name="text_size_extra_extra_large">30sp</dimen>
+    <dimen name="legend_options_text_size">10sp</dimen>
+    <dimen name="smallest_text_size">8sp</dimen>
+
 
     <!--Card-->
     <dimen name="card_elevation_extra_extra_small">2dp</dimen>
@@ -44,7 +47,7 @@
 
     <!--Splash Screen Dimensions-->
     <dimen name="splash_image_width">400dp</dimen>
-    <dimen name="splash_image_height">400dp</dimen>
+    <dimen name="splash_image_height">420dp</dimen>
 
     <!--Login Screen Dimensions-->
     <dimen name="login_container_width">500dp</dimen>

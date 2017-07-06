@@ -135,18 +135,22 @@ public class LabTabApplication extends Application {
     }
 
     public void initRetrofit() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+       /* OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(7, TimeUnit.MINUTES)
                 .writeTimeout(7, TimeUnit.MINUTES)
                 .retryOnConnectionFailure(true)
 
                 .readTimeout(7, TimeUnit.MINUTES);
-        OkHttpClient client = builder.build();
+        OkHttpClient client = builder.build();*/
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(120, TimeUnit.SECONDS)
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(LabTabApiInterface.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(okHttpClient)
                 .build();
         labTabApiInterface = retrofit.create(LabTabApiInterface.class);
     }

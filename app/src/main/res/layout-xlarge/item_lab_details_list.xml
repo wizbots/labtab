@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:id="@+id/lab_details_checkbox_container"
-        android:layout_width="0dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
@@ -26,8 +26,9 @@
 
     <LinearLayout
         android:id="@+id/student_name_container"
-        android:layout_width="200dp"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -36,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:lines="2"
             android:text="@string/student_name"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
@@ -44,8 +46,9 @@
 
     <LinearLayout
         android:id="@+id/lab_level_container"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -62,8 +65,9 @@
 
     <LinearLayout
         android:id="@+id/projects_container"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/lab_detail_image_width"
         android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -82,10 +86,12 @@
 
     <LinearLayout
         android:id="@+id/chips_container"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/lab_detail_image_width"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/large_margin"
         android:layout_weight="1"
         android:gravity="center"
+
         android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
@@ -101,10 +107,13 @@
 
     <LinearLayout
         android:id="@+id/lab_time_container"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/lab_detail_image_width"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/normal_margin"
         android:layout_weight="1"
         android:gravity="center"
+
+
         android:orientation="vertical">
 
         <org.wizbots.labtab.customview.TextViewCustom
@@ -112,6 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingLeft="@dimen/normal_margin"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
@@ -120,8 +130,10 @@
 
     <LinearLayout
         android:id="@+id/done_container"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/lab_detail_image_width"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/extra_extra_small_margin"
+
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -132,7 +144,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingLeft="@dimen/extra_extra_large_margin"
             android:text="@string/_100"
+
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -140,11 +154,12 @@
 
     <LinearLayout
         android:id="@+id/skipped_container"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/lab_detail_check_box_height"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/normal_margin">
 
 
         <org.wizbots.labtab.customview.TextViewCustom
@@ -153,6 +168,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_100"
+
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
@@ -160,11 +176,14 @@
 
     <LinearLayout
         android:id="@+id/pending_container"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/lab_detail_image_width"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/large_margin"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+
+        >
 
 
         <org.wizbots.labtab.customview.TextViewCustom
@@ -172,6 +191,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingLeft="@dimen/normal_margin"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_small"
             app:font="@string/font_pt_sans_narrow_regular" />
@@ -184,6 +204,7 @@
         android:layout_width="@dimen/lab_detail_action_container_width"
         android:layout_height="match_parent"
         android:gravity="center"
+
         android:orientation="vertical">
 
 
@@ -191,6 +212,7 @@
             android:id="@+id/action_container"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:gravity="center"
             android:orientation="horizontal">
 
