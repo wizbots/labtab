@@ -26,10 +26,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -190,6 +192,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         progressDialog.setCanceledOnTouchOutside(false);
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         projectCreatorEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_project_creators);
+        disableKeyboard();
         recyclerViewContainer = (LinearLayout) rootView.findViewById(R.id.recycler_view_container);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.scroll_view_edit_video);
@@ -342,10 +345,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     break;
                 }
 
-                if (descriptionEditTextCustom.getText().toString().length() < 5) {
+               /* if (descriptionEditTextCustom.getText().toString().length() < 5) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 characters");
                     break;
-                }
+                }*/
 
 
 
@@ -1176,5 +1179,17 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         return null;
     }
 
+    private void disableKeyboard() {
+        projectCreatorEditTextCustom.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int inType = projectCreatorEditTextCustom.getInputType(); // backup the input type
+                projectCreatorEditTextCustom.setInputType(InputType.TYPE_NULL); // disable soft input
+                projectCreatorEditTextCustom.onTouchEvent(event); // call native handler
+                projectCreatorEditTextCustom.setInputType(inType); // restore input type
+                return true; // consume touch even
+            }
+        });
+    }
 
 }
