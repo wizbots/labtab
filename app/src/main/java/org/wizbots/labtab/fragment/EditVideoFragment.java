@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,6 +30,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -210,6 +212,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
         RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(), 2);
+        if (getRotation(getActivity()).equalsIgnoreCase("landscape") || getRotation(getActivity()).equalsIgnoreCase("reverse landscape")) {
+            horizontalLayoutManager = new GridLayoutManager(getActivity(), 3);
+
+        }
         // RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
@@ -276,6 +282,21 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(video.getProgramId()));
         projectCreatorAdapter.notifyDataSetChanged();
     }
+
+    public String getRotation(Context context) {
+        final int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                return "portrait";
+            case Surface.ROTATION_90:
+                return "landscape";
+            case Surface.ROTATION_180:
+                return "reverse portrait";
+            default:
+                return "reverse landscape";
+        }
+    }
+
 
     @Override
     public void onClick(View view) {

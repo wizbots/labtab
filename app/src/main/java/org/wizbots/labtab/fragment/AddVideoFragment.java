@@ -6,9 +6,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,9 +32,11 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -95,6 +100,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
+
+import static android.R.attr.orientation;
+import static android.content.Context.WINDOW_SERVICE;
 
 public class AddVideoFragment extends ParentFragment implements View.OnClickListener,
         ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener,
@@ -215,7 +223,12 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
+        Display display = ((WindowManager) getActivity().getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
         RecyclerView.LayoutManager horizontalLayoutManager = new GridLayoutManager(getActivity(), 2);
+        if (getRotation(getActivity()).equalsIgnoreCase("landscape") || getRotation(getActivity()).equalsIgnoreCase("reverse landscape")) {
+            horizontalLayoutManager = new GridLayoutManager(getActivity(), 3);
+
+        }
         horizontalRecyclerViewProjectCreator.setLayoutManager(horizontalLayoutManager);
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
@@ -295,6 +308,20 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         if (program != null) {
             creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()));
             projectCreatorAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public String getRotation(Context context) {
+        final int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                return "portrait";
+            case Surface.ROTATION_90:
+                return "landscape";
+            case Surface.ROTATION_180:
+                return "reverse portrait";
+            default:
+                return "reverse landscape";
         }
     }
 
