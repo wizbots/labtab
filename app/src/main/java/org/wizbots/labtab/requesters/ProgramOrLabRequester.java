@@ -18,12 +18,15 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
 
 import static android.R.id.list;
+import static android.R.id.primary;
 import static org.wizbots.labtab.util.LabListComparator.CHAT_COMPARATOR;
 
 public class ProgramOrLabRequester implements Runnable, LabTabConstants {
@@ -33,7 +36,11 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
     @Override
     public void run() {
         int statusCode = 0;
-        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
+
+
+       LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getDateOfCurrentWeek(1), getDateOfCurrentWeek(7));
+      //  LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
+
         try {
             if (programsOrLabs != null) {
                 statusCode = programsOrLabs.getResponseCode();
@@ -85,5 +92,25 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
             }
         }
 
+
+    }
+
+    /**
+     *  Descrption :
+     * @param a
+     * @return
+     */
+
+    private String getDateOfCurrentWeek(int a) {
+
+        Calendar c1 = Calendar.getInstance();
+
+        //first day of week
+        c1.set(Calendar.DAY_OF_WEEK, a);
+
+        int year1 = c1.get(Calendar.YEAR);
+        int month1 = c1.get(Calendar.MONTH) + 1;
+        int day1 = c1.get(Calendar.DAY_OF_MONTH);
+        return year1 + "-" + String.format("%02d", month1) + "-" + String.format("%02d", day1);
     }
 }
