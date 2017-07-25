@@ -1,4 +1,28 @@
 ---------------------------------------------------------------------
+Release 1.5.4 - 2017/07/4
+---------------------------------------------------------------------
+NEW FEATURES:
+* Couple small bugs fixed
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+* Programs without session defined do not cause neverending loading sequence at lab list
+* Corrected legend icons misalignment in Lab detail view
+
+KNOWN ISSUES:
+* Video uploading for videos longer than 5 minutes still to be checked, since in some
+  devices seems to be still happening
+* Need to add a proper way to show legend info instead of current one, maybe a question mark
+  icon
+* API statistics returned still not fine, need to check intrumentals
+
+---------------------------------------------------------------------
 Release 1.5.3 - 2017/06/25
 ---------------------------------------------------------------------
 NEW FEATURES:
