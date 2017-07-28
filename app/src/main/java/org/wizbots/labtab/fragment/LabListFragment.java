@@ -367,9 +367,14 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 break;
             case R.id.btn_tomorrow:
                 Log.d(TAG, "TOMORROW BUTTON CLICKED");
-                filterMap.clear();
-                filterMap.putAll(getTomorrowDate());
-                callFilterApi();
+                progressDialog.show();
+                spinnerLocation.setSelection(0);
+                spinnerYear.setSelection(0);
+                spinnerSeason.setSelection(0);
+                programOrLabRequester = new ProgramOrLabRequester();
+                BackgroundExecutor.getInstance().execute(programOrLabRequester);
+
+
                 break;
             case R.id.iv_cancel:
                 progressDialog.show();
