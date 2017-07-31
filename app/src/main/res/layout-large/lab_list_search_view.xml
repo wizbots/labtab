@@ -134,7 +134,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:paddingRight="5dp"
+        >
 
         <ImageView
             android:id="@+id/calendar"

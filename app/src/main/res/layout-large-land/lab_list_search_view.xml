@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="100dp"
@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
+        android:layout_weight="0.10"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/extra_extra_small_padding">
@@ -26,7 +27,7 @@
 
         <FrameLayout
             android:id="@+id/spinner_location_frame"
-            android:layout_width="180dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/extra_extra_small_margin"
             android:background="@color/white">
@@ -53,7 +54,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/location_container"
+        android:layout_weight="0.10"
         android:gravity="center"
+
         android:orientation="vertical"
         android:padding="@dimen/extra_extra_small_padding">
 
@@ -66,7 +69,7 @@
 
         <FrameLayout
             android:id="@+id/spinner_year_frame"
-            android:layout_width="180dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/extra_extra_small_margin"
             android:background="@color/white">
@@ -94,7 +97,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/year_container"
+        android:layout_weight="0.10"
         android:gravity="center"
+
         android:orientation="vertical"
         android:padding="@dimen/extra_extra_small_padding">
 
@@ -108,7 +113,7 @@
 
         <FrameLayout
             android:id="@+id/spinner_season_frame"
-            android:layout_width="180dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/extra_extra_small_margin"
             android:background="@color/white">
@@ -131,17 +136,15 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/days_container"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/seasion_container"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="30dp"
-        android:layout_toRightOf="@+id/seasion_container"
-        android:gravity="center"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="3dp"
+        android:gravity="bottom"
+
+        >
 
         <ImageView
             android:id="@+id/calendar"
@@ -182,7 +185,7 @@
             android:textSize="@dimen/text_size_extra_extra_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <!--    <LinearLayout
             android:layout_width="100dp"
@@ -230,7 +233,8 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/days_container"
         android:layout_alignParentRight="true"
-        android:gravity="center"
+        android:gravity="bottom"
+
         android:orientation="horizontal">
 
         <ImageView
@@ -252,4 +256,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
