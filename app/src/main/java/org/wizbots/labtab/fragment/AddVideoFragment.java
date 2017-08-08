@@ -510,9 +510,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         StringBuilder fileName = new StringBuilder();
         fileName.append(s).append(".").append(s1).append(".");
         for (Student student : creatorsSelected) {
-            fileName.append(student.getName().trim());
+            fileName.append(student.getName().trim()).append(".");
         }
-        fileName.append(".").append(Calendar.getInstance().getTimeInMillis());
+        fileName.deleteCharAt(fileName.length()-1);
+        //fileName.append(".").append(Calendar.getInstance().getTimeInMillis());
         return fileName.toString().replaceAll("\\s+", "");
     }
 

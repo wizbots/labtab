@@ -100,14 +100,14 @@ public interface LabTabApiInterface {
                                               @Query("title") String title, @Query("notes") String notes,
                                               @Part MultipartBody.Part file,
                                               @Query("components") String[] components,
-                                              @Query("creators") String creators);
+                                              @Query("creators") String[] creators);
 
     //   12. Edit A Project
     @PUT("projects/{project_id}")
     Call<EditProjectResponse> editProject(@Header("Auth-Token") String authToken, @Path("project_id") String project_id, @Query("category") String category, @Query("description") String description,
                                           @Query("title") String title, @Query("notes") String notes,
                                           @Query("components") String[] components,
-                                          @Query("creators") String creators);
+                                          @Query("creators") String[] creators);
 
     //    13. Add wizchips
     @POST("students/wizchips/add")

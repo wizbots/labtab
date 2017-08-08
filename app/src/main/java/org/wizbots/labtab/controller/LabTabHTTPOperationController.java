@@ -86,7 +86,7 @@ public class LabTabHTTPOperationController {
     }
 
     public static LabTabResponse createProject(String category, String sku, String description, String title, String notes,
-                                               MultipartBody.Part file, String[] components, String creators) {
+                                               MultipartBody.Part file, String[] components, String[] creators) {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
         return ConnectionUtil.execute(labTabApiInterface.createProject
                 (
@@ -103,7 +103,7 @@ public class LabTabHTTPOperationController {
     }
 
     public static LabTabResponse editProject(String projectId, String category, String sku, String description, String title, String notes,
-                                             String[] components, String creators) {
+                                             String[] components, String[] creators) {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
         return ConnectionUtil.execute(labTabApiInterface.editProject
                 (

@@ -59,19 +59,19 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
         }
     }
 
-    private String getProjectCreators(ArrayList<Student> studentArrayList) {
-      /*  String[] students = new String[studentArrayList.size()];
+    private String[] getProjectCreators(ArrayList<Student> studentArrayList) {
+        String[] students = new String[studentArrayList.size()];
         for (int i = 0; i < studentArrayList.size(); i++) {
             students[i] = studentArrayList.get(i).getStudent_id();
         }
-        return students;*/
-        String creators = "";
+        return students;
+       /* String creators = "";
         for (Student student : studentArrayList) {
             creators = creators + student.getStudent_id() + ".";
         }
         int len = creators.length();
-        creators = creators.substring(0, len - 1);
-        return creators;
+        creators = creators.substring(0, len - 1);*/
+       // return creators;
     }
 
     private String[] getKnowledgeNuggets(ArrayList<String> knowledgeNuggets) {
