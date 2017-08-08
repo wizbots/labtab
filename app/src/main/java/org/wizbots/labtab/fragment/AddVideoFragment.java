@@ -101,6 +101,7 @@ import java.util.TreeSet;
 
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
+import static android.R.attr.borderlessButtonStyle;
 import static android.R.attr.orientation;
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -510,11 +511,20 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         StringBuilder fileName = new StringBuilder();
         fileName.append(s).append(".").append(s1).append(".");
         for (Student student : creatorsSelected) {
-            fileName.append(student.getName().trim()).append(".");
+            fileName.append(getCustomName(student.getName()).trim()).append(".");
         }
-        fileName.deleteCharAt(fileName.length()-1);
+        fileName.deleteCharAt(fileName.length() - 1);
         //fileName.append(".").append(Calendar.getInstance().getTimeInMillis());
         return fileName.toString().replaceAll("\\s+", "");
+    }
+
+    private String getCustomName(String name) {
+        String[] fullname = name.split(" ");
+        if (fullname.length > 1) {
+            return fullname[0] + fullname[1].substring(0, 5);
+        }
+        return fullname[0];
+
     }
 
     private Uri renameFile(Uri uri, String newFileName) {
