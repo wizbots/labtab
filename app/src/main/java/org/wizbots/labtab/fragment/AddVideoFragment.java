@@ -521,7 +521,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private String getCustomName(String name) {
         String[] fullname = name.split(" ");
         if (fullname.length > 1) {
-            return fullname[0] + fullname[1].substring(0, 5);
+            if (fullname[1].length() > 5) {
+                return fullname[0] + fullname[1].substring(0, 5);
+            }
+            return fullname[0] + fullname[1];
         }
         return fullname[0];
 
