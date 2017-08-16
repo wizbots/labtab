@@ -392,7 +392,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapWords"
+
                         android:padding="@dimen/extra_extra_small_padding"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
