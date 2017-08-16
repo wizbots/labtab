@@ -415,15 +415,26 @@
                     android:layout_marginTop="@dimen/extra_extra_small_margin"
                     android:background="@drawable/rounded_layout_blue"
                     android:orientation="horizontal"
-                    android:padding="@dimen/extra_small_padding">
+                    android:padding="@dimen/extra_extra_small_margin">
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/white"
+                        android:textSize="36sp"
+                        app:font="@string/font_pt_sans_narrow_bold" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/component"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="@dimen/extra_extra_small_margin"
                         android:layout_weight="2"
                         android:gravity="center|end"
+                        android:paddingBottom="5dp"
                         android:text="@string/knowledge_nuggets"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_extra_extra_small"
@@ -434,12 +445,16 @@
                         android:id="@+id/edt_knowledge_nuggets"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
+
                         android:background="@drawable/rounded_layout_white"
                         android:padding="@dimen/extra_extra_small_padding"
+                        android:paddingBottom="5dp"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
