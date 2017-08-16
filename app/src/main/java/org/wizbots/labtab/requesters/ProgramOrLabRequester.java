@@ -38,8 +38,8 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
         int statusCode = 0;
 
 
-        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getDateOfCurrentWeek(1), getDateOfCurrentWeek(7));
-        // LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
+        //LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getDateOfCurrentWeek(1), getDateOfCurrentWeek(7));
+        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
 
         try {
             if (programsOrLabs != null) {

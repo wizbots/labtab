@@ -51,6 +51,12 @@ public class LabTabApplication extends Application {
     protected int countCompletedProjects;
     protected int countSkippedProjects;
     protected int countPendingProjects;
+    private String location = null;
+    private String year = null;
+    private String season = null;
+    private int locationPos = 0;
+    private int yearPos = 0;
+    private int seasonPos = 0;
 
 
     public LabTabApplication() {
@@ -105,6 +111,45 @@ public class LabTabApplication extends Application {
             }
         }
         clienttables.recycle();
+    }
+
+    public void setLocation(String location, int locationPos) {
+        this.location = location;
+        this.locationPos = locationPos;
+    }
+
+    public void setYear(String year, int yearPos) {
+        this.year = year;
+        this.yearPos = yearPos;
+    }
+
+    public void setSeason(String season, int seasonPos) {
+        this.season = season;
+        this.seasonPos = seasonPos;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public int getLocationPos() {
+        return locationPos;
+    }
+
+    public int getYearPos() {
+        return yearPos;
+    }
+
+    public int getSeasonPos() {
+        return seasonPos;
     }
 
     public void addManager(Object manager) {

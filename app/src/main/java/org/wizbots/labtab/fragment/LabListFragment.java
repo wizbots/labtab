@@ -72,6 +72,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private Map<String, String> filterMap;
     private Date dateSelected;
 
+
     public LabListFragment() {
 
     }
@@ -131,6 +132,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
         progressDialog.setMessage("processing");
         progressDialog.setCanceledOnTouchOutside(false);
+
         if (!programOrLabArrayList.isEmpty()) {
             progressDialog.show();
             programOrLabFetchedSuccessfully(programOrLabArrayList);
@@ -141,6 +143,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 BackgroundExecutor.getInstance().execute(programOrLabRequester);
             }
         }
+
+        callCachedFilerAPI();
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
@@ -170,7 +174,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         rootView.findViewById(R.id.btn_tomorrow).setOnClickListener(this);
         rootView.findViewById(R.id.calendar).setOnClickListener(this);
         initAdapterListener();
-        resetFilter();
+        //resetFilter();
     }
 
     private void showCalendar() {
@@ -211,9 +215,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 removeTodayTomorrowFilterKey();
                 if (position == 0) {
                     filterMap.remove(FilterRequestParameter.LOCATION_ID);
+
                 } else {
                     filterMap.put(FilterRequestParameter.LOCATION_ID, location.getId());
+
                 }
+                LabTabApplication.getInstance().setLocation(location.getId(), position);
+
             }
 
             @Override
@@ -229,9 +237,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 removeTodayTomorrowFilterKey();
                 if (position == 0) {
                     filterMap.remove(FilterRequestParameter.SEASON);
+
                 } else {
                     filterMap.put(FilterRequestParameter.SEASON, season != null ? season.toLowerCase() : "");
+
                 }
+                LabTabApplication.getInstance().setSeason(season.toLowerCase(), position);
+
             }
 
             @Override
@@ -247,9 +259,12 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 removeTodayTomorrowFilterKey();
                 if (position == 0) {
                     filterMap.remove(FilterRequestParameter.SEASON_YEAR);
+
                 } else {
                     filterMap.put(FilterRequestParameter.SEASON_YEAR, year);
                 }
+                LabTabApplication.getInstance().setYear(year, position);
+
             }
 
             @Override
@@ -275,6 +290,29 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(GetProgramOrLabListener.class, this);
         LabTabApplication.getInstance().addUIListener(OnFilterListener.class, this);
+    }
+
+    private void callCachedFilerAPI() {
+        boolean isAPICalleligible = false;
+        filterMap.clear();
+        if (LabTabApplication.getInstance().getYear() != null && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("") && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("All Years")) {
+            isAPICalleligible = true;
+            filterMap.put(FilterRequestParameter.SEASON_YEAR, LabTabApplication.getInstance().getYear());
+
+
+        } else if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
+            isAPICalleligible = true;
+            filterMap.put(FilterRequestParameter.LOCATION_ID, LabTabApplication.getInstance().getLocation());
+
+        } else if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
+            isAPICalleligible = true;
+            filterMap.put(FilterRequestParameter.SEASON, LabTabApplication.getInstance().getSeason());
+
+
+        }
+        if (isAPICalleligible) {
+            callFilterApi();
+        }
     }
 
     @Override
@@ -414,6 +452,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 objectArrayList.clear();
                 objectArrayList.addAll(programOrLabs);
                 labListAdapter.notifyDataSetChanged();
+
+                setLocYrSeasonView();
                 progressDialog.dismiss();
             }
         });
@@ -429,6 +469,25 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.FAILED_TO_FETCH_FILTER);
             }
         });
+    }
+
+    private void setLocYrSeasonView() {
+        if (LabTabApplication.getInstance().getYear() != null) {
+            spinnerYear.setSelection(LabTabApplication.getInstance().getYearPos());
+
+
+        }
+        if (LabTabApplication.getInstance().getLocation() != null) {
+            spinnerLocation.setSelection(LabTabApplication.getInstance().getLocationPos());
+
+
+        }
+        if (LabTabApplication.getInstance().getSeason() != null) {
+            spinnerSeason.setSelection(LabTabApplication.getInstance().getSeasonPos());
+
+
+        }
+
     }
 
     private Map<String, String> getDateByCalendar(Date date) {
