@@ -115,11 +115,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             filterMap.put(FilterRequestParameter.SEASON_YEAR, LabTabApplication.getInstance().getYear());
 
 
-        } else if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
+        }
+        if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
             isAPICalleligible = true;
             filterMap.put(FilterRequestParameter.LOCATION_ID, LabTabApplication.getInstance().getLocation());
 
-        } else if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
+        }
+        if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
             isAPICalleligible = true;
             filterMap.put(FilterRequestParameter.SEASON, LabTabApplication.getInstance().getSeason());
 
@@ -366,11 +368,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 filterMap.put(FilterRequestParameter.SEASON_YEAR, LabTabApplication.getInstance().getYear());
 
 
-            } else if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
+            }
+            if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
                 isAPICalleligible = true;
                 filterMap.put(FilterRequestParameter.LOCATION_ID, LabTabApplication.getInstance().getLocation());
 
-            } else if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
+            }
+            if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
                 isAPICalleligible = true;
                 filterMap.put(FilterRequestParameter.SEASON, LabTabApplication.getInstance().getSeason());
 
