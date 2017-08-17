@@ -1,4 +1,56 @@
 ---------------------------------------------------------------------
+Release 1.6.2 - 2017/07/12
+---------------------------------------------------------------------
+NEW FEATURES:
+* Mostly bug fixing, specially with uploading of videos
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* Fixed a bug with naming of project files that was breaking the transcoding of videos
+* Made column legend closer to column in portrait mode for students list in a lab detail view
+
+
+KNOWN ISSUES:
+* None
+
+---------------------------------------------------------------------
+Release 1.6.0 - 2017/07/28
+---------------------------------------------------------------------
+NEW FEATURES:
+* Several bugs fixed
+* By default now mentors are shown current week programs they're in charge
+* Description is not mandatory now when making a video
+* Swapped project creators for knowledge nuggets in project creation view
+* Removed calendar button from lab list search view, was misleading and not useful
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+* Show current week programs by default when going to Lab List
+* Make description not mandatory, add some way to hide keyboard
+* Change order of project creators and knowledge nuggets in video creation view
+* LabTab creator frame over-expanded
+
+KNOWN ISSUES:
+* Need to check if delete video is properly working in all cases
+* Change legens in lab detail view in portrait mode so they are aligned with columns
+* Need to properly place search and cancel buttons in lab list view when in landscape mode
+
+
+
+---------------------------------------------------------------------
 Release 1.5.4 - 2017/07/4
 ---------------------------------------------------------------------
 NEW FEATURES:
