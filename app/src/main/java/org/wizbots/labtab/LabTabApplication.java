@@ -57,7 +57,9 @@ public class LabTabApplication extends Application {
     private int locationPos = 0;
     private int yearPos = 0;
     private int seasonPos = 0;
-
+    private boolean isSeasonEnable = false;
+    private boolean isLocationEnable = false;
+    private boolean isYearEnable = false;
 
     public LabTabApplication() {
         _instance = this;
@@ -150,6 +152,30 @@ public class LabTabApplication extends Application {
 
     public int getSeasonPos() {
         return seasonPos;
+    }
+
+    public boolean isSeasonEnable() {
+        return isSeasonEnable;
+    }
+
+    public void setSeasonEnable(boolean seasonEnable) {
+        isSeasonEnable = seasonEnable;
+    }
+
+    public boolean isLocationEnable() {
+        return isLocationEnable;
+    }
+
+    public void setLocationEnable(boolean locationEnable) {
+        isLocationEnable = locationEnable;
+    }
+
+    public boolean isYearEnable() {
+        return isYearEnable;
+    }
+
+    public void setYearEnable(boolean yearEnable) {
+        isYearEnable = yearEnable;
     }
 
     public void addManager(Object manager) {

@@ -71,6 +71,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private Spinner spinnerLocation, spinnerYear, spinnerSeason;
     private Map<String, String> filterMap;
     private Date dateSelected;
+    private boolean isFilter;
+    private String locationSearch;
+    private int locationPos;
+    private String yearSearch;
+    private int yearPos;
+    private String seasonSearch;
+    private int seasonPos;
 
 
     public LabListFragment() {
@@ -98,7 +105,50 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        filterMap.clear();
+        boolean isAPICalleligible = false;
+        if (LabTabApplication.getInstance().getYear() != null && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("") && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("All Years")) {
+            isAPICalleligible = true;
+            filterMap.put(FilterRequestParameter.SEASON_YEAR, LabTabApplication.getInstance().getYear());
+
+
+        } else if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
+            isAPICalleligible = true;
+            filterMap.put(FilterRequestParameter.LOCATION_ID, LabTabApplication.getInstance().getLocation());
+
+        } else if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
+            isAPICalleligible = true;
+            filterMap.put(FilterRequestParameter.SEASON, LabTabApplication.getInstance().getSeason());
+
+
+        }
+        if (isAPICalleligible) {
+            callFilterApi();
+        } else {
+            ArrayList<ProgramOrLab> programOrLabArrayList
+                    = ProgramsOrLabsTable
+                    .getInstance()
+                    .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
+            if (!programOrLabArrayList.isEmpty()) {
+                progressDialog.show();
+                programOrLabFetchedSuccessfully(programOrLabArrayList);
+            }
+        }
+        setLocYrSeasonView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //  outState.putInt("curChoice", mCurCheckPosition);
+    }
+
     public void initView() {
+        //isFilter = true;
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         spinnerLocation = (Spinner) rootView.findViewById(R.id.spinner_location);
         spinnerYear = (Spinner) rootView.findViewById(R.id.spinner_year);
@@ -134,8 +184,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         progressDialog.setCanceledOnTouchOutside(false);
 
         if (!programOrLabArrayList.isEmpty()) {
-            progressDialog.show();
-            programOrLabFetchedSuccessfully(programOrLabArrayList);
+          /*  progressDialog.show();
+            programOrLabFetchedSuccessfully(programOrLabArrayList);*/
         } else {
             if (programOrLabRequester == null) {
                 progressDialog.show();
@@ -211,8 +261,12 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         spinnerLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
                 LocationResponse location = (LocationResponse) adapterView.getItemAtPosition(position);
                 removeTodayTomorrowFilterKey();
+                isFilter = false;
+
+//                disableLocationYearsSeason();
                 if (position == 0) {
                     filterMap.remove(FilterRequestParameter.LOCATION_ID);
 
@@ -220,7 +274,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                     filterMap.put(FilterRequestParameter.LOCATION_ID, location.getId());
 
                 }
-                LabTabApplication.getInstance().setLocation(location.getId(), position);
+                locationSearch = location.getId();
+                locationPos = position;
+                //LabTabApplication.getInstance().setLocation(location.getId(), position);
 
             }
 
@@ -233,7 +289,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         spinnerSeason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+//                disableLocationYearsSeason();
                 String season = (String) adapterView.getItemAtPosition(position);
+                isFilter = false;
+
                 removeTodayTomorrowFilterKey();
                 if (position == 0) {
                     filterMap.remove(FilterRequestParameter.SEASON);
@@ -242,7 +301,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                     filterMap.put(FilterRequestParameter.SEASON, season != null ? season.toLowerCase() : "");
 
                 }
-                LabTabApplication.getInstance().setSeason(season.toLowerCase(), position);
+                seasonSearch = season != null ? season.toLowerCase() : "";
+                seasonPos = position;
+                //LabTabApplication.getInstance().setSeason(season.toLowerCase(), position);
 
             }
 
@@ -257,13 +318,17 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String year = (String) adapterView.getItemAtPosition(position);
                 removeTodayTomorrowFilterKey();
+                isFilter = false;
+                //disableLocationYearsSeason();
                 if (position == 0) {
                     filterMap.remove(FilterRequestParameter.SEASON_YEAR);
 
                 } else {
                     filterMap.put(FilterRequestParameter.SEASON_YEAR, year);
                 }
-                LabTabApplication.getInstance().setYear(year, position);
+                yearSearch = year;
+                yearPos = position;
+                //LabTabApplication.getInstance().setYear(year, position);
 
             }
 
@@ -294,26 +359,31 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
     private void callCachedFilerAPI() {
         boolean isAPICalleligible = false;
-        filterMap.clear();
-        if (LabTabApplication.getInstance().getYear() != null && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("") && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("All Years")) {
-            isAPICalleligible = true;
-            filterMap.put(FilterRequestParameter.SEASON_YEAR, LabTabApplication.getInstance().getYear());
+        if (isFilter) {
+            filterMap.clear();
+            if (LabTabApplication.getInstance().getYear() != null && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("") && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("All Years")) {
+                isAPICalleligible = true;
+                filterMap.put(FilterRequestParameter.SEASON_YEAR, LabTabApplication.getInstance().getYear());
 
 
-        } else if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
-            isAPICalleligible = true;
-            filterMap.put(FilterRequestParameter.LOCATION_ID, LabTabApplication.getInstance().getLocation());
+            } else if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
+                isAPICalleligible = true;
+                filterMap.put(FilterRequestParameter.LOCATION_ID, LabTabApplication.getInstance().getLocation());
 
-        } else if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
-            isAPICalleligible = true;
-            filterMap.put(FilterRequestParameter.SEASON, LabTabApplication.getInstance().getSeason());
+            } else if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
+                isAPICalleligible = true;
+                filterMap.put(FilterRequestParameter.SEASON, LabTabApplication.getInstance().getSeason());
 
 
-        }
-        if (isAPICalleligible) {
-            callFilterApi();
+            }
+            if (isAPICalleligible) {
+                callFilterApi();
+            }
+        } else {
+
         }
     }
+
 
     @Override
     public void onActionViewClick(ProgramOrLab programOrLab) {
@@ -348,6 +418,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 } else {
                     objectArrayList.clear();
                     objectArrayList.addAll(programOrLabs);
+                    recyclerViewLabList.setAdapter(labListAdapter);
+
                     labListAdapter.notifyDataSetChanged();
                     progressDialog.dismiss();
                 }
@@ -360,6 +432,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         objectArrayList.addAll(ProgramsOrLabsTable
                 .getInstance()
                 .getProgramsByMemberId(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id()));
+        recyclerViewLabList.setAdapter(labListAdapter);
+
         labListAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
     }
@@ -379,6 +453,13 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         }
     }
 
+    private void setValues() {
+        LabTabApplication.getInstance().setSeason(seasonSearch, seasonPos);
+        LabTabApplication.getInstance().setYear(yearSearch, yearPos);
+        LabTabApplication.getInstance().setLocation(locationSearch, locationPos);
+
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -392,6 +473,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 spinnerSeason.performClick();
                 break;
             case R.id.iv_search:
+                isFilter = true;
+                setValues();
                 callFilterApi();
                 break;
             case R.id.calendar:
@@ -419,6 +502,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 spinnerLocation.setSelection(0);
                 spinnerYear.setSelection(0);
                 spinnerSeason.setSelection(0);
+                LabTabApplication.getInstance().setSeason(null, 0);
+                LabTabApplication.getInstance().setYear(null, 0);
+                LabTabApplication.getInstance().setLocation(null, 0);
+
                /* filterMap.clear();
                 filterMap.put(FilterRequestParameter.SEASON_YEAR, String.valueOf(spinnerYear.getAdapter().getItem(0)));
                 filterMap.put(FilterRequestParameter.SEASON, String.valueOf(spinnerSeason.getAdapter().getItem(0)));
@@ -438,11 +525,26 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         spinnerSeason.setSelection(0);
     }
 
+   /* private void enableLocationYearsSeason() {
+        LabTabApplication.getInstance().setLocationEnable(true);
+        LabTabApplication.getInstance().setYearEnable(true);
+        LabTabApplication.getInstance().setSeasonEnable(true);
+
+    }
+
+    private void disableLocationYearsSeason() {
+        LabTabApplication.getInstance().setLocationEnable(false);
+        LabTabApplication.getInstance().setYearEnable(false);
+        LabTabApplication.getInstance().setSeasonEnable(false);
+
+    }*/
+
     @Override
     public void onFilterSuccess(final ArrayList<ProgramOrLab> programOrLabs) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                //  enableLocationYearsSeason();
                 if (!LabTabApplication.getInstance().isNetworkAvailable() && (programOrLabs == null || programOrLabs.isEmpty())) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
                 } else if (programOrLabs != null && programOrLabs.isEmpty()) {
@@ -451,8 +553,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 removeTodayTomorrowFilterKey();
                 objectArrayList.clear();
                 objectArrayList.addAll(programOrLabs);
-                labListAdapter.notifyDataSetChanged();
+                recyclerViewLabList.setAdapter(labListAdapter);
 
+                labListAdapter.notifyDataSetChanged();
                 setLocYrSeasonView();
                 progressDialog.dismiss();
             }
@@ -464,6 +567,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
+                // disableLocationYearsSeason();
+                isFilter = false;
                 removeTodayTomorrowFilterKey();
                 progressDialog.dismiss();
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.FAILED_TO_FETCH_FILTER);
