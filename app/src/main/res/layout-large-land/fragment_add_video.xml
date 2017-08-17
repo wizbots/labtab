@@ -402,7 +402,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionNext"
                         android:inputType="textCapWords"
 
                         android:padding="@dimen/extra_extra_small_padding"

@@ -312,8 +312,7 @@
                             android:id="@+id/recycler_view_horizontal_project_creators"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:scrollbars="vertical"
-                          />
+                            android:scrollbars="vertical" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -402,7 +401,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionNext"
                         android:inputType="textCapWords"
 
                         android:padding="@dimen/extra_extra_small_padding"
@@ -432,12 +431,12 @@
                         android:id="@+id/component"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="@dimen/extra_extra_small_margin"
                         android:layout_weight="2"
-                        android:layout_gravity="center_vertical"
                         android:gravity="center|end"
-                        android:text="@string/knowledge_nuggets"
                         android:paddingBottom="5dp"
+                        android:text="@string/knowledge_nuggets"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_extra_extra_small"
 
@@ -447,12 +446,12 @@
                         android:id="@+id/edt_knowledge_nuggets"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
 
-                        android:paddingBottom="5dp"
                         android:background="@drawable/rounded_layout_white"
                         android:padding="@dimen/extra_extra_small_padding"
+                        android:paddingBottom="5dp"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
                 </LinearLayout>
@@ -484,7 +483,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
-                        android:imeOptions="actionDone"
+
+
                         android:padding="@dimen/extra_extra_small_padding"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
