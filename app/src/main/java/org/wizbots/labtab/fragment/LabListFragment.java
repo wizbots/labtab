@@ -651,4 +651,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         List list = Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year));
         return list.indexOf(String.valueOf(year));
     }
+
+
+
+
+
+
 }

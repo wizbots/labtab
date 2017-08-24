@@ -254,6 +254,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -290,6 +291,7 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
+                                android:inputType="textCapWords"
                                 android:maxLines="1"
                                 android:padding="@dimen/extra_extra_small_padding"
                                 android:textSize="@dimen/text_size_extra_extra_small" />
@@ -393,10 +395,12 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
                         android:padding="@dimen/extra_extra_small_padding"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_knowledge_nuggets"
                     android:layout_width="match_parent"
@@ -490,8 +494,8 @@
                             android:id="@+id/btn_delete"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_layout_blue"
                             android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:background="@drawable/rounded_layout_blue"
                             android:paddingLeft="@dimen/large_padding"
                             android:paddingRight="@dimen/large_padding"
                             android:text="@string/delete"

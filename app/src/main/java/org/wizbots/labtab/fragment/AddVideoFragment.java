@@ -43,6 +43,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -105,6 +107,7 @@ import java.util.TreeSet;
 import life.knowledge4.videotrimmer.utils.FileUtils;
 
 import static android.R.attr.borderlessButtonStyle;
+import static android.R.attr.breadCrumbShortTitle;
 import static android.R.attr.orientation;
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -159,6 +162,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private String level, knowledgeNuggetsSelected = "";
     // variable to track event time
     private long mLastClickTime = 0;
+    private int check = 0;
 //    private ArrayList<String> selectedNuggest = new ArrayList<>();
 
     public AddVideoFragment() {
@@ -182,6 +186,19 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         prepareStudentCategoryList();
         ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, categoryArrayList);
         categorySpinner.setAdapter(spinnerArrayAdapter);
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (++check > 1) {
+                    next(2);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         addProjectCreatorEditTextListeners();
         ArrayList<Student> objects = (ArrayList<Student>) getArguments().getSerializable(LabDetailsFragment.SELECTED_STUDENTS);
         if (savedInstanceState == null && objects != null && !objects.isEmpty()) {
@@ -244,6 +261,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         closeImageView = (ImageView) rootView.findViewById(R.id.iv_close);
         closeLinearLayout = (LinearLayout) rootView.findViewById(R.id.ll_close);
         titleEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_title);
+
+
         knowledgeNuggetsEditTextCustom = (TextViewCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
         descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
 
@@ -305,6 +324,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
         //rootView.findViewById(R.id.ll_lab_sku).setOnClickListener(this);
+        registerNextEvent();
     }
 
     public void prepareStudentCategoryList() {
@@ -556,6 +576,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     recyclerViewProjectCreator.setVisibility(View.GONE);
                     projectCreatorEditTextCustom.clearFocus();
                     LabTabUtil.hideSoftKeyboard(homeActivityContext);
+
                 } else {
                     boolean found = false;
 
@@ -573,8 +594,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                         recyclerViewProjectCreator.setVisibility(View.GONE);
                         projectCreatorEditTextCustom.clearFocus();
                         LabTabUtil.hideSoftKeyboard(homeActivityContext);
+
                     } else {
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "This student is already in the list");
+                        //next(3);
                     }
                 }
                 initKnowledgeNuggets(null);
@@ -1197,6 +1220,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 knowledgeNuggets = knowledgeNuggetExpand.getSelectedNuggest();
                 knowledgeNuggetsSelected = knowledgeNuggets.toString();
                 if (knowledgeNuggetsSelected.length() > 2) {
+                    next(5);
                     knowledgeNuggetsEditTextCustom.setText(knowledgeNuggets.toString());
                 } else {
                     knowledgeNuggetsEditTextCustom.setText("");
@@ -1237,4 +1261,111 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         });
     }
 
+    private void disableKeyboard(final EditTextCustom e) {
+        e.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int inType = e.getInputType(); // backup the input type
+                e.setInputType(InputType.TYPE_NULL); // disable soft input
+                e.onTouchEvent(event); // call native handler
+                e.setInputType(inType); // restore input type
+                return true; // consume touch even
+            }
+        });
+    }
+
+
+    public void myOnKeyDown(int keycode) {
+        if (keycode == 261) {
+
+        }
+
+    }
+
+    public void next(int pos) {
+        switch (pos) {
+            case 1:
+                showKeyboard();
+
+                categorySpinner.performClick();
+
+
+                break;
+            case 2:
+                // projectCreatorEditTextCustom.performClick();
+//                showKeyboard();
+                projectCreatorEditTextCustom.requestFocus();
+                break;
+            case 3:
+                descriptionEditTextCustom.requestFocus();
+                break;
+
+            case 4:
+                showKeyboard();
+                knowledgeNuggetsEditTextCustom.performClick();
+                break;
+            case 5:
+                showKeyboard();
+                notesToTheFamilyEditTextCustom.requestFocus();
+                break;
+
+
+        }
+    }
+
+
+    public void registerNextEvent() {
+        titleEditTextCustom.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    hideKeyboard();
+                    next(1);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        projectCreatorEditTextCustom.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    hideKeyboard();
+                    next(3);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        descriptionEditTextCustom.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    hideKeyboard();
+                    next(4);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+    }
+
+
+    public void showKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+        }
+
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+    }
 }

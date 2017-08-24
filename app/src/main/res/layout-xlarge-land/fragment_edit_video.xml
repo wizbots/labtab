@@ -89,6 +89,7 @@
                             android:scaleType="fitXY" />
 
                     </FrameLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,6 +114,7 @@
                             android:text="@string/title"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
+
                             app:font="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
@@ -139,7 +141,7 @@
                             android:inputType="textNoSuggestions"
                             android:padding="@dimen/extra_extra_small_padding"
                             android:text="@string/lab_tab_video"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/text_size_extra_extra_small" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -289,6 +291,7 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
+                                android:inputType="textCapWords"
                                 android:maxLines="1"
                                 android:padding="@dimen/extra_extra_small_padding"
                                 android:textSize="@dimen/text_size_extra_extra_small" />
@@ -308,8 +311,7 @@
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/recycler_view_horizontal_project_creators"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:scrollbars="vertical" />
+                                android:layout_height="wrap_content" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -343,7 +345,7 @@
                             android:paddingBottom="@dimen/extra_extra_small_padding"
                             android:paddingLeft="@dimen/extra_extra_small_padding"
                             android:paddingRight="@dimen/extra_small_padding"
-                            android:paddingTop="@dimen/extra_extra_small_padding">
+                            android:paddingTop="@dimen/extra_small_padding">
 
                             <LinearLayout
                                 android:id="@+id/recycler_view_container"
@@ -393,6 +395,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
                         android:padding="@dimen/extra_extra_small_padding"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
@@ -425,10 +428,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
+                        android:imeOptions="actionNext"
                         android:padding="@dimen/extra_extra_small_padding"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -456,7 +461,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionDone"
-                        android:padding="@dimen/extra_extra_small_padding"
+                        android:padding="@dimen/extra_small_padding"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
                 </LinearLayout>
