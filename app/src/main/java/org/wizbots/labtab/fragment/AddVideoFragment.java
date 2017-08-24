@@ -267,6 +267,17 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
 
         notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
+        notesToTheFamilyEditTextCustom.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    rootView.findViewById(R.id.btn_create).callOnClick();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
         createButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_create);
         cancelButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_cancel);
 

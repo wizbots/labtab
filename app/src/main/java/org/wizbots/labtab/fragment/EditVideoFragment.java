@@ -252,6 +252,18 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         knowledgeNuggetsEditTextCustom = (TextViewCustom) rootView.findViewById(R.id.edt_knowledge_nuggets);
         descriptionEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_description);
         notesToTheFamilyEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_notes_to_the_family);
+
+        notesToTheFamilyEditTextCustom.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    rootView.findViewById(R.id.btn_save).callOnClick();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
         saveButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_save);
         cancelButtonCustom = (ButtonCustom) rootView.findViewById(R.id.btn_cancel);
 
