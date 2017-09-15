@@ -17,6 +17,7 @@ import org.wizbots.labtab.util.LabTabUtil;
 
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -38,7 +39,8 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
         int statusCode = 0;
 
 
-        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getDateOfCurrentWeek(1), getDateOfCurrentWeek(7));
+        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getCurrentYear(),getCurrentDate());
+//        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getDateOfCurrentWeek(1), getDateOfCurrentWeek(7));
        // LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
 
         try {
@@ -114,4 +116,18 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
         int day1 = c1.get(Calendar.DAY_OF_MONTH);
         return year1 + "-" + String.format("%02d", month1) + "-" + String.format("%02d", day1);
     }
+
+    private String getCurrentDate() {
+        Date myDate = new Date();
+        return new SimpleDateFormat("yyyy-MM-dd").format(myDate);
+    }
+
+    private String getCurrentYear() {
+
+        Calendar c1 = Calendar.getInstance();
+        int year1 = c1.get(Calendar.YEAR);
+        return year1 + "-01-01" ;
+    }
+
+
 }
