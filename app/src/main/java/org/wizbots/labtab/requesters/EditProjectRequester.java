@@ -65,6 +65,13 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
             students[i] = studentArrayList.get(i).getStudent_id();
         }
         return students;
+       /* String creators = "";
+        for (Student student : studentArrayList) {
+            creators = creators + student.getStudent_id() + ".";
+        }
+        int len = creators.length();
+        creators = creators.substring(0, len - 1);*/
+       // return creators;
     }
 
     private String[] getKnowledgeNuggets(ArrayList<String> knowledgeNuggets) {
@@ -137,15 +144,15 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
             fileName.append(student.getName().trim());
         }
         fileName.append(".").append(Calendar.getInstance().getTimeInMillis());
-        return fileName.toString().replaceAll("\\s+","");
+        return fileName.toString().replaceAll("\\s+", "");
     }
 
-    private Uri renameFile(String uri, String newFileName){
-        File oldfile =new File(uri);
-        File newfile =new File(oldfile.getParent() + "/" + newFileName + ".mp4");
+    private Uri renameFile(String uri, String newFileName) {
+        File oldfile = new File(uri);
+        File newfile = new File(oldfile.getParent() + "/" + newFileName + ".mp4");
 
-        if(oldfile.renameTo(newfile)){
-        }else{
+        if (oldfile.renameTo(newfile)) {
+        } else {
         }
         return Uri.fromFile(newfile);
     }

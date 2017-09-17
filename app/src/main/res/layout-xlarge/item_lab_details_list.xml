@@ -107,7 +107,7 @@
 
     <LinearLayout
         android:id="@+id/lab_time_container"
-        android:layout_width="@dimen/lab_detail_image_width"
+        android:layout_width="@dimen/lab_detail_image_width_labtime"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/normal_margin"
         android:layout_weight="1"
@@ -154,9 +154,9 @@
 
     <LinearLayout
         android:id="@+id/skipped_container"
-        android:layout_width="@dimen/lab_detail_check_box_height"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_marginLeft="25dp"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingLeft="@dimen/normal_margin">
@@ -178,10 +178,11 @@
         android:id="@+id/pending_container"
         android:layout_width="@dimen/lab_detail_image_width"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/large_margin"
+        android:layout_marginLeft="35dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
+
 
         >
 
@@ -212,6 +213,7 @@
             android:id="@+id/action_container"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="end"
             android:layout_marginRight="10dp"
             android:gravity="center"
             android:orientation="horizontal">

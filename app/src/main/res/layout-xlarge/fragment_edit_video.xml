@@ -89,6 +89,7 @@
                             android:scaleType="fitXY" />
 
                     </FrameLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,6 +114,7 @@
                             android:text="@string/title"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
+
                             app:font="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
@@ -138,8 +140,8 @@
                             android:imeOptions="actionNext"
                             android:inputType="textNoSuggestions"
                             android:padding="@dimen/extra_extra_small_padding"
-                            android:text="Lab Tab Video"
-                            android:textSize="16sp" />
+                            android:text="@string/lab_tab_video"
+                            android:textSize="@dimen/text_size_extra_extra_small" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -253,73 +255,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/ll_knowledge_nuggets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/extra_extra_small_margin"
-                    android:background="@drawable/rounded_layout_blue"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/extra_small_padding">
-
-                    <org.wizbots.labtab.customview.TextViewCustom
-                        android:id="@+id/component"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/extra_extra_small_margin"
-                        android:layout_weight="2"
-                        android:gravity="center|end"
-                        android:text="@string/knowledge_nuggets"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_extra_extra_small"
-                        app:font="@string/font_pt_sans_narrow_bold" />
-
-                    <org.wizbots.labtab.customview.TextViewCustom
-                        android:id="@+id/edt_knowledge_nuggets"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/rounded_layout_white"
-                        android:padding="@dimen/extra_extra_small_padding"
-                        android:textSize="@dimen/text_size_extra_extra_small" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/extra_extra_small_margin"
-                    android:background="@drawable/rounded_layout_blue"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/extra_small_padding">
-
-                    <org.wizbots.labtab.customview.TextViewCustom
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/extra_extra_small_margin"
-                        android:layout_weight="2"
-                        android:gravity="center|end"
-                        android:text="@string/description"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_extra_extra_small"
-                        app:font="@string/font_pt_sans_narrow_bold" />
-
-                    <org.wizbots.labtab.customview.EditTextCustom
-                        android:id="@+id/edt_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/rounded_layout_white"
-                        android:imeOptions="actionNext"
-                        android:padding="@dimen/extra_extra_small_padding"
-                        android:textSize="@dimen/text_size_extra_extra_small" />
-
-                </LinearLayout>
-
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/extra_extra_small_padding"
+                    android:layout_marginTop="@dimen/extra_extra_small_margin"
                     android:background="@drawable/rounded_layout_blue"
                     android:orientation="horizontal">
 
@@ -352,6 +291,7 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/rounded_layout_white"
                                 android:imeOptions="actionNext"
+                                android:inputType="textCapWords"
                                 android:maxLines="1"
                                 android:padding="@dimen/extra_extra_small_padding"
                                 android:textSize="@dimen/text_size_extra_extra_small" />
@@ -371,8 +311,7 @@
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/recycler_view_horizontal_project_creators"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:scrollbars="vertical" />
+                                android:layout_height="wrap_content" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -406,7 +345,7 @@
                             android:paddingBottom="@dimen/extra_extra_small_padding"
                             android:paddingLeft="@dimen/extra_extra_small_padding"
                             android:paddingRight="@dimen/extra_small_padding"
-                            android:paddingTop="@dimen/extra_extra_small_padding">
+                            android:paddingTop="@dimen/extra_small_padding">
 
                             <LinearLayout
                                 android:id="@+id/recycler_view_container"
@@ -428,6 +367,73 @@
                         </FrameLayout>
                     </LinearLayout>
                 </FrameLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_extra_small_margin"
+                    android:background="@drawable/rounded_layout_blue"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/extra_small_padding">
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/extra_extra_small_margin"
+                        android:layout_weight="2"
+                        android:gravity="center|end"
+                        android:text="@string/description"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_extra_extra_small"
+                        app:font="@string/font_pt_sans_narrow_bold" />
+
+                    <org.wizbots.labtab.customview.EditTextCustom
+                        android:id="@+id/edt_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_layout_white"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:padding="@dimen/extra_extra_small_padding"
+                        android:textSize="@dimen/text_size_extra_extra_small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_knowledge_nuggets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_extra_small_margin"
+                    android:background="@drawable/rounded_layout_blue"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/extra_small_padding">
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:id="@+id/component"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/extra_extra_small_margin"
+                        android:layout_weight="2"
+                        android:gravity="center|end"
+                        android:text="@string/knowledge_nuggets"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_extra_extra_small"
+                        app:font="@string/font_pt_sans_narrow_bold" />
+
+                    <org.wizbots.labtab.customview.TextViewCustom
+                        android:id="@+id/edt_knowledge_nuggets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_layout_white"
+                        android:imeOptions="actionNext"
+                        android:padding="@dimen/extra_extra_small_padding"
+                        android:textSize="@dimen/text_size_extra_extra_small" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -455,7 +461,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/rounded_layout_white"
                         android:imeOptions="actionDone"
-                        android:padding="@dimen/extra_extra_small_padding"
+                        android:inputType="textCapWords"
+
+                        android:padding="@dimen/extra_small_padding"
                         android:textSize="@dimen/text_size_extra_extra_small" />
 
                 </LinearLayout>
@@ -488,8 +496,8 @@
                             android:id="@+id/btn_delete"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_layout_blue"
                             android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:background="@drawable/rounded_layout_blue"
                             android:paddingLeft="@dimen/large_padding"
                             android:paddingRight="@dimen/large_padding"
                             android:text="@string/delete"

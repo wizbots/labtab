@@ -90,6 +90,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
+
     }
 
     @Nullable

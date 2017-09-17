@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -265,6 +266,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             } else if (fragment.getFragmentName().equalsIgnoreCase("AddVideoFragment")) {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
+            } else if (fragment.getFragmentName().equalsIgnoreCase("LabListFragment")) {
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.addToBackStack(null);
             } else {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
@@ -347,5 +351,17 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         } catch (Exception ignored) {
 
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_NAVIGATE_NEXT) {
+            AddVideoFragment labListFragment = (AddVideoFragment) getSupportFragmentManager().findFragmentByTag("AddVideoFragment");
+            labListFragment.myOnKeyDown(keyCode);
+
+
+            //and so on...
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

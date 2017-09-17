@@ -51,7 +51,15 @@ public class LabTabApplication extends Application {
     protected int countCompletedProjects;
     protected int countSkippedProjects;
     protected int countPendingProjects;
-
+    private String location = null;
+    private String year = null;
+    private String season = null;
+    private int locationPos = 0;
+    private int yearPos = 0;
+    private int seasonPos = 0;
+    private boolean isSeasonEnable = false;
+    private boolean isLocationEnable = false;
+    private boolean isYearEnable = false;
 
     public LabTabApplication() {
         _instance = this;
@@ -105,6 +113,69 @@ public class LabTabApplication extends Application {
             }
         }
         clienttables.recycle();
+    }
+
+    public void setLocation(String location, int locationPos) {
+        this.location = location;
+        this.locationPos = locationPos;
+    }
+
+    public void setYear(String year, int yearPos) {
+        this.year = year;
+        this.yearPos = yearPos;
+    }
+
+    public void setSeason(String season, int seasonPos) {
+        this.season = season;
+        this.seasonPos = seasonPos;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public int getLocationPos() {
+        return locationPos;
+    }
+
+    public int getYearPos() {
+        return yearPos;
+    }
+
+    public int getSeasonPos() {
+        return seasonPos;
+    }
+
+    public boolean isSeasonEnable() {
+        return isSeasonEnable;
+    }
+
+    public void setSeasonEnable(boolean seasonEnable) {
+        isSeasonEnable = seasonEnable;
+    }
+
+    public boolean isLocationEnable() {
+        return isLocationEnable;
+    }
+
+    public void setLocationEnable(boolean locationEnable) {
+        isLocationEnable = locationEnable;
+    }
+
+    public boolean isYearEnable() {
+        return isYearEnable;
+    }
+
+    public void setYearEnable(boolean yearEnable) {
+        isYearEnable = yearEnable;
     }
 
     public void addManager(Object manager) {

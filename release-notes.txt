@@ -1,4 +1,106 @@
 ---------------------------------------------------------------------
+Release 1.6.6 - 2017/09/18
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Bug fixing
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* Fixed a bug that was showing a modal with "Select a lab first" in lab list after selecting
+  new video on main menu
+
+
+KNOWN ISSUES:
+* None
+
+---------------------------------------------------------------------
+Release 1.6.5 - 2017/09/11
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Lab selection is cached whenever going back to Lab List screen so user does not have to
+  select previous filters again
+* Bug fixing
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* Lab Time decimals misalignment in portrait mode fixed
+* Made column legend closer to column in portrait mode for students list in a lab detail view
+* Knowledge nuggets is marked as mandatory in video creation view
+* Fixed program selection returning empty values in new video creation if coming from main menu
+* Description is not mandatory in video creation and tab order follows a logic order and can hide
+  on-screen keyboard
+
+
+KNOWN ISSUES:
+* None
+
+---------------------------------------------------------------------
+Release 1.6.2 - 2017/08/13
+---------------------------------------------------------------------
+NEW FEATURES:
+* Mostly bug fixing, specially with uploading of videos
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* Fixed a bug with naming of project files that was breaking the transcoding of videos
+* Made column legend closer to column in portrait mode for students list in a lab detail view
+
+
+KNOWN ISSUES:
+* None
+
+---------------------------------------------------------------------
+Release 1.6.0 - 2017/07/28
+---------------------------------------------------------------------
+NEW FEATURES:
+* Several bugs fixed
+* By default now mentors are shown current week programs they're in charge
+* Description is not mandatory now when making a video
+* Swapped project creators for knowledge nuggets in project creation view
+* Removed calendar button from lab list search view, was misleading and not useful
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+* Show current week programs by default when going to Lab List
+* Make description not mandatory, add some way to hide keyboard
+* Change order of project creators and knowledge nuggets in video creation view
+* LabTab creator frame over-expanded
+
+KNOWN ISSUES:
+* Need to check if delete video is properly working in all cases
+* Change legens in lab detail view in portrait mode so they are aligned with columns
+* Need to properly place search and cancel buttons in lab list view when in landscape mode
+
+---------------------------------------------------------------------
 Release 1.5.4 - 2017/07/4
 ---------------------------------------------------------------------
 NEW FEATURES:
@@ -46,7 +148,6 @@ KNOWN ISSUES:
 * Add legend on top of student list
 * API statistics returned still not fine, need to check intrumentals
 
-
 ---------------------------------------------------------------------
 Release 1.5.0 - 2017/06/17
 ---------------------------------------------------------------------
@@ -72,7 +173,6 @@ KNOWN ISSUES:
 * Statistics in student details still not being displayed correctly in portrait mode
 * Splash screen still not shown correctly when booting up in portrait mode
 
-
 ---------------------------------------------------------------------
 Release 1.1.4 - 2017/06/06
 ---------------------------------------------------------------------
@@ -92,7 +192,6 @@ BUG FIXES:
 
 KNOWN ISSUES:
 * Reset button working correctly
-
 
 ---------------------------------------------------------------------
 Release 1.1.0 - 2017/05/25
@@ -118,7 +217,6 @@ BUG FIXES:
 KNOWN ISSUES:
 * Knowledge nuggets don't seem to match the ones in Wizbots
 * Students selected in video form are not aligned correctly
-
 
 ---------------------------------------------------------------------
 Release 1.0.0 - 2017/05/04

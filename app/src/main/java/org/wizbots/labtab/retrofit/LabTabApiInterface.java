@@ -38,7 +38,8 @@ import retrofit2.http.QueryMap;
 public interface LabTabApiInterface {
     //"https://wizbots.com/api/" production url
     //"http://test.wizbots.com/api/"; // testing url
-    String BASE_URL = "https://wizbots.com/api/";
+
+    String BASE_URL = "http://test.wizbots.com/api/";
 
 
     //    Operations related to deal with tokens
@@ -65,7 +66,7 @@ public interface LabTabApiInterface {
     //    5. Returns list of programs using member_id,from and to
     @GET("programs/")
     Call<ResponseBody> returnPrograms(@Header("Auth-Token") String authToken, @Query("mentor_id") String mentor_id,
-                                       @Query("from") String from, @Query("to") String to);
+                                      @Query("from") String from, @Query("to") String to);
 
     //    6. Returns a mentor
     @GET("mentors/")

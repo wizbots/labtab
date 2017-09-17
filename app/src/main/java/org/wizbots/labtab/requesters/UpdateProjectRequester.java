@@ -51,6 +51,13 @@ public class UpdateProjectRequester implements Runnable, LabTabConstants {
         for (int i = 0; i < studentArrayList.size(); i++) {
             students[i] = studentArrayList.get(i).getStudent_id();
         }
+        /*String creators = "";
+        for (Student student : studentArrayList) {
+            creators = creators + student.getStudent_id() + ".";
+        }
+        int len = creators.length();
+        creators = creators.substring(0, len - 1);
+        return creators;*/
         return students;
     }
 
