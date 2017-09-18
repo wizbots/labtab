@@ -147,6 +147,7 @@
     <string name="add_video">Add Video</string>
     <string name="drawer_item_image">Drawer Item Image</string>
     <string name="yes">YES</string>
+    <string name="no_labs_found">No labs found</string>
 
     <string-array name="fruit_array">
         <item>Apple</item>
