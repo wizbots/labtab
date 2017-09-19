@@ -617,6 +617,18 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LabTabApplication.getInstance().addUIListener(GetProgramOrLabListener.class, this);
+    }
+
     public void addProjectCreatorEditTextListeners() {
 
         projectCreatorEditTextCustom.addTextChangedListener(new TextWatcher() {
@@ -945,13 +957,11 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
 
     private void initListeners() {
-        LabTabApplication.getInstance().addUIListener(GetProgramOrLabListener.class, this);
         LabTabApplication.getInstance().addUIListener(GetProgramStudentsListener.class, this);
     }
 
     @Override
     public void onDestroy() {
-        LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
         LabTabApplication.getInstance().removeUIListener(GetProgramStudentsListener.class, this);
         progressDialog.dismiss();
         super.onDestroy();
@@ -985,12 +995,16 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
 
     @Override
-    public void programOrLabFetchedSuccessfully(ArrayList<ProgramOrLab> programOrLabs) {
+    public void programOrLabFetchedSuccessfully(final ArrayList<ProgramOrLab> programOrLabs) {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
-                showLabListDialog();
+                if (programOrLabs.isEmpty()) {
+                    Toast.makeText(homeActivityContext, R.string.no_labs_found, Toast.LENGTH_LONG).show();
+                } else {
+                    showLabListDialog();
+                }
             }
         });
     }
