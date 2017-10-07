@@ -1,4 +1,26 @@
 ---------------------------------------------------------------------
+Release 1.6.7 - 2017/09/19
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Bug fixing
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* Previous release bug was not fixed, now it seems to be fixed
+
+
+KNOWN ISSUES:
+* None
+
+---------------------------------------------------------------------
 Release 1.6.6 - 2017/09/18
 ---------------------------------------------------------------------
 NEW FEATURES:
