@@ -118,7 +118,6 @@
                             app:font="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
-                            android:id="@+id/textViewCustom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
@@ -140,7 +139,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="textNoSuggestions"
                             android:padding="@dimen/extra_extra_small_padding"
-                            android:text="@string/lab_tab_video"
+                            android:hint="@string/please_insert_project_title"
                             android:textSize="@dimen/text_size_extra_extra_small" />
                     </FrameLayout>
 

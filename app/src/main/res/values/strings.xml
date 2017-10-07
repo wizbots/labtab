@@ -148,6 +148,9 @@
     <string name="drawer_item_image">Drawer Item Image</string>
     <string name="yes">YES</string>
     <string name="no_labs_found">No labs found</string>
+    <string name="please_insert_project_title">Please insert Project title</string>
+    <string name="mark_absence_for_the_selected_kids_on">Mark absence for the selected kids on</string>
+    <string name="confirm">Confirm</string>
 
     <string-array name="fruit_array">
         <item>Apple</item>
