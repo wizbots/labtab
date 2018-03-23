@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -318,7 +319,7 @@ public class LabTabApplication extends Application {
     public HashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList, String[] selected) {
 //        String[] knowledgeNuggets = null;
         //      Set<String> kn = new HashSet<>();
-        HashMap<String, ArrayList<Nuggests>> list = new HashMap<>();
+        LinkedHashMap<String, ArrayList<Nuggests>> list = new LinkedHashMap<>();
         ArrayList<Nuggests> knStudent = new ArrayList<>();
         if (metaDatas == null || studentList == null || studentList.isEmpty()) {
             return null;
