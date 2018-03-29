@@ -316,7 +316,7 @@ public class LabTabApplication extends Application {
         return knowledgeNuggets;
     }
 
-    public HashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList, String[] selected) {
+    public LinkedHashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList, String[] selected) {
 //        String[] knowledgeNuggets = null;
         //      Set<String> kn = new HashSet<>();
         LinkedHashMap<String, ArrayList<Nuggests>> list = new LinkedHashMap<>();

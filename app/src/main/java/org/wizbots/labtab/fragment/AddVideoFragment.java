@@ -97,6 +97,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -1229,7 +1230,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
         dialog1.getWindow().setAttributes(lp);
         dialog1.setTitle("Select Knowledge Nuggets");
-        HashMap<String, ArrayList<Nuggests>> list;
+        LinkedHashMap<String, ArrayList<Nuggests>> list;
         String[] a = convertTextToModel();
 
         list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected, a);
