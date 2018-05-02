@@ -185,6 +185,11 @@
         <item>challenge</item>
         <item>contraption</item>
         <item>game</item>
+        <item>Theme</item>
+        <item>Mad Lib</item>
+        <item>Players Choice</item>
+        <item>Mentors Choice</item>
+        <item>Skill Drill</item>
     </string-array>
 
     <string-array name="array_location">
