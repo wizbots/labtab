@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -22,7 +23,9 @@ import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.StudentStatsTable;
 import org.wizbots.labtab.database.StudentsProfileTable;
 import org.wizbots.labtab.interfaces.StudentStatsAdapterClickListener;
+import org.wizbots.labtab.interfaces.requesters.AddWizchipsListener;
 import org.wizbots.labtab.interfaces.requesters.GetStudentProfileAndStatsListener;
+import org.wizbots.labtab.interfaces.requesters.WithdrawWizchipsListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Program;
 import org.wizbots.labtab.model.program.Student;
@@ -30,7 +33,9 @@ import org.wizbots.labtab.model.student.StudentProfile;
 import org.wizbots.labtab.model.student.StudentStats;
 import org.wizbots.labtab.model.student.response.CreatorResponse;
 import org.wizbots.labtab.model.student.response.StudentResponse;
+import org.wizbots.labtab.requesters.AddWizchipsRequester;
 import org.wizbots.labtab.requesters.StudentProfileAndStatsRequester;
+import org.wizbots.labtab.requesters.WithdrawWizchipsRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 import org.wizbots.labtab.util.StudentStatsComparator;
@@ -38,8 +43,9 @@ import org.wizbots.labtab.util.StudentStatsComparator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
-public class StudentProfileFragment extends ParentFragment implements View.OnClickListener, StudentStatsAdapterClickListener, GetStudentProfileAndStatsListener {
+public class StudentProfileFragment extends ParentFragment implements View.OnClickListener, StudentStatsAdapterClickListener, GetStudentProfileAndStatsListener, WithdrawWizchipsListener, AddWizchipsListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -57,6 +63,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             emailTextViewCustom, gradeTextViewCustom, dateOfBirthTextViewCustom, parentsPhoneTextViewCustom,
             allergiesSpecialNeedsTextViewCustom, afterCarePhoneNameTextViewCustom, enrollmentsCountTextViewCustom,
             absencesTextViewCustom, wizchipsTextViewCustom;
+    private TextView addWizchips, withdrawWizchips;
     private String labLevel = "";
 
     public StudentProfileFragment() {
@@ -124,6 +131,56 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         enrollmentsCountTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_enrollments_count);
         absencesTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_abscences_count);
         wizchipsTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_wizchips);
+        addWizchips = (TextView) rootView.findViewById(R.id.tv_add_wizchip);
+        withdrawWizchips = (TextView) rootView.findViewById(R.id.tv_remove_wizchip);
+        withdrawWizchips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<Student> studentList = new ArrayList<>();
+                studentList.add(student);
+                List<String> selectted = new ArrayList<>();
+
+                if (studentList.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_DECREMENT);
+                } /*else if (studentList.size() > 1) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_DECREMENT);
+                }*/ else {
+                    Student student = studentList.get(0);
+                    if (getChips(student.getWizchips(), student.getOfflinewizchips()) <= 0) {
+                        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.ALREADY_MINIMUM_WIZCHIPS);
+                    } else {
+                        progressDialog.show();
+                    }
+                    for (Student student1 : studentList) {
+                        selectted.add(student1.getStudent_id());
+                    }
+                    progressDialog.show();
+                    //   BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
+                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), selectted, 1));
+                }
+
+            }
+        });
+        addWizchips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<Student> studentList = new ArrayList<>();
+                studentList.add(student);
+                if (studentList.isEmpty()) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
+                } /*else if (studentList.size() > 1) {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_INCREMENT);
+                }*/ else {
+                    Student student = studentList.get(0);
+                    List<String> selectted = new ArrayList<>();
+                    for (Student student1 : studentList) {
+                        selectted.add(student1.getStudent_id());
+                    }
+                    progressDialog.show();
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
+                }
+            }
+        });
 
         StudentProfile studentProfile = StudentsProfileTable.getInstance().getStudentProfileById(student.getStudent_id());
         if (studentProfile != null) {
@@ -154,6 +211,8 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(GetStudentProfileAndStatsListener.class, this);
+        LabTabApplication.getInstance().addUIListener(WithdrawWizchipsListener.class, this);
+        LabTabApplication.getInstance().addUIListener(AddWizchipsListener.class, this);
     }
 
     @Override
@@ -216,7 +275,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 //        afterCarePhoneNameTextViewCustom.setText(studentProfile.getAfter_care_phone() != null ? studentProfile.getAfter_care_phone() : "");
         enrollmentsCountTextViewCustom.setText(studentProfile.getEnrollments_count());
         absencesTextViewCustom.setText(studentProfile.getAbsence_count());
-        wizchipsTextViewCustom.setText(String.valueOf(student.getWizchips()));
+        wizchipsTextViewCustom.setText(String.valueOf(student.getWizchips() + student.getOfflinewizchips()));
 
 
         parentsPhoneTextViewCustom.setText(creatorResponse.parentsPhone());
@@ -232,5 +291,53 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         objectArrayList.addAll(studentStatsArrayList);
         Collections.sort(objectArrayList, StudentStatsComparator.getCompByName());
         studentStatsAdapter.notifyDataSetChanged();
+    }
+
+    private int getChips(int onlineChips, int offlineChips) {
+        return (onlineChips + offlineChips) > 0 ? (onlineChips + offlineChips) : 0;
+    }
+
+    @Override
+    public void onWithdrawWizchipsSuccess() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1));
+            }
+        });
+    }
+
+    @Override
+    public void onWithdrawWizchipsError() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1));
+            }
+        });
+    }
+
+    @Override
+    public void onAddWizchipsSuccess() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) + 1));
+            }
+        });
+    }
+
+    @Override
+    public void onAddWizchipsError() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) + 1));
+            }
+        });
     }
 }
