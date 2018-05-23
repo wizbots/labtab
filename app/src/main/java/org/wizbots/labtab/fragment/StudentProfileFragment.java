@@ -305,7 +305,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             @Override
             public void run() {
                 progressDialog.dismiss();
-                wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1));
+                wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) > 0 ? String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1) : "0"));
             }
         });
     }
@@ -316,7 +316,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             @Override
             public void run() {
                 progressDialog.dismiss();
-                wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1));
+                wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) > 0 ? String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1) : "0"));
             }
         });
     }
