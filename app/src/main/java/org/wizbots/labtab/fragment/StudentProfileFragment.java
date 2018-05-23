@@ -218,6 +218,8 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
     @Override
     public void onDestroy() {
         LabTabApplication.getInstance().addUIListener(GetStudentProfileAndStatsListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(AddWizchipsListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(WithdrawWizchipsListener.class, this);
         super.onDestroy();
     }
 
