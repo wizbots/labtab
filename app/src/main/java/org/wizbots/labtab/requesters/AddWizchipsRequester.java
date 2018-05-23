@@ -27,6 +27,7 @@ public class AddWizchipsRequester implements Runnable {
     private List<String> mStudentId;
     private String mProgramOrLab;
     private int mCount;
+    private boolean isOfflineWizchipsSync = false;
 
 
     public AddWizchipsRequester(String programOrLab, List<String> mStudentId, int mCount) {
@@ -35,11 +36,12 @@ public class AddWizchipsRequester implements Runnable {
         this.mCount = mCount;
     }
 
-    public AddWizchipsRequester(String programOrLab, String mStudentId, int mCount) {
+    public AddWizchipsRequester(String programOrLab, String mStudentId, int mCount, boolean isOfflineWizchipsSync) {
         this.mProgramOrLab = programOrLab;
         this.mStudentId = new ArrayList<String>();
         this.mStudentId.add(mStudentId);
         this.mCount = mCount;
+        this.isOfflineWizchipsSync = isOfflineWizchipsSync;
     }
 
     @Override
@@ -62,14 +64,20 @@ public class AddWizchipsRequester implements Runnable {
                 } else {
                     Log.d(TAG, "Failed to add wizchips");
                     Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, students.getId());
-                    ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), (student.getOfflinewizchips() + mCount), false);
+                    if (isOfflineWizchipsSync)
+                        ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), (student.getOfflinewizchips() + mCount), false);
+                    else
+                        ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), mCount, false);
                 }
             }
         } else {
             Log.d(TAG, "Failed to add wizchips");
             for (String id : mStudentId) {
                 Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, id);
-                ProgramStudentsTable.getInstance().updateWizchipsOffline(id, (student.getOfflinewizchips() + mCount), false);
+                if (isOfflineWizchipsSync)
+                    ProgramStudentsTable.getInstance().updateWizchipsOffline(id, mCount, false);
+                else
+                    ProgramStudentsTable.getInstance().updateWizchipsOffline(id, (student.getOfflinewizchips() + mCount), false);
             }
         }
         SyncManager.getInstance().onRefreshData(1);

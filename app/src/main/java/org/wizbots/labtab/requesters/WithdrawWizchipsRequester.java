@@ -25,6 +25,7 @@ public class WithdrawWizchipsRequester implements Runnable {
     private List<String> mStudentId;
     private String mProgramOrLab;
     private int mCount;
+    private boolean isOfflineWizchipsSync = false;
 
     public WithdrawWizchipsRequester(String programOrLab, List<String> mStudentId, int mCount) {
         this.mProgramOrLab = programOrLab;
@@ -32,11 +33,12 @@ public class WithdrawWizchipsRequester implements Runnable {
         this.mCount = mCount;
     }
 
-    public WithdrawWizchipsRequester(String programOrLab, String mStudentId, int mCount) {
+    public WithdrawWizchipsRequester(String programOrLab, String mStudentId, int mCount, boolean isOfflineWizchipsSync) {
         this.mProgramOrLab = programOrLab;
         this.mStudentId = new ArrayList<String>();
         this.mStudentId.add(mStudentId);
         this.mCount = mCount;
+        this.isOfflineWizchipsSync = isOfflineWizchipsSync;
     }
 
     @Override
@@ -46,8 +48,8 @@ public class WithdrawWizchipsRequester implements Runnable {
 
         if (withdrawWizchipsResponse != null) {
             statusCode = withdrawWizchipsResponse.getResponseCode();
-             WizchipsWithdrawResponse response = withdrawWizchipsResponse.getResponse();
-            for (Students students :response.getStudents()) {
+            WizchipsWithdrawResponse response = withdrawWizchipsResponse.getResponse();
+            for (Students students : response.getStudents()) {
                 if (statusCode == HttpURLConnection.HTTP_OK && response.getSuccess().equalsIgnoreCase("true")) {
                     Log.d(TAG, "Wizchips withdraw successfully = " + students.getWizchips());
                     ProgramStudentsTable.getInstance().updateWizchips(students.getId(), Integer.parseInt(students.getWizchips()), true);
@@ -57,14 +59,20 @@ public class WithdrawWizchipsRequester implements Runnable {
                 } else {
                     Log.d(TAG, "Failed to withdraw wizchips");
                     Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, students.getId());
-                    ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
+                    if (isOfflineWizchipsSync)
+                        ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), -mCount, false);
+                    else
+                        ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
                 }
             }
         } else {
             for (String id : mStudentId) {
                 Log.d(TAG, "Failed to withdraw wizchips");
                 Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, id);
-                ProgramStudentsTable.getInstance().updateWizchipsOffline(id, getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
+                if (isOfflineWizchipsSync)
+                    ProgramStudentsTable.getInstance().updateWizchipsOffline(id, -mCount, false);
+                else
+                    ProgramStudentsTable.getInstance().updateWizchipsOffline(id, getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
             }
         }
         SyncManager.getInstance().onRefreshData(1);
