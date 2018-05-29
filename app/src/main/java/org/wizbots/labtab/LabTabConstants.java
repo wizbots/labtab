@@ -228,6 +228,7 @@ public interface LabTabConstants {
         String ITEM_VIDEO_LIST = "Video List";
         String ITEM_ADD_VIDEO = "Add Video";
         String ITEM_LOGOUT = "Logout";
+        String ITEM_USER_PROFILE = "User Profile";
     }
 
     interface Title {
@@ -455,4 +456,6 @@ public interface LabTabConstants {
         String INTERNET_ON = "INTERNET_ON";
         String INTERNET_OFF = "INTERNET_OFF";
     }
+
+    String VIDEO_LOGS_TAG = "VIDEO_LOGS";
 }

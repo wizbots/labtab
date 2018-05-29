@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
@@ -26,7 +27,7 @@ public class LabListApiTest implements LabTabConstants{
         // Initializing Api Interface
         labTabApiInterface = LabTabUtil.getApiInterface();
         //Logging In User
-        LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com"));
+        LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com", LabTabApplication.getInstance().getUserAgent()));
         createTokenResponse = (CreateTokenResponse) labTabResponse.getResponse();
     }
 

@@ -37,7 +37,7 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
                 video.getLab_sku(), video.getDescription(), video.getTitle(),
                 video.getNotes_to_the_family(),
                 getKnowledgeNuggets(LabTabUtil.convertStringToKnowledgeNuggets(video.getKnowledge_nuggets())),
-                getProjectCreators(LabTabUtil.convertStringToProjectCreators(video.getProject_creators())));
+                getProjectCreators(LabTabUtil.convertStringToProjectCreators(video.getProject_creators())),LabTabApplication.getInstance().getUserAgent());
 
         if (editProjectResponse != null) {
             for (EditProjectListener editProjectListener : LabTabApplication.getInstance().getUIListeners(EditProjectListener.class)) {

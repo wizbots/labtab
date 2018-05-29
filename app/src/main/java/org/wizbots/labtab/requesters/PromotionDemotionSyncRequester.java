@@ -1,5 +1,6 @@
 package org.wizbots.labtab.requesters;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramStudentsTable;
@@ -37,7 +38,8 @@ public class PromotionDemotionSyncRequester implements Runnable, LabTabConstants
         LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse =
                 LabTabHTTPOperationController.promoteDemoteStudents(
                         getStudents(),
-                        promoteDemote);
+                        promoteDemote,
+                        LabTabApplication.getInstance().getUserAgent());
 
         if (promoteDemoteResponse != null && promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
             promoteDemoteStudents();

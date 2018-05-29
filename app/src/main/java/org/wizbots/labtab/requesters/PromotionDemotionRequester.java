@@ -60,7 +60,7 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                 break;
             }
         } else {
-            LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote);
+            LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote,LabTabApplication.getInstance().getUserAgent());
             if (promoteDemoteResponse != null) {
                 for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
                     if (promoteDemoteResponse.getResponseCode() == StatusCode.OK) {

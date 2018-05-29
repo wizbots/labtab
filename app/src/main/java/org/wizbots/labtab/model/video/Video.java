@@ -251,4 +251,28 @@ public class Video implements Parcelable {
             return new Video[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "id='" + id + '\'' +
+                ", mentor_id='" + mentor_id + '\'' +
+                ", status=" + status +
+                ", path='" + path + '\'' +
+                ", title='" + title + '\'' +
+                ", category='" + category + '\'' +
+                ", mentor_name='" + mentor_name + '\'' +
+                ", lab_sku='" + lab_sku + '\'' +
+                ", lab_level='" + lab_level + '\'' +
+                ", knowledge_nuggets='" + knowledge_nuggets + '\'' +
+                ", description='" + description + '\'' +
+                ", project_creators='" + project_creators + '\'' +
+                ", notes_to_the_family='" + notes_to_the_family + '\'' +
+                ", edit_sync_status='" + edit_sync_status + '\'' +
+                ", is_transCoding='" + is_transCoding + '\'' +
+                ", video='" + video + '\'' +
+                ", videoId='" + videoId + '\'' +
+                ", programId='" + programId + '\'' +
+                '}';
+    }
 }

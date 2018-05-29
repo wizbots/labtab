@@ -2,6 +2,8 @@ package org.wizbots.labtab;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -404,5 +406,20 @@ public class LabTabApplication extends Application {
 
     public int getSkippedProjects() {
         return countSkippedProjects;
+    }
+
+    //Labtab Android/<Version Name> (Version Code: <>)
+    public String getUserAgent(){
+        String versionName = null;
+        String versionCode = null;
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = pInfo.versionName;
+            versionCode = String.valueOf(pInfo.versionCode);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "Labtab Android/"+versionName+" (Version Code: "+versionCode+")";
     }
 }

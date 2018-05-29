@@ -27,6 +27,7 @@ import org.wizbots.labtab.util.NetworkUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
 
@@ -155,6 +156,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         int statusTextColor;
         if (video.getStatus() == 100) {
+            Log.v(LabTabConstants.VIDEO_LOGS_TAG, "Set 100 % - "+ video+ " \nDevice time - " + java.text.DateFormat.getDateTimeInstance().format(new Date()));
             statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
         } else if (video.getStatus() == 0) {
             statusTextColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.red);

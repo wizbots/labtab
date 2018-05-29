@@ -2,9 +2,7 @@ package com.craterzone.logginglib.manager;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -38,20 +36,23 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * Created by craterzone on 4/9/16.
+ */
 public class LoggerManager {
 
-    private static final int FILE_SIZE = 5 * 1024 * 1000;
-    private static final int TOTAL_FILE = 5;
-    private static final String LOG_FOLDER = "Logs";
-    private static String TAG = LoggerManager.class.getSimpleName();
-    private static File logDir;
-    private static LoggerManager instance;
-    Context mContext;
     private Pattern outerPattern = Pattern.compile("\\[(.*?)\\]");
     private Pattern innerPattern = Pattern.compile("^\\s\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}(.\\d{3})");
+    private static String TAG = LoggerManager.class.getSimpleName();
+    private static final int FILE_SIZE = 5 * 1024 * 1000;
+    private static final int TOTAL_FILE = 5;
+    private static final String LOG_FOLDER = "mentorz";
     private FileHandler fileHandlerInXMLFormat = null;
     private Logger log = Logger.getLogger("");
+    private static File logDir;
+    Context mContext;
     private File zipFile;
+    private static LoggerManager instance;
 
     public LoggerManager(Context context) {
         mContext = context;
@@ -62,10 +63,6 @@ public class LoggerManager {
             instance = new LoggerManager(context);
         }
         return instance;
-    }
-
-    public static String logFilePath() {
-        return logDir.getPath();
     }
 
     public void init() {
@@ -84,6 +81,11 @@ public class LoggerManager {
         try {
             //just for testing purpose
 
+            logDir = new File(Environment.getExternalStorageDirectory(), LOG_FOLDER);
+            //logDir = new File(mContext.getFilesDir(), LOG_FOLDER);
+            if (!logDir.exists()) {
+                logDir.mkdirs();
+            }
             if (!isWriteStorageAllowed(mContext)) {
                 //Toast.makeText(mContext,"storage permission required to write logs",Toast.LENGTH_SHORT).show();
                 return;
@@ -100,7 +102,7 @@ public class LoggerManager {
                 logDir.mkdirs();
             }
 
-            fileHandlerInXMLFormat = new FileHandler(logDir.getAbsolutePath() + "/LabtabLogs%g.txt", FILE_SIZE, TOTAL_FILE, true);
+            fileHandlerInXMLFormat = new FileHandler(logDir.getAbsolutePath() + "/logFile%g.txt", FILE_SIZE, TOTAL_FILE, true);
             fileHandlerInXMLFormat.setFormatter(new CustomLoggerFormatter());
             readLogcat(fileHandlerInXMLFormat);
             log.addHandler(fileHandlerInXMLFormat);
@@ -110,6 +112,10 @@ public class LoggerManager {
 
             Log.e(TAG, "FileHandler exception", e);
         }
+    }
+
+    public static String logFilePath() {
+        return logDir.getPath();
     }
 
     private void readLogcat(FileHandler fileHandler) {
@@ -219,7 +225,7 @@ public class LoggerManager {
     public String getDiagnosticsFilePath() {
 
         if (!isWriteStorageAllowed(mContext)) {
-            Toast.makeText(mContext, "storage permission required to get logs file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext,"storage permission required to get logs file",Toast.LENGTH_SHORT).show();
             return "";
         }
 
@@ -359,13 +365,4 @@ public class LoggerManager {
         return false;
     }
 
-    public void sendDiagnostic(Context context) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"bsharma@craterzone.com"});
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Logs Detail");
-        intent.putExtra(Intent.EXTRA_TEXT, "Logs");
-        intent.setType("application/zip");
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(getDiagnosticsFilePath())));
-        context.startActivity(Intent.createChooser(intent, "Send Email"));
-    }
 }

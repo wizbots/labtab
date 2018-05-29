@@ -48,7 +48,7 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
                 break;
             }
         } else {
-        LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(), date, program.getId(), sendNotification);
+        LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(), date, program.getId(), sendNotification,LabTabApplication.getInstance().getUserAgent());
         if (markStudentAbsentResponse != null) {
             for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
                 if (markStudentAbsentResponse.getResponseCode() == StatusCode.OK) {

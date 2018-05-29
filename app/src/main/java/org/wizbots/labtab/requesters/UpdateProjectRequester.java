@@ -1,5 +1,6 @@
 package org.wizbots.labtab.requesters;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.VideoTable;
@@ -32,7 +33,7 @@ public class UpdateProjectRequester implements Runnable, LabTabConstants {
                 video.getLab_sku(), video.getDescription(), video.getTitle(),
                 video.getNotes_to_the_family(),
                 getKnowledgeNuggets(LabTabUtil.convertStringToKnowledgeNuggets(video.getKnowledge_nuggets())),
-                getProjectCreators(LabTabUtil.convertStringToProjectCreators(video.getProject_creators())));
+                getProjectCreators(LabTabUtil.convertStringToProjectCreators(video.getProject_creators())), LabTabApplication.getInstance().getUserAgent());
 
         if (editProjectResponse != null) {
             if (editProjectResponse.getResponseCode() == StatusCode.OK) {

@@ -1,5 +1,6 @@
 package org.wizbots.labtab.requesters;
 
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramAbsencesTable;
@@ -29,7 +30,7 @@ public class MarkStudentAbsentSyncRequester implements Runnable, LabTabConstants
 
     @Override
     public void run() {
-        LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(absence.getStudent_id()), date, absence.getProgram_id(), sendNotification);
+        LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(absence.getStudent_id()), date, absence.getProgram_id(), sendNotification, LabTabApplication.getInstance().getUserAgent());
         if (markStudentAbsentResponse != null) {
             if (markStudentAbsentResponse.getResponseCode() == StatusCode.OK) {
                 markStudentsAbsent(SyncStatus.SYNCED, absence);

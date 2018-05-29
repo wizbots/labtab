@@ -56,7 +56,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
                 videoInDB.getLab_sku(), videoInDB.getDescription(), videoInDB.getTitle(),
                 videoInDB.getNotes_to_the_family(), body,
                 getKnowledgeNuggets(LabTabUtil.convertStringToKnowledgeNuggets(videoInDB.getKnowledge_nuggets())),
-                getProjectCreators(LabTabUtil.convertStringToProjectCreators(videoInDB.getProject_creators())));
+                getProjectCreators(LabTabUtil.convertStringToProjectCreators(videoInDB.getProject_creators())),LabTabApplication.getInstance().getUserAgent());
 
         if (createProjectResponse != null) {
             statusCode = createProjectResponse.getResponseCode();

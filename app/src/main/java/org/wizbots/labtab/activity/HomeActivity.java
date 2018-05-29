@@ -3,6 +3,7 @@ package org.wizbots.labtab.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.craterzone.logginglib.manager.LoggerManager;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -42,6 +46,8 @@ import org.wizbots.labtab.fragment.ViewVideoFragment;
 import org.wizbots.labtab.model.LeftDrawerItem;
 import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.service.LabTabSyncService;
+
+import java.io.File;
 
 public class HomeActivity extends ParentActivity implements View.OnClickListener {
 
@@ -123,6 +129,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_upload_video, DrawerItem.ITEM_ADD_VIDEO);
         leftDrawerItem[4] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
 
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         LayoutInflater myinflater = getLayoutInflater();
@@ -140,6 +147,19 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 }, 400);
             }
         });
+
+        myHeader.findViewById(R.id.header_left_drawer).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                String filePath = LoggerManager.getInstance(HomeActivity.this).getDiagnosticsFilePath();
+                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setType("*/*");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                startActivity(Intent.createChooser(shareIntent, "send logs"));
+                return false;
+            }
+        });
+
 
         LeftDrawerAdapter adapter = new LeftDrawerAdapter(this, R.layout.item_left_drawer, leftDrawerItem);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());

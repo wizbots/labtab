@@ -1,5 +1,8 @@
 package com.craterzone.logginglib.model;
 
+/**
+ * Created by NicoDart on 21/12/15.
+ */
 public class DiagnosticResponse {
     private int statusCode;
     private String response = "";
@@ -10,6 +13,7 @@ public class DiagnosticResponse {
     }
 
     public int getStatusCode() {
+
         return statusCode;
     }
 
