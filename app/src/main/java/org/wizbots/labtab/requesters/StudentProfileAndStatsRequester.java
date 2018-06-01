@@ -1,5 +1,9 @@
 package org.wizbots.labtab.requesters;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -24,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class StudentProfileAndStatsRequester implements Runnable, LabTabConstants {
+    private final String TAG = StudentProfileAndStatsRequester.class.getSimpleName();
     private String student_id;
     StudentResponse studentProfileAndStatsResponse;
     StudentProfile studentProfile;
@@ -38,6 +43,7 @@ public class StudentProfileAndStatsRequester implements Runnable, LabTabConstant
 
     @Override
     public void run() {
+        Log.d(TAG, "studentResponse Request");
         int statusCode = 0;
         LabTabResponse<StudentResponse> studentResponse = LabTabHTTPOperationController.getStudentStatsAndProfile(student_id);
 /*        if (studentResponse != null) {
@@ -66,7 +72,10 @@ public class StudentProfileAndStatsRequester implements Runnable, LabTabConstant
                 studentProfileAndStatsResponse = studentResponse.getResponse();
                 studentProfile = getStudentProfile(studentProfileAndStatsResponse);
                 statsArrayList = getStudentStats(studentProfileAndStatsResponse);
+                Log.d(TAG, "studentResponse Success, Response Code : " + studentResponse.getResponseCode() + " studentResponse response: " + new Gson().toJson(studentResponse.getResponse()));
             }
+        }else{
+            Log.d(TAG, "studentResponse Failed, Response Code : " + statusCode);
         }
 
         for (GetStudentProfileAndStatsListener getProgramStudentsListener : LabTabApplication.getInstance().getUIListeners(GetStudentProfileAndStatsListener.class)) {

@@ -31,17 +31,18 @@ import static android.R.id.primary;
 import static org.wizbots.labtab.util.LabListComparator.CHAT_COMPARATOR;
 
 public class ProgramOrLabRequester implements Runnable, LabTabConstants {
-
+    private final String TAG = ProgramOrLabRequester.class.getSimpleName();
     private ArrayList<ProgramOrLab> programOrLabArrayList;
 
     @Override
     public void run() {
+        Log.d(TAG, "ProgramOrLab Request");
         int statusCode = 0;
 
 
-        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getCurrentYear(),getCurrentDate());
+        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getCurrentYear(), getCurrentDate());
 //        LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo(getDateOfCurrentWeek(1), getDateOfCurrentWeek(7));
-       // LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
+        // LabTabResponse<ResponseBody> programsOrLabs = LabTabHTTPOperationController.getProgramsOrLabsUsingFromAndTo("2013-01-01", "2017-12-31");
 
         try {
             if (programsOrLabs != null) {
@@ -51,7 +52,6 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
                 }.getType();
 
                 ArrayList<ProgramOrLab> fromJson = gson.fromJson(programsOrLabs.getResponse().string(), type);
-
                 programOrLabArrayList = fromJson;
                 String member_id = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id();
                 if (statusCode == StatusCode.OK) {
@@ -71,7 +71,11 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
                             programOrLab.setEndTimesStamp(LabTabUtil.getTimeStamp(programOrLab.getEnds()));
                         }
                         ProgramsOrLabsTable.getInstance().insert(programOrLabArrayList);
+                        Log.d(TAG, "ProgramOrLab Success, Response Code : " + statusCode + " ProgramOrLab List : " + programsOrLabs.getResponse().string());
+
                     }
+                } else {
+                    Log.d(TAG, "ProgramOrLab Failed, Response Code : " + statusCode );
                 }
             } else {
                 statusCode = HttpURLConnection.HTTP_OK;
@@ -126,7 +130,7 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
 
         Calendar c1 = Calendar.getInstance();
         int year1 = c1.get(Calendar.YEAR);
-        return year1 + "-01-01" ;
+        return year1 + "-01-01";
     }
 
 

@@ -1,5 +1,7 @@
 package org.wizbots.labtab.requesters;
 
+import android.util.Log;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.database.ProgramStudentsTable;
@@ -12,6 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GetStudentsRequester implements Runnable, LabTabConstants {
+
+    private static final String TAG = GetStudentsRequester.class.getSimpleName();
 
     ArrayList<String> selectedStudents;
     Program program;
@@ -26,6 +30,7 @@ public class GetStudentsRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+        Log.d(TAG, "GetStudentsRequester Request");
         ArrayList<Student> studentsAvailable = ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId());
         ArrayList<Student> studentArrayList = new ArrayList<>();
         if (!selectedStudents.isEmpty()) {

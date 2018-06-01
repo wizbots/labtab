@@ -2,6 +2,8 @@ package org.wizbots.labtab.requesters;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -43,6 +45,7 @@ public class WithdrawWizchipsRequester implements Runnable {
 
     @Override
     public void run() {
+        Log.d(TAG, "withdrawWizchipsResponse Request");
         int statusCode = 0;
         LabTabResponse<WizchipsWithdrawResponse> withdrawWizchipsResponse = LabTabHTTPOperationController.withdrawWizchips(mStudentId, mCount);
 
@@ -54,17 +57,22 @@ public class WithdrawWizchipsRequester implements Runnable {
                     Log.d(TAG, "Wizchips withdraw successfully = " + students.getWizchips());
                     ProgramStudentsTable.getInstance().updateWizchips(students.getId(), Integer.parseInt(students.getWizchips()), true);
                     ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), 0, true);
+                    Log.d(TAG, "withdrawWizchipsResponse Success, Response Code : " + withdrawWizchipsResponse.getResponseCode() + " withdrawWizchipsResponse response: " +new Gson().toJson(withdrawWizchipsResponse.getResponse()));
                 } else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                     Log.d(TAG, "Student Not Found with id = " + students.getId());
+                    Log.d(TAG, "withdrawWizchipsResponse Failed, Response Code : " + withdrawWizchipsResponse.getResponseCode());
                 } else {
                     Log.d(TAG, "Failed to withdraw wizchips");
                     Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, students.getId());
                     if (isOfflineWizchipsSync)
                         ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), -mCount, false);
-                    else
+                    else {
                         ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), getChips(student.getWizchips(), student.getOfflinewizchips(), mCount), false);
+                        Log.d(TAG, "withdrawWizchipsResponse Failed, Response Code : " + withdrawWizchipsResponse.getResponseCode());
+                    }
                 }
             }
+            Log.d(TAG, "withdrawWizchipsResponse Failed, Response Code : " + withdrawWizchipsResponse.getResponseCode());
         } else {
             for (String id : mStudentId) {
                 Log.d(TAG, "Failed to withdraw wizchips");

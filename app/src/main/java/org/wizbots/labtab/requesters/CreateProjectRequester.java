@@ -1,12 +1,12 @@
 package org.wizbots.labtab.requesters;
 
 import android.net.Uri;
-
+import android.util.Log;
+import com.google.gson.Gson;
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.VideoTable;
-import org.wizbots.labtab.interfaces.requesters.AddWizchipsListener;
 import org.wizbots.labtab.interfaces.requesters.OnVideoUploadListener;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
@@ -16,15 +16,16 @@ import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.LabTabUtil;
-
 import java.io.File;
 import java.util.ArrayList;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class CreateProjectRequester implements Runnable, LabTabConstants {
+
+    final String TAG = CreateProjectRequester.class.getSimpleName();
+
     private LabTabSyncService labTabSyncService;
     private Video videoInDB;
     private int position;
@@ -40,6 +41,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+        Log.d(TAG, "createProjectResponse Request");
         int statusCode = 0;
         Uri fileUri = Uri.parse(videoInDB.getPath());
 
@@ -63,11 +65,15 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
             if (createProjectResponse.getResponseCode() == StatusCode.CREATED) {
                 projectCreatedSuccessfully(createProjectResponse.getResponse());
                 NotiManager.getInstance().updateNotification();
+                Log.d(TAG, "createProjectResponse Success, Response Code : " + statusCode + " createProjectResponse response: " + new Gson().toJson(createProjectResponse.getResponse()).toString());
             } else {
                 unableToCreateProject();
+                Log.d(TAG, "createProjectResponse Failed, Response Code : " + statusCode);
             }
+
         } else {
             SyncManager.getInstance().onRefreshData(2);
+            Log.d(TAG, "createProjectResponse Failed, Response Code : " + statusCode);
         }
         labTabSyncService.videoUploadCompleted(videoInDB, position);
         for (OnVideoUploadListener listener : LabTabApplication.getInstance().getUIListeners(OnVideoUploadListener.class)) {

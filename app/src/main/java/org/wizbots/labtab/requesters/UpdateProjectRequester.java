@@ -1,5 +1,9 @@
 package org.wizbots.labtab.requesters;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -14,6 +18,7 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.util.ArrayList;
 
 public class UpdateProjectRequester implements Runnable, LabTabConstants {
+    private final String TAG = UpdateProjectRequester.class.getSimpleName();
     private LabTabSyncService labTabSyncService;
     private Video video;
     private int position;
@@ -29,6 +34,7 @@ public class UpdateProjectRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+        Log.d(TAG, "editProjectResponse Request");
         LabTabResponse<EditProjectResponse> editProjectResponse = LabTabHTTPOperationController.editProject(video.getVideoId(), video.getCategory(),
                 video.getLab_sku(), video.getDescription(), video.getTitle(),
                 video.getNotes_to_the_family(),
@@ -38,11 +44,14 @@ public class UpdateProjectRequester implements Runnable, LabTabConstants {
         if (editProjectResponse != null) {
             if (editProjectResponse.getResponseCode() == StatusCode.OK) {
                 projectUpdatedSuccessfully(editProjectResponse.getResponse());
+                Log.d(TAG, "editProjectResponse Success, Response Code : " + editProjectResponse.getResponseCode() + " editProjectResponse response: " +new Gson().toJson(editProjectResponse.getResponse()));
             } else {
                 projectEditedSuccessfully();
+                Log.d(TAG, "editProjectResponse Failed, Response Code : " + editProjectResponse.getResponseCode());
             }
         } else {
             projectEditedSuccessfully();
+            Log.d(TAG, "editProjectResponse Failed, Response Code : " + editProjectResponse.getResponseCode());
         }
         labTabSyncService.projectUpdateCompleted(position);
     }

@@ -1,6 +1,9 @@
 package org.wizbots.labtab.requesters;
 
 import android.net.Uri;
+import android.util.Log;
+
+import com.google.gson.Gson;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
@@ -20,6 +23,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 public class EditProjectRequester implements Runnable, LabTabConstants {
+
+    final static String TAG = EditProjectRequester.class.getSimpleName();
+
     private Video video;
     private String editVideoCase;
 
@@ -33,6 +39,7 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+        Log.d(TAG, "editProjectResponse Request");
         LabTabResponse<EditProjectResponse> editProjectResponse = LabTabHTTPOperationController.editProject(video.getVideoId(), video.getCategory(),
                 video.getLab_sku(), video.getDescription(), video.getTitle(),
                 video.getNotes_to_the_family(),
@@ -44,9 +51,11 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
                 if (editProjectResponse.getResponseCode() == StatusCode.OK) {
                     projectUpdatedSuccessfully(editProjectResponse.getResponse());
                     editProjectListener.projectUpdatedSuccessfully(editProjectResponse.getResponse(), video);
+                    Log.d(TAG, "editProjectResponse Success, Response Code : " + editProjectResponse.getResponseCode() + " editProjectResponse response: " + new Gson().toJson(editProjectResponse.getResponse()));
                 } else {
                     projectEditedSuccessfully();
                     editProjectListener.unableToUpdateProject(1000);
+                    Log.d(TAG, "editProjectResponse Failed, Response Code : " + editProjectResponse.getResponseCode());
                 }
                 break;
             }
@@ -56,6 +65,7 @@ public class EditProjectRequester implements Runnable, LabTabConstants {
                 editProjectListener.unableToUpdateProject(1000);
                 break;
             }
+            Log.d(TAG, "editProjectResponse Failed, Response Code : " + editProjectResponse.getResponseCode());
         }
     }
 
