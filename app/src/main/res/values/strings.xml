@@ -153,6 +153,7 @@
     <string name="confirm">Confirm</string>
     <string name="ok">ok</string>
     <string name="chooser_title">Please Select App</string>
+    <string name="BINDER">BINDER</string>
 
     <string-array name="fruit_array">
         <item>Apple</item>

@@ -1,0 +1,22 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/binder_scroll_view">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/extra_large_padding">
+
+        <include layout="@layout/header_lab_list"
+            android:id="@+id/header"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/header"
+            android:id="@+id/recycler_view_lab_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:visibility="visible" />
+
+</RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
