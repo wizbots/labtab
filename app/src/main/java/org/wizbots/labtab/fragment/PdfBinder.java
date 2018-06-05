@@ -1,19 +1,34 @@
 package org.wizbots.labtab.fragment;
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
-import org.wizbots.labtab.controller.LabTabPreferences;
+import org.wizbots.labtab.adapter.BinderAdapter;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
+import org.wizbots.labtab.model.BinderItem;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PdfBinder extends ParentFragment {
 
+    private static final String TAG = PdfBinder.class.getSimpleName();
+
+    private RecyclerView binderRecyclerView;
+    private RecyclerView.Adapter binderAdapter;
+    List<BinderItem> listItem;
+    String[] assetManager;
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
@@ -22,6 +37,38 @@ public class PdfBinder extends ParentFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView  = inflater.inflate(R.layout.fragment_binder,container,false);
+        binderRecyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view_pdf_list);
+        binderRecyclerView.setHasFixedSize(true);
+        binderRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        String [] files;
+        listItem = new ArrayList<>();
+        try {
+            files = getActivity().getAssets().list("pdfs");
+            if(files.length>0){
+                for(String filename : files){
+                    BinderItem binderItem = new BinderItem(filename);
+                    listItem.add(binderItem);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//
+//        try {
+//            files = assetManager.length;
+//        } catch (IOException e) {
+//            Log.e(TAG, "Failed to get asset file list.", e);
+//        }
+//        if(files!=null){
+//            for(String filename : files ){
+//                BinderItem binderItem = new BinderItem(filename);
+//                listItem.add(binderItem);
+//            }
+//        }
+        binderAdapter = new BinderAdapter(listItem,getActivity());
+        binderRecyclerView.setAdapter(binderAdapter);
         initView();
         return rootView;
     }

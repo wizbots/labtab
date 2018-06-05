@@ -12,11 +12,12 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_below="@+id/header"
-            android:id="@+id/recycler_view_lab_list"
+            android:id="@+id/recycler_view_pdf_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:visibility="visible" />
+
 
 </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
