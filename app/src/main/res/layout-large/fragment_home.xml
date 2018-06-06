@@ -39,7 +39,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/go_to_image"
                         android:padding="@dimen/large_padding"
-                        android:src="@drawable/ic_home_button_go_to_web" />
+                        android:src="@drawable/ic_home_button_binder" />
                 </LinearLayout>
 
                 <org.wizbots.labtab.customview.TextViewCustom

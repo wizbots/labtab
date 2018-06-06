@@ -36,38 +36,23 @@ public class PdfBinder extends ParentFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView  = inflater.inflate(R.layout.fragment_binder,container,false);
-        binderRecyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view_pdf_list);
+        rootView = inflater.inflate(R.layout.fragment_binder, container, false);
+        binderRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_pdf_list);
         binderRecyclerView.setHasFixedSize(true);
         binderRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        String [] files;
+        String[] files;
         listItem = new ArrayList<>();
-        try {
-            files = getActivity().getAssets().list("pdfs");
-            if(files.length>0){
-                for(String filename : files){
-                    BinderItem binderItem = new BinderItem(filename);
-                    listItem.add(binderItem);
-                }
+        files = getResources().getStringArray(R.array.pdf_files);
+        if (files!=null) {
+            for (String filename : files) {
+                BinderItem binderItem = new BinderItem(filename);
+                listItem.add(binderItem);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-//
-//        try {
-//            files = assetManager.length;
-//        } catch (IOException e) {
-//            Log.e(TAG, "Failed to get asset file list.", e);
-//        }
-//        if(files!=null){
-//            for(String filename : files ){
-//                BinderItem binderItem = new BinderItem(filename);
-//                listItem.add(binderItem);
-//            }
-//        }
-        binderAdapter = new BinderAdapter(listItem,getActivity());
+
+        binderAdapter = new BinderAdapter(listItem, getActivity());
         binderRecyclerView.setAdapter(binderAdapter);
         initView();
         return rootView;
@@ -86,5 +71,6 @@ public class PdfBinder extends ParentFragment {
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+
     }
 }

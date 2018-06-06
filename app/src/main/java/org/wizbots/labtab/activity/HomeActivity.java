@@ -128,7 +128,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
 
         LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[6];
         leftDrawerItem[0] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, DrawerItem.ITEM_GO_TO);
-        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, DrawerItem.ITEM_BINDER);
+        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_binder, DrawerItem.ITEM_BINDER);
         leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, DrawerItem.ITEM_LAB_LIST);
         leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, DrawerItem.ITEM_VIDEO_LIST);
         leftDrawerItem[4] = new LeftDrawerItem(R.drawable.ic_upload_video, DrawerItem.ITEM_ADD_VIDEO);
@@ -264,7 +264,6 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             case Fragments.BINDER:
                 fragment = new PdfBinder();
                 break;
-
         }
         fragment.setArguments(bundle);
         try {

@@ -85,10 +85,7 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
                 homeActivityContext.replaceFragment(Fragments.LAB_LIST, new Bundle());
                 break;
             case R.id.cv_go_to:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ToastTexts.GO_TO_WIZBOTS_COM));
-                if (browserIntent.resolveActivity(homeActivityContext.getPackageManager()) != null) {
-                    startActivity(browserIntent);
-                }
+                homeActivityContext.replaceFragment(Fragments.BINDER,new Bundle());
                 break;
             case R.id.cv_video_list:
                 homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());
