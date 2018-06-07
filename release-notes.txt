@@ -1,4 +1,56 @@
 ---------------------------------------------------------------------
+Release 1.8.0 - 2018/06/07
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Added new Binder menu that shows several PDFs for mentors
+* Added possibility to send logs to some email
+* Changed marking absent child experience
+
+NOTES:
+* To send logs we you need to tap in user icon once the left menu is shown, long tap
+  on the icon and will show a dialog to send logs
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* None
+
+
+KNOWN ISSUES:
+* A new bug has been found regarding uploading video and will be fixed on next release
+
+
+
+
+---------------------------------------------------------------------
+Release 1.7.1 - 2018/04/01
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Bug fixing
+
+NOTES:
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* Showing 2018 as default for dropdown selectors
+
+
+KNOWN ISSUES:
+* None
+
+
+
+---------------------------------------------------------------------
 Release 1.6.7 - 2017/09/19
 ---------------------------------------------------------------------
 NEW FEATURES:
