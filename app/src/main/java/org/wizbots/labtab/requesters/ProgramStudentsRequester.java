@@ -1,5 +1,9 @@
 package org.wizbots.labtab.requesters;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -20,6 +24,7 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.util.ArrayList;
 
 public class ProgramStudentsRequester implements Runnable, LabTabConstants {
+    private final String TAG = ProgramOrLabRequester.class.getSimpleName();
     private String program_id;
 
     public ProgramStudentsRequester() {
@@ -31,6 +36,7 @@ public class ProgramStudentsRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+        Log.d(TAG, "programsWithStudents Request");
         LabTabResponse<ProgramResponse> programsWithStudents = LabTabHTTPOperationController.getProgramWithListOfStudents(program_id);
         if (programsWithStudents != null) {
             ProgramResponse programResponse = programsWithStudents.getResponse();
@@ -41,14 +47,18 @@ public class ProgramStudentsRequester implements Runnable, LabTabConstants {
                             fetchAndInsertStudentDetails(programResponse),
                             fetchAndInsertAbsenceDetails(programResponse)
                     );
+                    Log.d(TAG, "programsWithStudents Success, Response Code : " + programsWithStudents.getResponseCode() + " programsWithStudents response: " +new Gson().toJson(programsWithStudents.getResponse()));
                 } else {
                     getProgramStudentsListener.unableToFetchProgramStudents(programsWithStudents.getResponseCode());
+                    Log.d(TAG, "programsWithStudents Failed, Response Code : " + programsWithStudents.getResponseCode());
                 }
             }
+
         } else {
             for (GetProgramStudentsListener getProgramStudentsListener : LabTabApplication.getInstance().getUIListeners(GetProgramStudentsListener.class)) {
                 getProgramStudentsListener.unableToFetchProgramStudents(0);
             }
+            Log.d(TAG, "programsWithStudents Failed, Response Code : " + programsWithStudents.getResponseCode());
         }
     }
 

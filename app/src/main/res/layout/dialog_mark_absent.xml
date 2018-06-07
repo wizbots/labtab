@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:padding="@dimen/small_padding"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <org.wizbots.labtab.customview.TextViewCustom
+                android:id="@+id/tv_mark_absent_on"
+                android:text="@string/mark_absence_for_the_selected_kids_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/iv_calendar"
+                android:layout_width="35dp"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:layout_height="35dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_calendar" />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/selected_student_list"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingRight="@dimen/small_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/small_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingLeft="@dimen/small_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/cb_send_absent_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:button="@drawable/check_box_small_selector" />
+
+            <TextView
+                android:id="@+id/tv_send_absent_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="@string/send_absent_notification"
+                android:textColor="@color/material_light_blue_800"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:padding="@dimen/small_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/bt_confirm"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textAllCaps="true"
+                android:text="@string/confirm"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/bt_cancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textAllCaps="true"
+                android:text="@string/cancel"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

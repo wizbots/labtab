@@ -85,7 +85,7 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                     break;
                 case Events.DEVICE_DISCONNECTED_TO_INTERNET:
                     Log.d("Service Starter Event", event);
-                    if(!NotiManager.isAllSyncCompleted){
+                    if (!NotiManager.isAllSyncCompleted) {
                         NotiManager.getInstance().cancelNotification();
                     }
                     break;
@@ -207,19 +207,19 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
         syncVideoToBeDeleted();
     }
 
-    private void syncWizchips(){
-        if(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null){
+    private void syncWizchips() {
+        if (LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null) {
             return;
         }
         ArrayList<Student> list = ProgramStudentsTable.getInstance().getUnSyncData();
-        if(list != null && !list.isEmpty()){
-            for (Student student: list) {
+        if (list != null && !list.isEmpty()) {
+            for (Student student : list) {
                 int count = student.getWizchips() + student.getOfflinewizchips();
                 if (student.getWizchips() > count) {
-                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(student.getProgram_id(),student.getStudent_id(), (-(student.getOfflinewizchips()))));
-                }else {
+                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(student.getProgram_id(), student.getStudent_id(), (-(student.getOfflinewizchips())), true));
+                } else {
 
-                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(student.getProgram_id(),student.getStudent_id(), student.getOfflinewizchips()));
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(student.getProgram_id(), student.getStudent_id(), student.getOfflinewizchips(), true));
                 }
 
             }
@@ -227,7 +227,7 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
     }
 
     private void syncVideoToBeDeleted() {
-        if(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null){
+        if (LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null) {
             return;
         }
         ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideosToBeDeleted();
@@ -294,7 +294,7 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
                 if (!videoArrayList.isEmpty()) {
                     startForegroundIntent();
                     statusOfSingleVideoUploadBackgroundExecutor = new boolean[videoArrayList.size()];
-                    if(LabTabApplication.getInstance().isNetworkAvailable()){
+                    if (LabTabApplication.getInstance().isNetworkAvailable()) {
                         NotiManager.getInstance().showNotification(videoArrayList.size());
                     }
                     for (int i = 0; i < videoArrayList.size(); i++) {

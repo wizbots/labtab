@@ -59,31 +59,31 @@
         android:textColor="@color/white"
         android:textSize="10sp" />
 
-    <CheckBox
-        android:id="@+id/cb_send_absent_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/tv_mark_absent"
-        android:button="@drawable/check_box_small_selector" />
+    <!--<CheckBox-->
+        <!--android:id="@+id/cb_send_absent_notification"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="35dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_toRightOf="@id/tv_mark_absent"-->
+        <!--android:button="@drawable/check_box_small_selector" />-->
 
-    <TextView
-        android:id="@+id/tv_send_absent_notification"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/cb_send_absent_notification"
-        android:gravity="center"
-        android:text="@string/send_absent_notification"
-        android:textColor="@color/material_light_blue_800"
-        android:textSize="12sp" />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_send_absent_notification"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_marginTop="2dp"-->
+        <!--android:layout_toRightOf="@id/cb_send_absent_notification"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/send_absent_notification"-->
+        <!--android:textColor="@color/material_light_blue_800"-->
+        <!--android:textSize="12sp" />-->
 
     <TextView
         android:id="@+id/tv_minus"
         android:layout_width="30dp"
         android:layout_height="35dp"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/tv_send_absent_notification"
+        android:layout_toRightOf="@id/tv_mark_absent"
         android:background="@drawable/rounded_layout"
         android:gravity="center"
         android:paddingLeft="@dimen/extra_small_padding"
@@ -121,14 +121,14 @@
 
 
 
-    <ImageView
-        android:id="@+id/iv_calendar"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignBottom="@+id/tv_promote"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_calendar" />
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_calendar"-->
+        <!--android:layout_width="35dp"-->
+        <!--android:layout_height="35dp"-->
+        <!--android:layout_alignBottom="@+id/tv_promote"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/ic_calendar" />-->
 
 </RelativeLayout>

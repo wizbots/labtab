@@ -92,4 +92,6 @@ public class LabTabHeaderLayout extends FrameLayout {
     public TextViewCustom getDynamicTextViewCustom() {
         return dynamicTextViewCustom;
     }
+
+
 }

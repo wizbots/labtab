@@ -1,5 +1,10 @@
 package org.wizbots.labtab.requesters;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramStudentsTable;
@@ -12,6 +17,7 @@ import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.LabTabUtil;
 
 public class PromotionDemotionSyncRequester implements Runnable, LabTabConstants {
+    private final String TAG = PromotionDemotionSyncRequester.class.getSimpleName();
     private LabTabSyncService labTabSyncService;
     private Student student;
     private int position;
@@ -33,14 +39,18 @@ public class PromotionDemotionSyncRequester implements Runnable, LabTabConstants
         } else {
             promoteDemote = false;
         }
-
+        Log.d(TAG, "promoteDemoteResponse Request");
         LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse =
                 LabTabHTTPOperationController.promoteDemoteStudents(
                         getStudents(),
-                        promoteDemote);
+                        promoteDemote,
+                        LabTabApplication.getInstance().getUserAgent());
 
         if (promoteDemoteResponse != null && promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
             promoteDemoteStudents();
+            Log.d(TAG, "promoteDemoteResponse Success, Response Code : " + promoteDemoteResponse.getResponseCode() + " promoteDemoteResponse response: " + new Gson().toJson(promoteDemoteResponse.getResponse()));
+        }else{
+            Log.d(TAG, "promoteDemoteResponse Failed, Response Code : " +promoteDemoteResponse.getResponseCode());
         }
         labTabSyncService.promoteDemoteCompleted(position);
         SyncManager.getInstance().onRefreshData(1);

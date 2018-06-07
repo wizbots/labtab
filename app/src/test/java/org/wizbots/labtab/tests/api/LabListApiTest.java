@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
@@ -26,7 +27,7 @@ public class LabListApiTest implements LabTabConstants{
         // Initializing Api Interface
         labTabApiInterface = LabTabUtil.getApiInterface();
         //Logging In User
-        LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com"));
+        LabTabResponse labTabResponse = ConnectionUtil.execute(labTabApiInterface.createTokenOrLoginUser("robotics", "judy@wizbots.com", LabTabApplication.getInstance().getUserAgent()));
         createTokenResponse = (CreateTokenResponse) labTabResponse.getResponse();
     }
 
@@ -36,7 +37,7 @@ public class LabListApiTest implements LabTabConstants{
         LabTabResponse listLabTabResponse = ConnectionUtil.execute(labTabApiInterface.returnPrograms(
                 createTokenResponse.getToken(),
                 createTokenResponse.getMember_id(),
-                "2013/01/01", "2016/12/31"));
+                "2013/01/01", "2016/12/31",LabTabApplication.getInstance().getUserAgent()));
         Assert.assertNotNull(listLabTabResponse);
         Assert.assertTrue("Labs are there", ((ArrayList<ProgramOrLab>) listLabTabResponse.getResponse()).size() > 0);
         Assert.assertTrue("Labs are there", listLabTabResponse.getResponseCode() == StatusCode.OK);
@@ -48,7 +49,7 @@ public class LabListApiTest implements LabTabConstants{
         LabTabResponse listLabTabResponse = ConnectionUtil.execute(labTabApiInterface.returnPrograms(
                 createTokenResponse.getToken() + "k",
                 createTokenResponse.getMember_id(),
-                "2013/01/01", "2016/12/31"));
+                "2013/01/01", "2016/12/31",LabTabApplication.getInstance().getUserAgent()));
         Assert.assertNotNull(listLabTabResponse);
         Assert.assertTrue("Labs are not there", listLabTabResponse.getResponseCode() == LabTabConstants.StatusCode.UNAUTHORIZED);
     }

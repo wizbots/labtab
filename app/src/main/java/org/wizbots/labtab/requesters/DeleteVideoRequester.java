@@ -3,6 +3,9 @@ package org.wizbots.labtab.requesters;
 import android.graphics.Path;
 import android.provider.MediaStore;
 import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -34,6 +37,7 @@ public class DeleteVideoRequester implements Runnable {
 
     @Override
     public void run() {
+        Log.d(TAG, "DeleteVideoRequester Request");
         Video vd  = VideoTable.getInstance().getVideoById(mVideo.getId());
         int statusCode = 0;
         LabTabResponse<String> programsOrLabs = LabTabHTTPOperationController.deleteVideo(mVideo.getVideoId());
@@ -47,6 +51,7 @@ public class DeleteVideoRequester implements Runnable {
                 VideoTable.getInstance().deleteVideoById(mVideo.getId());
                 deleteVideoFileFromStorage();
             }
+            Log.d(TAG, "DeleteVideoRequester Success, Response Code : " + statusCode + " DeleteVideoRequester response: " + new Gson().toJson(programsOrLabs.getResponse()));
         } else {
             if(vd.getVideoId() == null || vd.getVideoId().isEmpty()){
                 VideoTable.getInstance().deleteVideoById(mVideo.getId());
@@ -55,7 +60,7 @@ public class DeleteVideoRequester implements Runnable {
             }
             deleteVideoFileFromStorage();
             statusCode = HttpURLConnection.HTTP_NO_CONTENT;
-
+            Log.d(TAG, "DeleteVideoRequester Failed, Response Code : " + statusCode);
         }
         SyncManager.getInstance().onRefreshData(2);
         for (OnDeleteVideoListener listener : LabTabApplication.getInstance().getUIListeners(OnDeleteVideoListener.class)) {

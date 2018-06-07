@@ -2,6 +2,8 @@ package org.wizbots.labtab;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -26,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -315,10 +318,10 @@ public class LabTabApplication extends Application {
         return knowledgeNuggets;
     }
 
-    public HashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList, String[] selected) {
+    public LinkedHashMap<String, ArrayList<Nuggests>> getKnowledgeNuggetHashsByStudent(ArrayList<Student> studentList, String[] selected) {
 //        String[] knowledgeNuggets = null;
         //      Set<String> kn = new HashSet<>();
-        HashMap<String, ArrayList<Nuggests>> list = new HashMap<>();
+        LinkedHashMap<String, ArrayList<Nuggests>> list = new LinkedHashMap<>();
         ArrayList<Nuggests> knStudent = new ArrayList<>();
         if (metaDatas == null || studentList == null || studentList.isEmpty()) {
             return null;
@@ -403,5 +406,20 @@ public class LabTabApplication extends Application {
 
     public int getSkippedProjects() {
         return countSkippedProjects;
+    }
+
+    //Labtab Android/<Version Name> (Version Code: <>)
+    public String getUserAgent(){
+        String versionName = null;
+        String versionCode = null;
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = pInfo.versionName;
+            versionCode = String.valueOf(pInfo.versionCode);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "Labtab Android/"+versionName+" (Version Code: "+versionCode+")";
     }
 }

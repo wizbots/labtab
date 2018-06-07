@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.craterzone.logginglib.manager.LoggerManager;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -33,6 +36,7 @@ import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.io.File;
 import java.net.HttpURLConnection;
 
 public class LoginFragment extends ParentFragment implements View.OnClickListener, CreateTokenListener, GetMentorProfileListener {
@@ -104,6 +108,18 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
                     handled = true;
                 }
                 return handled;
+            }
+        });
+
+        labTabHeaderLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                String filePath = LoggerManager.getInstance(getActivity()).getDiagnosticsFilePath();
+                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setType("*/*");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                startActivity(Intent.createChooser(shareIntent, "send logs"));
+                return false;
             }
         });
 

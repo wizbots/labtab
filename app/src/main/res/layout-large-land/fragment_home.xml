@@ -39,7 +39,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/go_to_image"
                         android:padding="@dimen/large_padding"
-                        android:src="@drawable/ic_home_button_go_to_web" />
+                        android:src="@drawable/ic_home_button_binder" />
                 </LinearLayout>
 
                 <org.wizbots.labtab.customview.TextViewCustom
@@ -47,7 +47,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:text="@string/go_to_www_wizbots_com"
+                    android:text="@string/BINDER"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_small"
                     app:font="@string/font_pt_sans_narrow_bold" />

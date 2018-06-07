@@ -3,6 +3,7 @@ package org.wizbots.labtab.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.craterzone.logginglib.manager.LoggerManager;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -34,6 +38,7 @@ import org.wizbots.labtab.fragment.ListOfSkipsFragment;
 import org.wizbots.labtab.fragment.LoginFragment;
 import org.wizbots.labtab.fragment.MentorProfileFragment;
 import org.wizbots.labtab.fragment.ParentFragment;
+import org.wizbots.labtab.fragment.PdfBinder;
 import org.wizbots.labtab.fragment.StudentLabDetailsFragment;
 import org.wizbots.labtab.fragment.StudentProfileFragment;
 import org.wizbots.labtab.fragment.StudentStatsDetailsFragment;
@@ -42,6 +47,8 @@ import org.wizbots.labtab.fragment.ViewVideoFragment;
 import org.wizbots.labtab.model.LeftDrawerItem;
 import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.service.LabTabSyncService;
+
+import java.io.File;
 
 public class HomeActivity extends ParentActivity implements View.OnClickListener {
 
@@ -83,15 +90,18 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         }
                         break;
                     case 2:
-                        replaceFragment(Fragments.LAB_LIST, new Bundle());
+                        replaceFragment(Fragments.BINDER, new Bundle());
                         break;
                     case 3:
-                        replaceFragment(Fragments.VIDEO_LIST, new Bundle());
+                        replaceFragment(Fragments.LAB_LIST, new Bundle());
                         break;
                     case 4:
-                        replaceFragment(Fragments.ADD_VIDEO, new Bundle());
+                        replaceFragment(Fragments.VIDEO_LIST, new Bundle());
                         break;
                     case 5:
+                        replaceFragment(Fragments.ADD_VIDEO, new Bundle());
+                        break;
+                    case 6:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
                         ActivityCompat.finishAffinity(HomeActivity.this);
                         Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
@@ -116,12 +126,14 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[5];
+        LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[6];
         leftDrawerItem[0] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, DrawerItem.ITEM_GO_TO);
-        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, DrawerItem.ITEM_LAB_LIST);
-        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, DrawerItem.ITEM_VIDEO_LIST);
-        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_upload_video, DrawerItem.ITEM_ADD_VIDEO);
-        leftDrawerItem[4] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
+        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_binder, DrawerItem.ITEM_BINDER);
+        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, DrawerItem.ITEM_LAB_LIST);
+        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, DrawerItem.ITEM_VIDEO_LIST);
+        leftDrawerItem[4] = new LeftDrawerItem(R.drawable.ic_upload_video, DrawerItem.ITEM_ADD_VIDEO);
+        leftDrawerItem[5] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -140,6 +152,19 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 }, 400);
             }
         });
+
+        myHeader.findViewById(R.id.header_left_drawer).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                String filePath = LoggerManager.getInstance(HomeActivity.this).getDiagnosticsFilePath();
+                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setType("*/*");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                startActivity(Intent.createChooser(shareIntent, "send logs"));
+                return false;
+            }
+        });
+
 
         LeftDrawerAdapter adapter = new LeftDrawerAdapter(this, R.layout.item_left_drawer, leftDrawerItem);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -236,7 +261,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             case Fragments.VIEW_VIDEO:
                 fragment = new ViewVideoFragment();
                 break;
-
+            case Fragments.BINDER:
+                fragment = new PdfBinder();
+                break;
         }
         fragment.setArguments(bundle);
         try {
@@ -267,6 +294,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
             } else if (fragment.getFragmentName().equalsIgnoreCase("LabListFragment")) {
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.addToBackStack(null);
+            } else if (fragment.getFragmentName().equalsIgnoreCase("PdfBinder")) {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
             } else {

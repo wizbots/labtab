@@ -162,6 +162,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season))));
         spinnerYear.setAdapter(new SpinnerAdapter(homeActivityContext,
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year))));
+        spinnerYear.setSelection(8);
+        spinnerSeason.setSelection(4);
         spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);

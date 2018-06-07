@@ -2,6 +2,7 @@ package org.wizbots.labtab.fragment;
 
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,9 +11,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -22,6 +26,7 @@ import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.adapter.LabDetailsAdapter;
+import org.wizbots.labtab.adapter.SelectedStudentAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.customview.TextViewCustom;
@@ -48,6 +53,7 @@ import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -68,7 +74,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     private RecyclerView recyclerViewLabDetails;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
     private HomeActivity homeActivityContext;
-    private ImageView calendarImageView;
+//    private ImageView calendarImageView;
     private DatePickerDialog datePickerDialog;
     private ProgramOrLab programOrLab;
     private Program program;
@@ -78,7 +84,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             roomTextViewCustom, gradesTextViewCustom, priceTextViewCustom,
             fromTextViewCustom, toTextViewCustom, timeSlotTextViewCustom, dayTextViewCustom;
     private TextView markAbsentTextView, promoteTextView, demoteTextView;
-    private CheckBox checkBoxSendNotification;
+//    private CheckBox checkBoxSendNotification;
     private Date dateSelected;
     boolean status[];
 
@@ -130,7 +136,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         markAbsentTextView = (TextView) rootView.findViewById(R.id.tv_mark_absent);
         demoteTextView = (TextView) rootView.findViewById(R.id.tv_promote);
         promoteTextView = (TextView) rootView.findViewById(R.id.tv_demote);
-        checkBoxSendNotification = (CheckBox) rootView.findViewById(R.id.cb_send_absent_notification);
+//        checkBoxSendNotification = (CheckBox) rootView.findViewById(R.id.cb_send_absent_notification);
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_DETAILS);
@@ -152,9 +158,9 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         rootView.findViewById(R.id.btn_additional).setOnClickListener(this);
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
 
-        calendarImageView = (ImageView) rootView.findViewById(R.id.iv_calendar);
-
-        calendarImageView.setOnClickListener(this);
+//        calendarImageView = (ImageView) rootView.findViewById(R.id.iv_calendar);
+//
+//        calendarImageView.setOnClickListener(this);
         boolean isNetwork = LabTabApplication.getInstance().isNetworkAvailable();
         program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
         if (!isNetwork && program == null) {
@@ -227,27 +233,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     private void showCalendar() {
-        final Calendar myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                if (LabTabUtil.isValidDateSelection(calendar.getTime())) {
-                    dateSelected = calendar.getTime();
-                } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY);
-                }
             }
-
-        };
-        new DatePickerDialog(homeActivityContext,
-                date, myCalendar.get(Calendar.YEAR),
-                myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-    }
 
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(GetProgramStudentsListener.class, this);
@@ -347,6 +333,81 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         dayTextViewCustom.setText(LabTabUtil.getFormattedDate(DateFormat.DEFAULT, new Date()));
     }
 
+    private void showMarkAbsentDialog(final ArrayList<Student> studentArrayList) {
+        final Dialog dialog = new Dialog(context);
+
+        dialog.setContentView(R.layout.dialog_mark_absent);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+//        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        lp.height = getResources().getDimensionPixelOffset(R.dimen.login_container_width);
+        lp.gravity = Gravity.CENTER;
+
+        dialog.getWindow().setAttributes(lp);
+        dialog.setTitle(R.string.mark_absent);
+
+        dateSelected = Calendar.getInstance().getTime();
+        final TextViewCustom tvMarkAbsentOn = (TextViewCustom) dialog.findViewById(R.id.tv_mark_absent_on);
+
+        tvMarkAbsentOn.setText(getString(R.string.mark_absence_for_the_selected_kids_on)+" "+new SimpleDateFormat("dd MMM, yyy").format(dateSelected));
+        ImageView calender = (ImageView) dialog.findViewById(R.id.iv_calendar);
+        RecyclerView selectedStudentList = (RecyclerView) dialog.findViewById(R.id.selected_student_list);
+        selectedStudentList.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        selectedStudentList.setAdapter(new SelectedStudentAdapter(studentArrayList,getActivity()));
+        final CheckBox cbSendAbsentNotification = (CheckBox) dialog.findViewById(R.id.cb_send_absent_notification);
+        Button confirm = (Button) dialog.findViewById(R.id.bt_confirm);
+        Button cancel = (Button) dialog.findViewById(R.id.bt_cancel);
+
+        calender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar myCalendar = Calendar.getInstance();
+                final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        if (LabTabUtil.isValidDateSelection(calendar.getTime())) {
+                            dateSelected = calendar.getTime();
+                            tvMarkAbsentOn.setText(getString(R.string.mark_absence_for_the_selected_kids_on)+" "+new SimpleDateFormat("dd MMM, yyy").format(dateSelected));
+                        } else {
+                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY);
+                        }
+                    }
+
+                };
+                new DatePickerDialog(homeActivityContext,
+                        date, myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressDialog.show();
+                BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
+                        LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, dateSelected),
+                        program,
+                        cbSendAbsentNotification.isChecked()));
+                dialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
+
+
+
     @Override
     public void onClick(View v) {
         switch ((v.getId())) {
@@ -355,23 +416,25 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
                     ArrayList<Student> studentArrayList = getSelectedStudents();
                     if (!studentArrayList.isEmpty()) {
-                        if (dateSelected == null) {
-                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_DATE_FIRST);
-                            return;
-                        }
-                        if (dateSelected != null) {
-                            progressDialog.show();
-                            BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
-                                    LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, dateSelected),
-                                    program,
-                                    checkBoxSendNotification.isChecked()));
-                        } else {
-                            progressDialog.show();
-                            BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
-                                    LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, new Date()),
-                                    program,
-                                    checkBoxSendNotification.isChecked()));
-                        }
+                        showMarkAbsentDialog(studentArrayList);
+//                        if (dateSelected == null) {
+//                            showMarkAbsentDialog(studentArrayList);
+//                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_DATE_FIRST);
+//                            return;
+//                        }
+//                        if (dateSelected != null) {
+//                            progressDialog.show();
+//                            BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
+//                                    LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, dateSelected),
+//                                    program,
+//                                    checkBoxSendNotification.isChecked()));
+//                        } else {
+//                            progressDialog.show();
+//                            BackgroundExecutor.getInstance().execute(new MarkStudentAbsentRequester(studentArrayList,
+//                                    LabTabUtil.getFormattedDate(DateFormat.YYYYMMDD, new Date()),
+//                                    program,
+//                                    checkBoxSendNotification.isChecked()));
+//                        }
                     } else {
                         progressDialog.dismiss();
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_AT_LEAST_ONE_STUDENT_TO_MARK_ABSENT);

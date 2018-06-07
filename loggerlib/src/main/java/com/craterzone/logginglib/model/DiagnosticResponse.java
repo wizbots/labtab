@@ -10,7 +10,6 @@ public class DiagnosticResponse {
     }
 
     public int getStatusCode() {
-
         return statusCode;
     }
 

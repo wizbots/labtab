@@ -56,6 +56,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.activity.TrimmerActivity;
@@ -90,13 +91,16 @@ import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -373,6 +377,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 break;
             case R.id.btn_create:
 
+                Log.v(LabTabConstants.VIDEO_LOGS_TAG,"on create button clicked. "+"Device time - "+java.text.DateFormat.getDateTimeInstance().format(new Date()));
+
                 if (titleEditTextCustom.getText().toString().length() == 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
                     break;
@@ -420,6 +426,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     break;
                 }*/
                 //Project_Name.SKU.NamesOfKidsInCamelCaseEach
+
                 CreateProjectRequest createProjectRequest = new CreateProjectRequest();
                 createProjectRequest.setId(Calendar.getInstance().getTimeInMillis() + "");
                 createProjectRequest.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
@@ -1229,7 +1236,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
         dialog1.getWindow().setAttributes(lp);
         dialog1.setTitle("Select Knowledge Nuggets");
-        HashMap<String, ArrayList<Nuggests>> list;
+        LinkedHashMap<String, ArrayList<Nuggests>> list;
         String[] a = convertTextToModel();
 
         list = LabTabApplication.getInstance().getKnowledgeNuggetHashsByStudent(creatorsSelected, a);

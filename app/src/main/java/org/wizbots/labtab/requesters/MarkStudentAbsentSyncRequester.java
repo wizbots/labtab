@@ -1,5 +1,10 @@
 package org.wizbots.labtab.requesters;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramAbsencesTable;
@@ -9,6 +14,7 @@ import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.service.LabTabSyncService;
 
 public class MarkStudentAbsentSyncRequester implements Runnable, LabTabConstants {
+    private final static String TAG = MarkStudentAbsentSyncRequester.class.getSimpleName();
     private LabTabSyncService labTabSyncService;
     private Absence absence;
     private String date;
@@ -29,15 +35,19 @@ public class MarkStudentAbsentSyncRequester implements Runnable, LabTabConstants
 
     @Override
     public void run() {
-        LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(absence.getStudent_id()), date, absence.getProgram_id(), sendNotification);
+        Log.d(TAG, "markStudentAbsentResponse Request");
+        LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(absence.getStudent_id()), date, absence.getProgram_id(), sendNotification, LabTabApplication.getInstance().getUserAgent());
         if (markStudentAbsentResponse != null) {
             if (markStudentAbsentResponse.getResponseCode() == StatusCode.OK) {
                 markStudentsAbsent(SyncStatus.SYNCED, absence);
+                Log.d(TAG, "markStudentAbsentResponse Success, Response Code : " + markStudentAbsentResponse.getResponseCode() + " markStudentAbsentResponse  response: " + new Gson().toJson(markStudentAbsentResponse.getResponse()));
             } else {
                 markStudentsAbsent(SyncStatus.NOT_SYNCED, absence);
+                Log.d(TAG, "markStudentAbsentResponse Failed, Response Code : " + markStudentAbsentResponse.getResponseCode());
             }
         } else {
             markStudentsAbsent(SyncStatus.NOT_SYNCED, absence);
+            Log.d(TAG, "markStudentAbsentResponse Failed, Response Code : " + markStudentAbsentResponse.getResponseCode());
         }
         labTabSyncService.onMarkAbsentCompleted(position);
     }

@@ -2,6 +2,8 @@ package org.wizbots.labtab.requesters;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -10,7 +12,6 @@ import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.retrofit.LabTabResponse;
-
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +37,9 @@ public class FilterRequester implements Runnable {
 
     @Override
     public void run() {
+
+        Log.d(TAG, "programsOrLabs Request");
+
         int statusCode = 0;
         LabTabResponse<ArrayList<ProgramOrLab>> programsOrLabs = LabTabHTTPOperationController.getFilter(params);
         if (programsOrLabs != null) {
@@ -51,6 +55,7 @@ public class FilterRequester implements Runnable {
                 programOrLab.setStartTimeStamp(LabTabUtil.getTimeStamp(programOrLab.getStarts()));
                 programOrLab.setEndTimesStamp(LabTabUtil.getTimeStamp(programOrLab.getEnds()));
             }*/
+            Log.d(TAG, "programsOrLabs Success, Response Code : " + statusCode + " programsOrLabs response: " + new Gson().toJson(programsOrLabs.getResponse()));
         } else {
             //Offline data filter
             Log.d(TAG, "User is offline , filter data locally");
@@ -59,6 +64,7 @@ public class FilterRequester implements Runnable {
             programOrLabArrayList.addAll(ProgramsOrLabsTable
                     .getInstance()
                     .getFilteredData(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id(), params));
+            Log.d(TAG, "programsOrLabs Failed, Response Code : " + statusCode );
         }
         if (programOrLabArrayList != null){
             Collections.sort(programOrLabArrayList, CHAT_COMPARATOR);

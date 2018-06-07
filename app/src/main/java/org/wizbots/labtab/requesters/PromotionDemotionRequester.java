@@ -1,5 +1,9 @@
 package org.wizbots.labtab.requesters;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -16,7 +20,7 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.util.ArrayList;
 
 public class PromotionDemotionRequester implements Runnable, LabTabConstants {
-
+    private final String TAG = PromotionDemotionRequester.class.getSimpleName();
     private ArrayList<Student> studentArrayList;
     private Program program;
     private boolean promoteDemote;
@@ -60,25 +64,30 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                 break;
             }
         } else {
-            LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote);
+            Log.d(TAG, "promoteDemoteResponse Request");
+            LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote,LabTabApplication.getInstance().getUserAgent());
             if (promoteDemoteResponse != null) {
                 for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
                     if (promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
                         promoteDemoteStudents(promoteDemoteResponse.getResponse().getStudents());
                         promotionDemotionListener.promotionDemotionSuccessful(studentArrayList, program, promoteDemote);
+                        Log.d(TAG, "promoteDemoteResponse Success, Response Code : " + promoteDemoteResponse.getResponseCode() + " promoteDemoteResponse response: " + new Gson().toJson(promoteDemoteResponse.getResponse()));
                         break;
                     } else {
                         promoteDemoteStudentsList();
                         promotionDemotionListener.promotionDemotionUnSuccessful(promoteDemoteResponse.getResponseCode(), studentArrayList, program, promoteDemote);
+                        Log.d(TAG, "promoteDemoteResponse Failed, Response Code : " + promoteDemoteResponse.getResponseCode());
                         break;
                     }
                 }
+
             } else {
                 for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
                     promoteDemoteStudentsList();
                     promotionDemotionListener.promotionDemotionUnSuccessful(0, studentArrayList, program, promoteDemote);
                     break;
                 }
+                Log.d(TAG, "promoteDemoteResponse Failed, Response Code : " + promoteDemoteResponse.getResponseCode());
             }
         }
     }

@@ -100,7 +100,7 @@ public class LoggerManager {
                 logDir.mkdirs();
             }
 
-            fileHandlerInXMLFormat = new FileHandler(logDir.getAbsolutePath() + "/logFile%g.txt", FILE_SIZE, TOTAL_FILE, true);
+            fileHandlerInXMLFormat = new FileHandler(logDir.getAbsolutePath() + "/LabtabLogs%g.txt", FILE_SIZE, TOTAL_FILE, true);
             fileHandlerInXMLFormat.setFormatter(new CustomLoggerFormatter());
             readLogcat(fileHandlerInXMLFormat);
             log.addHandler(fileHandlerInXMLFormat);

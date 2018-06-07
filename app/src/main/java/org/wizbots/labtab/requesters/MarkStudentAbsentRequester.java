@@ -1,5 +1,9 @@
 package org.wizbots.labtab.requesters;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -17,6 +21,9 @@ import org.wizbots.labtab.service.SyncManager;
 import java.util.ArrayList;
 
 public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
+
+    private final static String TAG = MarkStudentAbsentRequester.class.getSimpleName();
+
     private ArrayList<Student> studentArrayList;
     private String date;
     private Program program;
@@ -35,37 +42,42 @@ public class MarkStudentAbsentRequester implements Runnable, LabTabConstants {
 
     @Override
     public void run() {
+        Log.d(TAG, "markStudentAbsentResponse Request");
         ArrayList<Absence> checkAbsence = new ArrayList<>();
         for (Student student : studentArrayList) {
             checkAbsence.addAll(ProgramAbsencesTable.getInstance().findAbsencesForSpecificDate(date, student.getStudent_id()));
         }
         if (checkAbsence.size() == studentArrayList.size()) {
             for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
-                if(studentArrayList.size() == 1)
+                if (studentArrayList.size() == 1)
                     markStudentAbsentListener.markAbsentUnSuccessful(1001);
                 else
                     markStudentAbsentListener.markAbsentUnSuccessful(1002);
                 break;
             }
         } else {
-        LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(), date, program.getId(), sendNotification);
-        if (markStudentAbsentResponse != null) {
-            for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
-                if (markStudentAbsentResponse.getResponseCode() == StatusCode.OK) {
-                    markStudentsAbsent(SyncStatus.SYNCED);
-                    markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
-                } else {
-                    markStudentsAbsent(SyncStatus.NOT_SYNCED);
-                    markStudentAbsentListener.markAbsentUnSuccessful(markStudentAbsentResponse.getResponseCode());
+            LabTabResponse<MarkStudentAbsentResponse> markStudentAbsentResponse = LabTabHTTPOperationController.markStudentAbsents(getStudents(), date, program.getId(), sendNotification, LabTabApplication.getInstance().getUserAgent());
+            if (markStudentAbsentResponse != null) {
+                for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
+                    if (markStudentAbsentResponse.getResponseCode() == StatusCode.OK) {
+                        markStudentsAbsent(SyncStatus.SYNCED);
+                        markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
+                        Log.d(TAG, "markStudentAbsentResponse Success, Response Code : " + markStudentAbsentResponse.getResponseCode() + " markStudentAbsentResponse  response: " + new Gson().toJson(markStudentAbsentResponse.getResponse()));
+                    } else {
+                        markStudentsAbsent(SyncStatus.NOT_SYNCED);
+                        markStudentAbsentListener.markAbsentUnSuccessful(markStudentAbsentResponse.getResponseCode());
+                        Log.d(TAG, "markStudentAbsentResponse Failed, Response Code : " + markStudentAbsentResponse.getResponseCode());
+                    }
                 }
-            }
-        } else {
-            for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
-                markStudentsAbsent(SyncStatus.NOT_SYNCED);
+            } else {
+                for (MarkStudentAbsentListener markStudentAbsentListener : LabTabApplication.getInstance().getUIListeners(MarkStudentAbsentListener.class)) {
+                    markStudentsAbsent(SyncStatus.NOT_SYNCED);
 //                markStudentAbsentListener.markAbsentUnSuccessful(0);
-                markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
+                    markStudentAbsentListener.markAbsentSuccessful(studentArrayList, date);
+                }
+                Log.d(TAG, "markStudentAbsentResponse Failed, Response Code : " + markStudentAbsentResponse.getResponseCode());
             }
-        }}
+        }
     }
 
 

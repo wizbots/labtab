@@ -33,6 +33,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // Global variables
     // Define a variable to contain a content resolver instance
     ContentResolver mContentResolver;
+
     /**
      * Set up the sync adapter
      */
@@ -44,6 +45,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          */
         mContentResolver = context.getContentResolver();
     }
+
     /**
      * Set up the sync adapter. This form of the
      * constructor maintains compatibility with Android 3.0
@@ -63,24 +65,24 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        Log.d(TAG,"sync is running======>>>>>>>>>>>");
+        Log.d(TAG, "sync is running======>>>>>>>>>>>");
 /*        syncWizchips();
         syncVideoToBeDeleted();*/
     }
 
-    private void syncWizchips(){
-        if(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null){
+    private void syncWizchips() {
+        if (LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null) {
             return;
         }
         ArrayList<Student> list = ProgramStudentsTable.getInstance().getUnSyncData();
-        if(list != null && !list.isEmpty()){
-            for (Student student: list) {
+        if (list != null && !list.isEmpty()) {
+            for (Student student : list) {
                 int count = student.getWizchips() + student.getOfflinewizchips();
                 if (student.getWizchips() > count) {
-                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(student.getProgram_id(),student.getStudent_id(), (-(student.getOfflinewizchips()))));
-                }else {
-                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(student.getProgram_id(),student.getStudent_id(), student.getOfflinewizchips()));
-                //!=@todo
+                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(student.getProgram_id(), student.getStudent_id(), (-(student.getOfflinewizchips())), true));
+                } else {
+                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(student.getProgram_id(), student.getStudent_id(), student.getOfflinewizchips(), true));
+                    //!=@todo
                 }
 
             }
@@ -88,7 +90,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncVideoToBeDeleted() {
-        if(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null){
+        if (LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor() == null) {
             return;
         }
         ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideosToBeDeleted();

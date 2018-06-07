@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pdf_files">
+        <item>Contact List Summer 2018</item>
+        <item>Camp Logistics Checklist</item>
+        <item>Injury Protocol Checklist</item>
+        <item>Fire - Earthquake Safety Procedures</item>
+        <item>Classroom Management</item>
+        <item>Equipment Protocol Checklist</item>
+        <item>PlayStation Controllers Troubleshooting</item>
+        <item>WizQuizes &amp; Answers</item>
+        <item>Working with Children with Developmental Disabilities</item>
+        <item>Understanding Autism and Developmental Disorders</item>
+        <item>Success Criteria Checklist</item>
+    </string-array>
+
+
+</resources>
