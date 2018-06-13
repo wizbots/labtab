@@ -757,7 +757,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             if (status[i]) {
                 ((Student) objectArrayList.get(i)).setCheck(status[i]);
             }
-
         }
     }
 }
