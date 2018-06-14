@@ -783,10 +783,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         for(int i =0; i<objectArrayList.size();i++){
             ((Student)objectArrayList.get(i)).setCheck(false);
         }
-
         maintnedCheckedStudentsStatus();
         labDetailsAdapter.notifyDataSetChanged();
-
     }
-
 }
