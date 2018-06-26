@@ -33,7 +33,7 @@
                     android:text="@string/project_editor"
                     android:textColor="@color/purple"
                     android:textSize="@dimen/text_size_large"
-                    app:font="@string/font_pt_sans_narrow_regular" />
+                    app:fontName="@string/font_pt_sans_narrow_regular" />
 
                 <LinearLayout
                     android:id="@+id/ll_close"
@@ -80,7 +80,7 @@
                             android:textColor="@color/light_blue"
                             android:textSize="@dimen/text_size_extra_large"
                             android:visibility="visible"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                         <ImageView
                             android:id="@+id/iv_video_thumbnail"
@@ -115,7 +115,7 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
 
-                            app:font="@string/font_pt_sans_narrow_bold" />
+                            app:fontName="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
                             android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
                             android:text="*"
                             android:textColor="@color/white"
                             android:textSize="36sp"
-                            app:font="@string/font_pt_sans_narrow_bold" />
+                            app:fontName="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.EditTextCustom
                             android:id="@+id/edt_title"
@@ -159,7 +159,7 @@
                             android:text="@string/category"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
-                            app:font="@string/font_pt_sans_narrow_bold" />
+                            app:fontName="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
                             android:layout_width="wrap_content"
@@ -169,7 +169,7 @@
                             android:text="*"
                             android:textColor="@color/white"
                             android:textSize="36sp"
-                            app:font="@string/font_pt_sans_narrow_bold" />
+                            app:fontName="@string/font_pt_sans_narrow_bold" />
 
                         <Spinner
                             android:id="@+id/spinner_category"
@@ -204,7 +204,7 @@
                                 android:text="Mentor"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_extra_extra_small"
-                                app:font="@string/font_pt_sans_narrow_bold" />
+                                app:fontName="@string/font_pt_sans_narrow_bold" />
 
                             <org.wizbots.labtab.customview.TextViewCustom
                                 android:id="@+id/tv_mentor_name"
@@ -232,7 +232,7 @@
                                 android:text="Lab SKU:"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_extra_extra_small"
-                                app:font="@string/font_pt_sans_narrow_bold" />
+                                app:fontName="@string/font_pt_sans_narrow_bold" />
 
                             <org.wizbots.labtab.customview.TextViewCustom
                                 android:id="@+id/tv_lab_sku"
@@ -281,7 +281,7 @@
                                 android:text="@string/project_creators"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_extra_extra_small"
-                                app:font="@string/font_pt_sans_narrow_bold" />
+                                app:fontName="@string/font_pt_sans_narrow_bold" />
 
                             <org.wizbots.labtab.customview.EditTextCustom
                                 android:id="@+id/edt_project_creators"
@@ -323,7 +323,7 @@
                         android:text="*"
                         android:textColor="@color/white"
                         android:textSize="36sp"
-                        app:font="@string/font_pt_sans_narrow_bold" />
+                        app:fontName="@string/font_pt_sans_narrow_bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -385,7 +385,7 @@
                         android:text="@string/description"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_extra_extra_small"
-                        app:font="@string/font_pt_sans_narrow_bold" />
+                        app:fontName="@string/font_pt_sans_narrow_bold" />
 
                     <org.wizbots.labtab.customview.EditTextCustom
                         android:id="@+id/edt_description"
@@ -419,7 +419,7 @@
                         android:text="@string/knowledge_nuggets"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_extra_extra_small"
-                        app:font="@string/font_pt_sans_narrow_bold" />
+                        app:fontName="@string/font_pt_sans_narrow_bold" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/edt_knowledge_nuggets"
@@ -451,7 +451,7 @@
                         android:text="@string/notes_to_the_family"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_extra_extra_small"
-                        app:font="@string/font_pt_sans_narrow_bold" />
+                        app:fontName="@string/font_pt_sans_narrow_bold" />
 
                     <org.wizbots.labtab.customview.EditTextCustom
                         android:id="@+id/edt_notes_to_the_family"
@@ -489,7 +489,7 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
                             android:visibility="gone"
-                            app:font="@string/font_pt_sans_narrow_bold" />
+                            app:fontName="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.ButtonCustom
                             android:id="@+id/btn_delete"
@@ -502,7 +502,7 @@
                             android:text="@string/delete"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
-                            app:font="@string/font_pt_sans_narrow_bold" />
+                            app:fontName="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.ButtonCustom
                             android:id="@+id/btn_save"
@@ -515,7 +515,7 @@
                             android:text="@string/save"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
-                            app:font="@string/font_pt_sans_narrow_bold" />
+                            app:fontName="@string/font_pt_sans_narrow_bold" />
 
                         <org.wizbots.labtab.customview.ButtonCustom
                             android:id="@+id/btn_cancel"
@@ -527,7 +527,7 @@
                             android:text="@string/cancel"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_extra_extra_small"
-                            app:font="@string/font_pt_sans_narrow_bold" />
+                            app:fontName="@string/font_pt_sans_narrow_bold" />
                     </LinearLayout>
                 </RelativeLayout>
 

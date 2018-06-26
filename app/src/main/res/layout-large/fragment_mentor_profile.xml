@@ -55,7 +55,7 @@
                             android:text="@string/mentor_s_photo"
                             android:textColor="@color/light_blue"
                             android:textSize="@dimen/text_size_extra_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />-->
+                            app:fontName="@string/font_pt_sans_narrow_regular" />-->
                     </LinearLayout>
                 </LinearLayout>
 
@@ -83,7 +83,7 @@
                             android:text="@string/first_name"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
                             android:id="@+id/tv_first_name"
@@ -99,7 +99,7 @@
                             android:text="@string/dummy_text"
 
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     </LinearLayout>
 
@@ -120,7 +120,7 @@
                             android:text="@string/last_name"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
                             android:id="@+id/tv_last_name"
@@ -136,7 +136,7 @@
                             android:text="@string/dummy_text"
 
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     </LinearLayout>
 
@@ -157,7 +157,7 @@
                             android:text="@string/email"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
                             android:id="@+id/tv_email"
@@ -173,7 +173,7 @@
                             android:text="@string/dummy_text"
 
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     </LinearLayout>
 
@@ -194,7 +194,7 @@
                             android:text="@string/username"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                         <org.wizbots.labtab.customview.TextViewCustom
                             android:id="@+id/tv_username"
@@ -210,7 +210,7 @@
                             android:text="@string/dummy_text"
 
                             android:textSize="@dimen/text_size_small"
-                            app:font="@string/font_pt_sans_narrow_regular" />
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -238,7 +238,7 @@
                         android:text="@string/gender"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/tv_gender"
@@ -254,7 +254,7 @@
                         android:text="@string/dummy_text"
 
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                 </LinearLayout>
 
@@ -275,7 +275,7 @@
                         android:text="@string/state"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/tv_state"
@@ -291,7 +291,7 @@
                         android:text="@string/dummy_text"
 
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                 </LinearLayout>
 
@@ -312,7 +312,7 @@
                         android:text="@string/street_address"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/tv_state_address"
@@ -328,7 +328,7 @@
                         android:text="@string/dummy_text"
 
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                 </LinearLayout>
 
@@ -349,7 +349,7 @@
                         android:text="@string/city"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/tv_city"
@@ -365,7 +365,7 @@
                         android:text="@string/dummy_text"
 
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                 </LinearLayout>
 
@@ -386,7 +386,7 @@
                         android:text="@string/zip_code"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/tv_zip_code"
@@ -402,7 +402,7 @@
                         android:text="@string/dummy_text"
 
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                 </LinearLayout>
 
@@ -423,7 +423,7 @@
                         android:text="@string/phone_1"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/tv_phone1"
@@ -439,7 +439,7 @@
                         android:text="@string/dummy_text"
 
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                 </LinearLayout>
 
@@ -460,7 +460,7 @@
                         android:text="@string/phone_2"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                     <org.wizbots.labtab.customview.TextViewCustom
                         android:id="@+id/tv_phone2"
@@ -476,7 +476,7 @@
                         android:text="@string/dummy_text"
 
                         android:textSize="@dimen/text_size_small"
-                        app:font="@string/font_pt_sans_narrow_regular" />
+                        app:fontName="@string/font_pt_sans_narrow_regular" />
 
                 </LinearLayout>
             </LinearLayout>

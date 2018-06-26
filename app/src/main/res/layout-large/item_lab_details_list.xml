@@ -38,7 +38,7 @@
             android:lines="2"
             android:text="@string/student_name"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -75,7 +75,7 @@
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
 
     </LinearLayout>
@@ -95,7 +95,7 @@
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -115,7 +115,7 @@
             android:paddingLeft="5dp"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -135,7 +135,7 @@
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -155,7 +155,7 @@
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -175,7 +175,7 @@
             android:gravity="center"
             android:text="@string/_100"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
 
     </LinearLayout>
