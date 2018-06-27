@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "486169643273",
+    "firebase_url": "https://labtab987.firebaseio.com",
+    "project_id": "labtab987",
+    "storage_bucket": "labtab987.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486169643273:android:4a4c7a40d9c7f9cd",
+        "android_client_info": {
+          "package_name": "org.wizbots.labtab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486169643273-2l9v6l8pigm1d2otb5n9pr7ov0j9mu2t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.wizbots.labtab",
+            "certificate_hash": "8b7b450c255c14e247e4d96b01cafd656d3e7393"
+          }
+        },
+        {
+          "client_id": "486169643273-oho82g4ahjnnght3uacrpqompeg4qa3p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyA2-M3I7rLuF8GHeBIMTwwnI5nn4-B-Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "486169643273-oho82g4ahjnnght3uacrpqompeg4qa3p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
