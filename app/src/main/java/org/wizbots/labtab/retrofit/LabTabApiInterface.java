@@ -6,6 +6,7 @@ import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.markabsent.MarkStudentAbsentResponse;
 import org.wizbots.labtab.model.metadata.MetaData;
+import org.wizbots.labtab.model.metadata.ProgramMetaData;
 import org.wizbots.labtab.model.program.response.ProgramResponse;
 import org.wizbots.labtab.model.promotedemote.PromotionDemotionResponse;
 import org.wizbots.labtab.model.student.response.StudentResponse;
@@ -122,7 +123,7 @@ public interface LabTabApiInterface {
 
     //   15. Get Project metadata
     @GET("programs/metadata")
-    Call<MetaData[]> getProjectsMetaData(@Header("User-Agent") String userAgent);
+    Call<ProgramMetaData> getProjectsMetaData(@Header("User-Agent") String userAgent);
 
     //    16. Get Location for filter?
     @GET("locations/")

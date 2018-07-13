@@ -174,7 +174,9 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
 
 
     public void prepareCategoryList() {
-        String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
+      //  String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
+        String[] categories = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCategory();
+
         categoryArrayList.addAll(Arrays.asList(categories));
     }
 

@@ -343,8 +343,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     }
 
     public void prepareStudentCategoryList() {
-        String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
+        //String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
+        String[] categories = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCategory();
         categoryArrayList.addAll(Arrays.asList(categories));
+        categoryArrayList.add(0,getString(R.string.select_category));
         if (program != null) {
             creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()));
             projectCreatorAdapter.notifyDataSetChanged();
