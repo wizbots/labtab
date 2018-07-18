@@ -156,6 +156,9 @@
     <string name="BINDER">BINDER</string>
     <string name="File_name">File name</string>
 
+    <string name="select_category">Select Category</string>
+
+
     <string-array name="fruit_array">
         <item>Apple</item>
         <item>Banana</item>
@@ -189,11 +192,11 @@
         <item>challenge</item>
         <item>contraption</item>
         <item>game</item>
-        <item>Theme</item>
-        <item>Mad Lib</item>
-        <item>Players Choice</item>
-        <item>Mentors Choice</item>
-        <item>Skill Drill</item>
+        <!--<item>Theme</item>-->
+        <!--<item>Mad Lib</item>-->
+        <!--<item>Players Choice</item>-->
+        <!--<item>Mentors Choice</item>-->
+        <!--<item>Skill Drill</item>-->
     </string-array>
 
     <string-array name="array_location">

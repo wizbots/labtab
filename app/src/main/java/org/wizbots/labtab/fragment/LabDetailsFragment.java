@@ -417,6 +417,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     ArrayList<Student> studentArrayList = getSelectedStudents();
                     if (!studentArrayList.isEmpty()) {
                         showMarkAbsentDialog(studentArrayList);
+                        unCheckAllStudents();
 //                        if (dateSelected == null) {
 //                            showMarkAbsentDialog(studentArrayList);
 //                            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PLEASE_SELECT_DATE_FIRST);
@@ -452,10 +453,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                             progressDialog.dismiss();
                             notifyLabDetailsAdapter();
                             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_PROMOTED_DEMOTED_BY_ONE_LEVEL);
+                            unCheckAllStudents();
                         } else {
                             BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(promoteStudents,
                                     program,
                                     true));
+                            unCheckAllStudents();
                         }
                     } else {
                         progressDialog.dismiss();
@@ -474,10 +477,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                             progressDialog.dismiss();
                             notifyLabDetailsAdapter();
                             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENT_IS_ALREADY_PROMOTED_DEMOTED_BY_ONE_LEVEL);
+                            unCheckAllStudents();
                         } else {
                             BackgroundExecutor.getInstance().execute(new PromotionDemotionRequester(demoteStudents,
                                     program,
                                     false));
+                            unCheckAllStudents();
                         }
                     } else {
                         progressDialog.dismiss();
@@ -527,6 +532,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     }
                     progressDialog.show();
                     BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
+                    unCheckAllStudents();
                 }
                 break;
             case R.id.tv_minus:
@@ -550,6 +556,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                     progressDialog.show();
                  //   BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
                     BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), selectted, 1));
+                    unCheckAllStudents();
                 }
                 break;
             default:
@@ -571,6 +578,17 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         }
         return studentArrayList;
     }
+
+    private ArrayList<Student> unCheckedAllStudents() {
+        ArrayList<Student> studentArrayList = new ArrayList<>();
+        for (Object object : objectArrayList) {
+            if (((Student) object).isCheck()) {
+                studentArrayList.add((Student) object);
+            }
+        }
+        return studentArrayList;
+    }
+
 
     @Override
     public void markAbsentSuccessful(final ArrayList<Student> studentArrayList, final String date) {
@@ -757,7 +775,15 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             if (status[i]) {
                 ((Student) objectArrayList.get(i)).setCheck(status[i]);
             }
-
         }
+    }
+
+    private void unCheckAllStudents(){
+
+        for(int i =0; i<objectArrayList.size();i++){
+            ((Student)objectArrayList.get(i)).setCheck(false);
+        }
+        maintnedCheckedStudentsStatus();
+        labDetailsAdapter.notifyDataSetChanged();
     }
 }

@@ -36,7 +36,7 @@ public class ButtonCustom extends Button {
     private void init(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Custom);
-            String fontName = a.getString(R.styleable.Custom_font);
+            String fontName = a.getString(R.styleable.Custom_fontName);
 
             try {
                 if (fontName != null) {

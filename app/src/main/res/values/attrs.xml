@@ -6,7 +6,7 @@
     </declare-styleable>
 
     <declare-styleable name="Custom">
-        <attr name="font" format="string" />
+        <attr name="fontName" format="string" />
     </declare-styleable>
 
     <declare-styleable name="LabTabHeaderLayout">
