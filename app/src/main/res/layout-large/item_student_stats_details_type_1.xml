@@ -24,7 +24,7 @@
             android:text="@string/student_name"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -60,7 +60,7 @@
             android:text="@string/_100"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:text="@string/_100"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -98,7 +98,7 @@
             android:text="@string/_100"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -117,7 +117,7 @@
             android:text="@string/_100"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -136,7 +136,7 @@
             android:text="@string/_100"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 

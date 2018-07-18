@@ -28,7 +28,7 @@
                 android:text="Sku:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 android:text="Availability:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                 android:text="Name:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                 android:text="Location:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                 android:text="Category:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -171,7 +171,7 @@
                 android:text="Room:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -198,7 +198,7 @@
                 android:text="Grades:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -225,7 +225,7 @@
                 android:text="Price:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -267,7 +267,7 @@
                     android:text="From: "
                     android:textColor="@color/purple"
                     android:textSize="16sp"
-                    app:font="@string/font_pt_sans_narrow_bold" />
+                    app:fontName="@string/font_pt_sans_narrow_bold" />
 
                 <org.wizbots.labtab.customview.TextViewCustom
                     android:layout_width="wrap_content"
@@ -293,7 +293,7 @@
                     android:text="To: "
                     android:textColor="@color/purple"
                     android:textSize="16sp"
-                    app:font="@string/font_pt_sans_narrow_bold" />
+                    app:fontName="@string/font_pt_sans_narrow_bold" />
 
                 <org.wizbots.labtab.customview.TextViewCustom
                     android:layout_width="wrap_content"
@@ -320,7 +320,7 @@
                 android:text="Time Slot: "
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="0dp"
@@ -347,7 +347,7 @@
                 android:text="Day:"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_bold" />
+                app:fontName="@string/font_pt_sans_narrow_bold" />
 
             <org.wizbots.labtab.customview.TextViewCustom
                 android:layout_width="match_parent"
@@ -378,7 +378,7 @@
                 android:text="Additional"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_regular" />
+                app:fontName="@string/font_pt_sans_narrow_regular" />
 
             <org.wizbots.labtab.customview.ButtonCustom
                 android:id="@+id/btn_absences"
@@ -391,7 +391,7 @@
                 android:text="Absences"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:font="@string/font_pt_sans_narrow_regular" />
+                app:fontName="@string/font_pt_sans_narrow_regular" />
 
         </RelativeLayout>
 

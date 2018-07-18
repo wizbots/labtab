@@ -23,7 +23,7 @@
             android:text="@string/level"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -43,7 +43,7 @@
             android:text="@string/projects"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -63,7 +63,7 @@
             android:text="@string/lab_time"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -82,7 +82,7 @@
             android:text="@string/done"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -102,7 +102,7 @@
             android:text="@string/skipped"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -122,7 +122,7 @@
             android:text="@string/pending"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 

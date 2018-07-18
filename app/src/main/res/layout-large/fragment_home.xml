@@ -50,7 +50,7 @@
                     android:text="@string/BINDER"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_small"
-                    app:font="@string/font_pt_sans_narrow_bold" />
+                    app:fontName="@string/font_pt_sans_narrow_bold" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -92,7 +92,7 @@
                     android:text="@string/lab_list"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_small"
-                    app:font="@string/font_pt_sans_narrow_bold" />
+                    app:fontName="@string/font_pt_sans_narrow_bold" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -142,7 +142,7 @@
                     android:text="@string/video_list"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_small"
-                    app:font="@string/font_pt_sans_narrow_bold" />
+                    app:fontName="@string/font_pt_sans_narrow_bold" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -184,7 +184,7 @@
                     android:text="@string/my_profile"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_small"
-                    app:font="@string/font_pt_sans_narrow_bold" />
+                    app:fontName="@string/font_pt_sans_narrow_bold" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
