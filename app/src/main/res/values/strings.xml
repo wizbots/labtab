@@ -156,6 +156,9 @@
     <string name="BINDER">BINDER</string>
     <string name="File_name">File name</string>
 
+    <string name="select_category">Select Category</string>
+
+
     <string-array name="fruit_array">
         <item>Apple</item>
         <item>Banana</item>
