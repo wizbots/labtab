@@ -10,6 +10,8 @@ import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.util.LabTabUtil;
 
+import java.util.Locale;
+
 public class LabTabPreferences {
 
     public static final String TAG = LabTabPreferences.class.getName();
@@ -25,6 +27,7 @@ public class LabTabPreferences {
         CREATE_TOKEN_RESPONSE("create_token_response"),
         EMAIL_ID("email_id"),
         PROJECTS_META_DATA("projects_meta_data"),
+        PROGRAM_CATEGORY("program_category"),
         MENTOR("mentor");
 
         private String label;
@@ -163,6 +166,16 @@ public class LabTabPreferences {
     public MetaData[] getProjectsMetaData() {
         String json = getString(Keys.PROJECTS_META_DATA.getLabel(), "");
         return (MetaData[]) LabTabUtil.fromJson(json, MetaData[].class);
+    }
+
+
+    public void setCategory(String[] category){
+        putString(Keys.PROGRAM_CATEGORY.getLabel(),LabTabUtil.toJson(category));
+    }
+
+    public String[]  getCategory(){
+        String json = getString(Keys.PROGRAM_CATEGORY.getLabel(), "");
+        return (String[]) LabTabUtil.fromJson(json,String[].class);
     }
 
 }
