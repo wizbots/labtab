@@ -1,4 +1,30 @@
 ---------------------------------------------------------------------
+Release 1.8.1 - 2018/07/18
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* Video upload should work without throwing any more 40x issues from server
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - Changed the way LabTab get nuggets and categories, getting those from metadata endpoint now
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/96
+
+
+KNOWN ISSUES:
+
+* None
+
+
+
+---------------------------------------------------------------------
 Release 1.8.0 - 2018/06/07
 ---------------------------------------------------------------------
 NEW FEATURES:

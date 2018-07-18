@@ -40,7 +40,7 @@ public interface LabTabApiInterface {
     //"https://wizbots.com/api/" production url
     //"http://test.wizbots.com/api/"; // testing url
 
-    String BASE_URL = "http://test.wizbots.com/api/";
+    String BASE_URL = "https://wizbots.com/api/";
 
 
     //    Operations related to deal with tokens
