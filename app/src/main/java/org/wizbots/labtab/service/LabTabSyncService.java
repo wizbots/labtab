@@ -29,13 +29,15 @@ import org.wizbots.labtab.model.program.Absence;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
 import org.wizbots.labtab.pushnotification.NotiManager;
-import org.wizbots.labtab.requesters.AddWizchipsRequester;
+//import org.wizbots.labtab.requesters.AddWizchipsRequester;
 import org.wizbots.labtab.requesters.CreateProjectRequester;
 import org.wizbots.labtab.requesters.DeleteVideoRequester;
 import org.wizbots.labtab.requesters.MarkStudentAbsentSyncRequester;
 import org.wizbots.labtab.requesters.PromotionDemotionSyncRequester;
 import org.wizbots.labtab.requesters.UpdateProjectRequester;
-import org.wizbots.labtab.requesters.WithdrawWizchipsRequester;
+//import org.wizbots.labtab.requesters.WithdrawWizchipsRequester;
+import org.wizbots.labtab.requesters.SetWizchipsRequester;
+
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
@@ -215,13 +217,15 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
         if (list != null && !list.isEmpty()) {
             for (Student student : list) {
                 int count = student.getWizchips() + student.getOfflinewizchips();
-                if (student.getWizchips() > count) {
-                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(student.getProgram_id(), student.getStudent_id(), (-(student.getOfflinewizchips())), true));
-                } else {
+                //  Set Wizchips Api implemented for offline wizchips syncing, Withdraw/ Add wizchips not needed for offline wizchips syncing.
+//                if (student.getWizchips() > count) {
+//                    BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(student.getProgram_id(), student.getStudent_id(), (-(student.getOfflinewizchips())), true));
+//                } else {
+//
+//                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(student.getProgram_id(), student.getStudent_id(), student.getOfflinewizchips(), true));
+//                }
 
-                    BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(student.getProgram_id(), student.getStudent_id(), student.getOfflinewizchips(), true));
-                }
-
+                BackgroundExecutor.getInstance().execute(new SetWizchipsRequester(student.getStudent_id(), count));
             }
         }
     }
