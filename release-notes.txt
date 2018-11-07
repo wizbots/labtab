@@ -1,4 +1,30 @@
 ---------------------------------------------------------------------
+Release 1.8.2 - 2018/07/18
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* Fixed an issue with recurrent wizchips being added from labtab
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/99
+
+
+KNOWN ISSUES:
+
+* None
+
+
+
+---------------------------------------------------------------------
 Release 1.8.1 - 2018/07/18
 ---------------------------------------------------------------------
 NEW FEATURES:
