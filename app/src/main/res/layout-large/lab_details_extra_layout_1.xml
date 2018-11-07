@@ -103,7 +103,7 @@
         android:textAllCaps="true"
         android:textColor="@color/purple"
         android:textSize="14sp"
-        app:font="@string/font_pt_sans_narrow_regular" />
+        app:fontName="@string/font_pt_sans_narrow_regular" />
 
     <TextView
         android:id="@+id/tv_plus"

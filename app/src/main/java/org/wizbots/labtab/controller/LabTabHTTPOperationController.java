@@ -149,6 +149,12 @@ public class LabTabHTTPOperationController {
                 (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), studentId, count, LabTabApplication.getInstance().getUserAgent()));
     }
 
+    public static LabTabResponse setWizchips(String studentId, int count) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.setWizchips(LabTabPreferences.getInstance
+                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), studentId, count, LabTabApplication.getInstance().getUserAgent()));
+    }
+
     public static LabTabResponse getProjectMetaData() {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
         return ConnectionUtil.execute(labTabApiInterface.getProjectsMetaData(LabTabApplication.getInstance().getUserAgent()));

@@ -133,6 +133,12 @@ public interface LabTabApiInterface {
     @GET("programs/")
     Call<ArrayList<ProgramOrLab>> getFilter(@Header("Auth-Token") String authToken, @QueryMap(encoded = true) Map<String, String> params, @Header("User-Agent") String userAgent);
 
+    //    18. Delete Video
     @DELETE("projects/{project_id}")
     Call<String> deleteVideo(@Path("project_id") String project_id, @Header("Auth-Token") String authToken, @Header("User-Agent") String userAgent);
+
+    //    19. Set wizchips
+    @POST("students/wizchips/set")
+    Call<WizchipsWithdrawResponse> setWizchips(@Header("Auth-Token") String authToken,
+                                                    @Query("student") String studentId, @Query("wizchips") int wizchips, @Header("User-Agent") String userAgent);
 }

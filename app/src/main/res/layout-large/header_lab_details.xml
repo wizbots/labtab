@@ -24,7 +24,7 @@
             android:text="@string/select"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -46,7 +46,7 @@
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_extra_small"
 
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -67,7 +67,7 @@
             android:text="@string/level"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -88,7 +88,7 @@
             android:text="@string/projects"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
         <!-- <ImageView
              android:id="@+id/iv_project"
@@ -116,7 +116,7 @@
             android:text="@string/wizchips"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
       <!--  <ImageView
             android:id="@+id/iv_chip"
             android:layout_width="@dimen/lab_detail_image_width"
@@ -144,7 +144,7 @@
             android:textColor="@color/purple"
             android:lines="2"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 <!--
         <ImageView
             android:id="@+id/iv_lab_time"
@@ -181,7 +181,7 @@
             android:textColor="@color/purple"
             android:lines="2"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>
 
@@ -203,7 +203,7 @@
             android:textColor="@color/purple"
             android:lines="2"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
      <!--   <ImageView
             android:id="@+id/iv_skipped"
@@ -232,7 +232,7 @@
             android:textColor="@color/purple"
             android:lines="2"
             android:textSize="@dimen/text_size_extra_extra_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
      <!--   <ImageView
             android:id="@+id/iv_pending"
@@ -258,7 +258,7 @@
             android:gravity="left|center"
             android:textColor="@color/purple"
             android:textSize="@dimen/text_size_small"
-            app:font="@string/font_pt_sans_narrow_regular" />
+            app:fontName="@string/font_pt_sans_narrow_regular" />
 
     </LinearLayout>-->
 
