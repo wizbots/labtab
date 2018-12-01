@@ -41,6 +41,7 @@ import org.wizbots.labtab.requesters.SetWizchipsRequester;
 import org.wizbots.labtab.util.BackgroundExecutor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LabTabSyncService extends Service implements LabTabConstants, VideoUploadListener, MarkAbsentListener, PromoteDemoteListener, UpdateProjectListener {
 
@@ -48,7 +49,8 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
     public static final String EVENT = "EVENT";
     public static LabTabSyncService labTabSyncService = new LabTabSyncService();
     public static boolean statusOfSingleEditVideoBackgroundExecutor[];
-    public static boolean statusOfSingleVideoUploadBackgroundExecutor[];
+    // key is for unique identity, while Boolean is used to determine that video is still uploading or not
+    private static HashMap<String, Boolean> statusOfSingleVideoUploadBackgroundExecutor = new HashMap<>();
     public static boolean statusOfSingleMarkAbsentUploadBackgroundExecutor[];
     public static boolean statusOfSinglePromotionDemotionBackgroundExecutor[];
     private boolean isUploadServiceRunning = false;
@@ -133,20 +135,20 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
     }
 
     @Override
-    public void videoUploadCompleted(Video video, int position) {
-        statusOfSingleVideoUploadBackgroundExecutor[position] = true;
-        boolean videoUploadTaskCompleted = true;
-        for (boolean all : statusOfSingleVideoUploadBackgroundExecutor) {
-            videoUploadTaskCompleted &= all;
-        }
-        if (videoUploadTaskCompleted) {
+    public void videoUploadCompleted(Video video) {
+        statusOfSingleVideoUploadBackgroundExecutor.remove(video.getId());
+        if (statusOfSingleVideoUploadBackgroundExecutor.isEmpty()) {
             SyncManager.getInstance().onRefreshData(2);
-            statusOfSingleVideoUploadBackgroundExecutor = null;
             if (isServiceToBeStopped()) {
                 stopForeground(true);
                 stopSelf();
             }
         }
+    }
+
+    @Override
+    public void videoUploadFailed(Video video) {
+        statusOfSingleVideoUploadBackgroundExecutor.put(video.getId(),false);
     }
 
     /**
@@ -293,16 +295,16 @@ public class LabTabSyncService extends Service implements LabTabConstants, Video
 
     private void syncVideoUpload() {
         synchronized (this) {
-            if (statusOfSingleVideoUploadBackgroundExecutor == null) {
-                ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideosToBeUploaded();
-                if (!videoArrayList.isEmpty()) {
-                    startForegroundIntent();
-                    statusOfSingleVideoUploadBackgroundExecutor = new boolean[videoArrayList.size()];
-                    if (LabTabApplication.getInstance().isNetworkAvailable()) {
-                        NotiManager.getInstance().showNotification(videoArrayList.size());
-                    }
-                    for (int i = 0; i < videoArrayList.size(); i++) {
-                        BackgroundExecutor.getInstance().execute(new CreateProjectRequester(labTabSyncService, videoArrayList.get(i), i));
+            ArrayList<Video> videoArrayList = VideoTable.getInstance().getVideosToBeUploaded();
+            if (!videoArrayList.isEmpty()) {
+                startForegroundIntent();
+                if (LabTabApplication.getInstance().isNetworkAvailable()) {
+                    NotiManager.getInstance().showNotification(videoArrayList.size());
+                }
+                for (int i = 0; i < videoArrayList.size(); i++) {
+                    if (statusOfSingleVideoUploadBackgroundExecutor.get(videoArrayList.get(i).getId()) == null || !statusOfSingleVideoUploadBackgroundExecutor.get(videoArrayList.get(i).getId())) {
+                        statusOfSingleVideoUploadBackgroundExecutor.put(videoArrayList.get(i).getId(), true);
+                        BackgroundExecutor.getInstance().execute(new CreateProjectRequester(labTabSyncService, videoArrayList.get(i)));
                     }
                 }
             }

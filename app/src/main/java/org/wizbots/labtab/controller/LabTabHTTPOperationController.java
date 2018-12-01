@@ -116,7 +116,11 @@ public class LabTabHTTPOperationController {
         if (labTabResponse == null){
             Log.v(LabTabConstants.VIDEO_LOGS_TAG,"Request Fail to execute");
         }
-        Log.v(LabTabConstants.VIDEO_LOGS_TAG, "Response Code - " + labTabResponse.getResponseCode() + "\nResponse header - " + labTabResponse.getHeaderParams().toString() + "\nResponse Body : " + (labTabResponse.getResponse() != null ? new Gson().toJson(labTabResponse.getResponse()) : "null ") + "\nDevice time - " + java.text.DateFormat.getDateTimeInstance().format(new Date()));
+        try {
+            Log.v(LabTabConstants.VIDEO_LOGS_TAG, "Response Code - " + labTabResponse.getResponseCode() + "\nResponse header - " + labTabResponse.getHeaderParams().toString() + "\nResponse Body : " + (labTabResponse.getResponse() != null ? new Gson().toJson(labTabResponse.getResponse()) : "null ") + "\nDevice time - " + java.text.DateFormat.getDateTimeInstance().format(new Date()));
+        }catch (Exception ignore){
+
+        }
         return labTabResponse;
     }
 
