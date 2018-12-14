@@ -103,6 +103,8 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         break;
                     case 6:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
+                        // Clearing mata data on logout
+                        LabTabApplication.getInstance().setMetaDatas(null);
                         ActivityCompat.finishAffinity(HomeActivity.this);
                         Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
                         intent.putExtra(Constants.FINISH, true);
