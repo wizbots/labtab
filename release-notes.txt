@@ -1,5 +1,30 @@
 ---------------------------------------------------------------------
-Release 1.8.2 - 2018/07/18
+Release 1.8.3 - 2018/12/02
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* Fixed an issue with video uploading issue not working if device was not connected before making
+the video
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* None
+
+KNOWN ISSUES:
+
+* None
+
+
+---------------------------------------------------------------------
+Release 1.8.2 - 2018/11/07
 ---------------------------------------------------------------------
 NEW FEATURES:
 
