@@ -72,6 +72,7 @@ import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.ProgramTable;
 import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.database.VideoTable;
+import org.wizbots.labtab.dialog.SelectCreatorDialog;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
@@ -117,7 +118,7 @@ import static android.content.Context.WINDOW_SERVICE;
 
 public class AddVideoFragment extends ParentFragment implements View.OnClickListener,
         ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener,
-        LabListDialogFragment.LabListClickListener, GetProgramOrLabListener, GetProgramStudentsListener {
+        LabListDialogFragment.LabListClickListener, GetProgramOrLabListener, GetProgramStudentsListener, SelectCreatorDialog.SelectedCreatorDialogListener {
 
     public static final String TAG = AddVideoFragment.class.getSimpleName();
 
@@ -134,17 +135,17 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private View rootView;
     private ExpandableListView expandableListView;
 
-    private ProjectCreatorAdapter projectCreatorAdapter;
+    //    private ProjectCreatorAdapter projectCreatorAdapter;
     private HorizontalProjectCreatorAdapter horizontalProjectCreatorAdapter;
 
-    private RecyclerView recyclerViewProjectCreator;
+    //    private RecyclerView recyclerViewProjectCreator;
     private RecyclerView horizontalRecyclerViewProjectCreator;
 
     private ArrayList<Student> creatorsAvailable = new ArrayList<>();
     private ArrayList<Student> creatorsSelected = new ArrayList<>();
 
     private HomeActivity homeActivityContext;
-    private LinearLayout recyclerViewContainer;
+    //    private LinearLayout recyclerViewContainer;
     private NestedScrollView nestedScrollView;
     private ArrayList<String> categoryArrayList;
     private Spinner categorySpinner;
@@ -226,7 +227,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         toolbar = (Toolbar) getActivity().findViewById(R.id.tool_bar_lab_tab);
         projectCreatorEditTextCustom = (EditTextCustom) rootView.findViewById(R.id.edt_project_creators);
         disableKeyboard();
-        recyclerViewContainer = (LinearLayout) rootView.findViewById(R.id.recycler_view_container);
+//        recyclerViewContainer = (LinearLayout) rootView.findViewById(R.id.recycler_view_container);
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.scroll_view_edit_video);
         categorySpinner = (Spinner) rootView.findViewById(R.id.spinner_category);
@@ -237,15 +238,15 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
 
-        recyclerViewProjectCreator = (RecyclerView) rootView.findViewById(R.id.recycler_view_project_creators);
+//        recyclerViewProjectCreator = (RecyclerView) rootView.findViewById(R.id.recycler_view_project_creators);
         horizontalRecyclerViewProjectCreator = (RecyclerView) rootView.findViewById(R.id.recycler_view_horizontal_project_creators);
 
 
-        projectCreatorAdapter = new ProjectCreatorAdapter(creatorsAvailable, homeActivityContext, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerViewProjectCreator.setLayoutManager(mLayoutManager);
-        recyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
+//        projectCreatorAdapter = new ProjectCreatorAdapter(creatorsAvailable, creatorsSelected);
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+//        recyclerViewProjectCreator.setLayoutManager(mLayoutManager);
+//        recyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
+//        recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
 
         horizontalProjectCreatorAdapter = new HorizontalProjectCreatorAdapter(creatorsSelected, homeActivityContext, this);
         Display display = ((WindowManager) getActivity().getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
@@ -258,8 +259,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         horizontalRecyclerViewProjectCreator.setItemAnimator(new DefaultItemAnimator());
         horizontalRecyclerViewProjectCreator.setAdapter(horizontalProjectCreatorAdapter);
 
-        recyclerViewProjectCreator.setVisibility(View.GONE);
-        recyclerViewContainer.setVisibility(View.GONE);
+//        recyclerViewProjectCreator.setVisibility(View.GONE);
+//        recyclerViewContainer.setVisibility(View.GONE);
 
         videoThumbnailImageView = (ImageView) rootView.findViewById(R.id.iv_video_thumbnail);
         closeImageView = (ImageView) rootView.findViewById(R.id.iv_close);
@@ -346,10 +347,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         //String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
         String[] categories = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCategory();
         categoryArrayList.addAll(Arrays.asList(categories));
-        categoryArrayList.add(0,getString(R.string.select_category));
+        categoryArrayList.add(0, getString(R.string.select_category));
         if (program != null) {
             creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()));
-            projectCreatorAdapter.notifyDataSetChanged();
+//            projectCreatorAdapter.notifyDataSetChanged();
         }
     }
 
@@ -379,7 +380,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 break;
             case R.id.btn_create:
 
-                Log.v(LabTabConstants.VIDEO_LOGS_TAG,"on create button clicked. "+"Device time - "+java.text.DateFormat.getDateTimeInstance().format(new Date()));
+                Log.v(LabTabConstants.VIDEO_LOGS_TAG, "on create button clicked. " + "Device time - " + java.text.DateFormat.getDateTimeInstance().format(new Date()));
 
                 if (titleEditTextCustom.getText().toString().length() == 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
@@ -592,8 +593,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 if (creatorsSelected.isEmpty()) {
                     creatorsSelected.add(student);
                     horizontalProjectCreatorAdapter.notifyDataSetChanged();
-                    recyclerViewContainer.setVisibility(View.GONE);
-                    recyclerViewProjectCreator.setVisibility(View.GONE);
+//                    recyclerViewContainer.setVisibility(View.GONE);
+//                    recyclerViewProjectCreator.setVisibility(View.GONE);
                     projectCreatorEditTextCustom.clearFocus();
                     LabTabUtil.hideSoftKeyboard(homeActivityContext);
 
@@ -610,8 +611,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     if (!found) {
                         creatorsSelected.add(student);
                         horizontalProjectCreatorAdapter.notifyDataSetChanged();
-                        recyclerViewContainer.setVisibility(View.GONE);
-                        recyclerViewProjectCreator.setVisibility(View.GONE);
+//                        recyclerViewContainer.setVisibility(View.GONE);
+//                        recyclerViewProjectCreator.setVisibility(View.GONE);
                         projectCreatorEditTextCustom.clearFocus();
                         LabTabUtil.hideSoftKeyboard(homeActivityContext);
 
@@ -662,13 +663,13 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     }
                 }
 
-                projectCreatorAdapter = new ProjectCreatorAdapter(filteredList, homeActivityContext, AddVideoFragment.this);
-                recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
-                projectCreatorAdapter.notifyDataSetChanged();
+//                projectCreatorAdapter = new ProjectCreatorAdapter(filteredList,creatorsSelected);
+//                recyclerViewProjectCreator.setAdapter(projectCreatorAdapter);
+//                projectCreatorAdapter.notifyDataSetChanged();
             }
         });
 
-        projectCreatorEditTextCustom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /*projectCreatorEditTextCustom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
@@ -685,6 +686,19 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                         Toast.makeText(homeActivityContext, "Select a lab first by tapping Lab SKU", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });*/
+        projectCreatorEditTextCustom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (creatorsAvailable.isEmpty()) {
+                    Toast.makeText(homeActivityContext, "Select a lab first by tapping Lab SKU", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                projectCreatorEditTextCustom.clearFocus();
+                LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                SelectCreatorDialog dialog = new SelectCreatorDialog(homeActivityContext, creatorsAvailable, creatorsSelected, AddVideoFragment.this);
+                dialog.show();
             }
         });
     }
@@ -998,7 +1012,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
             creatorsAvailable.clear();
             creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId()));
-            projectCreatorAdapter.notifyDataSetChanged();
+//            projectCreatorAdapter.notifyDataSetChanged();
         }
     }
 
@@ -1052,7 +1066,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 } else {
                     creatorsAvailable.clear();
                     creatorsAvailable.addAll(ProgramStudentsTable.getInstance().getStudentsListByProgramId(program.getId()));
-                    projectCreatorAdapter.notifyDataSetChanged();
+//                    projectCreatorAdapter.notifyDataSetChanged();
                 }
                 progressDialog.dismiss();
             }
@@ -1066,9 +1080,9 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             public void run() {
                 progressDialog.dismiss();
                 creatorsAvailable.clear();
-                projectCreatorAdapter.notifyDataSetChanged();
-                recyclerViewContainer.setVisibility(View.GONE);
-                recyclerViewProjectCreator.setVisibility(View.GONE);
+//                projectCreatorAdapter.notifyDataSetChanged();
+//                recyclerViewContainer.setVisibility(View.GONE);
+//                recyclerViewProjectCreator.setVisibility(View.GONE);
                 projectCreatorEditTextCustom.clearFocus();
                 LabTabUtil.hideSoftKeyboard(homeActivityContext);
             }
@@ -1401,5 +1415,16 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         if (imm != null) {
             imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
+    }
+
+    @Override
+    public void onSaveClick() {
+        Collections.sort(creatorsSelected, new Comparator<Student>() {
+            @Override
+            public int compare(Student student, Student t1) {
+                return student.getName().compareTo(t1.getName());
+            }
+        });
+        horizontalProjectCreatorAdapter.notifyDataSetChanged();
     }
 }

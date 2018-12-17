@@ -291,6 +291,7 @@
                             android:background="@drawable/rounded_layout_white"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:padding="@dimen/extra_extra_small_padding"
                             android:textSize="@dimen/text_size_extra_extra_small" />
 
