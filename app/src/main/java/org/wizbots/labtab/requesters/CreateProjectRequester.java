@@ -2,7 +2,9 @@ package org.wizbots.labtab.requesters;
 
 import android.net.Uri;
 import android.util.Log;
+
 import com.google.gson.Gson;
+
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
@@ -16,8 +18,10 @@ import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.LabTabUtil;
+
 import java.io.File;
 import java.util.ArrayList;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -28,15 +32,13 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
 
     private LabTabSyncService labTabSyncService;
     private Video videoInDB;
-    private int position;
 
     public CreateProjectRequester() {
     }
 
-    public CreateProjectRequester(LabTabSyncService labTabSyncService, Video videoInDB, int position) {
+    public CreateProjectRequester(LabTabSyncService labTabSyncService, Video videoInDB) {
         this.labTabSyncService = labTabSyncService;
         this.videoInDB = videoInDB;
-        this.position = position;
     }
 
     @Override
@@ -58,24 +60,26 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
                 videoInDB.getLab_sku(), videoInDB.getDescription(), videoInDB.getTitle(),
                 videoInDB.getNotes_to_the_family(), body,
                 getKnowledgeNuggets(LabTabUtil.convertStringToKnowledgeNuggets(videoInDB.getKnowledge_nuggets())),
-                getProjectCreators(LabTabUtil.convertStringToProjectCreators(videoInDB.getProject_creators())),LabTabApplication.getInstance().getUserAgent());
+                getProjectCreators(LabTabUtil.convertStringToProjectCreators(videoInDB.getProject_creators())), LabTabApplication.getInstance().getUserAgent());
 
         if (createProjectResponse != null) {
             statusCode = createProjectResponse.getResponseCode();
             if (createProjectResponse.getResponseCode() == StatusCode.CREATED) {
                 projectCreatedSuccessfully(createProjectResponse.getResponse());
                 NotiManager.getInstance().updateNotification();
+                labTabSyncService.videoUploadCompleted(videoInDB);
                 Log.d(TAG, "createProjectResponse Success, Response Code : " + statusCode + " createProjectResponse response: " + new Gson().toJson(createProjectResponse.getResponse()).toString());
             } else {
+                labTabSyncService.videoUploadFailed(videoInDB);
                 unableToCreateProject();
                 Log.d(TAG, "createProjectResponse Failed, Response Code : " + statusCode);
             }
 
         } else {
+            labTabSyncService.videoUploadFailed(videoInDB);
             SyncManager.getInstance().onRefreshData(2);
             Log.d(TAG, "createProjectResponse Failed, Response Code : " + statusCode);
         }
-        labTabSyncService.videoUploadCompleted(videoInDB, position);
         for (OnVideoUploadListener listener : LabTabApplication.getInstance().getUIListeners(OnVideoUploadListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.CREATED) {
                 listener.onVideoUploadSussess();
@@ -85,7 +89,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
         }
     }
 
-    private String[]  getProjectCreators(ArrayList<Student> studentArrayList) {
+    private String[] getProjectCreators(ArrayList<Student> studentArrayList) {
         String[] students = new String[studentArrayList.size()];
         for (int i = 0; i < studentArrayList.size(); i++) {
             students[i] = studentArrayList.get(i).getStudent_id();

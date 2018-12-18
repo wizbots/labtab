@@ -146,8 +146,9 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.SELECT_STUDENT_FIRST_DECREMENT);
                 }*/ else {
                     Student student = studentList.get(0);
-                    if (getChips(student.getWizchips(), student.getOfflinewizchips()) <= 0) {
+                    if (wizchipsTextViewCustom.getText() != null && Integer.parseInt(wizchipsTextViewCustom.getText().toString()) <= 0) {
                         homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.ALREADY_MINIMUM_WIZCHIPS);
+                        return;
                     } else {
                         progressDialog.show();
                     }
@@ -155,7 +156,6 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
                         selectted.add(student1.getStudent_id());
                     }
                     progressDialog.show();
-                    //   BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
                     BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), selectted, 1));
                 }
 
@@ -216,11 +216,11 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
+        super.onDestroyView();
         LabTabApplication.getInstance().addUIListener(GetStudentProfileAndStatsListener.class, this);
         LabTabApplication.getInstance().removeUIListener(AddWizchipsListener.class, this);
         LabTabApplication.getInstance().removeUIListener(WithdrawWizchipsListener.class, this);
-        super.onDestroy();
     }
 
     @Override
@@ -295,16 +295,14 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         studentStatsAdapter.notifyDataSetChanged();
     }
 
-    private int getChips(int onlineChips, int offlineChips) {
-        return (onlineChips + offlineChips) > 0 ? (onlineChips + offlineChips) : 0;
-    }
-
     @Override
     public void onWithdrawWizchipsSuccess() {
-        getActivity().runOnUiThread(new Runnable() {
+        homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
+                student.setWizchips(student.getWizchips() - 1);
+                getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) > 0 ? String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1) : "0"));
             }
         });
@@ -312,10 +310,12 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 
     @Override
     public void onWithdrawWizchipsError() {
-        getActivity().runOnUiThread(new Runnable() {
+        homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
+                student.setWizchips(student.getWizchips() - 1);
+                getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) > 0 ? String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1) : "0"));
             }
         });
@@ -323,10 +323,12 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 
     @Override
     public void onAddWizchipsSuccess() {
-        getActivity().runOnUiThread(new Runnable() {
+        homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
+                student.setWizchips(student.getWizchips() + 1);
+                getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) + 1));
             }
         });
@@ -334,10 +336,12 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
 
     @Override
     public void onAddWizchipsError() {
-        getActivity().runOnUiThread(new Runnable() {
+        homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
+                student.setWizchips(student.getWizchips() + 1);
+                getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) + 1));
             }
         });

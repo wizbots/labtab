@@ -109,7 +109,7 @@
         <activity
             android:name=".activity.WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <service android:name=".pushnotification.MyFirebaseMessagingService">
             <intent-filter>
@@ -122,7 +122,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activity.ResultActivity"></activity>
+        <activity android:name=".activity.ResultActivity" />
     </application>
 
 </manifest>

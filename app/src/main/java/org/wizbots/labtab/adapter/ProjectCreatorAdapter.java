@@ -6,7 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
@@ -18,8 +21,81 @@ import org.wizbots.labtab.model.program.Student;
 import java.util.ArrayList;
 
 public class ProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LabTabConstants {
+    private ArrayList<Student> studentArrayList;
+    private ArrayList<Student> selectedStudentArrayList;
 
-    private final int VIEW_ITEM_DATA = 1;
+    public ProjectCreatorAdapter(ArrayList<Student> studentArrayList, ArrayList<Student> selectedStudentArrayList) {
+        this.studentArrayList = studentArrayList;
+        this.selectedStudentArrayList = selectedStudentArrayList;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View dataView = inflater.inflate(R.layout.project_creator_list_child, parent, false);
+        viewHolder = new ProjectCreatorViewHolder(dataView);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final Student student = studentArrayList.get(position);
+        ProjectCreatorViewHolder projectCreatorViewHolder = (ProjectCreatorViewHolder) holder;
+        projectCreatorViewHolder.text.setText(student.getName());
+        projectCreatorViewHolder.checkBox.setChecked(isSelectedStudent(student));
+        projectCreatorViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    selectedStudentArrayList.add(student);
+                } else {
+                    removeFromList(student);
+                    selectedStudentArrayList.remove(student);
+                }
+            }
+        });
+    }
+
+    private void removeFromList(Student student) {
+        Student selectedStudent = null;
+        for (Student s : selectedStudentArrayList) {
+            if (student.getStudent_id().equals(s.getStudent_id())) {
+                selectedStudent = s;
+                break;
+            }
+        }
+        if (selectedStudent != null)
+            selectedStudentArrayList.remove(selectedStudent);
+    }
+
+    private boolean isSelectedStudent(Student student) {
+        for (Student s :
+                selectedStudentArrayList) {
+            if (s.getStudent_id().equals(student.getStudent_id())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int getItemCount() {
+        return studentArrayList.size();
+    }
+
+    private class ProjectCreatorViewHolder extends RecyclerView.ViewHolder {
+        TextView text;
+        CheckBox checkBox;
+
+        public ProjectCreatorViewHolder(View dataView) {
+            super(dataView);
+            text = (TextView) dataView.findViewById(R.id.lblListHeader);
+            checkBox = (CheckBox) dataView.findViewById(R.id.lbbcheckbox);
+        }
+    }
+
+    /*private final int VIEW_ITEM_DATA = 1;
     private ArrayList<Student> studentArrayList;
     private Context context;
     private ProjectCreatorAdapterClickListener projectCreatorAdapterClickListener;
@@ -109,6 +185,6 @@ public class ProjectCreatorAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemCount() {
         return studentArrayList.size();
-    }
+    }*/
 
 }
