@@ -1,4 +1,30 @@
 ---------------------------------------------------------------------
+Release 1.8.4 - 2018/12/18
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* Fixed an issue with login, sometimes it was not possible to login
+* Fixed an issue in adding video that was crashing the app
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* [#104] https://github.com/wizbots/labtab/issues/104
+* [#103] https://github.com/wizbots/labtab/issues/103
+
+KNOWN ISSUES:
+
+* None
+
+
+---------------------------------------------------------------------
 Release 1.8.3 - 2018/12/02
 ---------------------------------------------------------------------
 NEW FEATURES:
