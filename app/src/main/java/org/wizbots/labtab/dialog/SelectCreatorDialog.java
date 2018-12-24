@@ -2,10 +2,8 @@ package org.wizbots.labtab.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +20,7 @@ import java.util.ArrayList;
 public class SelectCreatorDialog extends Dialog {
     private ArrayList<Student> studentArrayList;
     private ArrayList<Student> selectedStudentArrayList;
+    private ArrayList<Student> initialSelectedStudentArrayList;
     private SelectedCreatorDialogListener listener;
     private RecyclerView creatorList;
     private EditText search;
@@ -31,7 +30,9 @@ public class SelectCreatorDialog extends Dialog {
         super(context);
         this.context = context;
         this.studentArrayList = studentArrayList;
-        this.selectedStudentArrayList = selectedStudentArrayList;
+        this.initialSelectedStudentArrayList = selectedStudentArrayList;
+        this.selectedStudentArrayList = new ArrayList<>();
+        this.selectedStudentArrayList.addAll(initialSelectedStudentArrayList);
         this.listener = listener;
     }
 
@@ -74,8 +75,20 @@ public class SelectCreatorDialog extends Dialog {
                 search.clearFocus();
                 LabTabUtil.hideSoftKeyboard(context);
                 dismiss();
+                initialSelectedStudentArrayList.clear();
+                if (!selectedStudentArrayList.isEmpty()){
+                    initialSelectedStudentArrayList.addAll(selectedStudentArrayList);
+                }
                 listener.onSaveClick();
 
+            }
+        });
+        findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search.clearFocus();
+                LabTabUtil.hideSoftKeyboard(context);
+                dismiss();
             }
         });
     }
