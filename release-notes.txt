@@ -1,4 +1,29 @@
 ---------------------------------------------------------------------
+Release 1.8.5 - 2010/01/03
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* Fixed an with member selection modal where it was hard to close
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/101
+
+KNOWN ISSUES:
+
+* None found so far
+
+
+
+---------------------------------------------------------------------
 Release 1.8.4 - 2018/12/18
 ---------------------------------------------------------------------
 NEW FEATURES:
