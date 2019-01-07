@@ -85,6 +85,7 @@ public interface LabTabConstants {
         int ADD_VIDEO_DRAWER = 16;
 
         int BINDER = 21;
+        int SETTINGS = 22;
     }
 
     //Lab Levels
@@ -230,6 +231,7 @@ public interface LabTabConstants {
         String ITEM_LAB_LIST = "Lab List";
         String ITEM_VIDEO_LIST = "Video List";
         String ITEM_ADD_VIDEO = "Add Video";
+        String ITEM_SETTINGS = "Settings";
         String ITEM_LOGOUT = "Logout";
         String ITEM_USER_PROFILE = "User Profile";
     }

@@ -39,6 +39,7 @@ import org.wizbots.labtab.fragment.LoginFragment;
 import org.wizbots.labtab.fragment.MentorProfileFragment;
 import org.wizbots.labtab.fragment.ParentFragment;
 import org.wizbots.labtab.fragment.PdfBinder;
+import org.wizbots.labtab.fragment.SettingsFragment;
 import org.wizbots.labtab.fragment.StudentLabDetailsFragment;
 import org.wizbots.labtab.fragment.StudentProfileFragment;
 import org.wizbots.labtab.fragment.StudentStatsDetailsFragment;
@@ -102,6 +103,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         replaceFragment(Fragments.ADD_VIDEO, new Bundle());
                         break;
                     case 6:
+                        replaceFragment(Fragments.SETTINGS, new Bundle());
+                        break;
+                    case 7:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
                         // Clearing mata data on logout
                         LabTabApplication.getInstance().setMetaDatas(null);
@@ -128,13 +132,14 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[6];
+        LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[7];
         leftDrawerItem[0] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, DrawerItem.ITEM_GO_TO);
         leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_binder, DrawerItem.ITEM_BINDER);
         leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, DrawerItem.ITEM_LAB_LIST);
         leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, DrawerItem.ITEM_VIDEO_LIST);
         leftDrawerItem[4] = new LeftDrawerItem(R.drawable.ic_upload_video, DrawerItem.ITEM_ADD_VIDEO);
-        leftDrawerItem[5] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
+        leftDrawerItem[5] = new LeftDrawerItem(R.drawable.ic_lab_step_1, DrawerItem.ITEM_SETTINGS);
+        leftDrawerItem[6] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -221,6 +226,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragment = new HomeFragment();
                 unlockDrawerLayout();
                 break;
+            case Fragments.SETTINGS:
+                fragment = new SettingsFragment();
+                break;
             case Fragments.LAB_LIST:
                 fragment = new LabListFragment();
                 break;
@@ -299,6 +307,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
             } else if (fragment.getFragmentName().equalsIgnoreCase("PdfBinder")) {
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.addToBackStack(null);
+            } else if (fragment.getFragmentName().equalsIgnoreCase("SettingsFragment")) {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
             } else {

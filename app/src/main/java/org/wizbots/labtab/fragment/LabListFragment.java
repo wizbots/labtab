@@ -162,8 +162,16 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season))));
         spinnerYear.setAdapter(new SpinnerAdapter(homeActivityContext,
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year))));
-        spinnerYear.setSelection(8);
+
+        // Default Selection
+        spinnerYear.setSelection(9);
+        yearSearch = (String) spinnerYear.getSelectedItem();
+        yearPos = spinnerYear.getSelectedItemPosition();
         spinnerSeason.setSelection(4);
+        String season = (String) spinnerSeason.getSelectedItem();
+        seasonSearch = season != null ? season.toLowerCase() : "";
+        seasonPos = spinnerSeason.getSelectedItemPosition();
+
         spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);
@@ -496,7 +504,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 Log.d(TAG, "TOMORROW BUTTON CLICKED");
                 progressDialog.show();
                 spinnerLocation.setSelection(0);
-                spinnerYear.setSelection(0);
+                spinnerYear.setSelection(9);
                 spinnerSeason.setSelection(0);
                 programOrLabRequester = new ProgramOrLabRequester();
                 BackgroundExecutor.getInstance().execute(programOrLabRequester);
@@ -506,7 +514,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             case R.id.iv_cancel:
                 progressDialog.show();
                 spinnerLocation.setSelection(0);
-                spinnerYear.setSelection(0);
+                spinnerYear.setSelection(9);
                 spinnerSeason.setSelection(0);
                 LabTabApplication.getInstance().setSeason(null, 0);
                 LabTabApplication.getInstance().setYear(null, 0);
