@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/margin_left_for_lab_title"
+    android:layout_marginTop="@dimen/small_margin"
+    android:orientation="horizontal"
+    tools:context=".fragment.SettingsFragment">
+
+    <org.wizbots.labtab.customview.TextViewCustom
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/extra_small_margin"
+        android:gravity="center|left"
+        android:text="@string/wizbots_version"
+        android:textColor="@color/purple"
+        android:textSize="@dimen/text_size_small"
+        app:font="@string/font_pt_sans_narrow_regular" />
+
+    <org.wizbots.labtab.customview.TextViewCustom
+        android:id="@+id/txt_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/extra_small_margin"
+        android:gravity="center|left"
+        android:textColor="@color/black_overlay"
+        android:textSize="@dimen/text_size_small"
+        app:font="@string/font_pt_sans_narrow_regular" />
+
+</LinearLayout>

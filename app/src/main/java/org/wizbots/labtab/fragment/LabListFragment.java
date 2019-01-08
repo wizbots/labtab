@@ -161,9 +161,17 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         spinnerSeason.setAdapter(new SpinnerAdapter(homeActivityContext,
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season))));
         spinnerYear.setAdapter(new SpinnerAdapter(homeActivityContext,
-                Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year))));
-        spinnerYear.setSelection(8);
+                getYearsList()));
+
+        // Default Selection
+        spinnerYear.setSelection(5);
+        yearSearch = (String) spinnerYear.getSelectedItem();
+        yearPos = spinnerYear.getSelectedItemPosition();
         spinnerSeason.setSelection(4);
+        String season = (String) spinnerSeason.getSelectedItem();
+        seasonSearch = season != null ? season.toLowerCase() : "";
+        seasonPos = spinnerSeason.getSelectedItemPosition();
+
         spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);
@@ -200,6 +208,16 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
 
         callCachedFilerAPI();
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
+    }
+
+    private List<String> getYearsList() {
+        List<String> years = new ArrayList<>();
+        years.add(getString(R.string.all_years));
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int index = 4; index >= 0; index--) {
+            years.add(String.valueOf(currentYear - index));
+        }
+        return years;
     }
 
     private ArrayList<LocationResponse> getLocation(ArrayList<LocationResponse> list) {
@@ -496,7 +514,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 Log.d(TAG, "TOMORROW BUTTON CLICKED");
                 progressDialog.show();
                 spinnerLocation.setSelection(0);
-                spinnerYear.setSelection(0);
+                spinnerYear.setSelection(5);
                 spinnerSeason.setSelection(0);
                 programOrLabRequester = new ProgramOrLabRequester();
                 BackgroundExecutor.getInstance().execute(programOrLabRequester);
@@ -506,7 +524,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             case R.id.iv_cancel:
                 progressDialog.show();
                 spinnerLocation.setSelection(0);
-                spinnerYear.setSelection(0);
+                spinnerYear.setSelection(5);
                 spinnerSeason.setSelection(0);
                 LabTabApplication.getInstance().setSeason(null, 0);
                 LabTabApplication.getInstance().setYear(null, 0);
@@ -584,11 +602,12 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     private void setLocYrSeasonView() {
-        if (LabTabApplication.getInstance().getYear() != null) {
+        // Not Required now as we have to show current year by default for every case #107
+        /*if (LabTabApplication.getInstance().getYear() != null) {
             spinnerYear.setSelection(LabTabApplication.getInstance().getYearPos());
 
 
-        }
+        }*/
         if (LabTabApplication.getInstance().getLocation() != null) {
             spinnerLocation.setSelection(LabTabApplication.getInstance().getLocationPos());
 
@@ -648,15 +667,5 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         List list = Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season));
         return list.indexOf(season);
     }
-
-    private int getYearPosition(int year) {
-        List list = Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_year));
-        return list.indexOf(String.valueOf(year));
-    }
-
-
-
-
-
 
 }
