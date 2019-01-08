@@ -1,5 +1,33 @@
 ---------------------------------------------------------------------
-Release 1.8.5 - 2010/01/03
+Release 1.8.6 - 2019/01/08
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Added new menu entry called Settings, that shows current labtab version (for now)
+* Added default year to current one in labtab selection
+
+NOTES:
+
+* Fixed an with member selection modal where it was hard to close
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/102
+* https://github.com/wizbots/labtab/issues/107
+* https://github.com/wizbots/labtab/issues/108
+
+
+KNOWN ISSUES:
+
+* None found so far
+
+
+---------------------------------------------------------------------
+Release 1.8.5 - 2019/01/03
 ---------------------------------------------------------------------
 NEW FEATURES:
 
