@@ -159,6 +159,8 @@
 
     <string name="select_category">Select Category</string>
     <string name="search">Search :</string>
+    <string name="wizbots_version">Labtab Version :</string>
+    <string name="all_years">All Years</string>
 
 
     <string-array name="fruit_array">
@@ -208,19 +210,6 @@
         <item>Bubb Elementary</item>
         <item>Roy Cloud</item>
         <item>South School</item>
-    </string-array>
-
-    <string-array name="array_year">
-        <item>All Years</item>
-        <item>2011</item>
-        <item>2012</item>
-        <item>2013</item>
-        <item>2014</item>
-        <item>2015</item>
-        <item>2016</item>
-        <item>2017</item>
-        <item>2018</item>
-        <item>2019</item>
     </string-array>
 
     <string-array name="array_season">

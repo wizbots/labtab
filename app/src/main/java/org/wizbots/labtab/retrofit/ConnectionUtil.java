@@ -20,8 +20,10 @@ public class ConnectionUtil {
             Response<T> response = call.execute();
             return new LabTabResponse<T>(response.code(), response.body(), response.headers());
         } catch (IOException e) {
-            Log.d(TAG, "Error in execute api request");
+            e.printStackTrace();
+            Log.d(TAG, "Error in execute api request" + e.getMessage());
         } catch (Exception ex) {
+            ex.printStackTrace();
             Log.d(TAG, "Error in execute api" + ex.getMessage());
         }
         return null;

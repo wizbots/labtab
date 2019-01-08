@@ -217,8 +217,8 @@ public class LabTabApplication extends Application {
                 .readTimeout(7, TimeUnit.MINUTES);
         OkHttpClient client = builder.build();*/
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(120, TimeUnit.SECONDS)
-                .connectTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(240, TimeUnit.SECONDS)
+                .connectTimeout(240, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
