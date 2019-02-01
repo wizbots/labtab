@@ -129,8 +129,11 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         allergiesSpecialNeedsTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_allergies_special_needs);
         afterCarePhoneNameTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_after_care_phone_name);
         enrollmentsCountTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_enrollments_count);
+        enrollmentsCountTextViewCustom.setLongClickable(false);
         absencesTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_abscences_count);
+        absencesTextViewCustom.setLongClickable(false);
         wizchipsTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_wizchips);
+        wizchipsTextViewCustom.setLongClickable(false);
         addWizchips = (TextView) rootView.findViewById(R.id.tv_add_wizchip);
         withdrawWizchips = (TextView) rootView.findViewById(R.id.tv_remove_wizchip);
         withdrawWizchips.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +194,6 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             BackgroundExecutor.getInstance().execute(new StudentProfileAndStatsRequester(student.getStudent_id()));
         }
     }
-
 
     @Override
     public void onClick(View view) {
