@@ -371,7 +371,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         filterMap.put(FilterRequestParameter.MENTOR_ID, LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
         Map<String, String> filterMap1 = new LinkedHashMap<>();
         filterMap1.putAll(filterMap);
-        BackgroundExecutor.getInstance().execute(new FilterRequester(filterMap1));
+        BackgroundExecutor.getInstance().execute(new FilterRequester(LabListFragment.this, filterMap1));
     }
 
     public void initListeners() {
