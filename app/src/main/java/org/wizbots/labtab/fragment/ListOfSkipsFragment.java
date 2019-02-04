@@ -130,7 +130,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
             public void onClick(View view) {
                 if (!objectArrayList.isEmpty()) {
                     progressDialog.show();
-                    BackgroundExecutor.getInstance().execute(new GetStudentsRequester(getSelectStudentsId(), program));
+                    BackgroundExecutor.getInstance().execute(new GetStudentsRequester(ListOfSkipsFragment.this, getSelectStudentsId(), program));
                 } else {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.AT_LEAST_ONE_STUDENT_IS_NEEDED_TO_ADD_VIDEO_FOR_THIS_LAB);
                 }
