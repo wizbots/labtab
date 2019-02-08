@@ -272,8 +272,14 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         lastNameTextViewCustom.setText(studentProfile.getLast_name());
         emailTextViewCustom.setText(creatorResponse.getEmail());
         gradeTextViewCustom.setText(studentProfile.getGrade());
-        String dob[] = studentProfile.getDate_of_birth().split(" ");
-        dateOfBirthTextViewCustom.setText(dob[0]);
+
+        if(studentProfile.getDate_of_birth() != null) {
+            String dob[] = studentProfile.getDate_of_birth().split(" ");
+            dateOfBirthTextViewCustom.setText(dob[0]);
+        } else {
+            dateOfBirthTextViewCustom.setText("");
+        }
+
 //        parentsPhoneTextViewCustom.setText(creatorResponse.getPhone_1() != null ? creatorResponse.getPhone_1() : "");
 //        allergiesSpecialNeedsTextViewCustom.setText(studentProfile.getAllergies() != null ? studentProfile.getAllergies() : "");
 //        afterCarePhoneNameTextViewCustom.setText(studentProfile.getAfter_care_phone() != null ? studentProfile.getAfter_care_phone() : "");
