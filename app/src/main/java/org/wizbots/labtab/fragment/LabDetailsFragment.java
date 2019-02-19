@@ -280,7 +280,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     public void onDestroy() {
         progressDialog.dismiss();
         LabTabApplication.getInstance().removeUIListener(OnSyncDoneListener.class, this);
-        LabTabApplication.getInstance().removeUIListener(GetProgramStudentsListener.class, this);
         super.onDestroy();
     }
 
