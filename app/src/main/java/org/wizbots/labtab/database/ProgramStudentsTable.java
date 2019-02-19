@@ -12,7 +12,7 @@ import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.model.program.Student;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class ProgramStudentsTable extends AbstractTable {
 
@@ -93,18 +93,28 @@ public class ProgramStudentsTable extends AbstractTable {
         }
     }
 
-    public synchronized void insert(Collection<Student> students) {
+    public synchronized void insert(List<Student> students) {
         SQLiteDatabase db = null;
         try {
             db = daoManager.getWritableDatabase();
             db.beginTransaction();
+            ArrayList<Student> previousStudents = getStudentsListByProgramId(students.get(0).getProgram_id());
+            for (Student student : previousStudents) {
+                try {
+                    deleteStudent(db,student);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error while add student", e);
+                }
+                // deleteStudent(db,students.get(0));
+            }
+
             for (Student student : students) {
                 try {
                     insert(db, student);
                 } catch (Exception e) {
                     Log.e(TAG, "Error while add student", e);
                 }
-
+               // deleteStudent(db,students.get(0));
             }
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -132,6 +142,11 @@ public class ProgramStudentsTable extends AbstractTable {
         values.put(COLUMN_PICKUP_INSTRUCTIONS, student.getPickup_instructions());
         values.put(COLUMN_PROMOTION_DEMOTION_SYNC, student.getPromotionDemotionSync());
         db.insertWithOnConflict(NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    //---deletes previous students from the selected program
+    private void deleteStudent(SQLiteDatabase db, Student student) {
+        db.delete(NAME, COLUMN_PROGRAM_ID + " = ?", new String[] { student.getProgram_id() });
     }
 
     public ArrayList<Student> getStudentsListByProgramId(String programId) {
