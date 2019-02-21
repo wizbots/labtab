@@ -15,9 +15,7 @@ CHANGES:
 
 BUG FIXES:
 
-* https://github.com/wizbots/labtab/issues/102
-* https://github.com/wizbots/labtab/issues/107
-* https://github.com/wizbots/labtab/issues/108
+* https://github.com/wizbots/labtab/issues/114
 
 
 KNOWN ISSUES:
