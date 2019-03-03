@@ -29,10 +29,12 @@ public class FilterRequester implements Runnable {
 
     private Map<String, String> params;
     ArrayList<ProgramOrLab> programOrLabArrayList;
+    private OnFilterListener mListener;
 
-    public FilterRequester(Map<String, String> params) {
+    public FilterRequester(OnFilterListener listener, Map<String, String> params) {
         this.params = params;
         this.programOrLabArrayList = new ArrayList<>();
+        this.mListener = listener;
     }
 
     @Override
@@ -69,12 +71,11 @@ public class FilterRequester implements Runnable {
         if (programOrLabArrayList != null){
             Collections.sort(programOrLabArrayList, CHAT_COMPARATOR);
         }
-        for (OnFilterListener listener : LabTabApplication.getInstance().getUIListeners(OnFilterListener.class)) {
-            if (statusCode == LabTabConstants.StatusCode.OK) {
-                listener.onFilterSuccess(programOrLabArrayList);
-            } else {
-                listener.onFilterError(statusCode);
-            }
+
+        if (statusCode == LabTabConstants.StatusCode.OK) {
+            mListener.onFilterSuccess(programOrLabArrayList);
+        } else {
+            mListener.onFilterError(statusCode);
         }
     }
 }
