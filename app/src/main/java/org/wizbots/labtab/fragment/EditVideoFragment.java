@@ -734,7 +734,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     private void initCategory() {
-        String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
+//        String[] categories = homeActivityContext.getResources().getStringArray(R.array.array_category);
+        String[] categories = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCategory();
         categoryArrayList.addAll(Arrays.asList(categories));
         ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(homeActivityContext, android.R.layout.simple_spinner_dropdown_item, categoryArrayList);
         categorySpinner.setAdapter(spinnerArrayAdapter);

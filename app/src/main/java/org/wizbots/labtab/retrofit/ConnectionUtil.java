@@ -18,6 +18,7 @@ public class ConnectionUtil {
         try {
             Log.d(TAG, "Request Url : " + call.request().url() + " Request Body : " + new Gson().toJson(call.request().body()));
             Response<T> response = call.execute();
+            Log.d(TAG, "Response Code : " + response.code());
             return new LabTabResponse<T>(response.code(), response.body(), response.headers());
         } catch (IOException e) {
             e.printStackTrace();
