@@ -1,4 +1,30 @@
 ---------------------------------------------------------------------
+Release 1.8.8 - 2019/03/10
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* Fixed a couple issues that were causing missing settings section in main menu
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/117
+
+
+KNOWN ISSUES:
+
+* None found so far
+
+
+
+---------------------------------------------------------------------
 Release 1.8.7 - 2019/02/20
 ---------------------------------------------------------------------
 NEW FEATURES:
