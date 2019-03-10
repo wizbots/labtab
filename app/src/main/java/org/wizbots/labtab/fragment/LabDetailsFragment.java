@@ -96,7 +96,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
-
     }
 
     @Nullable
@@ -107,6 +106,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         programOrLab = getArguments().getParcelable(LabListFragment.LAB);
         initView();
         initListeners();
+        BackgroundExecutor.getInstance().execute(new ProgramStudentsRequester(programOrLab.getId()));
         return rootView;
     }
 
@@ -246,9 +246,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     @Override
     public void programStudentsFetchedSuccessfully(ProgramResponse programResponse, final Program program, final ArrayList<Student> studentArrayList, ArrayList<Absence> absenceArrayList) {
         this.program = program;
+
         if (studentArrayList.isEmpty()) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_STUDENT_FOUND_FOR_THIS_LAB);
+            return;
         }
+
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {

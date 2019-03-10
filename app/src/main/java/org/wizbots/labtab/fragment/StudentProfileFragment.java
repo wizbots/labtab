@@ -129,8 +129,11 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         allergiesSpecialNeedsTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_allergies_special_needs);
         afterCarePhoneNameTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_after_care_phone_name);
         enrollmentsCountTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_enrollments_count);
+        enrollmentsCountTextViewCustom.setLongClickable(false);
         absencesTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_abscences_count);
+        absencesTextViewCustom.setLongClickable(false);
         wizchipsTextViewCustom = (TextViewCustom) rootView.findViewById(R.id.tv_wizchips);
+        wizchipsTextViewCustom.setLongClickable(false);
         addWizchips = (TextView) rootView.findViewById(R.id.tv_add_wizchip);
         withdrawWizchips = (TextView) rootView.findViewById(R.id.tv_remove_wizchip);
         withdrawWizchips.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +194,6 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             BackgroundExecutor.getInstance().execute(new StudentProfileAndStatsRequester(student.getStudent_id()));
         }
     }
-
 
     @Override
     public void onClick(View view) {
@@ -270,8 +272,14 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         lastNameTextViewCustom.setText(studentProfile.getLast_name());
         emailTextViewCustom.setText(creatorResponse.getEmail());
         gradeTextViewCustom.setText(studentProfile.getGrade());
-        String dob[] = studentProfile.getDate_of_birth().split(" ");
-        dateOfBirthTextViewCustom.setText(dob[0]);
+
+        if(studentProfile.getDate_of_birth() != null) {
+            String dob[] = studentProfile.getDate_of_birth().split(" ");
+            dateOfBirthTextViewCustom.setText(dob[0]);
+        } else {
+            dateOfBirthTextViewCustom.setText("");
+        }
+
 //        parentsPhoneTextViewCustom.setText(creatorResponse.getPhone_1() != null ? creatorResponse.getPhone_1() : "");
 //        allergiesSpecialNeedsTextViewCustom.setText(studentProfile.getAllergies() != null ? studentProfile.getAllergies() : "");
 //        afterCarePhoneNameTextViewCustom.setText(studentProfile.getAfter_care_phone() != null ? studentProfile.getAfter_care_phone() : "");

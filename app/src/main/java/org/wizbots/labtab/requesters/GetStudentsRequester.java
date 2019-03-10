@@ -19,13 +19,15 @@ public class GetStudentsRequester implements Runnable, LabTabConstants {
 
     ArrayList<String> selectedStudents;
     Program program;
+    private GetStudentsListener mGetStudentsListenerListener;
 
     public GetStudentsRequester() {
     }
 
-    public GetStudentsRequester(ArrayList<String> selectedStudents, Program program) {
+    public GetStudentsRequester(GetStudentsListener listener, ArrayList<String> selectedStudents, Program program) {
         this.selectedStudents = selectedStudents;
         this.program = program;
+        this.mGetStudentsListenerListener = listener;
     }
 
     @Override
@@ -47,10 +49,8 @@ public class GetStudentsRequester implements Runnable, LabTabConstants {
                 }
             }
         }
-        for (GetStudentsListener getStudentsListener : LabTabApplication.getInstance().getUIListeners(GetStudentsListener.class)) {
-            getStudentsListener.studentsFetched(studentArrayList);
-        }
 
+        mGetStudentsListenerListener.studentsFetched(studentArrayList);
     }
 
 }
