@@ -1,5 +1,6 @@
 package org.wizbots.labtab.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,9 +46,11 @@ import org.wizbots.labtab.fragment.StudentProfileFragment;
 import org.wizbots.labtab.fragment.StudentStatsDetailsFragment;
 import org.wizbots.labtab.fragment.VideoListFragment;
 import org.wizbots.labtab.fragment.ViewVideoFragment;
+import org.wizbots.labtab.interfaces.requesters.ShouldDialogueShow;
 import org.wizbots.labtab.model.LeftDrawerItem;
 import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.service.LabTabSyncService;
+import org.wizbots.labtab.util.DialogueUtil;
 
 import java.io.File;
 
@@ -61,6 +64,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     private LabTabHeaderLayout labTabHeaderLayout;
     private Handler drawerHandler = new Handler();
     private ViewGroup myHeader;
+    private int previousPosition=-1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,10 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
 
     private void selectItem(final int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
+        if(previousPosition==position){
+            return;
+        }
+        previousPosition=position;
         drawerHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -328,12 +336,33 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             mDrawerLayout.closeDrawer(mDrawerList);
         }
         fragmentManager = getSupportFragmentManager();
-        int backStackCount = fragmentManager.getBackStackEntryCount();
+       /* int backStackCount = fragmentManager.getBackStackEntryCount();
         if (backStackCount == 1) {
             finish();
         } else if (backStackCount > 1) {
             fragmentManager.popBackStackImmediate();
+        }*/
+
+        //**
+        // for dialog if current visible fragment is add video fragment
+        //**
+        if ((fragment instanceof AddVideoFragment || fragment instanceof EditVideoFragment)
+                && fragment.isVisible()
+                && fragment instanceof ShouldDialogueShow &&
+                ((ShouldDialogueShow) fragment).isDataChange()) {
+
+            DialogueUtil.showConfirmDialog(HomeActivity.this, R.string.confirm, fragment instanceof AddVideoFragment ?
+                    R.string.msg_leave_add_video : R.string.msg_leave_edit_video, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    onBackPressBackStackHandler();
+                }
+            });
+        } else {
+            onBackPressBackStackHandler();
         }
+
+
         try {
             LabDetailsFragment labDetailsfragment = (LabDetailsFragment) getSupportFragmentManager().findFragmentByTag("LabDetailsFragment");
             if (labDetailsfragment != null && labDetailsfragment.isVisible()) {
@@ -354,6 +383,15 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             }
         } catch (Exception ignored) {
 
+        }
+    }
+
+    private void onBackPressBackStackHandler() {
+        int backStackCount = fragmentManager.getBackStackEntryCount();
+        if (backStackCount == 1) {
+            finish();
+        } else if (backStackCount > 1) {
+            fragmentManager.popBackStackImmediate();
         }
     }
 

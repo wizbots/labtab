@@ -59,6 +59,7 @@
     <string name="empty_string" />
     <string name="lab_tab_title_image">Lab Tab Title Image</string>
     <string name="record_video">Record Video</string>
+    <string name="record_a_video">Record a video</string>
     <string name="merge_video">Merge Video</string>
     <string name="send_diagnostic">Send Diagnostic</string>
     <string name="add_video_file">Add Video File</string>
@@ -161,6 +162,10 @@
     <string name="search">Search :</string>
     <string name="wizbots_version">Labtab Version :</string>
     <string name="all_years">All Years</string>
+    <string name="choose_from_existing">Select From Gallery</string>
+    <string name="no">No</string>
+    <string name="msg_leave_add_video">Are you sure you want to leave video creation ?</string>
+    <string name="msg_leave_edit_video">Are you sure you want to leave video editing ?</string>
 
 
     <string-array name="fruit_array">

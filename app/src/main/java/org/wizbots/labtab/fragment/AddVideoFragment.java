@@ -30,6 +30,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -75,8 +76,10 @@ import org.wizbots.labtab.database.VideoTable;
 import org.wizbots.labtab.dialog.SelectCreatorDialog;
 import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
+import org.wizbots.labtab.interfaces.VideoOptionSelector;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramStudentsListener;
+import org.wizbots.labtab.interfaces.requesters.ShouldDialogueShow;
 import org.wizbots.labtab.model.Nuggests;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.model.program.Absence;
@@ -89,6 +92,7 @@ import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.requesters.ProgramStudentsRequester;
 import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.BackgroundExecutor;
+import org.wizbots.labtab.util.DialogueUtil;
 import org.wizbots.labtab.util.LabTabUtil;
 
 import java.io.File;
@@ -118,11 +122,12 @@ import static android.content.Context.WINDOW_SERVICE;
 
 public class AddVideoFragment extends ParentFragment implements View.OnClickListener,
         ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener,
-        LabListDialogFragment.LabListClickListener, GetProgramOrLabListener, GetProgramStudentsListener, SelectCreatorDialog.SelectedCreatorDialogListener {
+        LabListDialogFragment.LabListClickListener, GetProgramOrLabListener, GetProgramStudentsListener, SelectCreatorDialog.SelectedCreatorDialogListener, ShouldDialogueShow {
 
     public static final String TAG = AddVideoFragment.class.getSimpleName();
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
+    private static final int RESULT_LOAD_VIDEO = 201;
     KnowledgeNuggetExpand knowledgeNuggetExpand;
     public static final String URI = "URI";
     public static final String PROJECT_CREATORS = "PROJECT_CREATORS";
@@ -133,6 +138,9 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
     private View rootView;
+    private int optionType;
+    private final int CAMERA = 1;
+    private final int GALLERY = 2;
     private ExpandableListView expandableListView;
 
     //    private ProjectCreatorAdapter projectCreatorAdapter;
@@ -174,10 +182,12 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Nullable
     @Override
@@ -368,20 +378,71 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_video_thumbnail:
+    /**
+     * this methode show option record or gallery option dialogue
+     */
+
+    private void showOptionDialogue() {
+
+        DialogueUtil.showVideoOptionDialogue(getActivity(), new VideoOptionSelector() {
+            @Override
+            public void onCameraClick() {
+                optionType = CAMERA;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissions()) {
                     openCamera();
                 } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                     openCamera();
                 }
+
+            }
+
+            @Override
+            public void onGalleryClick() {
+                optionType = GALLERY;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissions()) {
+                    openGalleryVideo();
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    openGalleryVideo();
+                }
+
+            }
+
+            @Override
+            public void onCancelled() {
+                Toast.makeText(homeActivityContext, "cancelled", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    /**
+     * this method for opening gallery
+     */
+    private void openGalleryVideo() {
+        Intent i = new Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        startActivityForResult(i, RESULT_LOAD_VIDEO);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_video_thumbnail:
+                /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkAndRequestPermissions()) {
+                    openCamera();
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    openCamera();
+                }*/
+                LabTabUtil.hideSoftKeyboard(homeActivityContext);
+                showOptionDialogue();
                 break;
             case R.id.btn_create:
 
                 Log.v(LabTabConstants.VIDEO_LOGS_TAG, "on create button clicked. " + "Device time - " + java.text.DateFormat.getDateTimeInstance().format(new Date()));
-
                 if (titleEditTextCustom.getText().toString().length() == 0) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Please Give A Title To Video");
                     break;
@@ -417,6 +478,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     break;
                 }
 
+
+
                /* if (descriptionEditTextCustom.getText().toString().length() < 5) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "Description must consist 5 characters");
                     break;
@@ -429,6 +492,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                     break;
                 }*/
                 //Project_Name.SKU.NamesOfKidsInCamelCaseEach
+
 
                 CreateProjectRequest createProjectRequest = new CreateProjectRequest();
                 createProjectRequest.setId(Calendar.getInstance().getTimeInMillis() + "");
@@ -479,6 +543,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
 /*                homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
                 homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());*/
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.PROJECT_CREATED_SUCCESSFULLY);
+
+
                 break;
             case R.id.btn_cancel:
                 homeActivityContext.onBackPressed();
@@ -532,6 +598,19 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                 break;
 
         }
+    }
+
+    private boolean validateData() {
+        if (!TextUtils.isEmpty(titleEditTextCustom.getText().toString())
+                || categorySpinner.getSelectedItemPosition() > 0
+                || !TextUtils.isEmpty(labSKUTextViewCustom.getText().toString())
+                || savedVideoUri != null
+                || !creatorsSelected.isEmpty()
+                || !knowledgeNuggets.isEmpty()) {
+            return true;
+
+        }
+        return false;
     }
 
     // ========================================SYADAV=======================================================
@@ -796,6 +875,12 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             } else {
                 Toast.makeText(homeActivityContext, "Video capture failed.",
                         Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == RESULT_LOAD_VIDEO && data != null) {
+
+            Uri videoURI = data.getData();
+            if (videoURI != null) {
+                startTrimActivity(videoURI);
             }
         } else if (requestCode == REQUEST_CODE_TRIM_VIDEO) {
             if (resultCode == Activity.RESULT_OK) {
@@ -1122,7 +1207,11 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
                         perms.put(permissions[i], grantResults[i]);
                     if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                        openCamera();
+                        if (optionType == GALLERY) {
+                            openGalleryVideo();
+                        } else {
+                            openCamera();
+                        }
                     } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -1426,5 +1515,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             }
         });
         horizontalProjectCreatorAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean isDataChange() {
+        return validateData();
     }
 }
