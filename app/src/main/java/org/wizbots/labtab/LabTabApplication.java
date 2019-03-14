@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.craterzone.logginglib.manager.LoggerManager;
@@ -22,6 +24,7 @@ import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -84,12 +87,28 @@ public class LabTabApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Application onCreate()");
+        uriCheckForAPi25();
         initManagers();
         initDB();
         loadManagers();
         initRetrofit();
         LoggerManager.getInstance(getApplicationContext()).init();
         metaDatas = LabTabPreferences.getInstance(LabTabApplication.getInstance()).getProjectsMetaData();
+    }
+
+    /**
+     * this method help for
+     * for API 24+, to access file:// intents,to disable the runtime check
+     */
+    private void uriCheckForAPi25(){
+        if(Build.VERSION.SDK_INT>=24){
+            try{
+                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                m.invoke(null);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initManagers() {

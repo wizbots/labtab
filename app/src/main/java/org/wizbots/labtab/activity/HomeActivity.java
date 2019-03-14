@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +65,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
     private LabTabHeaderLayout labTabHeaderLayout;
     private Handler drawerHandler = new Handler();
     private ViewGroup myHeader;
-    private int previousPosition=-1;
+    private int previousPosition = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,10 +85,10 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
 
     private void selectItem(final int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
-        if(previousPosition==position){
+        if (previousPosition == position) {
             return;
         }
-        previousPosition=position;
+        previousPosition = position;
         drawerHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -218,6 +219,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             }
         }
     }
+
 
     public void replaceFragment(int fragmentToBePut, Bundle bundle) {
         fragmentManager = getSupportFragmentManager();
@@ -388,12 +390,19 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
 
     private void onBackPressBackStackHandler() {
         int backStackCount = fragmentManager.getBackStackEntryCount();
+
         if (backStackCount == 1) {
             finish();
         } else if (backStackCount > 1) {
+            Log.d("previous position ",""+previousPosition);
+            previousPosition=-1;
             fragmentManager.popBackStackImmediate();
         }
+
+
     }
+
+
 
     public void lockDrawerLayout() {
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
