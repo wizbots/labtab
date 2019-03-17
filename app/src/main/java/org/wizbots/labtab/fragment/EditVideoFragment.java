@@ -68,6 +68,7 @@ import org.wizbots.labtab.interfaces.HorizontalProjectCreatorAdapterClickListene
 import org.wizbots.labtab.interfaces.ProjectCreatorAdapterClickListener;
 import org.wizbots.labtab.interfaces.requesters.EditProjectListener;
 import org.wizbots.labtab.interfaces.requesters.OnDeleteVideoListener;
+import org.wizbots.labtab.interfaces.requesters.ShouldDialogueShow;
 import org.wizbots.labtab.model.Nuggests;
 import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.model.video.Video;
@@ -93,7 +94,7 @@ import life.knowledge4.videotrimmer.utils.FileUtils;
 
 public class EditVideoFragment extends ParentFragment implements View.OnClickListener,
         ProjectCreatorAdapterClickListener, HorizontalProjectCreatorAdapterClickListener,
-        EditProjectListener, OnDeleteVideoListener, SelectCreatorDialog.SelectedCreatorDialogListener {
+        EditProjectListener, OnDeleteVideoListener, SelectCreatorDialog.SelectedCreatorDialogListener, ShouldDialogueShow {
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
@@ -449,7 +450,37 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkAndRequestPermissionsSingle()) {
             return;
         }
+       /* Video videoRequest = new Video();
+        videoRequest.setId(video.getId());
+        videoRequest.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
+        videoRequest.setStatus(100);
+        videoRequest.setPath(video.getPath());
+        videoRequest.setTitle(titleEditTextCustom.getText().toString());
+        videoRequest.setCategory((String) (categorySpinner.getSelectedItem()));
+        videoRequest.setMentor_name(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
+        videoRequest.setLab_sku(video.getLab_sku());
+        videoRequest.setLab_level(video.getLab_level());
+        videoRequest.setKnowledge_nuggets(LabTabUtil.toJson(getKnowledgeNuggets(knowledgeNuggets)));
+        videoRequest.setDescription(descriptionEditTextCustom.getText().toString());
+        videoRequest.setProject_creators(LabTabUtil.toJson(creatorsSelected));
+        videoRequest.setNotes_to_the_family(notesToTheFamilyEditTextCustom.getText().toString());
+        videoRequest.setIs_transCoding(String.valueOf(false));
+        videoRequest.setVideo(video.getVideo());
+        videoRequest.setVideoId(video.getVideoId());
+        videoRequest.setProgramId(video.getProgramId());*/
 
+
+        if (isDataChange()) {
+            progressDialog.show();
+            BackgroundExecutor.getInstance().execute(new EditProjectRequester(getVideoRequest(), editVideoCase));
+        } else {
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CHANGES_ARE_MADE);
+        }
+    }
+
+
+
+    private Video getVideoRequest(){
         Video videoRequest = new Video();
         videoRequest.setId(video.getId());
         videoRequest.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
@@ -468,15 +499,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         videoRequest.setVideo(video.getVideo());
         videoRequest.setVideoId(video.getVideoId());
         videoRequest.setProgramId(video.getProgramId());
-
-        if (LabTabUtil.compareEditedVideo(videoRequest)) {
-            progressDialog.show();
-            BackgroundExecutor.getInstance().execute(new EditProjectRequester(videoRequest, editVideoCase));
-        } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CHANGES_ARE_MADE);
-        }
+        return videoRequest;
     }
-
     @Override
     public void onProjectCreatorClick(final Student student) {
         homeActivityContext.runOnUiThread(new Runnable() {
@@ -1371,5 +1395,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             }
         });
         horizontalProjectCreatorAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean isDataChange() {
+        return LabTabUtil.compareEditedVideo(getVideoRequest());
     }
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/card_elevation_normal">
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="?selectableItemBackground"
+        android:padding="@dimen/card_elevation_extra_large"
+        android:src="@drawable/ic_close_svg_32dp" />
+
+    <RelativeLayout
+        android:id="@+id/v_choose_existing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_elevation_normal"
+        android:background="@color/progress_color"
+        android:minHeight="@dimen/margin_left_for_lab_title">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_choose_existing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/choose_from_existing"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/v_record_from_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_elevation_normal"
+        android:background="@color/progress_color"
+        android:minHeight="@dimen/margin_left_for_lab_title">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_record_from_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/record_a_video"
+            android:textAllCaps="true"
+
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
