@@ -1,4 +1,29 @@
 ---------------------------------------------------------------------
+Release 1.8.9 - 2019/03/19
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* Fixed an issue that was making video creation crash the application
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/122
+
+
+KNOWN ISSUES:
+
+* None found so far
+
+
+---------------------------------------------------------------------
 Release 1.8.8 - 2019/03/10
 ---------------------------------------------------------------------
 NEW FEATURES:
