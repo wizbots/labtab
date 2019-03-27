@@ -218,6 +218,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         addProjectCreatorEditTextListeners();
         ArrayList<Student> objects = (ArrayList<Student>) getArguments().getSerializable(LabDetailsFragment.SELECTED_STUDENTS);
         if (savedInstanceState == null && objects != null && !objects.isEmpty()) {
+            creatorsSelected.clear();
             creatorsSelected.addAll(objects);
             initKnowledgeNuggets(null);
             horizontalProjectCreatorAdapter.notifyDataSetChanged();
