@@ -98,6 +98,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
 
     public static final int REQUEST_CODE_TRIM_VIDEO = 300;
     public static final String URI = "URI";
+    public static final String FILE_URI = "file-uri";
     public static final String PROJECT_CREATORS = "PROJECT_CREATORS";
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -165,6 +166,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             editVideoCase = savedInstanceState.getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
             video = savedInstanceState.getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
+            fileUri=savedInstanceState.getParcelable(FILE_URI);
             initListeners();
             initView(savedInstanceState);
         }
@@ -725,6 +727,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         outState.putParcelable(URI, savedVideoUri);
         outState.putSerializable(PROJECT_CREATORS, creatorsSelected);
         outState.putParcelable(VideoListFragment.VIDEO, video);
+        outState.putParcelable(FILE_URI, fileUri);
         outState.putSerializable(AddVideoFragment.KNOWLEDGE_NUGGETS, knowledgeNuggets);
         outState.putString(AddVideoFragment.NUGGETS, knowledgeNuggetsSelected);
         outState.putString(VideoListFragment.VIDEO_EDIT_CASE, editVideoCase);

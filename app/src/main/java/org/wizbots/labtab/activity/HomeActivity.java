@@ -54,6 +54,7 @@ import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.DialogueUtil;
 
 import java.io.File;
+import java.util.List;
 
 public class HomeActivity extends ParentActivity implements View.OnClickListener {
 
@@ -73,6 +74,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         setContentView(R.layout.activity_home);
         initView(savedInstanceState);
     }
+
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
@@ -187,6 +189,9 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         mDrawerList.setAdapter(adapter);
 
         putFragmentInContainer(savedInstanceState);
+        if (savedInstanceState != null) {
+            updateCurrentVisibile();
+        }
 
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getMenuImageView().setOnClickListener(this);
@@ -220,6 +225,15 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         }
     }
 
+    private void updateCurrentVisibile() {
+//        Fragment current = getCurrentFragment();
+        Fragment current = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (current instanceof ParentFragment) {
+
+            fragment = (ParentFragment) current;
+            previousPosition = getPreviousPosition(fragment);
+        }
+    }
 
     public void replaceFragment(int fragmentToBePut, Bundle bundle) {
         fragmentManager = getSupportFragmentManager();
@@ -394,14 +408,13 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         if (backStackCount == 1) {
             finish();
         } else if (backStackCount > 1) {
-            Log.d("previous position ",""+previousPosition);
-            previousPosition=-1;
+            Log.d("previous position ", "" + previousPosition);
             fragmentManager.popBackStackImmediate();
+            updateCurrentVisibile();
         }
 
 
     }
-
 
 
     public void lockDrawerLayout() {
@@ -426,6 +439,49 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
 
         }
 
+    }
+
+
+
+    private int getPreviousPosition(Fragment fragment) {
+        if (fragment instanceof LoginFragment) {
+            return Fragments.LOGIN;
+        } else if (fragment instanceof ForgotPasswordFragment) {
+            return Fragments.FORGOT_PASSWORD;
+        } else if (fragment instanceof HomeFragment) {
+            return Fragments.HOME;
+        } else if (fragment instanceof SettingsFragment) {
+            return Fragments.SETTINGS;
+        } else if (fragment instanceof LabListFragment) {
+            return Fragments.LAB_LIST;
+        } else if (fragment instanceof LabDetailsFragment) {
+            return Fragments.LAB_DETAILS_LIST;
+        } else if (fragment instanceof MentorProfileFragment) {
+            return Fragments.MENTOR_PROFILE;
+        } else if (fragment instanceof StudentProfileFragment) {
+            return Fragments.STUDENT_PROFILE;
+        } else if (fragment instanceof StudentStatsDetailsFragment) {
+            return Fragments.STUDENT_STATS_DETAILS;
+        } else if (fragment instanceof StudentLabDetailsFragment) {
+            return Fragments.STUDENT_LAB_DETAILS;
+        } else if (fragment instanceof VideoListFragment) {
+            return Fragments.VIDEO_LIST;
+        } else if (fragment instanceof EditVideoFragment) {
+            return Fragments.EDIT_VIDEO;
+        } else if (fragment instanceof AddVideoFragment) {
+            return Fragments.ADD_VIDEO;
+        } else if (fragment instanceof ListOfSkipsFragment) {
+            return Fragments.LIST_OF_SKIPS;
+        } else if (fragment instanceof AdditionalInformationFragment) {
+            return Fragments.ADDITIONAL_INFORMATION;
+        } else if (fragment instanceof ViewVideoFragment) {
+            return Fragments.VIEW_VIDEO;
+        } else if (fragment instanceof PdfBinder) {
+            return Fragments.BINDER;
+        }
+
+
+        return -1;
     }
 
     public void clearAllTheFragmentFromStack(boolean b) {

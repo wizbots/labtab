@@ -133,6 +133,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     public static final String PROJECT_CREATORS = "PROJECT_CREATORS";
     public static final String KNOWLEDGE_NUGGETS = "KNOWLEDGE_NUGGETS";
     public static final String LEVEL = "lab_level";
+    public static final String FILE_URI = "file-uri";
     public static final String NUGGETS = "NUGGETS";
     public static final String PROGRAM = "PROGRAM";
     private LabTabHeaderLayout labTabHeaderLayout;
@@ -217,6 +218,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         addProjectCreatorEditTextListeners();
         ArrayList<Student> objects = (ArrayList<Student>) getArguments().getSerializable(LabDetailsFragment.SELECTED_STUDENTS);
         if (savedInstanceState == null && objects != null && !objects.isEmpty()) {
+            creatorsSelected.clear();
             creatorsSelected.addAll(objects);
             initKnowledgeNuggets(null);
             horizontalProjectCreatorAdapter.notifyDataSetChanged();
@@ -326,6 +328,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
 
         if (bundle != null) {
+            fileUri=bundle.getParcelable(FILE_URI);
             savedVideoUri = bundle.getParcelable(URI);
             if (savedVideoUri != null) {
                 Glide
@@ -612,6 +615,8 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
         return false;
     }
+
+
 
     // ========================================SYADAV=======================================================
     private void sortHashMapValueList(HashMap<String, ArrayList<Nuggests>> list) {
@@ -910,6 +915,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         outState.putSerializable(KNOWLEDGE_NUGGETS, knowledgeNuggets);
         outState.putString(NUGGETS, knowledgeNuggetsSelected);
         outState.putString(LEVEL, level);
+        outState.putParcelable(FILE_URI, fileUri);
         outState.putParcelable(PROGRAM, program);
         super.onSaveInstanceState(outState);
     }
