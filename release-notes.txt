@@ -1,4 +1,31 @@
 ---------------------------------------------------------------------
+Release 1.9.0 - 2019/03/31
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* Fixed several issues
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/112
+* https://github.com/wizbots/labtab/issues/125
+* https://github.com/wizbots/labtab/issues/124
+* https://github.com/wizbots/labtab/issues/121
+
+
+KNOWN ISSUES:
+
+* None found so far
+
+---------------------------------------------------------------------
 Release 1.8.9 - 2019/03/19
 ---------------------------------------------------------------------
 NEW FEATURES:
