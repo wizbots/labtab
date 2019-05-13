@@ -141,4 +141,9 @@ public interface LabTabApiInterface {
     @POST("students/wizchips/set")
     Call<WizchipsWithdrawResponse> setWizchips(@Header("Auth-Token") String authToken,
                                                     @Query("student") String studentId, @Query("wizchips") int wizchips, @Header("User-Agent") String userAgent);
+
+    //    20. Get Roster Details
+    @GET("roster")
+    Call<ArrayList<ProgramOrLab>> getRosterDetails(@Header("Auth-Token") String authToken, @QueryMap(encoded = true) Map<String, String> params, @Header("User-Agent") String userAgent);
+
 }

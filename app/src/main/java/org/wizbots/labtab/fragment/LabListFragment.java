@@ -37,12 +37,14 @@ import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
 import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
+import org.wizbots.labtab.interfaces.requesters.OnRosterDetailsListener;
 import org.wizbots.labtab.manager.FileManager;
 import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.requesters.FilterRequester;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
+import org.wizbots.labtab.requesters.RosterDetailsRequester;
 import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
@@ -53,12 +55,13 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class LabListFragment extends ParentFragment implements LabListAdapterClickListener,
-        LabTabConstants, OnFilterListener, GetProgramOrLabListener, View.OnClickListener, OnSyncDoneListener {
+        LabTabConstants, OnFilterListener, GetProgramOrLabListener, View.OnClickListener, OnSyncDoneListener, OnRosterDetailsListener {
 
     private static final String TAG = LabListFragment.class.getSimpleName();
     public static final String LAB = "LAB";
@@ -422,25 +425,16 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     @Override
     public void onRosterDetailsClick(ProgramOrLab labList) {
 
-        String base64 = "";
-        String fileName = labList.getId();
+        String rosterId = labList.getId();
 
-        if(FileManager.getInstance().isRosterDownloaded(fileName)) {
-
+        if(FileManager.getInstance().isRosterDownloaded(rosterId)) {
             String filePath = FileManager.getInstance().getFilePath(labList.getId());
             final Intent intent;
             intent = new Intent(context, WebViewActivity.class);
             intent.putExtra("path",filePath);
             context.startActivity(intent);
-
         } else {
-            FileManager.FilePathAndStatus filePathAndStatus = FileManager.getInstance().getFileFromBase64AndSaveInSDCard(base64, fileName);
-
-            if(filePathAndStatus != null && filePathAndStatus.filStatus) {
-                Toast.makeText(homeActivityContext, "File Downloaded Successfully.", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(homeActivityContext, "Unable to download the file.", Toast.LENGTH_SHORT).show();
-            }
+            BackgroundExecutor.getInstance().execute(new RosterDetailsRequester(this,rosterId));
         }
     }
 
@@ -696,4 +690,29 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         return list.indexOf(season);
     }
 
+    @Override
+    public void onRosterDetailsSuccess(final String rosterId) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(homeActivityContext, "File Downloaded Successfully.", Toast.LENGTH_SHORT).show();
+                String filePath = FileManager.getInstance().getFilePath(rosterId);
+                final Intent intent;
+                intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra("path",filePath);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onRosterDetailsError(int responseCode) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(homeActivityContext, "Failed to download the file.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
