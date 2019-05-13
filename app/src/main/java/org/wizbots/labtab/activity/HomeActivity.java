@@ -255,6 +255,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 break;
             case Fragments.LAB_LIST:
                 fragment = new LabListFragment();
+                previousPosition = -1;
                 break;
             case Fragments.LAB_DETAILS_LIST:
                 fragment = new LabDetailsFragment();
