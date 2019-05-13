@@ -4,6 +4,7 @@ package org.wizbots.labtab.activity;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.shockwave.pdfium.PdfDocument;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 
+import java.io.File;
 import java.util.List;
 
 public class WebViewActivity extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener,
@@ -65,6 +67,20 @@ public class WebViewActivity extends AppCompatActivity implements OnPageChangeLi
        String filePath = "pdfs/"+ assetFileName + ".pdf";
 
         pdfView.fromAsset(filePath)
+                .defaultPage(pageNumber)
+                .onPageChange(this)
+                .enableAnnotationRendering(true)
+                .onLoad(this)
+                .scrollHandle(new DefaultScrollHandle(this))
+                .spacing(10) // in dp
+                .onPageError(this)
+                .load();
+    }
+
+    private void displayFromFilePath(String assetFileName) {
+
+
+        pdfView.fromFile(new File(assetFileName))
                 .defaultPage(pageNumber)
                 .onPageChange(this)
                 .enableAnnotationRendering(true)

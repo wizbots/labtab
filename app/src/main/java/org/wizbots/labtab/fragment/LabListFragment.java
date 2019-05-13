@@ -3,6 +3,7 @@ package org.wizbots.labtab.fragment;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
+import org.wizbots.labtab.activity.WebViewActivity;
 import org.wizbots.labtab.adapter.LabListAdapter;
 import org.wizbots.labtab.adapter.LocationAdapter;
 import org.wizbots.labtab.adapter.SpinnerAdapter;
@@ -35,6 +37,7 @@ import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
 import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
+import org.wizbots.labtab.manager.FileManager;
 import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.requesters.FilterRequester;
@@ -414,6 +417,31 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         Bundle bundle = new Bundle();
         bundle.putParcelable(LAB, programOrLab);
         homeActivityContext.replaceFragment(Fragments.LAB_DETAILS_LIST, bundle);
+    }
+
+    @Override
+    public void onRosterDetailsClick(ProgramOrLab labList) {
+
+        String base64 = "";
+        String fileName = labList.getId();
+
+        if(FileManager.getInstance().isRosterDownloaded(fileName)) {
+
+            String filePath = FileManager.getInstance().getFilePath(labList.getId());
+            final Intent intent;
+            intent = new Intent(context, WebViewActivity.class);
+            intent.putExtra("path",filePath);
+            context.startActivity(intent);
+
+        } else {
+            FileManager.FilePathAndStatus filePathAndStatus = FileManager.getInstance().getFileFromBase64AndSaveInSDCard(base64, fileName);
+
+            if(filePathAndStatus != null && filePathAndStatus.filStatus) {
+                Toast.makeText(homeActivityContext, "File Downloaded Successfully.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(homeActivityContext, "Unable to download the file.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
