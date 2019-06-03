@@ -183,10 +183,8 @@ public class LabTabHTTPOperationController {
     }
 
     public static LabTabResponse getRosterDetails(String rosterId) {
-        Map<String, String> params = new HashMap<>();
-        params.put("roster_id", rosterId);
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
         return ConnectionUtil.execute(labTabApiInterface.getRosterDetails(LabTabPreferences.getInstance
-                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), params,LabTabApplication.getInstance().getUserAgent()));
+                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), rosterId, LabTabApplication.getInstance().getUserAgent()));
     }
 }

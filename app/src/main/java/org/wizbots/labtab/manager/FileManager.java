@@ -81,4 +81,14 @@ public class FileManager {
         public boolean filStatus;
         public String filePath;
     }
+
+    public void clearFileStorage() {
+        File dir = new File(getLabTabPdfDirectory());
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String aChildren : children) {
+                new File(dir, aChildren).delete();
+            }
+        }
+    }
 }

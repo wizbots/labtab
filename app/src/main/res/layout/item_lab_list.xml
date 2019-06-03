@@ -58,7 +58,6 @@
             android:src="@drawable/ic_action_view" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/roster_details"
             android:background="@drawable/circle_blue"
             android:layout_width="@dimen/lab_list_image_width"

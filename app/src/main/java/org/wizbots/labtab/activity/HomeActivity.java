@@ -48,6 +48,7 @@ import org.wizbots.labtab.fragment.StudentStatsDetailsFragment;
 import org.wizbots.labtab.fragment.VideoListFragment;
 import org.wizbots.labtab.fragment.ViewVideoFragment;
 import org.wizbots.labtab.interfaces.requesters.ShouldDialogueShow;
+import org.wizbots.labtab.manager.FileManager;
 import org.wizbots.labtab.model.LeftDrawerItem;
 import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.service.LabTabSyncService;
@@ -120,6 +121,7 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
                         // Clearing mata data on logout
                         LabTabApplication.getInstance().setMetaDatas(null);
+                        FileManager.getInstance().clearFileStorage();
                         ActivityCompat.finishAffinity(HomeActivity.this);
                         Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
                         intent.putExtra(Constants.FINISH, true);

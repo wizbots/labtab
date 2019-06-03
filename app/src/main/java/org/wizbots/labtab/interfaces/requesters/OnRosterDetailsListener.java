@@ -1,6 +1,6 @@
 package org.wizbots.labtab.interfaces.requesters;
 
 public interface OnRosterDetailsListener {
-    void onRosterDetailsSuccess(String rosterId);
+    void onRosterDetailsSuccess(String rosterTitle);
     void onRosterDetailsError(int responseCode);
 }

@@ -462,5 +462,11 @@ public interface LabTabConstants {
         String INTERNET_OFF = "INTERNET_OFF";
     }
 
+    interface Screens {
+        String FROM_SCREEN = "from_screen";
+        String ROSTER_DETAILS = "roster_details";
+        String SCREEN_NONE = "screen_none";
+    }
+
     String VIDEO_LOGS_TAG = "VIDEO_LOGS";
 }

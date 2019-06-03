@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants.Screens;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.WebViewActivity;
 import org.wizbots.labtab.model.BinderItem;
@@ -47,6 +48,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
                 intent = new Intent(context, WebViewActivity.class);
                 String path = item.getName().toString();
                 intent.putExtra("path",path);
+                intent.putExtra(Screens.FROM_SCREEN, Screens.SCREEN_NONE);
                 context.startActivity(intent);
             }
         });

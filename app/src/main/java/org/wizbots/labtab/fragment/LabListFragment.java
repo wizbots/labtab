@@ -2,11 +2,9 @@ package org.wizbots.labtab.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -55,7 +53,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -426,15 +423,18 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     public void onRosterDetailsClick(ProgramOrLab labList) {
 
         String rosterId = labList.getId();
+        String rosterTitle = labList.getTitle();
 
-        if(FileManager.getInstance().isRosterDownloaded(rosterId)) {
-            String filePath = FileManager.getInstance().getFilePath(labList.getId());
+        if(FileManager.getInstance().isRosterDownloaded(rosterTitle)) {
+            String filePath = FileManager.getInstance().getFilePath(rosterTitle);
             final Intent intent;
             intent = new Intent(context, WebViewActivity.class);
             intent.putExtra("path",filePath);
+            intent.putExtra(Screens.FROM_SCREEN, Screens.ROSTER_DETAILS);
             context.startActivity(intent);
         } else {
-            BackgroundExecutor.getInstance().execute(new RosterDetailsRequester(this,rosterId));
+            BackgroundExecutor.getInstance().execute(new RosterDetailsRequester(this,rosterId, rosterTitle));
+            progressDialog.show();
         }
     }
 
@@ -691,17 +691,24 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     @Override
-    public void onRosterDetailsSuccess(final String rosterId) {
+    public void onRosterDetailsSuccess(final String rosterTitle) {
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(homeActivityContext, "File Downloaded Successfully.", Toast.LENGTH_SHORT).show();
-                String filePath = FileManager.getInstance().getFilePath(rosterId);
-                final Intent intent;
-                intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra("path",filePath);
-                context.startActivity(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Toast.makeText(homeActivityContext, R.string.file_downloaded_successfully, Toast.LENGTH_SHORT).show();
+                        String filePath = FileManager.getInstance().getFilePath(rosterTitle);
+                        final Intent intent;
+                        intent = new Intent(context, WebViewActivity.class);
+                        intent.putExtra("path",filePath);
+                        intent.putExtra(Screens.FROM_SCREEN,Screens.ROSTER_DETAILS);
+                        context.startActivity(intent);
+                    }
+                }, 1000);
             }
         });
     }
@@ -711,7 +718,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(homeActivityContext, "Failed to download the file.", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                Toast.makeText(homeActivityContext, R.string.failed_to_download_the_file, Toast.LENGTH_SHORT).show();
             }
         });
     }
