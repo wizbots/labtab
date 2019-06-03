@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "org.wizbots.labtab"
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 25
         versionCode 3
         versionName "1.8.9"
         testApplicationId "org.wizbots.labtab.tests"
