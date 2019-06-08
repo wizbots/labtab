@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="pdf_files">
-        <item>Contact List Summer 2018</item>
-        <item>Camp Logistics Checklist</item>
-        <item>Injury Protocol Checklist</item>
-        <item>Fire - Earthquake Safety Procedures</item>
-        <item>Classroom Management</item>
-        <item>Equipment Protocol Checklist</item>
-        <item>PlayStation Controllers Troubleshooting</item>
-        <item>WizQuizes &amp; Answers</item>
-        <item>Working with Children with Developmental Disabilities</item>
-        <item>Understanding Autism and Developmental Disorders</item>
-        <item>Success Criteria Checklist</item>
+
+    <string-array name="contact_info_pdf_files">
+        <item>Contact Info - Summer 2019</item>
+        <item>The Faces of Wizbots - 2019</item>
     </string-array>
 
+    <string-array name="wizquiz_que_ans_pdf_files">
+        <item>Lab Certified Quiz</item>
+        <item>Explorer Quiz</item>
+        <item>Apprentice QUIZ</item>
+        <item>Maker QUIZ</item>
+        <item>Imagineer QUIZ</item>
+        <item>Wizard QUIZ</item>
+        <item>Master Quiz</item>
+        <item>WizQuiz Answers</item>
+    </string-array>
+
+
+    <string-array name="other_stuff_pdf_files">
+        <item>Board Game Rules</item>
+        <item>Discipline In The Lab</item>
+        <item>How To Train LIT</item>
+        <item>In-Lab Photos</item>
+    </string-array>
 
 </resources>

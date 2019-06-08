@@ -169,6 +169,9 @@
     <string name="msg_leave_edit_video">Are you sure you want to leave video editing ?</string>
     <string name="file_downloaded_successfully">File Downloaded Successfully.</string>
     <string name="failed_to_download_the_file">Failed to download the file.</string>
+    <string name="contact_info">Contact Info</string>
+    <string name="wiz_que_answe"><![CDATA[WizQuiz & Answers]]></string>
+    <string name="other_stuff">Others</string>
 
 
     <string-array name="fruit_array">
