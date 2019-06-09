@@ -1,7 +1,6 @@
 package org.wizbots.labtab.activity;
 
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,9 +17,11 @@ import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.shockwave.pdfium.PdfDocument;
 
+import org.wizbots.labtab.LabTabConstants.Screens;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 
+import java.io.File;
 import java.util.List;
 
 public class WebViewActivity extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener,
@@ -51,13 +52,22 @@ public class WebViewActivity extends AppCompatActivity implements OnPageChangeLi
             }
         });
         Intent intent = getIntent();
+
         fileName = intent.getStringExtra("path");
         //retrieve filename from intent
         pdfView = (PDFView) findViewById(R.id.pdfView);
         pdfView.setBackgroundColor(Color.LTGRAY);
-        displayFromAsset(fileName);
-        setTitle(fileName);
-        toolbar.setTitle(fileName);
+
+        if (intent.getStringExtra(Screens.FROM_SCREEN).equalsIgnoreCase(Screens.ROSTER_DETAILS)) {
+            displayFromFilePath(fileName);
+            String rosterTitle = fileName.substring(fileName.indexOf("LabTabPdf/")+10);
+            setTitle(rosterTitle);
+            toolbar.setTitle(rosterTitle);
+        } else {
+            displayFromAsset(fileName);
+            setTitle(fileName);
+            toolbar.setTitle(fileName);
+        }
     }
 
 
@@ -65,6 +75,21 @@ public class WebViewActivity extends AppCompatActivity implements OnPageChangeLi
        String filePath = "pdfs/"+ assetFileName + ".pdf";
 
         pdfView.fromAsset(filePath)
+                .defaultPage(pageNumber)
+                .onPageChange(this)
+                .enableAnnotationRendering(true)
+                .onLoad(this)
+                .scrollHandle(new DefaultScrollHandle(this))
+                .spacing(10) // in dp
+                .onPageError(this)
+                .load();
+    }
+
+    private void displayFromFilePath(String assetFileName) {
+        String filePath = assetFileName + ".pdf";
+
+
+        pdfView.fromFile(new File(filePath))
                 .defaultPage(pageNumber)
                 .onPageChange(this)
                 .enableAnnotationRendering(true)
@@ -123,6 +148,5 @@ public class WebViewActivity extends AppCompatActivity implements OnPageChangeLi
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
-
     }
 }

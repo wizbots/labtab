@@ -53,6 +53,7 @@
     <string name="lab_time_status">LAB TIME</string>
     <string name="lab_level_image">Lab Level Image</string>
     <string name="action_image">Action Image</string>
+    <string name="roster_details_image">Roster Details Image</string>
     <string name="level">Level</string>
     <string name="name">Name</string>
     <string name="actions">Actions</string>
@@ -166,6 +167,11 @@
     <string name="no">No</string>
     <string name="msg_leave_add_video">Are you sure you want to leave video creation ?</string>
     <string name="msg_leave_edit_video">Are you sure you want to leave video editing ?</string>
+    <string name="file_downloaded_successfully">File Downloaded Successfully.</string>
+    <string name="failed_to_download_the_file">Failed to download the file.</string>
+    <string name="contact_info">Contact Info</string>
+    <string name="wiz_que_answe"><![CDATA[WizQuiz & Answers]]></string>
+    <string name="other_stuff">Others</string>
 
 
     <string-array name="fruit_array">
@@ -181,6 +187,7 @@
     <string-array name="labtab_managers">
         <item>org.wizbots.labtab.database.DAOManager</item>
         <item>org.wizbots.labtab.service.SyncManager</item>
+        <item>org.wizbots.labtab.manager.FileManager</item>
     </string-array>
 
     <string-array name="labtabtables">

@@ -4,6 +4,7 @@ import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.model.ProgramOrLab;
+import org.wizbots.labtab.model.RosterModel;
 import org.wizbots.labtab.model.markabsent.MarkStudentAbsentResponse;
 import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.model.metadata.ProgramMetaData;
@@ -141,4 +142,9 @@ public interface LabTabApiInterface {
     @POST("students/wizchips/set")
     Call<WizchipsWithdrawResponse> setWizchips(@Header("Auth-Token") String authToken,
                                                     @Query("student") String studentId, @Query("wizchips") int wizchips, @Header("User-Agent") String userAgent);
+
+    //    20. Get Roster Details
+    @GET("programs/{id}/roster")
+    Call<RosterModel> getRosterDetails(@Header("Auth-Token") String authToken, @Path("id") String rosterId, @Header("User-Agent") String userAgent);
+
 }

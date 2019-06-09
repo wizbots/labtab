@@ -11,18 +11,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants.Screens;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.WebViewActivity;
 import org.wizbots.labtab.model.BinderItem;
 
 import java.util.List;
 
-public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder> {
+public class OtherStuffAdapter extends RecyclerView.Adapter<OtherStuffAdapter.ViewHolder> {
 
     private List<BinderItem> listItems;
     private Context context;
 
-    public BinderAdapter(List<BinderItem> listItems, Context context) {
+    public OtherStuffAdapter(List<BinderItem> listItems, Context context) {
         this.listItems = listItems;
         this.context = context;
     }
@@ -46,7 +47,8 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
                 final Intent intent;
                 intent = new Intent(context, WebViewActivity.class);
                 String path = item.getName().toString();
-                intent.putExtra("path",path);
+                intent.putExtra("path", path);
+                intent.putExtra(Screens.FROM_SCREEN, Screens.SCREEN_NONE);
                 context.startActivity(intent);
             }
         });

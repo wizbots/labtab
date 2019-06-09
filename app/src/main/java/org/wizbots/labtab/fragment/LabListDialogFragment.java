@@ -71,4 +71,9 @@ public class LabListDialogFragment extends DialogFragment implements LabListAdap
             }
         });
     }
+
+    @Override
+    public void onRosterDetailsClick(ProgramOrLab labList) {
+
+    }
 }

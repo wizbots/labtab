@@ -182,4 +182,9 @@ public class LabTabHTTPOperationController {
                 (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),LabTabApplication.getInstance().getUserAgent()));
     }
 
+    public static LabTabResponse getRosterDetails(String rosterId) {
+        LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
+        return ConnectionUtil.execute(labTabApiInterface.getRosterDetails(LabTabPreferences.getInstance
+                (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(), rosterId, LabTabApplication.getInstance().getUserAgent()));
+    }
 }

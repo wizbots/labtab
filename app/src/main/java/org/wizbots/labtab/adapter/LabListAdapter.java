@@ -30,7 +30,7 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         LinearLayout labListLinearLayout;
         ImageView labLevelImageView;
         TextViewCustom labNameTextViewCustom;
-        ImageView actionImageView;
+        ImageView actionImageView,rosterDetailsImageView;
         LabListAdapterClickListener labListAdapterClickListener;
 
         LabListViewHolder(View view, LabListAdapterClickListener labListAdapterClickListener) {
@@ -41,6 +41,8 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             labNameTextViewCustom = (TextViewCustom) view.findViewById(R.id.tv_lab_name);
             actionImageView = (ImageView) view.findViewById(R.id.iv_action);
             actionImageView.setOnClickListener(this);
+            rosterDetailsImageView = (ImageView) view.findViewById(R.id.roster_details);
+            rosterDetailsImageView.setOnClickListener(this);
         }
 
         @Override
@@ -49,6 +51,9 @@ public class LabListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             switch (view.getId()) {
                 case R.id.iv_action:
                     labListAdapterClickListener.onActionViewClick(labList);
+                    break;
+                case R.id.roster_details:
+                    labListAdapterClickListener.onRosterDetailsClick(labList);
                     break;
             }
         }

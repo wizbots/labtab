@@ -2,10 +2,9 @@ package org.wizbots.labtab.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +23,7 @@ import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.activity.HomeActivity;
+import org.wizbots.labtab.activity.WebViewActivity;
 import org.wizbots.labtab.adapter.LabListAdapter;
 import org.wizbots.labtab.adapter.LocationAdapter;
 import org.wizbots.labtab.adapter.SpinnerAdapter;
@@ -35,11 +35,14 @@ import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
 import org.wizbots.labtab.interfaces.OnSyncDoneListener;
 import org.wizbots.labtab.interfaces.requesters.GetProgramOrLabListener;
 import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
+import org.wizbots.labtab.interfaces.requesters.OnRosterDetailsListener;
+import org.wizbots.labtab.manager.FileManager;
 import org.wizbots.labtab.model.LocationResponse;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.requesters.FilterRequester;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
+import org.wizbots.labtab.requesters.RosterDetailsRequester;
 import org.wizbots.labtab.service.SyncManager;
 import org.wizbots.labtab.util.BackgroundExecutor;
 import org.wizbots.labtab.util.LabTabUtil;
@@ -55,7 +58,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LabListFragment extends ParentFragment implements LabListAdapterClickListener,
-        LabTabConstants, OnFilterListener, GetProgramOrLabListener, View.OnClickListener, OnSyncDoneListener {
+        LabTabConstants, OnFilterListener, GetProgramOrLabListener, View.OnClickListener, OnSyncDoneListener, OnRosterDetailsListener {
 
     private static final String TAG = LabListFragment.class.getSimpleName();
     public static final String LAB = "LAB";
@@ -417,6 +420,25 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     @Override
+    public void onRosterDetailsClick(ProgramOrLab labList) {
+
+        String rosterId = labList.getId();
+        String rosterTitle = labList.getTitle();
+
+        if(FileManager.getInstance().isRosterDownloaded(rosterTitle)) {
+            String filePath = FileManager.getInstance().getFilePath(rosterTitle);
+            final Intent intent;
+            intent = new Intent(context, WebViewActivity.class);
+            intent.putExtra("path",filePath);
+            intent.putExtra(Screens.FROM_SCREEN, Screens.ROSTER_DETAILS);
+            context.startActivity(intent);
+        } else {
+            BackgroundExecutor.getInstance().execute(new RosterDetailsRequester(this,rosterId, rosterTitle));
+            progressDialog.show();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         LabTabApplication.getInstance().removeUIListener(OnFilterListener.class, this);
         LabTabApplication.getInstance().removeUIListener(GetProgramOrLabListener.class, this);
@@ -668,4 +690,37 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         return list.indexOf(season);
     }
 
+    @Override
+    public void onRosterDetailsSuccess(final String rosterTitle) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Toast.makeText(homeActivityContext, R.string.file_downloaded_successfully, Toast.LENGTH_SHORT).show();
+                        String filePath = FileManager.getInstance().getFilePath(rosterTitle);
+                        final Intent intent;
+                        intent = new Intent(context, WebViewActivity.class);
+                        intent.putExtra("path",filePath);
+                        intent.putExtra(Screens.FROM_SCREEN,Screens.ROSTER_DETAILS);
+                        context.startActivity(intent);
+                    }
+                }, 1000);
+            }
+        });
+    }
+
+    @Override
+    public void onRosterDetailsError(int responseCode) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                Toast.makeText(homeActivityContext, R.string.failed_to_download_the_file, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

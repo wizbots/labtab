@@ -1,4 +1,34 @@
 ---------------------------------------------------------------------
+Release 1.10.0 - 2019/06/09
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Added new print roster button on lab list selector view
+* Replaced several PDF files in Binder so they're updated for Summer 2019
+* Fixed an issue that was blocking going back to lab list from the absences view
+
+
+NOTES:
+
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/130
+* https://github.com/wizbots/labtab/issues/127
+* https://github.com/wizbots/labtab/issues/129
+
+
+
+KNOWN ISSUES:
+
+* None found so far
+
+---------------------------------------------------------------------
 Release 1.9.0 - 2019/03/31
 ---------------------------------------------------------------------
 NEW FEATURES:

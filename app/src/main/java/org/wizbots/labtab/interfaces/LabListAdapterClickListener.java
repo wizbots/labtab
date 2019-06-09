@@ -4,4 +4,5 @@ import org.wizbots.labtab.model.ProgramOrLab;
 
 public interface LabListAdapterClickListener {
     void onActionViewClick(ProgramOrLab labList);
+    void onRosterDetailsClick(ProgramOrLab labList);
 }
