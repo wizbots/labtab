@@ -63,7 +63,7 @@
             android:layout_width="@dimen/lab_list_image_width"
             android:layout_height="@dimen/lab_list_image_height"
             android:contentDescription="@string/roster_details_image"
-            android:padding="@dimen/extra_small_padding"
+            android:padding="@dimen/extra_extra_small_padding"
             android:src="@drawable/roster_details_image"
             android:layout_marginLeft="@dimen/extra_small_margin"/>
     </LinearLayout>
