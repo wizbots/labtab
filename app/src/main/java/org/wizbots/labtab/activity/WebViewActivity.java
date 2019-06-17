@@ -9,11 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
+import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.shockwave.pdfium.PdfDocument;
 
@@ -25,12 +27,13 @@ import java.io.File;
 import java.util.List;
 
 public class WebViewActivity extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener,
-        OnPageErrorListener {
+        OnPageErrorListener, OnRenderListener {
 
     private static final String TAG = WebViewActivity.class.getSimpleName();
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
+    private FrameLayout mProgressBar;
     PDFView pdfView;
     Integer pageNumber = 0;
     String fileName;
@@ -41,6 +44,8 @@ public class WebViewActivity extends AppCompatActivity implements OnPageChangeLi
         setContentView(R.layout.activity_binder_web_view);
 //        initView();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mProgressBar = (FrameLayout) findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.VISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -82,6 +87,7 @@ public class WebViewActivity extends AppCompatActivity implements OnPageChangeLi
                 .scrollHandle(new DefaultScrollHandle(this))
                 .spacing(10) // in dp
                 .onPageError(this)
+                .onRender(this)
                 .load();
     }
 
@@ -97,6 +103,7 @@ public class WebViewActivity extends AppCompatActivity implements OnPageChangeLi
                 .scrollHandle(new DefaultScrollHandle(this))
                 .spacing(10) // in dp
                 .onPageError(this)
+                .onRender(this)
                 .load();
     }
 
@@ -148,5 +155,10 @@ public class WebViewActivity extends AppCompatActivity implements OnPageChangeLi
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+    }
+
+    @Override
+    public void onInitiallyRendered(int nbPages, float pageWidth, float pageHeight) {
+        mProgressBar.setVisibility(View.GONE);
     }
 }
