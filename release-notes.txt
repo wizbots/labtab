@@ -1,4 +1,28 @@
 ---------------------------------------------------------------------
+Release 1.11.0 - 2019/06/17
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Just a small fix on some Binder PDF that was showing incorrect orientation
+* Added a spinner for loading PDFs that are long to load
+* Changed icon color for roster generation
+
+NOTES:
+
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/130
+
+
+
+
+---------------------------------------------------------------------
 Release 1.10.0 - 2019/06/09
 ---------------------------------------------------------------------
 NEW FEATURES:
