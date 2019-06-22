@@ -24,11 +24,22 @@ import org.wizbots.labtab.model.program.Student;
 import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -36,6 +47,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -235,10 +252,16 @@ public class LabTabApplication extends Application {
 
                 .readTimeout(7, TimeUnit.MINUTES);
         OkHttpClient client = builder.build();*/
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(240, TimeUnit.SECONDS)
-                .connectTimeout(240, TimeUnit.SECONDS)
-                .build();
+        OkHttpClient okHttpClient = null;
+        try {
+            okHttpClient = new OkHttpClient.Builder()
+                    .sslSocketFactory(getSSLConfig().getSocketFactory())
+                    .readTimeout(240, TimeUnit.SECONDS)
+                    .connectTimeout(240, TimeUnit.SECONDS)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(LabTabApiInterface.BASE_URL)
@@ -440,5 +463,45 @@ public class LabTabApplication extends Application {
             e.printStackTrace();
         }
         return "Labtab Android/"+versionName+" (Version Code: "+versionCode+")";
+    }
+
+    private InputStream getCertificate() throws IOException {
+        return this.getResources().openRawResource(R.raw.c8e4def44eba0609);
+    }
+
+
+
+    private  SSLContext getSSLConfig() throws CertificateException, IOException,
+            KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+
+        // Loading CAs from an InputStream
+        CertificateFactory cf = null;
+        cf = CertificateFactory.getInstance("X.509");
+
+        Certificate ca = null;
+        // I'm using Java7. If you used Java6 close it manually with finally.
+        try {
+            InputStream cert = getCertificate();
+            ca = cf.generateCertificate(cert);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // Creating a KeyStore containing our trusted CAs
+        String keyStoreType = KeyStore.getDefaultType();
+        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+        keyStore.load(null, null);
+        keyStore.setCertificateEntry("ca", ca);
+
+        // Creating a TrustManager that trusts the CAs in our KeyStore.
+        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+        tmf.init(keyStore);
+
+        // Creating an SSLSocketFactory that uses our TrustManager
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, tmf.getTrustManagers(), null);
+
+        return sslContext;
     }
 }
