@@ -466,7 +466,12 @@ public class LabTabApplication extends Application {
     }
 
     private InputStream getCertificate() throws IOException {
-        return this.getResources().openRawResource(R.raw.c8e4def44eba0609);
+
+        if((LabTabApiInterface.BASE_URL).contains("test")) {
+            return this.getResources().openRawResource(R.raw.cert2);
+        } else {
+            return this.getResources().openRawResource(R.raw.c8e4def44eba0609);
+        }
     }
 
 
