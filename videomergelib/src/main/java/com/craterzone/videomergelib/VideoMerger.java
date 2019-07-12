@@ -40,6 +40,7 @@ public class VideoMerger {
         return new VideoMerger(activity, callBack);
     }
 
+    @SuppressWarnings("")
     public void merge(String dirPath) {
         this.videoList = new ArrayList();
         File dir = new File(dirPath);
@@ -53,6 +54,7 @@ public class VideoMerger {
 
     }
 
+    @SuppressWarnings("")
     public void merge(String dirPath, ArrayList<String> videoFileList) {
         this.videoList = new ArrayList();
         for (String mfile : videoFileList) {
@@ -103,8 +105,6 @@ public class VideoMerger {
 
 
         }
-
-        ;
 
         @Override
         protected String doInBackground(String... params) {
