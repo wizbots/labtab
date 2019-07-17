@@ -54,6 +54,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -258,6 +259,7 @@ public class LabTabApplication extends Application {
                     .sslSocketFactory(getSSLConfig().getSocketFactory())
                     .readTimeout(240, TimeUnit.SECONDS)
                     .connectTimeout(240, TimeUnit.SECONDS)
+                    .connectionPool(new ConnectionPool(10, 100, TimeUnit.NANOSECONDS))
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
