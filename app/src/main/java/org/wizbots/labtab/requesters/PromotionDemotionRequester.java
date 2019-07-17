@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
+import org.wizbots.labtab.R;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.StudentsProfileTable;
@@ -65,7 +66,7 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
             }
         } else {
             Log.d(TAG, "promoteDemoteResponse Request");
-            LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote,LabTabApplication.getInstance().getUserAgent());
+            LabTabResponse<PromotionDemotionResponse> promoteDemoteResponse = LabTabHTTPOperationController.promoteDemoteStudents(getStudents(), promoteDemote, LabTabApplication.getInstance().getUserAgent());
             if (promoteDemoteResponse != null) {
                 for (PromotionDemotionListener promotionDemotionListener : LabTabApplication.getInstance().getUIListeners(PromotionDemotionListener.class)) {
                     if (promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
@@ -73,6 +74,8 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                         promotionDemotionListener.promotionDemotionSuccessful(studentArrayList, program, promoteDemote);
                         Log.d(TAG, "promoteDemoteResponse Success, Response Code : " + promoteDemoteResponse.getResponseCode() + " promoteDemoteResponse response: " + new Gson().toJson(promoteDemoteResponse.getResponse()));
                         break;
+                    } else if (promoteDemoteResponse.getResponseCode() == StatusCode.FORBIDDEN) {
+                        promotionDemotionListener.notHavePermissionForPromotionDemotion(LabTabApplication.getInstance().getResources().getString(R.string.you_dont_have_permission));
                     } else {
                         promoteDemoteStudentsList();
                         promotionDemotionListener.promotionDemotionUnSuccessful(promoteDemoteResponse.getResponseCode(), studentArrayList, program, promoteDemote);

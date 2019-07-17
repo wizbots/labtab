@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
+import org.wizbots.labtab.R;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.interfaces.requesters.AddWizchipsListener;
@@ -92,6 +93,8 @@ public class AddWizchipsRequester implements Runnable {
         for (AddWizchipsListener listener : LabTabApplication.getInstance().getUIListeners(AddWizchipsListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.OK) {
                 listener.onAddWizchipsSuccess();
+            }  else if (statusCode == LabTabConstants.StatusCode.FORBIDDEN) {
+                listener.notHavePermissionForWizchips(LabTabApplication.getInstance().getResources().getString(R.string.you_dont_have_permission));
             } else {
                 listener.onAddWizchipsError();
             }

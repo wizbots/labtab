@@ -257,9 +257,9 @@ public class LabTabApplication extends Application {
         try {
             okHttpClient = new OkHttpClient.Builder()
                     .sslSocketFactory(getSSLConfig().getSocketFactory())
-                    .readTimeout(240, TimeUnit.SECONDS)
-                    .connectTimeout(240, TimeUnit.SECONDS)
-                    .connectionPool(new ConnectionPool(10, 100, TimeUnit.NANOSECONDS))
+                    .readTimeout(300, TimeUnit.SECONDS)
+                    .connectTimeout(300, TimeUnit.SECONDS)
+                    .connectionPool(new ConnectionPool(3, 300, TimeUnit.NANOSECONDS))
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

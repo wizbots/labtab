@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
+import org.wizbots.labtab.R;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.database.StudentsProfileTable;
@@ -49,6 +50,8 @@ public class PromotionDemotionSyncRequester implements Runnable, LabTabConstants
         if (promoteDemoteResponse != null && promoteDemoteResponse.getResponseCode() == StatusCode.OK) {
             promoteDemoteStudents();
             Log.d(TAG, "promoteDemoteResponse Success, Response Code : " + promoteDemoteResponse.getResponseCode() + " promoteDemoteResponse response: " + new Gson().toJson(promoteDemoteResponse.getResponse()));
+        } else if (promoteDemoteResponse.getResponseCode() == StatusCode.FORBIDDEN) {
+            Log.d(TAG, "promoteDemoteResponse Failed, Response Code : " +promoteDemoteResponse.getResponseCode());
         }else{
             Log.d(TAG, "promoteDemoteResponse Failed, Response Code : " +promoteDemoteResponse.getResponseCode());
         }

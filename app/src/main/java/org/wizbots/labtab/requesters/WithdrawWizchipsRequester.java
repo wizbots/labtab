@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
+import org.wizbots.labtab.R;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.ProgramStudentsTable;
 import org.wizbots.labtab.interfaces.requesters.WithdrawWizchipsListener;
@@ -61,7 +62,10 @@ public class WithdrawWizchipsRequester implements Runnable {
                 } else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                     Log.d(TAG, "Student Not Found with id = " + students.getId());
                     Log.d(TAG, "withdrawWizchipsResponse Failed, Response Code : " + withdrawWizchipsResponse.getResponseCode());
-                } else {
+                }  else if (statusCode == HttpURLConnection.HTTP_FORBIDDEN) {
+                    Log.d(TAG, "Student Not Found with id = " + students.getId());
+                    Log.d(TAG, "withdrawWizchipsResponse Failed, Response Code : " + withdrawWizchipsResponse.getResponseCode());
+                }  else {
                     Log.d(TAG, "Failed to withdraw wizchips");
                     Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, students.getId());
                     if (isOfflineWizchipsSync)
@@ -87,7 +91,9 @@ public class WithdrawWizchipsRequester implements Runnable {
         for (WithdrawWizchipsListener listener : LabTabApplication.getInstance().getUIListeners(WithdrawWizchipsListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.OK) {
                 listener.onWithdrawWizchipsSuccess();
-            } else {
+            }  else if (statusCode == LabTabConstants.StatusCode.FORBIDDEN) {
+                listener.notHavePermissionToWithdraw(LabTabApplication.getInstance().getResources().getString(R.string.you_dont_have_permission));
+            }   else {
                 listener.onWithdrawWizchipsError();
             }
         }
