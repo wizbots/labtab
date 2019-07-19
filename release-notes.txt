@@ -1,4 +1,50 @@
 ---------------------------------------------------------------------
+Release 1.14.0 - 2019/07/20
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Added bigger timeout for large video files and handling 40X response from Server
+  correctly, this should help with some videos not being uploaded correctly
+
+
+NOTES:
+
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/138
+* https://github.com/wizbots/labtab/issues/137
+* https://github.com/wizbots/labtab/issues/135
+
+
+
+---------------------------------------------------------------------
+Release 1.13.0 - 2019/06/27
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* None
+
+NOTES:
+
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - None
+
+BUG FIXES:
+
+* Added staging certificate file so SSL handshake does work
+
+
+
+---------------------------------------------------------------------
 Release 1.12.0 - 2019/06/22
 ---------------------------------------------------------------------
 NEW FEATURES:
