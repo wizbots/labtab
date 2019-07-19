@@ -68,6 +68,7 @@ public class LabTabUtil implements LabTabConstants {
     public static Object fromJson(String responseString, Type listType) {
         try {
             com.google.gson.Gson gson = new com.google.gson.Gson();
+            Log.d(TAG, responseString);
             return gson.fromJson(responseString, listType);
         } catch (Exception e) {
             Log.e(TAG, "Error In Converting JsonToModel", e);
@@ -78,6 +79,7 @@ public class LabTabUtil implements LabTabConstants {
     public static String toJson(Object object) {
         try {
             com.google.gson.Gson gson = new com.google.gson.Gson();
+            Log.d(TAG, object.toString());
             return gson.toJson(object);
         } catch (Exception e) {
             Log.e(TAG, "Error In Converting ModelToJson", e);

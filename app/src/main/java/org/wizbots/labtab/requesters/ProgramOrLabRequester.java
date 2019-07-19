@@ -22,12 +22,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 
-import static android.R.id.list;
-import static android.R.id.primary;
 import static org.wizbots.labtab.util.LabListComparator.CHAT_COMPARATOR;
 
 public class ProgramOrLabRequester implements Runnable, LabTabConstants {
@@ -75,7 +72,7 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
 
                     }
                 } else {
-                    Log.d(TAG, "ProgramOrLab Failed, Response Code : " + statusCode );
+                    Log.d(TAG, "ProgramOrLab Failed, Response Code : " + statusCode);
                 }
             } else {
                 statusCode = HttpURLConnection.HTTP_OK;

@@ -21,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -57,7 +58,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class LabDetailsFragment extends ParentFragment implements LabDetailsAdapterClickListener,
@@ -788,5 +788,35 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         }
         maintnedCheckedStudentsStatus();
         labDetailsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notHavePermissionForPromotionDemotion(final String message) {
+        LabTabApplication.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(homeActivityContext, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void notHavePermissionForWizchips(final String message) {
+        LabTabApplication.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(homeActivityContext, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void notHavePermissionToWithdraw(final String message) {
+        LabTabApplication.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(homeActivityContext, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

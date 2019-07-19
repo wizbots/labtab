@@ -10,4 +10,6 @@ public interface PromotionDemotionListener extends BaseUIListener {
     void promotionDemotionSuccessful(ArrayList<Student> student, Program program, boolean promote);
 
     void promotionDemotionUnSuccessful(int status, ArrayList<Student> student, Program program, boolean promote);
+
+    void notHavePermissionForPromotionDemotion(String message);
 }

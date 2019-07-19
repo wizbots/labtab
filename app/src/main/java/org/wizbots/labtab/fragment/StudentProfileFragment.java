@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -351,6 +352,26 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
                 student.setWizchips(student.getWizchips() + 1);
                 getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) + 1));
+            }
+        });
+    }
+
+    @Override
+    public void notHavePermissionForWizchips(final String message) {
+        LabTabApplication.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(homeActivityContext, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void notHavePermissionToWithdraw(final String message) {
+        LabTabApplication.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(homeActivityContext, message, Toast.LENGTH_SHORT).show();
             }
         });
     }
