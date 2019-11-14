@@ -21,9 +21,7 @@ import org.wizbots.labtab.interfaces.OnLoadListener;
 import org.wizbots.labtab.model.Nuggests;
 import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.model.program.Student;
-import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
-import org.wizbots.labtab.retrofit.SSLCertificate;
 
 import java.io.IOException;
 import java.io.InputStream;
