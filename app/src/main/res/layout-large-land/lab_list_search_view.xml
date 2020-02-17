@@ -2,18 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/rounded_layout_orange"
     android:baselineAligned="false"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="@dimen/extra_small_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/location_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_weight="0.10"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/extra_extra_small_padding">
@@ -27,7 +32,7 @@
 
         <FrameLayout
             android:id="@+id/spinner_location_frame"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/extra_extra_small_margin"
             android:background="@color/white">
@@ -53,10 +58,8 @@
         android:id="@+id/year_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/location_container"
-        android:layout_weight="0.10"
+        android:layout_weight="1"
         android:gravity="center"
-
         android:orientation="vertical"
         android:padding="@dimen/extra_extra_small_padding">
 
@@ -69,7 +72,7 @@
 
         <FrameLayout
             android:id="@+id/spinner_year_frame"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/extra_extra_small_margin"
             android:background="@color/white">
@@ -97,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/year_container"
-        android:layout_weight="0.10"
+        android:layout_weight="1"
         android:gravity="center"
 
         android:orientation="vertical"
@@ -113,7 +116,7 @@
 
         <FrameLayout
             android:id="@+id/spinner_season_frame"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/extra_extra_small_margin"
             android:background="@color/white">
@@ -136,15 +139,59 @@
 
     </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
+            android:id="@+id/mentor_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/year_container"
+            android:layout_weight="1"
+            android:gravity="center"
+
+            android:orientation="vertical"
+            android:padding="@dimen/extra_extra_small_padding">
+
+            <org.wizbots.labtab.customview.TextViewCustom
+                android:id="@+id/textViewCustom4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mentor"
+                android:textColor="@color/purple"
+                android:textSize="@dimen/text_size_extra_extra_small" />
+
+            <FrameLayout
+                android:id="@+id/spinner_mentor_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/extra_extra_small_margin"
+                android:background="@color/white">
+
+                <Spinner
+                    android:id="@+id/spinner_mentor"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/white"
+                    android:textSize="@dimen/text_size_extra_extra_small" />
+
+                <LinearLayout
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center|right"
+                    android:layout_marginBottom="-6dp"
+                    android:background="@drawable/arrow_down" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
         android:id="@+id/days_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
         android:layout_marginLeft="3dp"
-        android:gravity="bottom"
-
-        >
+        android:layout_marginTop="20dp"
+        android:gravity="bottom">
 
         <ImageView
             android:id="@+id/calendar"
@@ -174,7 +221,6 @@
             android:id="@+id/btn_tomorrow"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/calendar"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/btn_today"
@@ -185,7 +231,34 @@
             android:textSize="@dimen/text_size_extra_extra_small"
             app:font="@string/font_pt_sans_narrow_regular" />
 
-    </LinearLayout>
+        <org.wizbots.labtab.customview.ButtonCustom
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_toLeftOf="@id/iv_cancel"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/rounded_layout_blue"
+            android:paddingLeft="@dimen/normal_padding"
+            android:paddingRight="@dimen/normal_padding"
+            android:text="@string/search_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_extra_extra_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+        <org.wizbots.labtab.customview.ButtonCustom
+            android:id="@+id/iv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/calendar"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/rounded_layout_purple"
+            android:text="@string/cancel_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_extra_extra_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </RelativeLayout>
 
     <!--    <LinearLayout
             android:layout_width="100dp"
@@ -228,32 +301,32 @@
 
         </LinearLayout>-->
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/days_container"
-        android:layout_alignParentRight="true"
-        android:gravity="bottom"
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_alignBottom="@+id/days_container"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:gravity="bottom"-->
 
-        android:orientation="horizontal">
+<!--        android:orientation="horizontal">-->
 
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="@dimen/extra_extra_small_margin"
-            android:background="@drawable/rounded_layout_blue"
-            android:src="@drawable/ic_search" />
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_search"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_margin="@dimen/extra_extra_small_margin"-->
+<!--            android:background="@drawable/rounded_layout_blue"-->
+<!--            android:src="@drawable/ic_search" />-->
 
-        <ImageView
-            android:id="@+id/iv_cancel"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="@dimen/extra_extra_small_margin"
-            android:background="@drawable/rounded_layout_purple"
-            android:src="@drawable/ic_cross" />
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_cancel"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_margin="@dimen/extra_extra_small_margin"-->
+<!--            android:background="@drawable/rounded_layout_purple"-->
+<!--            android:src="@drawable/ic_cross" />-->
 
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </LinearLayout>

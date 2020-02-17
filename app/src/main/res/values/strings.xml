@@ -173,6 +173,9 @@
     <string name="wiz_que_answe"><![CDATA[WizQuiz & Answers]]></string>
     <string name="other_stuff">Others</string>
     <string name="you_dont_have_permission">You don\'t have the appropriate permissions to do this action</string>
+    <string name="search_text">Search</string>
+    <string name="cancel_text">Reset</string>
+    <string name="mentor">Mentor</string>
 
 
     <string-array name="fruit_array">
