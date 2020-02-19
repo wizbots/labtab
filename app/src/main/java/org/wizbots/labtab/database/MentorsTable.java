@@ -235,7 +235,7 @@ public class MentorsTable extends AbstractTable {
         return mentor;
     }
 
-    private ArrayList<Mentor> getMentorList() {
+    public ArrayList<Mentor> getMentorList() {
         ArrayList<Mentor> mentorArrayList = new ArrayList<>();
         Cursor cursor = null;
         try {

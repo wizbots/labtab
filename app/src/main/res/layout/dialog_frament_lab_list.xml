@@ -15,7 +15,7 @@
         android:textSize="@dimen/text_size_normal"
         app:font="@string/font_pt_sans_narrow_regular" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_lab_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

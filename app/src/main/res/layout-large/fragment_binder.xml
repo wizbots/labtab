@@ -1,4 +1,4 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/binder_scroll_view"
     android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                     android:textSize="@dimen/text_size_small"
                     app:fontName="@string/font_pt_sans_narrow_bold" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvContactInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                     android:textSize="@dimen/text_size_small"
                     app:fontName="@string/font_pt_sans_narrow_bold" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvWizQueAns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                     android:textSize="@dimen/text_size_small"
                     app:fontName="@string/font_pt_sans_narrow_bold" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_below="@+id/txtExtraStuff"
                     android:id="@+id/rvOtherStuff"
                     android:layout_width="match_parent"
@@ -108,4 +108,4 @@
         </LinearLayout>
 
     </RelativeLayout>
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

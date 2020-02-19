@@ -24,12 +24,12 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_calendar" />
         </LinearLayout>
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/selected_student_list"
             android:paddingLeft="@dimen/small_padding"
             android:paddingRight="@dimen/small_padding"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
         <LinearLayout
             android:orientation="horizontal"
             android:paddingRight="@dimen/small_padding"

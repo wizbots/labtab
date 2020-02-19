@@ -5,11 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +26,12 @@ import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.activity.WebViewActivity;
 import org.wizbots.labtab.adapter.LabListAdapter;
 import org.wizbots.labtab.adapter.LocationAdapter;
+import org.wizbots.labtab.adapter.MentorAdapter;
 import org.wizbots.labtab.adapter.SpinnerAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.LabTabHeaderLayout;
 import org.wizbots.labtab.database.LocationTable;
+import org.wizbots.labtab.database.MentorsTable;
 import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.interfaces.LabListAdapterClickListener;
 import org.wizbots.labtab.interfaces.OnSyncDoneListener;
@@ -38,6 +40,7 @@ import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
 import org.wizbots.labtab.interfaces.requesters.OnRosterDetailsListener;
 import org.wizbots.labtab.manager.FileManager;
 import org.wizbots.labtab.model.LocationResponse;
+import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.requesters.FilterRequester;
 import org.wizbots.labtab.requesters.ProgramOrLabRequester;
@@ -71,7 +74,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private HomeActivity homeActivityContext;
     private ProgressDialog progressDialog;
     private ProgramOrLabRequester programOrLabRequester;
-    private Spinner spinnerLocation, spinnerYear, spinnerSeason;
+    private Spinner spinnerLocation, spinnerYear, spinnerSeason, spinnerMentor;
     private Map<String, String> filterMap;
     private Date dateSelected;
     private boolean isFilter;
@@ -81,7 +84,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     private int yearPos;
     private String seasonSearch;
     private int seasonPos;
-
+    private ArrayList<Mentor> mentorList = new ArrayList<>();
 
     public LabListFragment() {
 
@@ -158,9 +161,12 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         spinnerLocation = (Spinner) rootView.findViewById(R.id.spinner_location);
         spinnerYear = (Spinner) rootView.findViewById(R.id.spinner_year);
         spinnerSeason = (Spinner) rootView.findViewById(R.id.spinner_season);
+        spinnerMentor = (Spinner) rootView.findViewById(R.id.spinner_mentor);
         rootView.findViewById(R.id.spinner_location_frame).setOnClickListener(this);
         rootView.findViewById(R.id.spinner_year_frame).setOnClickListener(this);
         rootView.findViewById(R.id.spinner_season_frame).setOnClickListener(this);
+        rootView.findViewById(R.id.spinner_mentor_frame).setOnClickListener(this);
+
         spinnerSeason.setAdapter(new SpinnerAdapter(homeActivityContext,
                 Arrays.asList(homeActivityContext.getResources().getStringArray(R.array.array_season))));
         spinnerYear.setAdapter(new SpinnerAdapter(homeActivityContext,
@@ -174,7 +180,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         String season = (String) spinnerSeason.getSelectedItem();
         seasonSearch = season != null ? season.toLowerCase() : "";
         seasonPos = spinnerSeason.getSelectedItemPosition();
-
+        spinnerMentor.setAdapter(new MentorAdapter(homeActivityContext, getMentorList(MentorsTable.getInstance().getMentorList())));
         spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);
@@ -224,13 +230,19 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     private ArrayList<LocationResponse> getLocation(ArrayList<LocationResponse> list) {
-        ArrayList<LocationResponse> locationList = new ArrayList<LocationResponse>();
+        ArrayList<LocationResponse> locationList = new ArrayList<>();
         locationList.addAll(list);
 
         Collections.sort(locationList, LocationResponse.locationResponseComparator);
         locationList.add(0, new LocationResponse("", "All Locations"));
 
         return locationList;
+    }
+
+    private ArrayList<Mentor> getMentorList(ArrayList<Mentor> list) {
+        mentorList.addAll(list);
+        mentorList.add(0, new Mentor("All Mentors", ""));
+        return mentorList;
     }
 
     @Override
@@ -370,11 +382,20 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     private void callFilterApi() {
-        progressDialog.show();
-        filterMap.put(FilterRequestParameter.MENTOR_ID, LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
-        Map<String, String> filterMap1 = new LinkedHashMap<>();
-        filterMap1.putAll(filterMap);
-        BackgroundExecutor.getInstance().execute(new FilterRequester(LabListFragment.this, filterMap1));
+        if(spinnerMentor.getSelectedItemPosition()>0) {
+            progressDialog.show();
+            filterMap.put(FilterRequestParameter.MENTOR_ID, mentorList.get(spinnerMentor.getSelectedItemPosition()).getMember_id());
+            Map<String, String> filterMap1 = new LinkedHashMap<>();
+            filterMap1.putAll(filterMap);
+            BackgroundExecutor.getInstance().execute(new FilterRequester(LabListFragment.this, filterMap1));
+        }else{
+            homeActivityContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, getResources().getString(R.string.mentor_hint_msg));
+                }
+            });
+           }
     }
 
     public void initListeners() {
@@ -425,15 +446,15 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         String rosterId = labList.getId();
         String rosterTitle = labList.getTitle();
 
-        if(FileManager.getInstance().isRosterDownloaded(rosterTitle)) {
+        if (FileManager.getInstance().isRosterDownloaded(rosterTitle)) {
             String filePath = FileManager.getInstance().getFilePath(rosterTitle);
             final Intent intent;
             intent = new Intent(context, WebViewActivity.class);
-            intent.putExtra("path",filePath);
+            intent.putExtra("path", filePath);
             intent.putExtra(Screens.FROM_SCREEN, Screens.ROSTER_DETAILS);
             context.startActivity(intent);
         } else {
-            BackgroundExecutor.getInstance().execute(new RosterDetailsRequester(this,rosterId, rosterTitle));
+            BackgroundExecutor.getInstance().execute(new RosterDetailsRequester(this, rosterId, rosterTitle));
             progressDialog.show();
         }
     }
@@ -517,6 +538,9 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 break;
             case R.id.spinner_season_frame:
                 spinnerSeason.performClick();
+                break;
+            case R.id.spinner_mentor_frame:
+                spinnerMentor.performClick();
                 break;
             case R.id.iv_search:
                 isFilter = true;
@@ -704,8 +728,8 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                         String filePath = FileManager.getInstance().getFilePath(rosterTitle);
                         final Intent intent;
                         intent = new Intent(context, WebViewActivity.class);
-                        intent.putExtra("path",filePath);
-                        intent.putExtra(Screens.FROM_SCREEN,Screens.ROSTER_DETAILS);
+                        intent.putExtra("path", filePath);
+                        intent.putExtra(Screens.FROM_SCREEN, Screens.ROSTER_DETAILS);
                         context.startActivity(intent);
                     }
                 }, 1000);

@@ -15,14 +15,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -56,7 +55,6 @@ import org.wizbots.labtab.activity.HomeActivity;
 import org.wizbots.labtab.activity.TrimmerActivity;
 import org.wizbots.labtab.adapter.HorizontalProjectCreatorAdapter;
 import org.wizbots.labtab.adapter.KnowledgeNuggetExpand;
-import org.wizbots.labtab.adapter.ProjectCreatorAdapter;
 import org.wizbots.labtab.controller.LabTabPreferences;
 import org.wizbots.labtab.customview.ButtonCustom;
 import org.wizbots.labtab.customview.EditTextCustom;
@@ -1167,7 +1165,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     private void showConfirmDialog(String message, DialogInterface.OnClickListener listener) {
-        new android.support.v7.app.AlertDialog.Builder(homeActivityContext)
+        new androidx.appcompat.app.AlertDialog.Builder(homeActivityContext)
                 .setMessage(message)
                 .setPositiveButton("OK", listener)
                 .setNegativeButton("Cancel", listener)
@@ -1176,7 +1174,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener listener) {
-        new android.support.v7.app.AlertDialog.Builder(homeActivityContext)
+        new androidx.appcompat.app.AlertDialog.Builder(homeActivityContext)
                 .setMessage(message)
                 .setPositiveButton("OK", listener)
                 .setNegativeButton("Cancel", listener)

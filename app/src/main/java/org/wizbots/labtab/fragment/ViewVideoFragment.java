@@ -9,13 +9,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -335,7 +334,7 @@ public class ViewVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener listener) {
-        new android.support.v7.app.AlertDialog.Builder(homeActivityContext)
+        new androidx.appcompat.app.AlertDialog.Builder(homeActivityContext)
                 .setMessage(message)
                 .setPositiveButton("OK", listener)
                 .setNegativeButton("Cancel", listener)

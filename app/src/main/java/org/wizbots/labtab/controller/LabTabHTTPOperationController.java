@@ -170,6 +170,12 @@ public class LabTabHTTPOperationController {
                 (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),LabTabApplication.getInstance().getUserAgent()));
     }
 
+    public static LabTabResponse getMentor(){
+       LabTabApiInterface labTabApiInterface=LabTabApplication.getInstance().getLabTabApiInterface();
+       return ConnectionUtil.execute(labTabApiInterface.returnMentor(LabTabPreferences.getInstance
+               (LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),LabTabApplication.getInstance().getUserAgent()));
+    }
+
     public static LabTabResponse getFilter(Map<String, String> params) {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
         return ConnectionUtil.execute(labTabApiInterface.getFilter(LabTabPreferences.getInstance

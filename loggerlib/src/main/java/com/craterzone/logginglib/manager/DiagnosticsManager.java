@@ -3,9 +3,9 @@ package com.craterzone.logginglib.manager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v7.appcompat.BuildConfig;
 import android.util.Log;
 
+import com.craterzone.logginglib.BuildConfig;
 import com.craterzone.logginglib.executer.BackgroundExecutor;
 import com.craterzone.logginglib.executer.requester.SendFileRequester;
 import com.craterzone.logginglib.listener.SendFileListener;

@@ -4,15 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.craterzone.logginglib.manager.LoggerManager;
 
@@ -26,11 +25,13 @@ import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.database.MentorsTable;
 import org.wizbots.labtab.interfaces.requesters.CreateTokenListener;
 import org.wizbots.labtab.interfaces.requesters.GetMentorProfileListener;
+import org.wizbots.labtab.interfaces.requesters.MentorListener;
 import org.wizbots.labtab.model.CreateTokenResponse;
 import org.wizbots.labtab.model.Mentor;
 import org.wizbots.labtab.requesters.LocationRequester;
 import org.wizbots.labtab.requesters.LoginRequester;
 import org.wizbots.labtab.requesters.MentorProfileRequester;
+import org.wizbots.labtab.requesters.MentorRequester;
 import org.wizbots.labtab.requesters.ProjectsMetaDataRequester;
 import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.BackgroundExecutor;
@@ -39,7 +40,7 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.io.File;
 import java.net.HttpURLConnection;
 
-public class LoginFragment extends ParentFragment implements View.OnClickListener, CreateTokenListener, GetMentorProfileListener {
+public class LoginFragment extends ParentFragment implements View.OnClickListener, CreateTokenListener, GetMentorProfileListener,MentorListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -86,6 +87,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(CreateTokenListener.class, this);
         LabTabApplication.getInstance().addUIListener(GetMentorProfileListener.class, this);
+        LabTabApplication.getInstance().addUIListener(MentorListener.class,this);
         rootView.findViewById(R.id.btn_login).setOnClickListener(this);
         rootView.findViewById(R.id.tv_forgot_password).setOnClickListener(this);
         editTextCustomEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -161,6 +163,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     @Override
     public void tokenCreatedSuccessfully(CreateTokenResponse createTokenResponse) {
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setCreateTokenResponse(createTokenResponse);
+        BackgroundExecutor.getInstance().execute(new MentorRequester());
         BackgroundExecutor.getInstance().execute(new MentorProfileRequester(createTokenResponse));
         BackgroundExecutor.getInstance().execute(new LocationRequester());
     }
@@ -189,6 +192,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         super.onDestroyView();
         LabTabApplication.getInstance().removeUIListener(CreateTokenListener.class, this);
         LabTabApplication.getInstance().removeUIListener(GetMentorProfileListener.class, this);
+        LabTabApplication.getInstance().removeUIListener(MentorListener.class,this);
     }
 
     @Override
@@ -199,13 +203,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
 
     @Override
     public void mentorProfileFetchedSuccessfully(Mentor mentor, CreateTokenResponse createTokenResponse) {
-        homeActivityContext.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.dismiss();
-            }
-        });
-
+        dismissUiThreadDialog();
         homeActivityContext.getSupportFragmentManager().popBackStack();
 
         if (LabTabApplication.getInstance().getMetaDatas() == null) {
@@ -241,5 +239,25 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         } else {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
         }
+    }
+
+
+    private void dismissUiThreadDialog(){
+        homeActivityContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void onMentorSuccess() {
+        dismissUiThreadDialog();
+    }
+
+    @Override
+    public void onMentorFailure() {
+        progressDialog.dismiss();
     }
 }

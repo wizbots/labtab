@@ -4,14 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.craterzone.logginglib.manager.LoggerManager;
 
@@ -50,12 +48,10 @@ import org.wizbots.labtab.fragment.ViewVideoFragment;
 import org.wizbots.labtab.interfaces.requesters.ShouldDialogueShow;
 import org.wizbots.labtab.manager.FileManager;
 import org.wizbots.labtab.model.LeftDrawerItem;
-import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.service.LabTabSyncService;
 import org.wizbots.labtab.util.DialogueUtil;
 
 import java.io.File;
-import java.util.List;
 
 public class HomeActivity extends ParentActivity implements View.OnClickListener {
 
