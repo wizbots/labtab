@@ -47,9 +47,9 @@ public class LabTabHTTPOperationController {
         );
     }
 
-    public static LabTabResponse getMentorProfile() {
+    public static LabTabResponse getMentorProfile(String memberId) {
         LabTabApiInterface labTabApiInterface = LabTabApplication.getInstance().getLabTabApiInterface();
-        return ConnectionUtil.execute(labTabApiInterface.returnMentor(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),LabTabApplication.getInstance().getUserAgent()));
+        return ConnectionUtil.execute(labTabApiInterface.getMentorById(memberId, LabTabPreferences.getInstance(LabTabApplication.getInstance()).getCreateTokenResponse().getToken(),LabTabApplication.getInstance().getUserAgent()));
     }
 
     public static LabTabResponse getProgramWithListOfStudents(String programId) {

@@ -72,12 +72,14 @@ public interface LabTabApiInterface {
 
     //    6. Returns a mentor
     @GET("mentors/")
-    Call<Mentor> returnMentor(@Header("Auth-Token") String authToken, @Header("User-Agent") String userAgent);
+    Call<ArrayList<Mentor>> returnMentor(@Header("Auth-Token") String authToken, @Header("User-Agent") String userAgent);
+
+    @GET("mentors/{id}")
+    Call<Mentor> getMentorById(@Path("id") String member_id ,@Header("Auth-Token") String authToken, @Header("User-Agent") String userAgent);
 
     //    7. Returns a program with a list of students
     @GET("programs/{id}")
     Call<ProgramResponse> returnProgramWithListOfStudents(@Path("id") String id, @Header("Auth-Token") String authToken, @Header("User-Agent") String userAgent);
-
 
     //    8. Returns a student
     @GET("students/{id}")

@@ -21,7 +21,6 @@ import org.wizbots.labtab.interfaces.OnLoadListener;
 import org.wizbots.labtab.model.Nuggests;
 import org.wizbots.labtab.model.metadata.MetaData;
 import org.wizbots.labtab.model.program.Student;
-import org.wizbots.labtab.pushnotification.NotiManager;
 import org.wizbots.labtab.retrofit.LabTabApiInterface;
 
 import java.io.IOException;
@@ -250,13 +249,12 @@ public class LabTabApplication extends Application {
         builder.connectTimeout(7, TimeUnit.MINUTES)
                 .writeTimeout(7, TimeUnit.MINUTES)
                 .retryOnConnectionFailure(true)
-
                 .readTimeout(7, TimeUnit.MINUTES);
         OkHttpClient client = builder.build();*/
         OkHttpClient okHttpClient = null;
         try {
             okHttpClient = new OkHttpClient.Builder()
-                    .sslSocketFactory(getSSLConfig().getSocketFactory())
+                    .sslSocketFactory(getSSLSocketFactory(), (X509TrustManager) getTrustManager()[0])
                     .readTimeout(300, TimeUnit.SECONDS)
                     .connectTimeout(300, TimeUnit.SECONDS)
                     .connectionPool(new ConnectionPool(3, 300, TimeUnit.NANOSECONDS))
@@ -271,6 +269,28 @@ public class LabTabApplication extends Application {
                 .client(okHttpClient)
                 .build();
         labTabApiInterface = retrofit.create(LabTabApiInterface.class);
+    }
+
+    private TrustManager[] getTrustManager() {
+
+        return new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) {
+                        Log.d(TAG, "checkClientTrusted");
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType){
+                        Log.d(TAG, "checkServerTrusted");
+                    }
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[]{};
+                    }
+                }
+        };
     }
 
     public LabTabApiInterface getLabTabApiInterface() {
@@ -478,37 +498,11 @@ public class LabTabApplication extends Application {
 
 
 
-    private  SSLContext getSSLConfig() throws CertificateException, IOException,
-            KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-
-        // Loading CAs from an InputStream
-        CertificateFactory cf = null;
-        cf = CertificateFactory.getInstance("X.509");
-
-        Certificate ca = null;
-        // I'm using Java7. If you used Java6 close it manually with finally.
-        try {
-            InputStream cert = getCertificate();
-            ca = cf.generateCertificate(cert);
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-
-        // Creating a KeyStore containing our trusted CAs
-        String keyStoreType = KeyStore.getDefaultType();
-        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-        keyStore.load(null, null);
-        keyStore.setCertificateEntry("ca", ca);
-
-        // Creating a TrustManager that trusts the CAs in our KeyStore.
-        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-        tmf.init(keyStore);
-
-        // Creating an SSLSocketFactory that uses our TrustManager
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, tmf.getTrustManagers(), null);
-
-        return sslContext;
+    private  SSLSocketFactory getSSLSocketFactory()throws NoSuchAlgorithmException, KeyManagementException {
+        // Install the all-trusting trust manager
+        final SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, getTrustManager(), new java.security.SecureRandom());
+        // Create an ssl socket factory with our all-trusting manager
+        return sslContext.getSocketFactory();
     }
 }

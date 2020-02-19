@@ -30,7 +30,7 @@ public class MentorProfileRequester implements Runnable, LabTabConstants {
     @Override
     public void run() {
         Log.d(TAG, "mentorProfileResponse Request");
-        LabTabResponse<Mentor> mentorProfileResponse = LabTabHTTPOperationController.getMentorProfile();
+        LabTabResponse<Mentor> mentorProfileResponse = LabTabHTTPOperationController.getMentorProfile(createTokenResponse.getMember_id());
         if (mentorProfileResponse != null) {
             for (GetMentorProfileListener getMentorProfileListener : LabTabApplication.getInstance().getUIListeners(GetMentorProfileListener.class)) {
                 if (mentorProfileResponse.getResponseCode() == StatusCode.OK) {
