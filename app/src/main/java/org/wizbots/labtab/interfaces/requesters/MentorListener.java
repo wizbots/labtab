@@ -4,6 +4,7 @@ import org.wizbots.labtab.interfaces.BaseUIListener;
 
 public interface MentorListener extends BaseUIListener {
 
-     void onMentorSuccess();
-     void onMentorFailure();
+    void onMentorSuccess();
+
+    void onMentorFailure();
 }

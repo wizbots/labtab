@@ -4,7 +4,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.wizbots.labtab.LabTabConstants;
+
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -20,11 +23,12 @@ public class ConnectionUtil {
             Response<T> response = call.execute();
             Log.d(TAG, "Response Code : " + response.code());
             return new LabTabResponse<T>(response.code(), response.body(), response.headers());
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch (SocketTimeoutException ex){
+            return new LabTabResponse(LabTabConstants.StatusCode.NO_INTERNET,null,null);
+        }
+        catch (IOException e) {
             Log.d(TAG, "Error in execute api request" + e.getMessage());
         } catch (Exception ex) {
-            ex.printStackTrace();
             Log.d(TAG, "Error in execute api" + ex.getMessage());
         }
         return null;

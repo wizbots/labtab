@@ -58,14 +58,14 @@ public class WithdrawWizchipsRequester implements Runnable {
                     Log.d(TAG, "Wizchips withdraw successfully = " + students.getWizchips());
                     ProgramStudentsTable.getInstance().updateWizchips(students.getId(), Integer.parseInt(students.getWizchips()), true);
                     ProgramStudentsTable.getInstance().updateWizchipsOffline(students.getId(), 0, true);
-                    Log.d(TAG, "withdrawWizchipsResponse Success, Response Code : " + withdrawWizchipsResponse.getResponseCode() + " withdrawWizchipsResponse response: " +new Gson().toJson(withdrawWizchipsResponse.getResponse()));
+                    Log.d(TAG, "withdrawWizchipsResponse Success, Response Code : " + withdrawWizchipsResponse.getResponseCode() + " withdrawWizchipsResponse response: " + new Gson().toJson(withdrawWizchipsResponse.getResponse()));
                 } else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                     Log.d(TAG, "Student Not Found with id = " + students.getId());
                     Log.d(TAG, "withdrawWizchipsResponse Failed, Response Code : " + withdrawWizchipsResponse.getResponseCode());
-                }  else if (statusCode == HttpURLConnection.HTTP_FORBIDDEN) {
+                } else if (statusCode == HttpURLConnection.HTTP_FORBIDDEN) {
                     Log.d(TAG, "Student Not Found with id = " + students.getId());
                     Log.d(TAG, "withdrawWizchipsResponse Failed, Response Code : " + withdrawWizchipsResponse.getResponseCode());
-                }  else {
+                } else {
                     Log.d(TAG, "Failed to withdraw wizchips");
                     Student student = ProgramStudentsTable.getInstance().getWizchipsByStudentId(mProgramOrLab, students.getId());
                     if (isOfflineWizchipsSync)
@@ -91,9 +91,11 @@ public class WithdrawWizchipsRequester implements Runnable {
         for (WithdrawWizchipsListener listener : LabTabApplication.getInstance().getUIListeners(WithdrawWizchipsListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.OK) {
                 listener.onWithdrawWizchipsSuccess();
-            }  else if (statusCode == LabTabConstants.StatusCode.FORBIDDEN) {
+            } else if (statusCode == LabTabConstants.StatusCode.FORBIDDEN) {
                 listener.notHavePermissionToWithdraw(LabTabApplication.getInstance().getResources().getString(R.string.you_dont_have_permission));
-            }   else {
+            } else if (statusCode == LabTabConstants.StatusCode.NO_INTERNET) {
+                listener.noInternetConnection();
+            } else {
                 listener.onWithdrawWizchipsError();
             }
         }

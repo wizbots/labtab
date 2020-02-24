@@ -16,15 +16,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -49,6 +40,15 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
@@ -317,7 +317,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
 
         if (bundle != null) {
-            fileUri=bundle.getParcelable(FILE_URI);
+            fileUri = bundle.getParcelable(FILE_URI);
             savedVideoUri = bundle.getParcelable(URI);
             if (savedVideoUri != null) {
                 Glide
@@ -604,7 +604,6 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
         }
         return false;
     }
-
 
 
     // ========================================SYADAV=======================================================
@@ -1124,7 +1123,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {
             labSKUTextViewCustom.setText("");
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
         }
     }
 
@@ -1171,7 +1170,7 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_DETAIL_FOR_THIS_LAB);
         } else {
             labSKUTextViewCustom.setText("");
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
         }
     }
 
@@ -1515,5 +1514,10 @@ public class AddVideoFragment extends ParentFragment implements View.OnClickList
     @Override
     public boolean isDataChange() {
         return validateData();
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }

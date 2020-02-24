@@ -47,7 +47,9 @@ public class ProgramStudentsRequester implements Runnable, LabTabConstants {
                             fetchAndInsertStudentDetails(programResponse),
                             fetchAndInsertAbsenceDetails(programResponse)
                     );
-                    Log.d(TAG, "programsWithStudents Success, Response Code : " + programsWithStudents.getResponseCode() + " programsWithStudents response: " +new Gson().toJson(programsWithStudents.getResponse()));
+                    Log.d(TAG, "programsWithStudents Success, Response Code : " + programsWithStudents.getResponseCode() + " programsWithStudents response: " + new Gson().toJson(programsWithStudents.getResponse()));
+                } else if (programsWithStudents.getResponseCode() == StatusCode.NO_INTERNET) {
+                    getProgramStudentsListener.noInternetConnection();
                 } else {
                     getProgramStudentsListener.unableToFetchProgramStudents(programsWithStudents.getResponseCode());
                     Log.d(TAG, "programsWithStudents Failed, Response Code : " + programsWithStudents.getResponseCode());

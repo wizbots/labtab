@@ -5,11 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +13,12 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.LabTabConstants;
@@ -382,20 +383,20 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     private void callFilterApi() {
-        if(spinnerMentor.getSelectedItemPosition()>0) {
+        if (spinnerMentor.getSelectedItemPosition() > 0) {
             progressDialog.show();
             filterMap.put(FilterRequestParameter.MENTOR_ID, mentorList.get(spinnerMentor.getSelectedItemPosition()).getMember_id());
             Map<String, String> filterMap1 = new LinkedHashMap<>();
             filterMap1.putAll(filterMap);
             BackgroundExecutor.getInstance().execute(new FilterRequester(LabListFragment.this, filterMap1));
-        }else{
+        } else {
             homeActivityContext.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, getResources().getString(R.string.mentor_hint_msg));
                 }
             });
-           }
+        }
     }
 
     public void initListeners() {
@@ -421,8 +422,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             if (LabTabApplication.getInstance().getSeason() != null && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("") && !LabTabApplication.getInstance().getSeason().equalsIgnoreCase("All Seasons")) {
                 isAPICalleligible = true;
                 filterMap.put(FilterRequestParameter.SEASON, LabTabApplication.getInstance().getSeason());
-
-
             }
             if (isAPICalleligible) {
                 callFilterApi();
@@ -516,7 +515,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         if (responseCode == StatusCode.FORBIDDEN) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
         }
     }
 
@@ -746,5 +745,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
                 Toast.makeText(homeActivityContext, R.string.failed_to_download_the_file, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }

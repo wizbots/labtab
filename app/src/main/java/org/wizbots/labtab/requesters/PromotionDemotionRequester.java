@@ -74,6 +74,8 @@ public class PromotionDemotionRequester implements Runnable, LabTabConstants {
                         promotionDemotionListener.promotionDemotionSuccessful(studentArrayList, program, promoteDemote);
                         Log.d(TAG, "promoteDemoteResponse Success, Response Code : " + promoteDemoteResponse.getResponseCode() + " promoteDemoteResponse response: " + new Gson().toJson(promoteDemoteResponse.getResponse()));
                         break;
+                    } else if (promoteDemoteResponse.getResponseCode() == StatusCode.NO_INTERNET) {
+                        promotionDemotionListener.noInternetConnection();
                     } else if (promoteDemoteResponse.getResponseCode() == StatusCode.FORBIDDEN) {
                         promotionDemotionListener.notHavePermissionForPromotionDemotion(LabTabApplication.getInstance().getResources().getString(R.string.you_dont_have_permission));
                     } else {

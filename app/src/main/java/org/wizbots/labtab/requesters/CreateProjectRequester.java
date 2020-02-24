@@ -34,6 +34,7 @@ public class CreateProjectRequester implements Runnable, LabTabConstants {
     private Video videoInDB;
 
     public CreateProjectRequester() {
+
     }
 
     public CreateProjectRequester(LabTabSyncService labTabSyncService, Video videoInDB) {

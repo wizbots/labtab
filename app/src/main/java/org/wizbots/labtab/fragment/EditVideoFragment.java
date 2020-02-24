@@ -15,13 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -44,6 +37,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -102,17 +103,17 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     private Toolbar toolbar;
     private View rootView;
 
-//    private ProjectCreatorAdapter projectCreatorAdapter;
+    //    private ProjectCreatorAdapter projectCreatorAdapter;
     private HorizontalProjectCreatorAdapter horizontalProjectCreatorAdapter;
 
-//    private RecyclerView recyclerViewProjectCreator;
+    //    private RecyclerView recyclerViewProjectCreator;
     private RecyclerView horizontalRecyclerViewProjectCreator;
 
     private ArrayList<Student> creatorsAvailable = new ArrayList<>();
     private ArrayList<Student> creatorsSelected = new ArrayList<>();
 
     private HomeActivity homeActivityContext;
-//    private LinearLayout recyclerViewContainer;
+    //    private LinearLayout recyclerViewContainer;
     private NestedScrollView nestedScrollView;
     private ArrayList<String> categoryArrayList;
     private Spinner categorySpinner;
@@ -164,7 +165,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
             editVideoCase = savedInstanceState.getString(VideoListFragment.VIDEO_EDIT_CASE, VideoEditCase.INTERNET_ON);
             video = savedInstanceState.getParcelable(VideoListFragment.VIDEO);
             savedVideoUri = Uri.parse(video.getPath());
-            fileUri=savedInstanceState.getParcelable(FILE_URI);
+            fileUri = savedInstanceState.getParcelable(FILE_URI);
             initListeners();
             initView(savedInstanceState);
         }
@@ -172,7 +173,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         prepareStudentsCategoryList();
         initCategory();
         addProjectCreatorEditTextListeners();
-        check=0;
+        check = 0;
         LabTabUtil.videoRequestOnOpeningEditScreen = compareChangeWithThis();
         return rootView;
     }
@@ -479,8 +480,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
 
-
-    private Video getVideoRequest(){
+    private Video getVideoRequest() {
         Video videoRequest = new Video();
         videoRequest.setId(video.getId());
         videoRequest.setMentor_id(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id());
@@ -501,6 +501,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
         videoRequest.setProgramId(video.getProgramId());
         return videoRequest;
     }
+
     @Override
     public void onProjectCreatorClick(final Student student) {
         homeActivityContext.runOnUiThread(new Runnable() {
@@ -592,7 +593,7 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                 }
                 projectCreatorEditTextCustom.clearFocus();
                 LabTabUtil.hideSoftKeyboard(homeActivityContext);
-                SelectCreatorDialog dialog = new SelectCreatorDialog(homeActivityContext,creatorsAvailable,creatorsSelected,EditVideoFragment.this);
+                SelectCreatorDialog dialog = new SelectCreatorDialog(homeActivityContext, creatorsAvailable, creatorsSelected, EditVideoFragment.this);
                 dialog.show();
             }
         });
@@ -1007,9 +1008,9 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
                     homeActivityContext.replaceFragment(Fragments.HOME, new Bundle());
                     homeActivityContext.replaceFragment(Fragments.VIDEO_LIST, new Bundle());
                 } else if (responseCode != 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
                 } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
                 }
             }
         });
@@ -1070,8 +1071,8 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     }
 
     /*
-    * Permission Code Start Here
-    * * */
+     * Permission Code Start Here
+     * * */
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -1401,5 +1402,10 @@ public class EditVideoFragment extends ParentFragment implements View.OnClickLis
     @Override
     public boolean isDataChange() {
         return LabTabUtil.compareEditedVideo(getVideoRequest());
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }

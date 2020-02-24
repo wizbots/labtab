@@ -1,13 +1,13 @@
 package org.wizbots.labtab.adapter;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;

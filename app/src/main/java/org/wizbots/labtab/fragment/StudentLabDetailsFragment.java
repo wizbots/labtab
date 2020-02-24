@@ -2,14 +2,15 @@ package org.wizbots.labtab.fragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -248,7 +249,7 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
         if (responseCode == StatusCode.NOT_FOUND) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
         }
     }
 
@@ -302,5 +303,10 @@ public class StudentLabDetailsFragment extends ParentFragment implements View.On
                 String.valueOf(LabTabApplication.getInstance().getPendingProjects()));
         objectArrayList.add(0, studentLabDetailsType1);
         studentLabDetailsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }

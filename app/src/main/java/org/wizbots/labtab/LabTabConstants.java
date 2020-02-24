@@ -7,6 +7,7 @@ public interface LabTabConstants {
     //Web Services Status Codes
 
     interface StatusCode {
+        int NO_INTERNET = 0;
         int ACCEPTED = 202;
         int BAD_GATEWAY = 502;
         int BAD_REQUEST = 400;
@@ -160,6 +161,7 @@ public interface LabTabConstants {
         String STUDENT_IS_PROMOTED_SUCCESSFULLY = "Student is Promoted Successfully";
         String STUDENT_IS_DEMOTED_SUCCESSFULLY = "Student is Demoted Successfully";
         String OOPS_SOMETHING_WENT_WRONG = "Oops Something Went Wrong";
+        String NO_CONDITION_MATCH="Internal error occured, Please contact support and send logs to help troubleshoot the issue";
         String PROJECT_EDITED_SUCCESSFULLY = "Project Edited Successfully";
         String VIDEO_CAN_T_BE_EDITED_WHILE_UPLOADING = "Video can't be edited while uploading";
         String SELECT_STUDENT_FIRST_INCREMENT = "Please select one student to increase wizchips";

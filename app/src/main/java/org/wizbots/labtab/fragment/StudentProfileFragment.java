@@ -2,17 +2,18 @@ package org.wizbots.labtab.fragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -248,7 +249,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         if (responseCode == StatusCode.NOT_FOUND) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_FOUND);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
         }
     }
 
@@ -273,7 +274,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
         emailTextViewCustom.setText(creatorResponse.getEmail());
         gradeTextViewCustom.setText(studentProfile.getGrade());
 
-        if(studentProfile.getDate_of_birth() != null) {
+        if (studentProfile.getDate_of_birth() != null) {
             String dob[] = studentProfile.getDate_of_birth().split(" ");
             dateOfBirthTextViewCustom.setText(dob[0]);
         } else {
@@ -310,7 +311,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             public void run() {
                 progressDialog.dismiss();
                 student.setWizchips(student.getWizchips() - 1);
-                getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
+                getArguments().putParcelable(LabDetailsFragment.STUDENT, student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) > 0 ? String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1) : "0"));
             }
         });
@@ -323,7 +324,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             public void run() {
                 progressDialog.dismiss();
                 student.setWizchips(student.getWizchips() - 1);
-                getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
+                getArguments().putParcelable(LabDetailsFragment.STUDENT, student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) > 0 ? String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) - 1) : "0"));
             }
         });
@@ -336,7 +337,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             public void run() {
                 progressDialog.dismiss();
                 student.setWizchips(student.getWizchips() + 1);
-                getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
+                getArguments().putParcelable(LabDetailsFragment.STUDENT, student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) + 1));
             }
         });
@@ -349,7 +350,7 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
             public void run() {
                 progressDialog.dismiss();
                 student.setWizchips(student.getWizchips() + 1);
-                getArguments().putParcelable(LabDetailsFragment.STUDENT,student);
+                getArguments().putParcelable(LabDetailsFragment.STUDENT, student);
                 wizchipsTextViewCustom.setText(String.valueOf(Integer.parseInt(wizchipsTextViewCustom.getText().toString()) + 1));
             }
         });
@@ -373,5 +374,10 @@ public class StudentProfileFragment extends ParentFragment implements View.OnCli
                 Toast.makeText(homeActivityContext, message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }

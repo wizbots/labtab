@@ -9,7 +9,6 @@ import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.interfaces.requesters.OnRosterDetailsListener;
 import org.wizbots.labtab.manager.FileManager;
 import org.wizbots.labtab.model.RosterModel;
-import org.wizbots.labtab.model.metadata.ProgramMetaData;
 import org.wizbots.labtab.retrofit.LabTabResponse;
 
 public class RosterDetailsRequester implements Runnable, LabTabConstants {
@@ -33,17 +32,19 @@ public class RosterDetailsRequester implements Runnable, LabTabConstants {
         LabTabResponse<RosterModel> labTabResponse = LabTabHTTPOperationController.getRosterDetails(mRosterId);
 
         if (labTabResponse.getResponse() != null && labTabResponse.getResponseCode() == StatusCode.OK) {
-            Log.d(TAG, "labTabResponse Success, Response Code : " + labTabResponse.getResponseCode() + " labTabResponse response: " +new Gson().toJson(labTabResponse.getResponse()));
+            Log.d(TAG, "labTabResponse Success, Response Code : " + labTabResponse.getResponseCode() + " labTabResponse response: " + new Gson().toJson(labTabResponse.getResponse()));
 
             FileManager.FilePathAndStatus filePathAndStatus = FileManager.getInstance().getFileFromBase64AndSaveInSDCard(labTabResponse.getResponse().getData(), mRosterTitle);
 
-            if(filePathAndStatus != null && filePathAndStatus.filStatus) {
+            if (filePathAndStatus != null && filePathAndStatus.filStatus) {
                 mListener.onRosterDetailsSuccess(mRosterTitle);
             } else {
                 mListener.onRosterDetailsError(labTabResponse.getResponseCode());
             }
 
-        }else{
+        } else if (labTabResponse.getResponseCode() == StatusCode.NO_INTERNET) {
+            mListener.noInternetConnection();
+        } else {
             Log.d(TAG, "labTabResponse Failed, Response Code : " + labTabResponse.getResponseCode());
             mListener.onRosterDetailsError(labTabResponse.getResponseCode());
         }

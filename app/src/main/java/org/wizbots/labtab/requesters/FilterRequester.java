@@ -12,6 +12,7 @@ import org.wizbots.labtab.database.ProgramsOrLabsTable;
 import org.wizbots.labtab.interfaces.requesters.OnFilterListener;
 import org.wizbots.labtab.model.ProgramOrLab;
 import org.wizbots.labtab.retrofit.LabTabResponse;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,14 +67,16 @@ public class FilterRequester implements Runnable {
             programOrLabArrayList.addAll(ProgramsOrLabsTable
                     .getInstance()
                     .getFilteredData(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getMember_id(), params));
-            Log.d(TAG, "programsOrLabs Failed, Response Code : " + statusCode );
+            Log.d(TAG, "programsOrLabs Failed, Response Code : " + statusCode);
         }
-        if (programOrLabArrayList != null){
+        if (programOrLabArrayList != null) {
             Collections.sort(programOrLabArrayList, CHAT_COMPARATOR);
         }
 
         if (statusCode == LabTabConstants.StatusCode.OK) {
             mListener.onFilterSuccess(programOrLabArrayList);
+        } else if (statusCode == LabTabConstants.StatusCode.NO_INTERNET) {
+            mListener.noInternetConnection();
         } else {
             mListener.onFilterError(statusCode);
         }

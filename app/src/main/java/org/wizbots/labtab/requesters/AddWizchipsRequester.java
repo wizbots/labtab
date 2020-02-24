@@ -18,9 +18,7 @@ import org.wizbots.labtab.service.SyncManager;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.StringTokenizer;
 
 
 public class AddWizchipsRequester implements Runnable {
@@ -93,8 +91,10 @@ public class AddWizchipsRequester implements Runnable {
         for (AddWizchipsListener listener : LabTabApplication.getInstance().getUIListeners(AddWizchipsListener.class)) {
             if (statusCode == LabTabConstants.StatusCode.OK) {
                 listener.onAddWizchipsSuccess();
-            }  else if (statusCode == LabTabConstants.StatusCode.FORBIDDEN) {
+            } else if (statusCode == LabTabConstants.StatusCode.FORBIDDEN) {
                 listener.notHavePermissionForWizchips(LabTabApplication.getInstance().getResources().getString(R.string.you_dont_have_permission));
+            } else if (statusCode == LabTabConstants.StatusCode.NO_INTERNET) {
+                listener.noInternetConnection();
             } else {
                 listener.onAddWizchipsError();
             }

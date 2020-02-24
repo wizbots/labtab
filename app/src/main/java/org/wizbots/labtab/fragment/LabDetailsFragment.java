@@ -5,11 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +17,12 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -74,7 +75,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     private RecyclerView recyclerViewLabDetails;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
     private HomeActivity homeActivityContext;
-//    private ImageView calendarImageView;
+    //    private ImageView calendarImageView;
     private DatePickerDialog datePickerDialog;
     private ProgramOrLab programOrLab;
     private Program program;
@@ -84,7 +85,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
             roomTextViewCustom, gradesTextViewCustom, priceTextViewCustom,
             fromTextViewCustom, toTextViewCustom, timeSlotTextViewCustom, dayTextViewCustom;
     private TextView markAbsentTextView, promoteTextView, demoteTextView;
-//    private CheckBox checkBoxSendNotification;
+    //    private CheckBox checkBoxSendNotification;
     private Date dateSelected;
     boolean status[];
 
@@ -233,7 +234,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
     }
 
     private void showCalendar() {
-            }
+    }
 
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(GetProgramStudentsListener.class, this);
@@ -272,7 +273,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         if (responseCode == StatusCode.FORBIDDEN) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LAB_DETAIL_FOR_THIS_LAB);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
         }
     }
 
@@ -352,11 +353,11 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         dateSelected = Calendar.getInstance().getTime();
         final TextViewCustom tvMarkAbsentOn = (TextViewCustom) dialog.findViewById(R.id.tv_mark_absent_on);
 
-        tvMarkAbsentOn.setText(getString(R.string.mark_absence_for_the_selected_kids_on)+" "+new SimpleDateFormat("dd MMM, yyy").format(dateSelected));
+        tvMarkAbsentOn.setText(getString(R.string.mark_absence_for_the_selected_kids_on) + " " + new SimpleDateFormat("dd MMM, yyy").format(dateSelected));
         ImageView calender = (ImageView) dialog.findViewById(R.id.iv_calendar);
         RecyclerView selectedStudentList = (RecyclerView) dialog.findViewById(R.id.selected_student_list);
-        selectedStudentList.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        selectedStudentList.setAdapter(new SelectedStudentAdapter(studentArrayList,getActivity()));
+        selectedStudentList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        selectedStudentList.setAdapter(new SelectedStudentAdapter(studentArrayList, getActivity()));
         final CheckBox cbSendAbsentNotification = (CheckBox) dialog.findViewById(R.id.cb_send_absent_notification);
         Button confirm = (Button) dialog.findViewById(R.id.bt_confirm);
         Button cancel = (Button) dialog.findViewById(R.id.bt_cancel);
@@ -374,7 +375,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         if (LabTabUtil.isValidDateSelection(calendar.getTime())) {
                             dateSelected = calendar.getTime();
-                            tvMarkAbsentOn.setText(getString(R.string.mark_absence_for_the_selected_kids_on)+" "+new SimpleDateFormat("dd MMM, yyy").format(dateSelected));
+                            tvMarkAbsentOn.setText(getString(R.string.mark_absence_for_the_selected_kids_on) + " " + new SimpleDateFormat("dd MMM, yyy").format(dateSelected));
                         } else {
                             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.YOU_CAN_NOT_SELECT_DATE_MORE_THAN_TODAY);
                         }
@@ -408,7 +409,6 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         dialog.show();
 
     }
-
 
 
     @Override
@@ -557,7 +557,7 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                         selectted.add(student1.getStudent_id());
                     }
                     progressDialog.show();
-                 //   BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
+                    //   BackgroundExecutor.getInstance().execute(new AddWizchipsRequester(programOrLab.getId(), selectted, 1));
                     BackgroundExecutor.getInstance().execute(new WithdrawWizchipsRequester(programOrLab.getId(), selectted, 1));
                     unCheckAllStudents();
                 }
@@ -623,9 +623,9 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 } else if (status == 1002) {
                     homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.STUDENTS_ARE_ALREADY_MARKED_ABSENT_FOR_SELECTED_DATE);
                 } else if (status != 0) {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.OOPS_SOMETHING_WENT_WRONG);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
                 } else {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
                 }
             }
         });
@@ -781,10 +781,10 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
         }
     }
 
-    private void unCheckAllStudents(){
+    private void unCheckAllStudents() {
 
-        for(int i =0; i<objectArrayList.size();i++){
-            ((Student)objectArrayList.get(i)).setCheck(false);
+        for (int i = 0; i < objectArrayList.size(); i++) {
+            ((Student) objectArrayList.get(i)).setCheck(false);
         }
         maintnedCheckedStudentsStatus();
         labDetailsAdapter.notifyDataSetChanged();
@@ -818,5 +818,10 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
                 Toast.makeText(homeActivityContext, message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }

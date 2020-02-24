@@ -3,14 +3,15 @@ package org.wizbots.labtab.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -89,9 +90,9 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.VIDEO_LIST);
         super.onResume();
         boolean isSync = SyncManager.getInstance().isVideoListSynced();
-        if(isSync){
+        if (isSync) {
             updateSyncStatus(true);
-        }else {
+        } else {
             updateSyncStatus(false);
         }
     }
@@ -149,7 +150,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
             objectArrayList.addAll(videoArrayList);
             videoListAdapter.notifyDataSetChanged();
         } else {
-            if(isAdded()) {
+            if (isAdded()) {
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, "No Video Available");
             }
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
@@ -176,7 +177,7 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
         });
     }
 
-    private void updateSyncStatus(boolean isSync){
+    private void updateSyncStatus(boolean isSync) {
         if (isSync) {
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         } else {
@@ -212,5 +213,10 @@ public class VideoListFragment extends ParentFragment implements VideoListAdapte
                 videoListAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }

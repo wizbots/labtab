@@ -1,7 +1,5 @@
 package org.wizbots.labtab.requesters;
 
-import android.graphics.Path;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -16,10 +14,7 @@ import org.wizbots.labtab.retrofit.LabTabResponse;
 import org.wizbots.labtab.service.SyncManager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.Collections;
 
 /**
  * Created by ashish on 18/2/17.
@@ -38,24 +33,24 @@ public class DeleteVideoRequester implements Runnable {
     @Override
     public void run() {
         Log.d(TAG, "DeleteVideoRequester Request");
-        Video vd  = VideoTable.getInstance().getVideoById(mVideo.getId());
+        Video vd = VideoTable.getInstance().getVideoById(mVideo.getId());
         int statusCode = 0;
         LabTabResponse<String> programsOrLabs = LabTabHTTPOperationController.deleteVideo(mVideo.getVideoId());
         if (programsOrLabs != null) {
-            Log.d(TAG,String.valueOf(programsOrLabs.getResponseCode()));
+            Log.d(TAG, String.valueOf(programsOrLabs.getResponseCode()));
             statusCode = programsOrLabs.getResponseCode();
-            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT){
+            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT) {
                 VideoTable.getInstance().deleteVideoById(mVideo.getId());
                 deleteVideoFileFromStorage();
-            }else if(statusCode == HttpURLConnection.HTTP_NOT_FOUND){
+            } else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                 VideoTable.getInstance().deleteVideoById(mVideo.getId());
                 deleteVideoFileFromStorage();
             }
             Log.d(TAG, "DeleteVideoRequester Success, Response Code : " + statusCode + " DeleteVideoRequester response: " + new Gson().toJson(programsOrLabs.getResponse()));
         } else {
-            if(vd.getVideoId() == null || vd.getVideoId().isEmpty()){
+            if (vd.getVideoId() == null || vd.getVideoId().isEmpty()) {
                 VideoTable.getInstance().deleteVideoById(mVideo.getId());
-            }else{
+            } else {
                 VideoTable.getInstance().updateDeletedVideo(mVideo.getId(), true);
             }
             deleteVideoFileFromStorage();
@@ -66,15 +61,17 @@ public class DeleteVideoRequester implements Runnable {
         for (OnDeleteVideoListener listener : LabTabApplication.getInstance().getUIListeners(OnDeleteVideoListener.class)) {
             if (statusCode == HttpURLConnection.HTTP_NO_CONTENT || statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
                 listener.onDeleteVideoSuccess();
+            } else if (statusCode == LabTabConstants.StatusCode.NO_INTERNET) {
+                listener.noInternetConnection();
             } else {
                 listener.onDeleteVideoError();
             }
         }
     }
 
-    private void deleteVideoFileFromStorage(){
+    private void deleteVideoFileFromStorage() {
         File file = new File(mVideo.getPath());
-        if (file.exists()){
+        if (file.exists()) {
             file.delete();
         }
     }

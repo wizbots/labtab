@@ -2,14 +2,15 @@ package org.wizbots.labtab.fragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.R;
@@ -112,7 +113,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
             if (!absenceArrayList.isEmpty()) {
                 objectArrayList.addAll(absenceArrayList);
                 listOfSkipsAdapter.notifyDataSetChanged();
-            }else if(!LabTabApplication.getInstance().isNetworkAvailable() && absenceArrayList.isEmpty()){
+            } else if (!LabTabApplication.getInstance().isNetworkAvailable() && absenceArrayList.isEmpty()) {
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
             } else {
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_LIST_OF_SKIPS_FOUND_FOR_THIS_LAB);
@@ -121,7 +122,7 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
             progressDialog.dismiss();
         } else {
             progressDialog.dismiss();
-            if(!LabTabApplication.getInstance().isNetworkAvailable() && program == null){
+            if (!LabTabApplication.getInstance().isNetworkAvailable() && program == null) {
                 homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
             }
         }
@@ -144,9 +145,9 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         super.onResume();
         SyncManager.getInstance().onRefreshData(1);
         boolean isSync = SyncManager.getInstance().isMarkAbsentSync();
-        if(isSync){
+        if (isSync) {
             updateSyncStatus(true);
-        }else {
+        } else {
             updateSyncStatus(false);
         }
     }
@@ -259,11 +260,16 @@ public class ListOfSkipsFragment extends ParentFragment implements ListOfSkipsAd
         });
     }
 
-    private void updateSyncStatus(boolean isSync){
+    private void updateSyncStatus(boolean isSync) {
         if (isSync) {
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
         } else {
             labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_notsynced);
         }
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }

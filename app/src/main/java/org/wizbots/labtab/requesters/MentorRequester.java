@@ -1,5 +1,7 @@
 package org.wizbots.labtab.requesters;
+
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.controller.LabTabHTTPOperationController;
 import org.wizbots.labtab.database.MentorsTable;
 import org.wizbots.labtab.interfaces.requesters.MentorListener;
@@ -22,6 +24,8 @@ public class MentorRequester implements Runnable {
         for (MentorListener listener : LabTabApplication.getInstance().getUIListeners(MentorListener.class)) {
             if (statusCode == HttpURLConnection.HTTP_OK)
                 listener.onMentorSuccess();
+            else if (statusCode == LabTabConstants.StatusCode.NO_INTERNET)
+                listener.noInternetConnection();
             else
                 listener.onMentorFailure();
         }

@@ -90,6 +90,8 @@ public class ProgramOrLabRequester implements Runnable, LabTabConstants {
         for (GetProgramOrLabListener getProgramOrLabListener : LabTabApplication.getInstance().getUIListeners(GetProgramOrLabListener.class)) {
             if (statusCode == StatusCode.OK) {
                 getProgramOrLabListener.programOrLabFetchedSuccessfully(programOrLabArrayList);
+            } else if (statusCode == StatusCode.NO_INTERNET) {
+                getProgramOrLabListener.noInternetConnection();
             } else {
                 getProgramOrLabListener.unableToFetchPrograms(statusCode);
             }

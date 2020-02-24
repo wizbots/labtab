@@ -4,14 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 import com.craterzone.logginglib.manager.LoggerManager;
 
@@ -40,7 +41,7 @@ import org.wizbots.labtab.util.LabTabUtil;
 import java.io.File;
 import java.net.HttpURLConnection;
 
-public class LoginFragment extends ParentFragment implements View.OnClickListener, CreateTokenListener, GetMentorProfileListener,MentorListener {
+public class LoginFragment extends ParentFragment implements View.OnClickListener, CreateTokenListener, GetMentorProfileListener, MentorListener {
 
     private LabTabHeaderLayout labTabHeaderLayout;
     private Toolbar toolbar;
@@ -87,7 +88,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     public void initListeners() {
         LabTabApplication.getInstance().addUIListener(CreateTokenListener.class, this);
         LabTabApplication.getInstance().addUIListener(GetMentorProfileListener.class, this);
-        LabTabApplication.getInstance().addUIListener(MentorListener.class,this);
+        LabTabApplication.getInstance().addUIListener(MentorListener.class, this);
         rootView.findViewById(R.id.btn_login).setOnClickListener(this);
         rootView.findViewById(R.id.tv_forgot_password).setOnClickListener(this);
         editTextCustomEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -177,7 +178,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         } else if (responseCode == StatusCode.NOT_FOUND) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NOT_USER_WITH_PROVIDED_CREDENTIALS);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
         }
     }
 
@@ -192,7 +193,7 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         super.onDestroyView();
         LabTabApplication.getInstance().removeUIListener(CreateTokenListener.class, this);
         LabTabApplication.getInstance().removeUIListener(GetMentorProfileListener.class, this);
-        LabTabApplication.getInstance().removeUIListener(MentorListener.class,this);
+        LabTabApplication.getInstance().removeUIListener(MentorListener.class, this);
     }
 
     @Override
@@ -234,15 +235,15 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
         LabTabPreferences.getInstance(LabTabApplication.getInstance()).setUserLoggedIn(false);
         if (responseCode == StatusCode.NOT_FOUND) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.MENTOR_NOT_FOUND);
-        }else if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
+        } else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.USER_IS_NOT_MENTOR);
         } else {
-            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
+            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_CONDITION_MATCH);
         }
     }
 
 
-    private void dismissUiThreadDialog(){
+    private void dismissUiThreadDialog() {
         homeActivityContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -259,5 +260,10 @@ public class LoginFragment extends ParentFragment implements View.OnClickListene
     @Override
     public void onMentorFailure() {
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void noInternetConnection() {
+        homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_INTERNET_CONNECTION);
     }
 }
