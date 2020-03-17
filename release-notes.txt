@@ -1,4 +1,31 @@
 ---------------------------------------------------------------------
+Release 1.15.0 - 2020/03/14
+---------------------------------------------------------------------
+NEW FEATURES:
+
+* Now mentors can see all programs, not just the ones assigned to them
+* Support for Android versions 8-9
+* More comprehensive error messages
+
+
+NOTES:
+
+* None
+
+CHANGES:
+* INTERNAL API CHANGES:
+  - There's a change on how we get mentor profile, given that endpoint has changed on wizbots.com
+
+BUG FIXES:
+
+* https://github.com/wizbots/labtab/issues/142
+* https://github.com/wizbots/labtab/issues/141
+* https://github.com/wizbots/labtab/issues/140
+
+
+
+
+---------------------------------------------------------------------
 Release 1.14.0 - 2019/07/20
 ---------------------------------------------------------------------
 NEW FEATURES:
