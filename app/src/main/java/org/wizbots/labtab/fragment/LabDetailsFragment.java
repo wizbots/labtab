@@ -163,24 +163,31 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 //
 //        calendarImageView.setOnClickListener(this);
         boolean isNetwork = LabTabApplication.getInstance().isNetworkAvailable();
-        program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
-        if (!isNetwork && program == null) {
+//        program = ProgramTable.getInstance().getProgramByProgramId(programOrLab.getId());
+//        if (!isNetwork && program == null) {
+//            progressDialog.dismiss();
+//            homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
+//        } else if (program != null) {
+//            setHeaderView(program);
+//            ArrayList<Student> studentArrayList = ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId());
+//            if (!isNetwork && (studentArrayList == null || studentArrayList.isEmpty())) {
+//                progressDialog.dismiss();
+//                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
+//            } else if (!studentArrayList.isEmpty()) {
+//                objectArrayList.addAll(studentArrayList);
+//                maintnedCheckedStudentsStatus();
+//                labDetailsAdapter.notifyDataSetChanged();
+//            } else {
+//                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_STUDENT_FOUND_FOR_THIS_LAB);
+//            }
+//            progressDialog.dismiss();
+//        } else {
+//            BackgroundExecutor.getInstance().execute(new ProgramStudentsRequester(programOrLab.getId()));
+//        }
+//
+        if (!isNetwork) {
             progressDialog.dismiss();
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
-        } else if (program != null) {
-            setHeaderView(program);
-            ArrayList<Student> studentArrayList = ProgramStudentsTable.getInstance().getStudentsListByProgramId(programOrLab.getId());
-            if (!isNetwork && (studentArrayList == null || studentArrayList.isEmpty())) {
-                progressDialog.dismiss();
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_DATA_NO_CONNECTION);
-            } else if (!studentArrayList.isEmpty()) {
-                objectArrayList.addAll(studentArrayList);
-                maintnedCheckedStudentsStatus();
-                labDetailsAdapter.notifyDataSetChanged();
-            } else {
-                homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_STUDENT_FOUND_FOR_THIS_LAB);
-            }
-            progressDialog.dismiss();
         } else {
             BackgroundExecutor.getInstance().execute(new ProgramStudentsRequester(programOrLab.getId()));
         }
@@ -250,6 +257,12 @@ public class LabDetailsFragment extends ParentFragment implements LabDetailsAdap
 
         if (studentArrayList.isEmpty()) {
             homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, ToastTexts.NO_STUDENT_FOUND_FOR_THIS_LAB);
+            homeActivityContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                }
+            });
             return;
         }
 

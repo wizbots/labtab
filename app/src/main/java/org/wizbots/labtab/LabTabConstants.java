@@ -236,6 +236,7 @@ public interface LabTabConstants {
         String ITEM_SETTINGS = "Settings";
         String ITEM_LOGOUT = "Logout";
         String ITEM_USER_PROFILE = "User Profile";
+        String ITEM_ROSTER = "Roster";
     }
 
     interface Title {

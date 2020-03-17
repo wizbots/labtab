@@ -4,10 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import org.wizbots.labtab.LabTabApplication;
 import org.wizbots.labtab.interfaces.OnLoadListener;
-
 import java.util.ArrayList;
 
 public class DAOManager extends SQLiteOpenHelper implements OnLoadListener {
@@ -78,5 +76,4 @@ public class DAOManager extends SQLiteOpenHelper implements OnLoadListener {
         for (DatabaseTable table : registeredTables)
             table.migrate(db, newVersion);
     }
-
 }

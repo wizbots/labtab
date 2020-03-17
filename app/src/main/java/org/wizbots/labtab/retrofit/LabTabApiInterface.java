@@ -148,5 +148,4 @@ public interface LabTabApiInterface {
     //    20. Get Roster Details
     @GET("programs/{id}/roster")
     Call<RosterModel> getRosterDetails(@Header("Auth-Token") String authToken, @Path("id") String rosterId, @Header("User-Agent") String userAgent);
-
 }

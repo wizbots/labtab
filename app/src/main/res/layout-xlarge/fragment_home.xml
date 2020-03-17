@@ -13,6 +13,49 @@
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_roster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/purple"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation_large"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/large_padding">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_roster"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/go_to_image"
+                        android:padding="@dimen/large_padding"
+                        android:src="@drawable/roster"
+                        android:tint="@color/white"/>
+                </LinearLayout>
+
+                <org.wizbots.labtab.customview.TextViewCustom
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="@string/roster"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_small"
+                    app:font="@string/font_pt_sans_narrow_bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/cv_go_to"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -53,6 +96,14 @@
                     app:font="@string/font_pt_sans_narrow_bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_lab_list"
@@ -96,14 +147,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_video_list"
             android:layout_width="match_parent"
@@ -146,9 +189,18 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_my_profile"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:cardBackgroundColor="@color/orange"
@@ -188,5 +240,6 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 </LinearLayout>

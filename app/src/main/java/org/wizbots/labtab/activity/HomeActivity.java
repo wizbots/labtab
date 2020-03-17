@@ -99,21 +99,23 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         }
                         break;
                     case 2:
+                        //TODO - navigate to roster fragment
+                    case 3:
                         replaceFragment(Fragments.BINDER, new Bundle());
                         break;
-                    case 3:
+                    case 4:
                         replaceFragment(Fragments.LAB_LIST, new Bundle());
                         break;
-                    case 4:
+                    case 5:
                         replaceFragment(Fragments.VIDEO_LIST, new Bundle());
                         break;
-                    case 5:
+                    case 6:
                         replaceFragment(Fragments.ADD_VIDEO, new Bundle());
                         break;
-                    case 6:
+                    case 7:
                         replaceFragment(Fragments.SETTINGS, new Bundle());
                         break;
-                    case 7:
+                    case 8:
                         LabTabPreferences.getInstance(LabTabApplication.getInstance()).clear();
                         // Clearing mata data on logout
                         LabTabApplication.getInstance().setMetaDatas(null);
@@ -141,14 +143,15 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[7];
+        LeftDrawerItem[] leftDrawerItem = new LeftDrawerItem[8];
         leftDrawerItem[0] = new LeftDrawerItem(R.drawable.ic_home_button_go_to_web, DrawerItem.ITEM_GO_TO);
-        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.ic_home_button_binder, DrawerItem.ITEM_BINDER);
-        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, DrawerItem.ITEM_LAB_LIST);
-        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, DrawerItem.ITEM_VIDEO_LIST);
-        leftDrawerItem[4] = new LeftDrawerItem(R.drawable.ic_upload_video, DrawerItem.ITEM_ADD_VIDEO);
-        leftDrawerItem[5] = new LeftDrawerItem(R.drawable.ic_lab_step_1, DrawerItem.ITEM_SETTINGS);
-        leftDrawerItem[6] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
+        leftDrawerItem[1] = new LeftDrawerItem(R.drawable.roster, DrawerItem.ITEM_ROSTER);
+        leftDrawerItem[2] = new LeftDrawerItem(R.drawable.ic_home_button_binder, DrawerItem.ITEM_BINDER);
+        leftDrawerItem[3] = new LeftDrawerItem(R.drawable.ic_home_button_lab_list, DrawerItem.ITEM_LAB_LIST);
+        leftDrawerItem[4] = new LeftDrawerItem(R.drawable.ic_home_button_video_list, DrawerItem.ITEM_VIDEO_LIST);
+        leftDrawerItem[5] = new LeftDrawerItem(R.drawable.ic_upload_video, DrawerItem.ITEM_ADD_VIDEO);
+        leftDrawerItem[6] = new LeftDrawerItem(R.drawable.ic_lab_step_1, DrawerItem.ITEM_SETTINGS);
+        leftDrawerItem[7] = new LeftDrawerItem(R.drawable.ic_logout, DrawerItem.ITEM_LOGOUT);
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -411,8 +414,6 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             fragmentManager.popBackStackImmediate();
             updateCurrentVisibile();
         }
-
-
     }
 
 
@@ -478,7 +479,6 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
         } else if (fragment instanceof PdfBinder) {
             return Fragments.BINDER;
         }
-
 
         return -1;
     }
