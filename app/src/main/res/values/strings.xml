@@ -481,5 +481,7 @@
     <string name="student">Student</string>
     <string name="in">IN</string>
     <string name="out">OUT</string>
+    <string name="sign_in">SIGN-IN</string>
+    <string name="signed_in">SIGNED-IN</string>
 
 </resources>

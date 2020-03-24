@@ -25,6 +25,8 @@ public class SignatureListAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextViewCustom date;
         TextViewCustom inTime;
         TextViewCustom outTime;
+        TextViewCustom signedIn;
+        TextViewCustom signedOut;
 
         public SignatureListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -32,6 +34,8 @@ public class SignatureListAdapter extends RecyclerView.Adapter<RecyclerView.View
             date = (TextViewCustom) itemView.findViewById(R.id.tv_date_signature);
             inTime = (TextViewCustom) itemView.findViewById(R.id.tv_in_signature);
             outTime = (TextViewCustom) itemView.findViewById(R.id.tv_out_signature);
+            signedIn = (TextViewCustom) itemView.findViewById(R.id.tv_signed_in);
+            signedOut = (TextViewCustom) itemView.findViewById(R.id.tv_signed_out);
         }
     }
 
@@ -70,6 +74,25 @@ public class SignatureListAdapter extends RecyclerView.Adapter<RecyclerView.View
         signatureListViewHolder.date.setText(studentInOutItem.getDate());
         signatureListViewHolder.inTime.setText(studentInOutItem.getInTime());
         signatureListViewHolder.outTime.setText(studentInOutItem.getOutTime());
+
+        int greenColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
+        int blue = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_blue);
+
+        if(studentInOutItem.getInSigned()) {
+            signatureListViewHolder.signedIn.setText("SIGNED-IN");
+            signatureListViewHolder.signedIn.setBackgroundColor(greenColor);
+        } else {
+            signatureListViewHolder.signedIn.setText("SIGN-IN");
+            signatureListViewHolder.signedIn.setBackgroundColor(blue);
+        }
+
+        if(studentInOutItem.getOutSigned()) {
+            signatureListViewHolder.signedOut.setText("SIGNED-OUT");
+            signatureListViewHolder.signedOut.setBackgroundColor(greenColor);
+        } else {
+            signatureListViewHolder.signedOut.setText("SIGN-OUT");
+            signatureListViewHolder.signedOut.setBackgroundColor(blue);
+        }
     }
 
     @Override

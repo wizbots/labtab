@@ -32,6 +32,7 @@
     <dimen name="text_size_extra_extra_large">30sp</dimen>
     <dimen name="legend_options_text_size">12sp</dimen>
     <dimen name="smallest_text_size">10sp</dimen>
+    <dimen name="text_size_roster_lists">14sp</dimen>
 
 
     <!--Card-->
