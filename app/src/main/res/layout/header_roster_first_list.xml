@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/student_lab_details_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/lab_detail_header_height"
+    android:background="@color/light_gray"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/roster_student_name_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_student_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="Student"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_gender_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/gender"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_age_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/age"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_grade_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/grade"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_contact_name_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/contact_name"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_contact_phone_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_contact_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/phone"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_email_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/email"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_address_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/address"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_allergies_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_allergies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/allergies_special_needs_text"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+</LinearLayout>

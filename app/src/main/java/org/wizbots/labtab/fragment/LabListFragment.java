@@ -121,7 +121,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             isAPICalleligible = true;
             filterMap.put(FilterRequestParameter.SEASON_YEAR, LabTabApplication.getInstance().getYear());
 
-
         }
         if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
             isAPICalleligible = true;
@@ -182,12 +181,15 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         seasonSearch = season != null ? season.toLowerCase() : "";
         seasonPos = spinnerSeason.getSelectedItemPosition();
         spinnerMentor.setAdapter(new MentorAdapter(homeActivityContext, getMentorList(MentorsTable.getInstance().getMentorList())));
+        setSelectedMentor();
         spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);
         labTabHeaderLayout.getMenuImageView().setVisibility(View.VISIBLE);
         labTabHeaderLayout.getMenuImageView().setImageResource(R.drawable.ic_menu);
         labTabHeaderLayout.getSyncImageView().setImageResource(R.drawable.ic_synced);
+
+
 
         recyclerViewLabList = (RecyclerView) rootView.findViewById(R.id.recycler_view_lab_list);
         objectArrayList = new ArrayList<>();
@@ -220,6 +222,14 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
+    private void setSelectedMentor() {
+        for(int index = 0; index < mentorList.size(); index++) {
+            if(mentorList.get(index).getFullName().equals(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName())) {
+                spinnerMentor.setSelection(index);
+            }
+        }
+    }
+
     private List<String> getYearsList() {
         List<String> years = new ArrayList<>();
         years.add(getString(R.string.all_years));
@@ -241,8 +251,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     private ArrayList<Mentor> getMentorList(ArrayList<Mentor> list) {
-        mentorList.addAll(list);
-        mentorList.add(0, new Mentor("All Mentors", ""));
+        if(mentorList.isEmpty()) {
+            mentorList.addAll(list);
+            mentorList.add(0, new Mentor("All Mentors", ""));
+        }
         return mentorList;
     }
 
@@ -383,20 +395,20 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     private void callFilterApi() {
-        if (spinnerMentor.getSelectedItemPosition() > 0) {
+//        if (spinnerMentor.getSelectedItemPosition() > 0) {
             progressDialog.show();
             filterMap.put(FilterRequestParameter.MENTOR_ID, mentorList.get(spinnerMentor.getSelectedItemPosition()).getMember_id());
             Map<String, String> filterMap1 = new LinkedHashMap<>();
             filterMap1.putAll(filterMap);
             BackgroundExecutor.getInstance().execute(new FilterRequester(LabListFragment.this, filterMap1));
-        } else {
-            homeActivityContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, getResources().getString(R.string.mentor_hint_msg));
-                }
-            });
-        }
+//        } else {
+//            homeActivityContext.runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, getResources().getString(R.string.mentor_hint_msg));
+//                }
+//            });
+//        }
     }
 
     public void initListeners() {
@@ -411,8 +423,6 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             if (LabTabApplication.getInstance().getYear() != null && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("") && !LabTabApplication.getInstance().getYear().equalsIgnoreCase("All Years")) {
                 isAPICalleligible = true;
                 filterMap.put(FilterRequestParameter.SEASON_YEAR, LabTabApplication.getInstance().getYear());
-
-
             }
             if (LabTabApplication.getInstance().getLocation() != null && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("") && !LabTabApplication.getInstance().getLocation().equalsIgnoreCase("All Locations")) {
                 isAPICalleligible = true;

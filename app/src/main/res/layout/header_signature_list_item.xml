@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/student_lab_details_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/lab_detail_header_height"
+    android:background="@color/light_gray"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/roster_serial_number_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_roster_serial_number_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/date"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_morning_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_morning_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/in"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roster_lunch_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_lunch_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/out"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/text_size_roster_lists"
+            app:font="@string/font_pt_sans_narrow_regular" />
+
+    </LinearLayout>
+
+</LinearLayout>

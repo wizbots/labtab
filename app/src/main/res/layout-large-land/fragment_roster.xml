@@ -1,0 +1,33 @@
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/nested_scroll_view">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/extra_large_padding">
+
+        <include
+            android:id="@+id/search_view"
+            layout="@layout/roster_list_search_view" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_view"
+            android:layout_marginTop="@dimen/extra_small_margin"
+            android:background="@drawable/rounded_layout_blue_from_edges"
+            android:orientation="vertical"
+            android:padding="@dimen/extra_extra_small_padding">
+
+            <include layout="@layout/header_lab_list" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_roster_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

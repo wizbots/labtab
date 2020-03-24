@@ -1,0 +1,75 @@
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/nested_scroll_view">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/extra_extra_small_padding">
+
+        <include
+            android:id="@+id/roster_extra_layout"
+            layout="@layout/roster_extra_layout" />
+
+        <LinearLayout
+            android:id="@+id/first_recycler_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/roster_extra_layout"
+            android:layout_marginTop="@dimen/extra_small_margin"
+            android:background="@drawable/rounded_layout_blue_from_edges"
+            android:orientation="vertical"
+            android:padding="@dimen/extra_extra_small_padding">
+
+            <include layout="@layout/header_roster_first_list" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_roster_details_first"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/second_recycler_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/first_recycler_view_container"
+            android:layout_marginTop="@dimen/extra_large_margin"
+            android:background="@drawable/rounded_layout_blue_from_edges"
+            android:orientation="vertical"
+            android:padding="@dimen/extra_extra_small_padding">
+
+            <include layout="@layout/header_roster_time" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_roster_details_shifts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/third_recycler_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/second_recycler_view_container"
+            android:layout_marginTop="@dimen/extra_large_margin"
+            android:background="@drawable/rounded_layout_blue_from_edges"
+            android:orientation="vertical"
+            android:padding="@dimen/extra_extra_small_padding">
+
+            <include layout="@layout/header_roster_third_list" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_roster_details_third"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

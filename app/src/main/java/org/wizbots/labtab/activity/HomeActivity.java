@@ -39,6 +39,8 @@ import org.wizbots.labtab.fragment.LoginFragment;
 import org.wizbots.labtab.fragment.MentorProfileFragment;
 import org.wizbots.labtab.fragment.ParentFragment;
 import org.wizbots.labtab.fragment.PdfBinder;
+import org.wizbots.labtab.fragment.RosterDetailsFragment;
+import org.wizbots.labtab.fragment.RosterFragment;
 import org.wizbots.labtab.fragment.SettingsFragment;
 import org.wizbots.labtab.fragment.StudentLabDetailsFragment;
 import org.wizbots.labtab.fragment.StudentProfileFragment;
@@ -99,7 +101,8 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                         }
                         break;
                     case 2:
-                        //TODO - navigate to roster fragment
+                        replaceFragment(Fragments.ROSTER_FRAGMENT, new Bundle());
+                        break;
                     case 3:
                         replaceFragment(Fragments.BINDER, new Bundle());
                         break;
@@ -300,6 +303,12 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
             case Fragments.BINDER:
                 fragment = new PdfBinder();
                 break;
+            case Fragments.ROSTER_FRAGMENT:
+                fragment = new RosterFragment();
+                break;
+            case Fragments.ROSTER_DETAILS_FRAGMENT:
+                fragment = new RosterDetailsFragment();
+                break;
         }
         fragment.setArguments(bundle);
         try {
@@ -336,6 +345,12 @@ public class HomeActivity extends ParentActivity implements View.OnClickListener
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
             } else if (fragment.getFragmentName().equalsIgnoreCase("SettingsFragment")) {
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.addToBackStack(null);
+            } else if (fragment.getFragmentName().equalsIgnoreCase("RosterFragment")) {
+                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
+                fragmentTransaction.addToBackStack(null);
+            } else if (fragment.getFragmentName().equalsIgnoreCase("RosterDetailsFragment")) {
                 fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getFragmentName());
                 fragmentTransaction.addToBackStack(null);
             } else {

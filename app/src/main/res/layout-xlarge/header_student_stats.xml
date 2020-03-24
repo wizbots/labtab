@@ -18,7 +18,7 @@
 
         <org.wizbots.labtab.customview.TextViewCustom
             android:id="@+id/tv_level"
-            android:layout_width="wrap_content"
+            android:layout_width="31dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/level"

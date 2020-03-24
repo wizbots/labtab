@@ -74,6 +74,7 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
         rootView.findViewById(R.id.cv_go_to).setOnClickListener(this);
         rootView.findViewById(R.id.cv_video_list).setOnClickListener(this);
         rootView.findViewById(R.id.cv_my_profile).setOnClickListener(this);
+        rootView.findViewById(R.id.cv_roster).setOnClickListener(this);
     }
 
     @Override
@@ -90,6 +91,9 @@ public class HomeFragment extends ParentFragment implements View.OnClickListener
                 break;
             case R.id.cv_my_profile:
                 homeActivityContext.replaceFragment(Fragments.MENTOR_PROFILE, new Bundle());
+                break;
+            case R.id.cv_roster:
+                homeActivityContext.replaceFragment(Fragments.ROSTER_FRAGMENT, new Bundle());
                 break;
         }
     }

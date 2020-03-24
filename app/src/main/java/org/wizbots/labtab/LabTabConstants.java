@@ -80,6 +80,8 @@ public interface LabTabConstants {
         int LIST_OF_SKIPS = 12;
         int ADDITIONAL_INFORMATION = 13;
         int VIEW_VIDEO = 14;
+        int ROSTER_FRAGMENT = 23;
+        int ROSTER_DETAILS_FRAGMENT = 24;
 
         int LAB_LIST_DRAWER = 15;
         int VIDEO_LIST_DRAWER = 16;
@@ -254,6 +256,7 @@ public interface LabTabConstants {
         String STUDENT_STATS_DETAILS = "Lab Details";
         String VIDEO_LIST = "Video List";
         String VIEW_VIDEO = "View Video";
+        String ROSTER = "Roster";
     }
 
     interface DateFormat {

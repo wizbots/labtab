@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lab_list_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/lab_list_header_height"
+    android:background="@color/light_gray"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_lab_level"
+            android:layout_width="@dimen/lab_list_image_width"
+            android:layout_height="@dimen/lab_list_image_height"
+            android:contentDescription="@string/lab_level_image"
+            android:src="@drawable/ic_level_master" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:orientation="vertical">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:id="@+id/tv_lab_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/extra_small_margin"
+            android:gravity="center|left"
+            android:text="@string/lab_name"
+            android:textSize="@dimen/text_size_small"
+            app:font="@string/font_pt_sans_narrow_regular" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_action"
+            android:layout_width="@dimen/lab_list_image_width"
+            android:layout_height="@dimen/lab_list_image_height"
+            android:background="@drawable/circle_blue"
+            android:contentDescription="@string/action_image"
+            android:padding="@dimen/extra_extra_small_padding"
+            android:src="@drawable/ic_action_view" />
+    </LinearLayout>
+
+</LinearLayout>
