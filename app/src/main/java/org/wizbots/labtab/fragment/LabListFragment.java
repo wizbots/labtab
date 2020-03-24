@@ -182,7 +182,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         String season = (String) spinnerSeason.getSelectedItem();
         seasonSearch = season != null ? season.toLowerCase() : "";
         seasonPos = spinnerSeason.getSelectedItemPosition();
-        spinnerMentor.setAdapter(new MentorAdapter(homeActivityContext, getMentorList(MentorsTable.getInstance().getMentorList())));
+        ArrayList<Mentor> mentorArrayList = new ArrayList<>();
+        mentorArrayList = getMentorList(MentorsTable.getInstance().getMentorList());
+        mentorArrayList.remove(mentorArrayList.size() - 1);
+        spinnerMentor.setAdapter(new MentorAdapter(homeActivityContext, mentorArrayList));
         setSelectedMentor();
         spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
