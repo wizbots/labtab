@@ -147,6 +147,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             }
         }
         setLocYrSeasonView();
+
     }
 
     @Override
@@ -182,6 +183,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         seasonSearch = season != null ? season.toLowerCase() : "";
         seasonPos = spinnerSeason.getSelectedItemPosition();
         spinnerMentor.setAdapter(new MentorAdapter(homeActivityContext, getMentorList(MentorsTable.getInstance().getMentorList())));
+        setSelectedMentor();
         spinnerLocation.setAdapter(new LocationAdapter(homeActivityContext, getLocation(LocationTable.getInstance().getLocationList())));
         labTabHeaderLayout = (LabTabHeaderLayout) toolbar.findViewById(R.id.lab_tab_header_layout);
         labTabHeaderLayout.getDynamicTextViewCustom().setText(Title.LAB_LIST);
@@ -220,6 +222,15 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         homeActivityContext.setNameOfTheLoggedInUser(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName());
     }
 
+    private void setSelectedMentor() {
+        for(int index = 0; index < mentorList.size(); index++) {
+            if(mentorList.get(index).getFullName().equals(LabTabPreferences.getInstance(LabTabApplication.getInstance()).getMentor().getFullName())) {
+                spinnerMentor.setSelection(index);
+                break;
+            }
+        }
+    }
+
     private List<String> getYearsList() {
         List<String> years = new ArrayList<>();
         years.add(getString(R.string.all_years));
@@ -241,8 +252,10 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     private ArrayList<Mentor> getMentorList(ArrayList<Mentor> list) {
-        mentorList.addAll(list);
-        mentorList.add(0, new Mentor("All Mentors", ""));
+        if(mentorList.isEmpty()) {
+            mentorList.addAll(list);
+            mentorList.add(0, new Mentor("All Mentors", ""));
+        }
         return mentorList;
     }
 
@@ -383,19 +396,23 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
     }
 
     private void callFilterApi() {
-        if (spinnerMentor.getSelectedItemPosition() > 0) {
+        if (spinnerMentor.getSelectedItemPosition() == 0) {
             progressDialog.show();
-            filterMap.put(FilterRequestParameter.MENTOR_ID, mentorList.get(spinnerMentor.getSelectedItemPosition()).getMember_id());
             Map<String, String> filterMap1 = new LinkedHashMap<>();
             filterMap1.putAll(filterMap);
             BackgroundExecutor.getInstance().execute(new FilterRequester(LabListFragment.this, filterMap1));
         } else {
-            homeActivityContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, getResources().getString(R.string.mentor_hint_msg));
-                }
-            });
+//            homeActivityContext.runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    homeActivityContext.sendMessageToHandler(homeActivityContext.SHOW_TOAST, -1, -1, getResources().getString(R.string.mentor_hint_msg));
+//                }
+//            });
+            progressDialog.show();
+            filterMap.put(FilterRequestParameter.MENTOR_ID, mentorList.get(spinnerMentor.getSelectedItemPosition()).getId());
+            Map<String, String> filterMap1 = new LinkedHashMap<>();
+            filterMap1.putAll(filterMap);
+            BackgroundExecutor.getInstance().execute(new FilterRequester(LabListFragment.this, filterMap1));
         }
     }
 
@@ -544,7 +561,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
             case R.id.iv_search:
                 isFilter = true;
                 setValues();
-                callFilterApi();
+                callCachedFilerAPI();
                 break;
             case R.id.calendar:
                 showCalendar();
