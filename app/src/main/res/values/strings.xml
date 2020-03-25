@@ -483,5 +483,7 @@
     <string name="out">OUT</string>
     <string name="sign_in">SIGN-IN</string>
     <string name="signed_in">SIGNED-IN</string>
+    <string name="sign_in_consent">Please sign here(only parents or allowed pick-up person) to give consent for sign-in:</string>
+    <string name="confirm_caps">CONFIRM</string>
 
 </resources>

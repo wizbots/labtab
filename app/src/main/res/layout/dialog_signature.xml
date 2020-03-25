@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="1000dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_layout_blue_from_edges"
+        android:layout_margin="8dp">
+
+        <org.wizbots.labtab.customview.TextViewCustom
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in_consent"/>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/rounded_layout_blue_from_edges"
+            android:id="@+id/signature_layout"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="horizontal" />
+
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
+
+            <org.wizbots.labtab.customview.ButtonCustom
+                android:id="@+id/signature_confirm_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/confirm_caps"
+                android:paddingLeft="40dp"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:paddingRight="40dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp" />
+
+            <org.wizbots.labtab.customview.ButtonCustom
+                android:id="@+id/signature_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/cancel"
+                android:paddingLeft="40dp"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:paddingRight="40dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

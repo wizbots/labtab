@@ -49,6 +49,8 @@ public class RosterDetailsFragment extends ParentFragment implements OnSyncDoneL
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LabTabApplication.getInstance().addUIListener(OnSyncDoneListener.class, this);
+
+        homeActivityContext = (HomeActivity) context;
     }
 
     @Nullable

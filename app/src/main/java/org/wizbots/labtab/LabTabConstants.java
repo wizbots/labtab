@@ -474,5 +474,12 @@ public interface LabTabConstants {
         String SCREEN_NONE = "screen_none";
     }
 
+    interface Signature {
+        String SIGNED_IN = "SIGNED-IN";
+        String SIGN_IN = "SIGN-IN";
+        String SIGNED_OUT = "SIGNED-OUT";
+        String SIGN_OUT = "SIGN-OUT";
+    }
+
     String VIDEO_LOGS_TAG = "VIDEO_LOGS";
 }

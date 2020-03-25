@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import org.wizbots.labtab.LabTabApplication;
+import org.wizbots.labtab.LabTabConstants;
 import org.wizbots.labtab.R;
 import org.wizbots.labtab.customview.TextViewCustom;
 import org.wizbots.labtab.model.roster.StudentInOutItem;
+import org.wizbots.labtab.util.SignatureDialog;
+
 import java.util.ArrayList;
 
 public class SignatureListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -19,6 +22,9 @@ public class SignatureListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final int VIEW_ITEM_DATA = 1;
     private ArrayList<StudentInOutItem> objectArrayList;
     private Context context;
+    private SignatureDialog signatureDialog;
+    int greenColor;
+    int blue;
 
     private static class SignatureListViewHolder extends RecyclerView.ViewHolder {
         LinearLayout signatureItemRootLayout;
@@ -28,7 +34,7 @@ public class SignatureListAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextViewCustom signedIn;
         TextViewCustom signedOut;
 
-        public SignatureListViewHolder(@NonNull View itemView) {
+        SignatureListViewHolder(@NonNull View itemView) {
             super(itemView);
             signatureItemRootLayout = (LinearLayout) itemView.findViewById(R.id.signature_list_item_root_layout);
             date = (TextViewCustom) itemView.findViewById(R.id.tv_date_signature);
@@ -61,7 +67,7 @@ public class SignatureListAdapter extends RecyclerView.Adapter<RecyclerView.View
         configureLabListViewHolder(signatureListViewHolder, position);
     }
 
-    private void configureLabListViewHolder(SignatureListViewHolder signatureListViewHolder, int position) {
+    private void configureLabListViewHolder(final SignatureListViewHolder signatureListViewHolder, int position) {
         StudentInOutItem studentInOutItem = objectArrayList.get(position);
         int rosterDetailsLinearLayoutColor;
         if (position % 2 == 0) {
@@ -75,24 +81,80 @@ public class SignatureListAdapter extends RecyclerView.Adapter<RecyclerView.View
         signatureListViewHolder.inTime.setText(studentInOutItem.getInTime());
         signatureListViewHolder.outTime.setText(studentInOutItem.getOutTime());
 
-        int greenColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
-        int blue = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_blue);
+        greenColor = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.green);
+        blue = ContextCompat.getColor(LabTabApplication.getInstance(), R.color.light_blue);
 
         if(studentInOutItem.getInSigned()) {
-            signatureListViewHolder.signedIn.setText("SIGNED-IN");
+            signatureListViewHolder.signedIn.setText(LabTabConstants.Signature.SIGNED_IN);
             signatureListViewHolder.signedIn.setBackgroundColor(greenColor);
         } else {
-            signatureListViewHolder.signedIn.setText("SIGN-IN");
+            signatureListViewHolder.signedIn.setText(LabTabConstants.Signature.SIGN_IN);
             signatureListViewHolder.signedIn.setBackgroundColor(blue);
         }
 
         if(studentInOutItem.getOutSigned()) {
-            signatureListViewHolder.signedOut.setText("SIGNED-OUT");
+            signatureListViewHolder.signedOut.setText(LabTabConstants.Signature.SIGNED_OUT);
             signatureListViewHolder.signedOut.setBackgroundColor(greenColor);
         } else {
-            signatureListViewHolder.signedOut.setText("SIGN-OUT");
+            signatureListViewHolder.signedOut.setText(LabTabConstants.Signature.SIGN_OUT);
             signatureListViewHolder.signedOut.setBackgroundColor(blue);
         }
+
+        signatureListViewHolder.signedIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(signatureListViewHolder.signedIn.getText().toString().equals(LabTabConstants.Signature.SIGN_IN)) {
+                    SignatureDialog.ClickListener mClickListener = new SignatureDialog.ClickListener() {
+                        @Override
+                        public void onConfirmClick() {
+                            if(signatureDialog != null) {
+                                signatureDialog.dismiss();
+                            }
+                            signatureListViewHolder.signedIn.setText(LabTabConstants.Signature.SIGNED_IN);
+                            signatureListViewHolder.signedIn.setBackgroundColor(greenColor);
+                        }
+
+                        @Override
+                        public void onCancelClick() {
+                            if(signatureDialog != null) {
+                                signatureDialog.dismiss();
+                            }
+                        }
+                    };
+
+                    signatureDialog = new SignatureDialog(context, mClickListener);
+                    signatureDialog.show();
+                }
+            }
+        });
+
+        signatureListViewHolder.signedOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(signatureListViewHolder.signedOut.getText().toString().equals(LabTabConstants.Signature.SIGN_OUT)) {
+                    SignatureDialog.ClickListener mClickListener = new SignatureDialog.ClickListener() {
+                        @Override
+                        public void onConfirmClick() {
+                            if(signatureDialog != null) {
+                                signatureDialog.dismiss();
+                            }
+                            signatureListViewHolder.signedOut.setText(LabTabConstants.Signature.SIGNED_OUT);
+                            signatureListViewHolder.signedOut.setBackgroundColor(greenColor);
+                        }
+
+                        @Override
+                        public void onCancelClick() {
+                            if(signatureDialog != null) {
+                                signatureDialog.dismiss();
+                            }
+                        }
+                    };
+
+                    signatureDialog = new SignatureDialog(context, mClickListener);
+                    signatureDialog.show();
+                }
+            }
+        });
     }
 
     @Override
