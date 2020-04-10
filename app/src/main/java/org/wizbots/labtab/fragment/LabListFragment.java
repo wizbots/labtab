@@ -178,7 +178,7 @@ public class LabListFragment extends ParentFragment implements LabListAdapterCli
         spinnerYear.setSelection(5);
         yearSearch = (String) spinnerYear.getSelectedItem();
         yearPos = spinnerYear.getSelectedItemPosition();
-        spinnerSeason.setSelection(4);
+        spinnerSeason.setSelection(0);
         String season = (String) spinnerSeason.getSelectedItem();
         seasonSearch = season != null ? season.toLowerCase() : "";
         seasonPos = spinnerSeason.getSelectedItemPosition();
