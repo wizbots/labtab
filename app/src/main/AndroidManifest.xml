@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".LabTabApplication"
@@ -125,5 +126,8 @@
 
         <activity android:name=".activity.ResultActivity" />
     </application>
+
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
 
 </manifest>

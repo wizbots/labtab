@@ -1,0 +1,575 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_student_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/extra_large_padding">
+
+            <LinearLayout
+                android:id="@+id/student_profile_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAligned="false"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="180dp"
+                            android:layout_height="180dp"
+                            android:background="@drawable/rounded_layout_blue_for_profile">
+
+                            <!--                            <org.wizbots.labtab.customview.TextViewCustom
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_gravity="center"
+                                                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                                                            android:text="@string/avatar"
+                                                            android:textColor="@color/light_blue"
+                                                            android:textSize="@dimen/text_size_extra_small"
+                                                            app:fontName="@string/font_pt_sans_narrow_regular" />-->
+                            <org.wizbots.labtab.util.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/profile_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_placholder"
+                                app:civ_border_color="@color/material_light_blue_800"
+                                app:civ_border_width="2dp" />
+
+                            <ImageView
+                                android:id="@+id/iv_student_lab_level"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@drawable/ic_filter_apprentice"
+                                android:contentDescription="@string/student_lab_level" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/extra_extra_small_margin"
+                            android:background="@drawable/rounded_layout_blue"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/extra_small_padding">
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/extra_extra_small_margin"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="@string/first_name"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:id="@+id/tv_first_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                                android:layout_weight="1"
+                                android:background="@drawable/rounded_layout_white"
+                                android:imeOptions="actionNext"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
+                                android:text="@string/dummy_text"
+
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/extra_extra_small_margin"
+                            android:background="@drawable/rounded_layout_blue"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/extra_small_padding">
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/extra_extra_small_margin"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="@string/last_name"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:id="@+id/tv_last_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                                android:layout_weight="1"
+                                android:background="@drawable/rounded_layout_white"
+                                android:imeOptions="actionNext"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
+                                android:text="@string/dummy_text"
+
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/extra_extra_small_margin"
+                            android:background="@drawable/rounded_layout_blue"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/extra_small_padding">
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/extra_extra_small_margin"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="@string/email_parent_s"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:id="@+id/tv_email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                                android:layout_weight="1"
+                                android:background="@drawable/rounded_layout_white"
+                                android:imeOptions="actionNext"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
+                                android:text="@string/dummy_text"
+
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/extra_extra_small_margin"
+                            android:background="@drawable/rounded_layout_blue"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/extra_small_padding">
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/extra_extra_small_margin"
+                                android:layout_weight="1"
+                                android:gravity="center|end"
+                                android:text="@string/grade"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:id="@+id/tv_grade"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                                android:layout_weight="1"
+                                android:background="@drawable/rounded_layout_white"
+                                android:imeOptions="actionNext"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
+                                android:text="@string/dummy_text"
+
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/extra_small_padding">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:gravity="center|end"
+                            android:text="@string/date_of_birth_age"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_dob_age"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_layout_white"
+                            android:imeOptions="actionNext"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
+                            android:text="@string/dummy_text"
+
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/extra_small_padding">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:gravity="center|end"
+                            android:text="@string/parent_s_phones"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_parents_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_layout_white"
+                            android:imeOptions="actionNext"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
+                            android:text="@string/dummy_text"
+
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/extra_small_padding">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:gravity="center|end"
+                            android:text="@string/allergies_special_needs"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_allergies_special_needs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_layout_white"
+                            android:imeOptions="actionNext"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
+                            android:text="@string/dummy_text"
+
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/extra_small_padding">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:gravity="center|end"
+                            android:text="@string/after_care_phone_name"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_after_care_phone_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_layout_white"
+                            android:imeOptions="actionNext"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
+                            android:text="@string/dummy_text"
+
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/extra_small_padding">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:gravity="center|end"
+                            android:text="@string/enrollments_count"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_enrollments_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_layout_white"
+                            android:imeOptions="actionNext"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
+                            android:text="@string/dummy_text"
+
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/extra_small_padding">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:gravity="center|end"
+                            android:text="@string/abscences_count"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:id="@+id/tv_abscences_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_layout_white"
+                            android:imeOptions="actionNext"
+                            android:inputType="textMultiLine"
+                            android:paddingLeft="@dimen/extra_small_padding"
+                            android:paddingRight="@dimen/extra_small_padding"
+                            android:text="@string/dummy_text"
+
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/extra_extra_small_margin"
+                        android:background="@drawable/rounded_layout_blue"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/extra_small_padding">
+
+                        <org.wizbots.labtab.customview.TextViewCustom
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/extra_extra_small_margin"
+                            android:layout_weight="1"
+                            android:gravity="center|end"
+                            android:text="@string/wizchips"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <org.wizbots.labtab.customview.TextViewCustom
+                                android:id="@+id/tv_wizchips"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/rounded_layout_white"
+                                android:imeOptions="actionNext"
+                                android:inputType="textMultiLine"
+                                android:paddingLeft="@dimen/extra_small_padding"
+                                android:paddingRight="@dimen/extra_small_padding"
+                                android:text="@string/dummy_text"
+                                android:textSize="@dimen/text_size_small"
+                                app:fontName="@string/font_pt_sans_narrow_regular" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_remove_wizchip"
+                                    android:layout_width="30dp"
+                                    android:layout_height="35dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@drawable/rounded_layout_white"
+                                    android:gravity="center"
+                                    android:paddingLeft="@dimen/extra_small_padding"
+                                    android:paddingRight="@dimen/extra_small_padding"
+                                    android:text="@string/minus"
+                                    android:textColor="@color/material_light_blue_800"
+                                    android:textSize="25sp" />
+
+
+                                <TextView
+                                    android:id="@+id/tv_add_wizchip"
+                                    android:layout_width="30dp"
+                                    android:layout_height="35dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@drawable/rounded_layout_white"
+                                    android:gravity="center"
+                                    android:paddingLeft="@dimen/extra_small_padding"
+                                    android:paddingRight="@dimen/extra_small_padding"
+                                    android:text="@string/plus"
+                                    android:textColor="@color/material_light_blue_800"
+                                    android:textSize="25sp" />
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/student_stats_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <org.wizbots.labtab.customview.TextViewCustom
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_extra_small_margin"
+                    android:gravity="center|left"
+                    android:text="@string/statistics"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/text_size_extra_large"
+                    app:fontName="@string/font_pt_sans_narrow_bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/extra_small_margin"
+                    android:background="@drawable/rounded_layout_blue_from_edges"
+                    android:orientation="vertical"
+                    android:padding="@dimen/extra_extra_small_padding">
+
+                    <include layout="@layout/header_student_stats" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_student_stats_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:scrollbars="vertical"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

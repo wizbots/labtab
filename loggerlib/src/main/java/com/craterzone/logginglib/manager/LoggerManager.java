@@ -106,7 +106,7 @@ public class LoggerManager {
             log.addHandler(fileHandlerInXMLFormat);
 
 
-        } catch (IOException e) {
+        } catch (Exception e) {
 
             Log.e(TAG, "FileHandler exception", e);
         }
